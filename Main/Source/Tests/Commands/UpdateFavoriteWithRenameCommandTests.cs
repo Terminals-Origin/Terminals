@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
 using Terminals.Data;
@@ -15,8 +14,6 @@ namespace Tests.Commands
 
         private const string RENAMED_NAME = "Renamed";
 
-        private IFavorite original;
-
         private IFavorite copy;
 
         private UpdateFavoriteWithRenameCommand command;
@@ -24,16 +21,17 @@ namespace Tests.Commands
         [TestInitialize]
         public void InitializeFavorites()
         {
-            this.original = this.AddFavorite(ORIGINAL_NAME);
+            this.AddFavorite(ORIGINAL_NAME);
             this.copy = this.AddFavorite(COPY_NAME);
             // command is set to rename by default
-            this.command = new UpdateFavoriteWithRenameCommand(this.Persistence, newName => true);
+            var service = new TestRenameService(this.Persistence.Favorites, newName => true);
+            this.command = new UpdateFavoriteWithRenameCommand(this.Persistence, service);
         }
 
         [TestMethod]
         public void NoDuplicitProperlyRenames()
         {
-            this.command.UpdateFavoritePreservingDuplicitNames(COPY_NAME, RENAMED_NAME, this.copy);
+            this.command.ApplyRename(this.copy, RENAMED_NAME);
             Assert.AreEqual(RENAMED_NAME, this.copy.Name, "Favorite wasnt properly renamed");
         }
 
@@ -41,19 +39,20 @@ namespace Tests.Commands
         public void NoDuplicitDoesntAskUser()
         {
             bool asked = false;
-            var customCommand = new UpdateFavoriteWithRenameCommand(this.Persistence, newName =>
+            var service = new TestRenameService(this.Persistence.Favorites, newName =>
                 {
                    asked = true;
                    return true;
                 });
-            customCommand.UpdateFavoritePreservingDuplicitNames(COPY_NAME, RENAMED_NAME, this.copy);
+            var customCommand = new UpdateFavoriteWithRenameCommand(this.Persistence, service);
+            customCommand.ApplyRename(this.copy, RENAMED_NAME);
             Assert.IsFalse(asked, "If there is no duplicit, user shouldnt be prompter.");
         }
 
         [TestMethod]
         public void OverwriteProperlyRemovesDuplicit()
         {
-            this.command.UpdateFavoritePreservingDuplicitNames(COPY_NAME, ORIGINAL_NAME, this.copy);
+            this.command.ApplyRename(this.copy, ORIGINAL_NAME);
             int favoritesCount = this.Persistence.Favorites.Count();
             Assert.AreEqual(1, favoritesCount, "overwritten favorite should be removed from persistence.");
         }
@@ -61,9 +60,10 @@ namespace Tests.Commands
         [TestMethod]
         public void RejectedRenameDoesntChangeAnything()
         {
-            var customCommand = new UpdateFavoriteWithRenameCommand(this.Persistence, newName => false);
-            customCommand.UpdateFavoritePreservingDuplicitNames(COPY_NAME, ORIGINAL_NAME, this.copy);
-            Assert.AreEqual(COPY_NAME, this.copy.Name, "Favorite cant be changed, if user refused the rename.");
+            var service = new TestRenameService(this.Persistence.Favorites, newName => false);
+            var customCommand = new UpdateFavoriteWithRenameCommand(this.Persistence, service);
+            bool performAction = customCommand.ValidateNewName(this.copy, ORIGINAL_NAME);
+            Assert.IsFalse(performAction, "Favorite cant be changed, if user refused the rename.");
         }
     }
 }

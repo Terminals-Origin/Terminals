@@ -12,11 +12,16 @@ namespace Terminals
 
         private IFavorite source;
 
-        private readonly IPersistence persistence;
+        private readonly IFavorites favorites;
+
+        private readonly UpdateFavoriteWithRenameCommand renameCommand;
 
         internal CopyFavoriteCommand(IPersistence persistence, Func<InputBoxResult> copyPrompt = null)
         {
-            this.persistence = persistence;
+            this.favorites = persistence.Favorites;
+            var renameService = new RenameCopyService(persistence.Favorites);
+            renameService.RenameAction = this.AddIfValid; // property injection
+            this.renameCommand = new UpdateFavoriteWithRenameCommand(persistence, renameService);
 
             if (copyPrompt != null)
                 this.copyPrompt = copyPrompt;
@@ -52,20 +57,19 @@ namespace Terminals
             IFavorite copy = favorite.Copy();
             // expecting the copy it self is valid, let validate only the name
             copy.Name = newName;
-            var renameUI = new FavoriteRenameCommand(this.persistence, this.AddIfValid);
-            bool valid = renameUI.ValidateFavoriteName(copy, newName);
             
-            if (valid)
-              return copy;
+            bool valid = this.renameCommand.ValidateNewName(favorite, newName);
+            if (!valid)
+                return null;
 
-            return null;
+            this.renameCommand.ApplyRename(copy, newName);
+            return copy;
         }
 
         private void AddIfValid(IFavorite favorite, string newName)
         {
-            var favorites = this.persistence.Favorites;
-            favorites.Add(favorite);
-            favorites.UpdateFavorite(favorite, this.source.Groups);
+            this.favorites.Add(favorite);
+            this.favorites.UpdateFavorite(favorite, this.source.Groups);
 
             if (Settings.HasToolbarButton(this.source.Id))
                 Settings.AddFavoriteButton(favorite.Id);

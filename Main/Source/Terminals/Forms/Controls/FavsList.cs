@@ -24,6 +24,8 @@ namespace Terminals
         private static readonly string shutdownFailMessage = Program.Resources.GetString("UnableToRemoteShutdown");
         internal ConnectionsUiFactory ConnectionsUiFactory { private get; set; }
 
+        private readonly UpdateFavoriteWithRenameCommand renameCommand;
+
         private readonly IPersistence persistence = Persistence.Instance;
 
         private IFavorites PersistedFavorites
@@ -40,6 +42,7 @@ namespace Terminals
             Native.Methods.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
 
             this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
+            this.renameCommand = new UpdateFavoriteWithRenameCommand(this.persistence, new RenameService(this.persistence.Favorites));
         }
 
         #region Private methods
@@ -554,7 +557,7 @@ namespace Terminals
         private void TryRenameFavoriteNode(NodeLabelEditEventArgs e)
         {
             IFavorite favorite = this.favsTree.SelectedFavorite;
-            e.CancelEdit = this.SheduleFavoriteRename(favorite, e.Label);
+            e.CancelEdit = this.ValidateAndRename(favorite, e.Label);
         }
 
         private void TryRenameGroupNode(NodeLabelEditEventArgs e)
@@ -563,10 +566,10 @@ namespace Terminals
             if (groupNode == null)
                 return;
 
-            this.RenameIfValid(groupNode.Group, e);
+            this.SheduleRename(groupNode.Group, e);
         }
 
-        private void RenameIfValid(IGroup group, NodeLabelEditEventArgs e)
+        private void SheduleRename(IGroup group, NodeLabelEditEventArgs e)
         {
             var groupValidator = new GroupNameValidator(this.persistence);
             string errorMessage = groupValidator.ValidateCurrent(group, e.Label);
@@ -595,7 +598,7 @@ namespace Terminals
             if (string.IsNullOrEmpty(e.Label))
                 e.CancelEdit = true;
             else
-                e.CancelEdit = this.SheduleFavoriteRename(favorite, e.Label);
+                e.CancelEdit = this.ValidateAndRename(favorite, e.Label);
         }
 
         /// <summary>
@@ -603,25 +606,21 @@ namespace Terminals
         /// we have to return the cancelation result, to be able cancel the edit in UI.
         /// Returns true, if rename should be canceled.
         /// </summary>
-        private bool SheduleFavoriteRename(IFavorite favorite, string newName)
+        private bool ValidateAndRename(IFavorite favorite, string newName)
         {
             if (favorite == null)
                 return true;
 
-            var renameUi = new FavoriteRenameCommand(this.persistence, this.RenameIfValid);
-            return renameUi.ValidateFavoriteName(favorite, newName);
+            bool isValid = this.renameCommand.ValidateNewName(favorite, newName);
+            if (isValid)
+                this.SheduleRename(favorite, newName);
+            return !isValid;
         }
 
-        private void RenameIfValid(IFavorite favorite, string newName)
+        private void SheduleRename(IFavorite favorite, string newName)
         {
             var favoriteArguments = new object[] { favorite, newName };
-            this.favsTree.BeginInvoke(new Action<IFavorite, string>(this.RenameFavorite), favoriteArguments);
-        }
-
-        private void RenameFavorite(IFavorite favorite, string newName)
-        {
-            favorite.Name = newName;
-            this.PersistedFavorites.Update(favorite);
+            this.favsTree.BeginInvoke(new Action<IFavorite, string>(this.renameCommand.ApplyRename), favoriteArguments);
         }
 
         private void SearchPanel_ResultListKeyUp(object sender, KeyEventArgs e)

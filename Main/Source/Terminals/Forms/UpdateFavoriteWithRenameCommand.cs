@@ -1,55 +1,59 @@
-using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using Terminals.Data;
+using Terminals.Data.Validation;
 
 namespace Terminals
 {
     internal class UpdateFavoriteWithRenameCommand
     {
         private readonly IPersistence persistence;
-
         private readonly IFavorites favorites;
 
-        private readonly Func<string, bool> askUserIfWantsToOverwrite = AskUserIfWantsToOverwrite;
+        private readonly IRenameService service;
+        private readonly FavoriteNameValidator validator;
 
-        public UpdateFavoriteWithRenameCommand(IPersistence persistence, Func<string, bool> askUserIfWantsToOverwrite = null)
+        public UpdateFavoriteWithRenameCommand(IPersistence persistence, IRenameService service)
         {
             this.persistence = persistence;
+            this.service = service;
             this.favorites = persistence.Favorites;
+            this.validator = new FavoriteNameValidator(this.persistence);
+        }
 
-            if (askUserIfWantsToOverwrite != null)
-                this.askUserIfWantsToOverwrite = askUserIfWantsToOverwrite;
+        internal bool ValidateNewName(IFavorite favorite, string newName)
+        {
+            // dont validate, against persistence, validate only the newName
+            string errorMessage = this.validator.ValidateNameValue(newName);
+            bool valid = string.IsNullOrEmpty(errorMessage);
+            if (!valid)
+                this.service.ReportInvalidName(errorMessage);
+
+            bool unique = !this.validator.NotUniqueInPersistence(favorite, newName);
+            if (!unique)
+              unique = this.service.AskUserIfWantsToOverwrite(newName);
+
+            return valid && unique;
         }
 
         /// <summary>
-        /// Asks user, if wants to overwrite already present favorite the newName by conflicting (editedFavorite).
+        /// Asks user, if wants to overwrite already present favorite the newName by conflicting (editedFavorite)
+        /// and then take an action asigned to be performed as rename.
         /// </summary>
-        /// <param name="oldName">The olready present favorite name to check.</param>
-        /// <param name="newName">The newly assigned name of edited favorite.</param>
         /// <param name="editedFavorite">The currently edited favorite to update.</param>
-        internal void UpdateFavoritePreservingDuplicitNames(string oldName, string newName, IFavorite editedFavorite)
+        /// <param name="newName">The newly assigned name of edited favorite.</param>
+        internal void ApplyRename(IFavorite editedFavorite, string newName)
         {
-            editedFavorite.Name = oldName; // to prevent find it self as oldFavorite
-            var oldFavorite = this.favorites[newName];
+            IFavorite oldFavorite = this.favorites[newName];
             // prevent conflict with another favorite than edited
-            if (oldFavorite != null && !editedFavorite.StoreIdEquals(oldFavorite))
-            {
+            bool notUnique = oldFavorite != null && !editedFavorite.StoreIdEquals(oldFavorite);
+            if (notUnique)
                 this.OverwriteByConflictingName(newName, oldFavorite, editedFavorite);
-            }
             else
-            {
-                editedFavorite.Name = newName;
-                // dont have to update buttons here, because they arent changed
-                this.favorites.Update(editedFavorite);
-            }
+                this.service.Rename(editedFavorite, newName);
         }
 
         private void OverwriteByConflictingName(string newName, IFavorite oldFavorite, IFavorite editedFavorite)
         {
-            if (!askUserIfWantsToOverwrite(newName))
-                return;
-
             this.persistence.StartDelayedUpdate();
             // remember the edited favorite groups, because delete may also delete its groups,
             // if it is the last favorite in the group
@@ -60,12 +64,6 @@ namespace Terminals
             this.favorites.UpdateFavorite(oldFavorite, groups);
             this.favorites.Delete(editedFavorite);
             this.persistence.SaveAndFinishDelayedUpdate();
-        }
-
-        private static bool AskUserIfWantsToOverwrite(string newName)
-        {
-            string message = String.Format("A connection named \"{0}\" already exists\r\nDo you want to overwrite it?", newName);
-            return MessageBox.Show(message, Program.Info.Title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
     }
 }
