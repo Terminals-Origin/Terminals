@@ -199,7 +199,6 @@
     <Compile Include="Data\Validation\ValidationStates.cs" />
     <Compile Include="Forms\ConnectionDefinition.cs" />
     <Compile Include="Forms\ConnectionsUiFactory.cs" />
-    <Compile Include="Forms\Controls\FavoriteRenameCommand.cs" />
     <Compile Include="Forms\Controls\FavoritesFoundEventArgs.cs" />
     <Compile Include="Forms\Controls\FavoritesSearchBox.cs">
       <SubType>UserControl</SubType>
@@ -246,7 +245,10 @@
     <Compile Include="Forms\CopyFavoriteCommand.cs" />
     <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Data\Validation\GroupNameValidator.cs" />
+    <Compile Include="Forms\IRenameService.cs" />
     <Compile Include="Forms\NewTerminalFormValidator.cs" />
+    <Compile Include="Forms\RenameCopyService.cs" />
+    <Compile Include="Forms\RenameService.cs" />
     <Compile Include="Forms\UnhandledTerminationForm.cs">
       <SubType>Form</SubType>
     </Compile>

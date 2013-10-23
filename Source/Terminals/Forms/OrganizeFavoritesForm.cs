@@ -123,17 +123,25 @@ namespace Terminals
         /// </summary>
         private void DataGridFavorites_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (String.IsNullOrEmpty(this.editedFavorite.Name)) // cancel or nothing changed
-                editedFavorite.Name = this.editedFavoriteName;
+            // cancel or nothing changed
+            bool canApply = !String.IsNullOrEmpty(this.editedFavorite.Name) && 
+                            !this.editedFavorite.Name.Equals(this.editedFavoriteName, StringComparison.CurrentCultureIgnoreCase);
 
-            if (editedFavorite.Name.Equals(this.editedFavoriteName, StringComparison.CurrentCultureIgnoreCase))
-            {
-                editedFavorite.Name = this.editedFavoriteName;
+            string newName = editedFavorite.Name;
+            // to prevent find it self as oldFavorite or to reset changes
+            this.editedFavorite.Name = this.editedFavoriteName;
+            if (canApply)
+                this.ApplyNewName(newName);
+        }
+
+        private void ApplyNewName(string newName)
+        {
+            var renameService = new RenameService(Persistence.Instance.Favorites);
+            var updateCommand = new UpdateFavoriteWithRenameCommand(Persistence.Instance, renameService);
+            bool newNameValid = updateCommand.ValidateNewName(this.editedFavorite, newName);
+            if (!newNameValid)
                 return;
-            }
-
-            var updateCommand = new UpdateFavoriteWithRenameCommand(Persistence.Instance);
-            updateCommand.UpdateFavoritePreservingDuplicitNames(this.editedFavoriteName, editedFavorite.Name, this.editedFavorite);
+            updateCommand.ApplyRename(this.editedFavorite, newName);
             this.UpdateFavoritesBindingSource();
         }
 
