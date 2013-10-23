@@ -137,7 +137,7 @@ namespace Terminals
         private void ApplyNewName(string newName)
         {
             var renameService = new RenameService(Persistence.Instance.Favorites);
-            var updateCommand = new UpdateFavoriteWithRenameCommand(Persistence.Instance, renameService);
+            var updateCommand = new FavoriteRenameCommand(Persistence.Instance, renameService);
             bool newNameValid = updateCommand.ValidateNewName(this.editedFavorite, newName);
             if (!newNameValid)
                 return;

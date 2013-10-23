@@ -4,7 +4,7 @@ using Terminals.Data.Validation;
 
 namespace Terminals
 {
-    internal class UpdateFavoriteWithRenameCommand
+    internal class FavoriteRenameCommand
     {
         private readonly IPersistence persistence;
         private readonly IFavorites favorites;
@@ -12,7 +12,7 @@ namespace Terminals
         private readonly IRenameService service;
         private readonly FavoriteNameValidator validator;
 
-        public UpdateFavoriteWithRenameCommand(IPersistence persistence, IRenameService service)
+        public FavoriteRenameCommand(IPersistence persistence, IRenameService service)
         {
             this.persistence = persistence;
             this.service = service;

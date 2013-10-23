@@ -14,14 +14,14 @@ namespace Terminals
 
         private readonly IFavorites favorites;
 
-        private readonly UpdateFavoriteWithRenameCommand renameCommand;
+        private readonly FavoriteRenameCommand renameCommand;
 
         internal CopyFavoriteCommand(IPersistence persistence, Func<InputBoxResult> copyPrompt = null)
         {
             this.favorites = persistence.Favorites;
             var renameService = new RenameCopyService(persistence.Favorites);
             renameService.RenameAction = this.AddIfValid; // property injection
-            this.renameCommand = new UpdateFavoriteWithRenameCommand(persistence, renameService);
+            this.renameCommand = new FavoriteRenameCommand(persistence, renameService);
 
             if (copyPrompt != null)
                 this.copyPrompt = copyPrompt;
