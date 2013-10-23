@@ -24,7 +24,7 @@ namespace Terminals
         private static readonly string shutdownFailMessage = Program.Resources.GetString("UnableToRemoteShutdown");
         internal ConnectionsUiFactory ConnectionsUiFactory { private get; set; }
 
-        private readonly UpdateFavoriteWithRenameCommand renameCommand;
+        private readonly FavoriteRenameCommand renameCommand;
 
         private readonly IPersistence persistence = Persistence.Instance;
 
@@ -42,7 +42,7 @@ namespace Terminals
             Native.Methods.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
 
             this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
-            this.renameCommand = new UpdateFavoriteWithRenameCommand(this.persistence, new RenameService(this.persistence.Favorites));
+            this.renameCommand = new FavoriteRenameCommand(this.persistence, new RenameService(this.persistence.Favorites));
         }
 
         #region Private methods

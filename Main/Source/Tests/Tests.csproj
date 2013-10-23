@@ -117,7 +117,7 @@
       <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Commands\TestRenameService.cs" />
-    <Compile Include="Commands\UpdateFavoriteWithRenameCommandTests.cs" />
+    <Compile Include="Commands\FavoriteRenameCommandTests.cs" />
     <Compile Include="FilePersisted\FavoritesTest.cs" />
     <Compile Include="FilePersisted\FilePersistedTestLab.cs" />
     <Compile Include="FilePersisted\GroupsTest.cs" />

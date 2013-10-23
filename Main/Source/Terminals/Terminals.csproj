@@ -261,7 +261,7 @@
     <Compile Include="Forms\PersistenceErrorForm.Designer.cs">
       <DependentUpon>PersistenceErrorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\UpdateFavoriteWithRenameCommand.cs" />
+    <Compile Include="Forms\FavoriteRenameCommand.cs" />
     <Compile Include="Forms\YesNoDisableForm.cs">
       <SubType>Form</SubType>
     </Compile>

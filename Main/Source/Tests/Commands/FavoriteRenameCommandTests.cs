@@ -7,7 +7,7 @@ using Tests.FilePersisted;
 namespace Tests.Commands
 {
     [TestClass]
-    public class UpdateFavoriteWithRenameCommandTests : FilePersistedTestLab
+    public class FavoriteRenameCommandTests : FilePersistedTestLab
     {
         private const string ORIGINAL_NAME = "Original";
         private const string COPY_NAME = "Copy";
@@ -16,7 +16,7 @@ namespace Tests.Commands
 
         private IFavorite copy;
 
-        private UpdateFavoriteWithRenameCommand command;
+        private FavoriteRenameCommand command;
 
         [TestInitialize]
         public void InitializeFavorites()
@@ -25,7 +25,7 @@ namespace Tests.Commands
             this.copy = this.AddFavorite(COPY_NAME);
             // command is set to rename by default
             var service = new TestRenameService(this.Persistence.Favorites, newName => true);
-            this.command = new UpdateFavoriteWithRenameCommand(this.Persistence, service);
+            this.command = new FavoriteRenameCommand(this.Persistence, service);
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace Tests.Commands
                    asked = true;
                    return true;
                 });
-            var customCommand = new UpdateFavoriteWithRenameCommand(this.Persistence, service);
+            var customCommand = new FavoriteRenameCommand(this.Persistence, service);
             customCommand.ApplyRename(this.copy, RENAMED_NAME);
             Assert.IsFalse(asked, "If there is no duplicit, user shouldnt be prompter.");
         }
@@ -61,7 +61,7 @@ namespace Tests.Commands
         public void RejectedRenameDoesntChangeAnything()
         {
             var service = new TestRenameService(this.Persistence.Favorites, newName => false);
-            var customCommand = new UpdateFavoriteWithRenameCommand(this.Persistence, service);
+            var customCommand = new FavoriteRenameCommand(this.Persistence, service);
             bool performAction = customCommand.ValidateNewName(this.copy, ORIGINAL_NAME);
             Assert.IsFalse(performAction, "Favorite cant be changed, if user refused the rename.");
         }
