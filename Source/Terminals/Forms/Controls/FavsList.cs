@@ -446,15 +446,6 @@ namespace Terminals
                 this.StartConnection(historyTreeView);
         }
 
-        private void CreateGroupToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string newGroupName = NewGroupForm.AskFroGroupName();
-            if (string.IsNullOrEmpty(newGroupName))
-                return;
-
-            FavoritesFactory.GetOrAddNewGroup(newGroupName);
-        }
-
         private void DeleteGroupToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var groupNode = this.favsTree.SelectedGroupNode;
@@ -656,16 +647,15 @@ namespace Terminals
 
         private void NewGroupToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // backup the selected tree node, because it will be replaced later by focus of NewGroupForm
+            GroupTreeNode parentGroupNode = this.favsTree.SelectedGroupNode;
             string newGroupName = NewGroupForm.AskFroGroupName();
             if (string.IsNullOrEmpty(newGroupName))
                 return;
 
-            var newGroup = this.Persistence.Factory.CreateGroup(newGroupName);
-            var parentGroupNode = this.favsTree.SelectedGroupNode;
+            IGroup newGroup = this.Persistence.Factory.CreateGroup(newGroupName);
             if (parentGroupNode != null)
-            {
                 newGroup.Parent = parentGroupNode.Group;
-            }
 
             this.Persistence.Groups.Add(newGroup);
         }

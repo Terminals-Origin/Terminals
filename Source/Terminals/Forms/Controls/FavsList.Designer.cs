@@ -376,7 +376,7 @@
             this.addGroupButton.Name = "addGroupButton";
             this.addGroupButton.Size = new System.Drawing.Size(23, 22);
             this.addGroupButton.Text = "Create Group";
-            this.addGroupButton.Click += new System.EventHandler(this.CreateGroupToolStripMenuItem_Click);
+            this.addGroupButton.Click += new System.EventHandler(this.NewGroupToolStripMenuItem_Click);
             // 
             // removeGroupButton
             // 
@@ -492,7 +492,7 @@
             this.createGroupToolStripMenuItem.Name = "createGroupToolStripMenuItem";
             this.createGroupToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.createGroupToolStripMenuItem.Text = "Create Group";
-            this.createGroupToolStripMenuItem.Click += new System.EventHandler(this.CreateGroupToolStripMenuItem_Click);
+            this.createGroupToolStripMenuItem.Click += new System.EventHandler(this.NewGroupToolStripMenuItem_Click);
             // 
             // createFavoriteToolStripMenuItem1
             // 
