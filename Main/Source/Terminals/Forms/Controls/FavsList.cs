@@ -24,13 +24,13 @@ namespace Terminals
         private static readonly string shutdownFailMessage = Program.Resources.GetString("UnableToRemoteShutdown");
         internal ConnectionsUiFactory ConnectionsUiFactory { private get; set; }
 
-        private readonly FavoriteRenameCommand renameCommand;
+        private FavoriteRenameCommand renameCommand;
 
-        private readonly IPersistence persistence = Persistence.Instance;
+        internal IPersistence Persistence { get; set; }
 
         private IFavorites PersistedFavorites
         {
-            get { return this.persistence.Favorites; }
+            get { return this.Persistence.Favorites; }
         }
 
         public FavsList()
@@ -42,7 +42,6 @@ namespace Terminals
             Native.Methods.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
 
             this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
-            this.renameCommand = new FavoriteRenameCommand(this.persistence, new RenameService(this.persistence.Favorites));
         }
 
         #region Private methods
@@ -59,12 +58,13 @@ namespace Terminals
 
         private void FavsList_Load(object sender, EventArgs e)
         {
-            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, Persistence.Instance);
+            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, Data.Persistence.Instance);
             this.treeLoader.LoadGroups();
             this.historyTreeView.Load();
             this.LoadState();
             this.favsTree.MouseUp += new MouseEventHandler(this.FavsTree_MouseUp);
-            this.searchPanel1.LoadEvents();
+            this.searchPanel1.LoadEvents(this.Persistence);
+            this.renameCommand = new FavoriteRenameCommand(this.Persistence, new RenameService(this.Persistence.Favorites));
         }
 
         private void HistoryTreeView_DoubleClick(object sender, EventArgs e)
@@ -101,7 +101,7 @@ namespace Terminals
 
         private void CreateFavoriteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmNewTerminal = new NewTerminalForm(Persistence.Instance, string.Empty))
+            using (var frmNewTerminal = new NewTerminalForm(Data.Persistence.Instance, string.Empty))
             {
                 var groupNode = this.favsTree.SelectedGroupNode;
                 if (groupNode != null)
@@ -120,7 +120,7 @@ namespace Terminals
 
         private void ShowManageTerminalForm(IFavorite favorite)
         {
-            using (var frmNewTerminal = new NewTerminalForm(Persistence.Instance, favorite))
+            using (var frmNewTerminal = new NewTerminalForm(Data.Persistence.Instance, favorite))
             {
                 TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
 
@@ -303,7 +303,7 @@ namespace Terminals
             InputBoxResult result = this.PromptForVariableChange(VARIABLE);
             if (result.ReturnCode == DialogResult.OK)
             {
-                ICredentialSet credential = Persistence.Instance.Credentials[result.Text];
+                ICredentialSet credential = Data.Persistence.Instance.Credentials[result.Text];
                 if (credential == null)
                 {
                     MessageBox.Show("The credential you specified does not exist.");
@@ -388,7 +388,7 @@ namespace Terminals
             if (result == DialogResult.Yes)
             {
                 List<IFavorite> selectedFavorites = this.StartBatchUpdate();
-                Persistence.Instance.Favorites.Delete(selectedFavorites);
+                Data.Persistence.Instance.Favorites.Delete(selectedFavorites);
                 if (this.ParentForm != null)
                     this.ParentForm.Cursor = Cursors.Default;
                 MessageBox.Show("Delete all Favorites by group Complete.");
@@ -459,7 +459,7 @@ namespace Terminals
         {
             var groupNode = this.favsTree.SelectedGroupNode;
             if (groupNode != null && OrganizeFavoritesForm.AskIfRealyDelete("group"))
-                Persistence.Instance.Groups.Delete(groupNode.Group);
+                Data.Persistence.Instance.Groups.Delete(groupNode.Group);
         }
 
         private void DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -468,7 +468,7 @@ namespace Terminals
             if (selected == null)
                 return;
 
-            var copyCommand = new CopyFavoriteCommand(Persistence.Instance);
+            var copyCommand = new CopyFavoriteCommand(Data.Persistence.Instance);
             copyCommand.Copy(selected);
         }
 
@@ -512,7 +512,7 @@ namespace Terminals
         private void ClearHistoryButton_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            Persistence.Instance.ConnectionHistory.Clear();
+            Data.Persistence.Instance.ConnectionHistory.Clear();
             this.Cursor = Cursors.Default;
         }
 
@@ -571,7 +571,7 @@ namespace Terminals
 
         private void SheduleRename(IGroup group, NodeLabelEditEventArgs e)
         {
-            var groupValidator = new GroupNameValidator(this.persistence);
+            var groupValidator = new GroupNameValidator(this.Persistence);
             string errorMessage = groupValidator.ValidateCurrent(group, e.Label);
             if (string.IsNullOrEmpty(errorMessage))
             {
@@ -588,7 +588,7 @@ namespace Terminals
         private void RenameGroup(IGroup group, string newName)
         {
             group.Name = newName;
-            this.persistence.Groups.Update(group);
+            this.Persistence.Groups.Update(group);
         }
 
         private void SearchPanel1_ResultListAfterLabelEdit(object sender, LabelEditEventArgs e)
@@ -660,14 +660,14 @@ namespace Terminals
             if (string.IsNullOrEmpty(newGroupName))
                 return;
 
-            var newGroup = Persistence.Instance.Factory.CreateGroup(newGroupName);
+            var newGroup = Data.Persistence.Instance.Factory.CreateGroup(newGroupName);
             var parentGroupNode = this.favsTree.SelectedGroupNode;
             if (parentGroupNode != null)
             {
                 newGroup.Parent = parentGroupNode.Group;
             }
 
-            Persistence.Instance.Groups.Add(newGroup);
+            Data.Persistence.Instance.Groups.Add(newGroup);
         }
     }
 }

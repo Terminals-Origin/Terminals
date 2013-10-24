@@ -18,6 +18,8 @@ namespace Terminals
         /// </summary>
         private class FavoritesMenuLoader
         {
+            private readonly IPersistence persistence;
+
             private ToolStripMenuItem favoritesToolStripMenuItem;
             private GroupMenuItem untaggedToolStripMenuItem;
             private ToolStripComboBox tscConnectTo;
@@ -67,18 +69,19 @@ namespace Terminals
                 get { return this.quickContextMenu.Items.IndexOf(this.alphabeticalMenu); }
             }
 
-            private static IOrderedEnumerable<IGroup>  PersistedGroups
+            private IOrderedEnumerable<IGroup>  PersistedGroups
             {
-                get { return Persistence.Instance.Groups.OrderBy(group => group.Name); }
+                get { return this.persistence.Groups.OrderBy(group => group.Name); }
             }
 
-            private static IFavorites PersistedFavorites
+            private IFavorites PersistedFavorites
             {
-                get { return Persistence.Instance.Favorites; }
+                get { return this.persistence.Favorites; }
             }
 
-            internal FavoritesMenuLoader(MainForm mainForm)
+            internal FavoritesMenuLoader(MainForm mainForm, IPersistence persistence)
             {
+                this.persistence = persistence;
                 AssignMainFormFields(mainForm);
                 this.favoritesToolStripMenuItem.DropDownItems.Add("-");
                 CreateUntaggedItem();
@@ -89,7 +92,7 @@ namespace Terminals
 
             private void RegisterEventHandlers()
             {
-                DataDispatcher dispatcher = Persistence.Instance.Dispatcher;
+                DataDispatcher dispatcher = this.persistence.Dispatcher;
                 dispatcher.GroupsChanged += new GroupsChangedEventHandler(this.OnDataChanged);
                 dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnDataChanged);
                 Settings.ConfigurationChanged += new ConfigurationChangedHandler(this.OnSettingsConfigurationChanged);
