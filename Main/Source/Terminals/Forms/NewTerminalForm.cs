@@ -25,11 +25,9 @@ namespace Terminals
         private readonly TerminalServerManager terminalServerManager = new TerminalServerManager();
         private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
         private String currentToolBarFileName;
-        private Guid editedId;
+        internal Guid EditedId { get; set; }
 
-        internal bool EditingNew { get { return this.editedId == Guid.Empty; } }
-
-        private string oldName;
+        internal bool EditingNew { get { return this.EditedId == Guid.Empty; } }
 
         private String favoritePassword = string.Empty;
         internal const String HIDDEN_PASSWORD = "****************";
@@ -451,7 +449,7 @@ namespace Terminals
             if (this.FillFavorite(false))
             {
                 this.txtName.Text = this.Favorite.Name + "_(copy)";
-                this.editedId = Guid.Empty;
+                this.EditedId = Guid.Empty;
                 this.cmbServers.Text = String.Empty;
                 this.cmbServers.Focus();
             }
@@ -470,7 +468,7 @@ namespace Terminals
             this.SaveMRUs();
             if (this.FillFavorite(false))
             {
-                this.editedId = Guid.Empty;
+                this.EditedId = Guid.Empty;
                 this.Init(null, String.Empty);
                 this.cmbServers.Focus();
             }
@@ -545,8 +543,7 @@ namespace Terminals
             }
             else
             {
-                this.editedId = favorite.Id;
-                this.oldName = favorite.Name;
+                this.EditedId = favorite.Id;
                 this.Text = "Edit Connection";
                 this.FillControls(favorite);
             }
@@ -935,8 +932,8 @@ namespace Terminals
         private IFavorite ResolveFavortie()
         {
             IFavorite favorite = null; // force favorite property reset
-            if (!this.editedId.Equals(Guid.Empty))
-                favorite = PersistedFavorites[this.editedId];
+            if (!this.EditedId.Equals(Guid.Empty))
+                favorite = PersistedFavorites[this.EditedId];
             if (favorite == null)
                 favorite = this.persistence.Factory.CreateFavorite();
             this.Favorite = favorite;
@@ -1203,7 +1200,7 @@ namespace Terminals
             if (this.EditingNew)
                 this.AddToPersistence(favorite);
             else
-                Settings.EditFavoriteButton(this.editedId, favorite.Id, this.ShowOnToolbar);
+                Settings.EditFavoriteButton(this.EditedId, favorite.Id, this.ShowOnToolbar);
 
             List<IGroup> updatedGroups = this.GetNewlySelectedGroups();
             PersistedFavorites.UpdateFavorite(favorite, updatedGroups);
