@@ -179,10 +179,10 @@ namespace Terminals
 
                 // Set notifyicon icon from embedded png image
                 this.MainWindowNotifyIcon.Icon = Icon.FromHandle(Properties.Resources.terminalsicon.GetHicon());
-                this.menuLoader = new FavoritesMenuLoader(this);
+                this.menuLoader = new FavoritesMenuLoader(this, Persistence.Instance);
                 this.favoriteToolBar.Visible = this.toolStripMenuItemShowHideFavoriteToolbar.Checked;
                 this.fullScreenSwitch = new MainFormFullScreenSwitch(this);
-
+                this.favsList1.Persistence = Persistence.Instance;
                 this.AssignToolStripsToContainer();
                 this.ApplyControlsEnableAndVisibleState();
                 

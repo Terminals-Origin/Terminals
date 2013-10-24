@@ -9,6 +9,8 @@ namespace Terminals.Forms.Controls
 {
     internal partial class SearchPanel : UserControl
     {
+        private IPersistence persistence;
+
         /// <summary>
         /// Gets or sets the context menu, which will be shown, when selected item is clicked.
         /// Needs to be public get and set to be available in designer.
@@ -87,9 +89,10 @@ namespace Terminals.Forms.Controls
             InitializeComponent();
         }
 
-        internal void LoadEvents()
+        internal void LoadEvents(IPersistence persistence)
         {
-            this.searchTextBox.LoadEvents();
+            this.persistence = persistence;
+            this.searchTextBox.LoadEvents(persistence);
             this.LoadAll();
         }
 
@@ -144,7 +147,7 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private void LoadAll()
         {
-            SortableList<IFavorite> favorites = Persistence.Instance.Favorites.ToListOrderedByDefaultSorting();
+            SortableList<IFavorite> favorites = this.persistence.Favorites.ToListOrderedByDefaultSorting();
             this.LoadFromFavorites(favorites);
         }
 

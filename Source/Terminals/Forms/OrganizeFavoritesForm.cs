@@ -362,7 +362,7 @@ namespace Terminals
 
         private void OrganizeFavoritesForm_Load(object sender, EventArgs e)
         {
-            this.favoritesSearchBox.LoadEvents();
+            this.favoritesSearchBox.LoadEvents(Persistence.Instance);
         }
 
         private void OrganizeFavoritesForm_FormClosing(object sender, FormClosingEventArgs e)

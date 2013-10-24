@@ -26,26 +26,24 @@ namespace Terminals.Forms.Controls
 
         private bool alreadySearched;
 
-        private static DataDispatcher Dispatcher
-        {
-            get { return Persistence.Instance.Dispatcher; }
-        }
+        private IPersistence persistence;
 
         public FavoritesSearchBox()
         {
             InitializeComponent();
         }
 
-        internal void LoadEvents()
+        internal void LoadEvents(IPersistence persistence)
         {
+            this.persistence = persistence;
             this.searchTextBox.SearchedTexts = Settings.SavedSearches;
-            Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
+            this.persistence.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
         }
 
         internal void UnloadEvents()
         {
             Settings.SavedSearches = this.searchTextBox.SearchedTexts;
-            Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
+            this.persistence.Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
         }
 
         /// <summary>
@@ -81,7 +79,7 @@ namespace Terminals.Forms.Controls
             this.Cancel(); // may be previous search
             this.cancellationTokenSource = new CancellationTokenSource();
             CancellationToken token = this.cancellationTokenSource.Token;
-            var criteria = new FavoritesSearch(Persistence.Instance.Favorites, token, searchText);
+            var criteria = new FavoritesSearch(this.persistence.Favorites, token, searchText);
             Task<List<IFavorite>> searchTask = criteria.FindAsync();
             searchTask.ContinueWith(this.FinishSearch, TaskScheduler.FromCurrentSynchronizationContext());
         }

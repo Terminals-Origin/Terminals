@@ -7,10 +7,13 @@ namespace Terminals
 {
     internal partial class AddConnectionForm : Form
     {
+        private readonly IPersistence persistence;
+
         internal List<IFavorite> SelectedFavorites { get; private set; }
 
-        public AddConnectionForm()
+        public AddConnectionForm(IPersistence persistence)
         {
+            this.persistence = persistence;
             InitializeComponent();
         }
 
@@ -26,7 +29,7 @@ namespace Terminals
 
         private void AddConnectionForm_Load(object sender, EventArgs e)
         {
-            this.searchPanel.LoadEvents();
+            this.searchPanel.LoadEvents(this.persistence);
         }
 
         private void AddConnectionForm_FormClosing(object sender, FormClosingEventArgs e)

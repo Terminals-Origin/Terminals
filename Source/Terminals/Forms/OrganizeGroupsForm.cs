@@ -73,7 +73,7 @@ namespace Terminals
 
         private void AddFavoritesToGroup(IGroup group)
         {
-            using (var frmAddConnection = new AddConnectionForm())
+            using (var frmAddConnection = new AddConnectionForm(Persistence.Instance))
             {
                 if (frmAddConnection.ShowDialog() == DialogResult.OK)
                 {
