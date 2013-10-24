@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
 using Terminals.Data.DB;
+using Tests.FilePersisted;
 
 namespace Tests.SqlPersisted
 {
@@ -32,9 +33,12 @@ namespace Tests.SqlPersisted
 
         private void DispatcherGroupsChanged(GroupsChangedArgs args)
         {
-            this.addedCount += args.Added.Count;
-            this.updatedCount += args.Updated.Count;
-            this.deletedCount = args.Removed.Count;
+            if (args.Added.Count == 1)
+                this.addedCount++;
+            if (args.Updated.Count == 1)
+                this.updatedCount++;
+            if (args.Removed.Count == 1)
+                this.deletedCount++;
         }
 
         [TestMethod]
@@ -90,6 +94,23 @@ namespace Tests.SqlPersisted
             int storedAfter = this.CheckDatabase.Groups.Count();
 
             this.AssertGroupDeleted(storedAfter, storedBefore);
+        }
+
+
+        [TestMethod]
+        public void RemoveGroupUpdatesNestedGroups()
+        {
+            var groupsLab = new GroupsTestLab(this.PrimaryPersistence);
+            groupsLab.DeleteParent();
+            Assert.IsNull(groupsLab.Child.Parent, "Remove parent group didnt update all childs parent relationship.");
+        }
+
+        [TestMethod]
+        public void RemoveGroupReportsNestedGroupUpdate()
+        {
+            var groupsLab = new GroupsTestLab(this.PrimaryPersistence);
+            groupsLab.DeleteParent();
+            Assert.AreEqual(1, groupsLab.UpdateReported, "Remove parent group didnt send child group update.");
         }
 
         [TestMethod]

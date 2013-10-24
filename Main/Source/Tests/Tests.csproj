@@ -121,6 +121,7 @@
     <Compile Include="FilePersisted\FavoritesTest.cs" />
     <Compile Include="FilePersisted\FilePersistedTestLab.cs" />
     <Compile Include="FilePersisted\GroupsTest.cs" />
+    <Compile Include="FilePersisted\GroupsTestLab.cs" />
     <Compile Include="FilePersisted\TestFileWatch.cs" />
     <Compile Include="FilePersisted\TestImportUi.cs" />
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />

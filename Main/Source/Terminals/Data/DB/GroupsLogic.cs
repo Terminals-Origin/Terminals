@@ -178,11 +178,29 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 var toDelete = group as DbGroup;
+                this.SetChildsToRoot(database, toDelete);
                 database.Groups.Attach(toDelete);
                 database.Groups.Remove(toDelete);
                 database.SaveImmediatelyIfRequested();
                 this.FinishGroupRemove(group);
             }
+        }
+
+        private void SetChildsToRoot(Database database, DbGroup group)
+        {
+            foreach (DbGroup child in this.CachedChilds(group))
+            {
+                child.Parent = null;
+                database.Cache.Attach(child);
+                this.TrySaveAndReport(child, database);
+                this.cache.Delete(child);
+            }
+        }
+
+        private List<DbGroup> CachedChilds(IGroup parent)
+        {
+            return this.cache.Where(candidate => parent.StoreIdEquals(candidate.Parent))
+                .ToList();
         }
 
         private void FinishGroupRemove(IGroup group)

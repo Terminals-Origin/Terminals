@@ -74,26 +74,17 @@ namespace Tests.FilePersisted
         [TestMethod]
         public void RemoveGroupUpdatesNestedGroups()
         {
-            IGroup child = this.RemoveChildRelationShip();
-            Assert.IsNull(child.Parent, "Remove parent group didnt update all childs parent relationship.");
+            var groupsLab = new GroupsTestLab(this.Persistence);
+            groupsLab.DeleteParent();
+            Assert.IsNull(groupsLab.Child.Parent, "Remove parent group didnt update all childs parent relationship.");
         }
 
         [TestMethod]
         public void RemoveGroupReportsNestedGroupUpdate()
         {
-            this.RemoveChildRelationShip();
-            Assert.AreEqual(1, this.updateReported, "Remove parent group didnt send child group update.");
-        }
-
-        private IGroup RemoveChildRelationShip()
-        {
-            IGroup parent = this.AddNewGroup(GROUP_NAME);
-            IGroup child = this.AddNewGroup(GROUP_NAME2);
-            child.Parent = parent;
-            this.PersistedGroups.Update(child);
-            this.Persistence.Dispatcher.GroupsChanged += this.Dispatcher_GroupsChanged;
-            this.PersistedGroups.Delete(parent);
-            return child;
+            var groupsLab = new GroupsTestLab(this.Persistence);
+            groupsLab.DeleteParent();
+            Assert.AreEqual(1, groupsLab.UpdateReported, "Remove parent group didnt send child group update.");
         }
 
         [TestMethod]
