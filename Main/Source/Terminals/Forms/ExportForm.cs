@@ -11,7 +11,7 @@ namespace Terminals.Forms
 {
     internal partial class ExportForm : Form
     {
-        private readonly IPersistence persistence = Persistence.Instance;
+        private readonly IPersistence persistence;
         private readonly FavoriteTreeListLoader treeLoader;
 
         private readonly TreeListNodes rootNodes;
