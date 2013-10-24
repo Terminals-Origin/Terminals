@@ -340,7 +340,7 @@ namespace Terminals
 
         private void ExportToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frm = new ExportForm())
+            using (var frm = new ExportForm(this.persistence))
                 frm.ShowDialog();
         }
 

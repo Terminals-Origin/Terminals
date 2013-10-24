@@ -67,6 +67,7 @@ namespace Tests.UserInterface
         [TestInitialize]
         public void CreateTestTreeStructure()
         {
+            this.treeView.Persistence = this.Persistence;
             this.CreateData();
 
             // loaded tree is needed for all tests, if if there is a "load all test", which tests next line only

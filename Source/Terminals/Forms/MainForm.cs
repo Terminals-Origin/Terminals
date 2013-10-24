@@ -1692,7 +1692,7 @@ namespace Terminals
 
         private void ExportConnectionsListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frm = new ExportForm())
+            using (var frm = new ExportForm(Persistence.Instance))
                 frm.ShowDialog();
         }
 
