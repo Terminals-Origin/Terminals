@@ -22,7 +22,8 @@ namespace Terminals
 
         private void LoadGroups()
         {
-            var groups = this.persistence.Groups.ToList();
+            // because the Name property is on the INamedItem level, we have to bound directly the item with the name property
+            var groups = this.persistence.Groups.OfType<INamedItem>().ToList();
             this.gridGroups.DataSource = groups;
         }
 
@@ -38,7 +39,8 @@ namespace Terminals
             IGroup selectedGroup = GetSelectedGroup();
             if (selectedGroup != null)
             {
-                this.gridGroupFavorites.DataSource = selectedGroup.Favorites;
+                var selected = selectedGroup.Favorites.OfType<INamedItem>().ToList();
+                this.gridGroupFavorites.DataSource = selected;
             }
         }
 
