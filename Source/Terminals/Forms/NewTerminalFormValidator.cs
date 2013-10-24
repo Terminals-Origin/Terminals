@@ -72,8 +72,11 @@ namespace Terminals.Forms
         {
             if (this.form.EditingNew)
                 return this.nameValidator.ValidateNew(favorite.Name);
-
-            return this.nameValidator.ValidateCurrent(favorite, favorite.Name);
+            
+            // we have to validate the original one, but with the new name, 
+            // because the paramerter is newly created Favorite
+            IFavorite edited = this.persistence.Favorites[this.form.EditedId];
+            return this.nameValidator.ValidateCurrent(edited, favorite.Name);
         }
 
         private void UpdateControlsErrorByResults(ValidationStates results)

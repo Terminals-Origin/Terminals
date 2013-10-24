@@ -28,7 +28,7 @@
         internal bool NotUniqueInPersistence(TItem current, string newName)
         {
             TItem concurrent = this.GetStoreItem(newName);
-            return concurrent != null && !current.StoreIdEquals(concurrent);
+            return concurrent != null && !concurrent.StoreIdEquals(current);
         }
 
         /// <summary>
