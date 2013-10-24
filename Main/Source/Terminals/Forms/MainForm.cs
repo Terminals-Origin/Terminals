@@ -203,6 +203,7 @@ namespace Terminals
             catch (Exception exc)
             {
                 Logging.Error("Error loading the Main Form", exc);
+                throw;
             }
         }
 
@@ -1214,7 +1215,7 @@ namespace Terminals
 
         private void OrganizeGroupsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmOrganizeGroups = new OrganizeGroupsForm())
+            using (var frmOrganizeGroups = new OrganizeGroupsForm(Persistence.Instance))
             {
                 frmOrganizeGroups.ShowDialog();
                 this.menuLoader.LoadGroups();
