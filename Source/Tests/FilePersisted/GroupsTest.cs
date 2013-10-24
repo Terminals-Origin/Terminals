@@ -8,9 +8,9 @@ namespace Tests.FilePersisted
     [TestClass]
     public class GroupsTest : FilePersistedTestLab
     {
-        private const string GOUP_NAME = "TestGroup";
+        private const string GROUP_NAME = "TestGroup";
 
-        private const string GROUP_NAME2 = GOUP_NAME + "2";
+        private const string GROUP_NAME2 = GROUP_NAME + "2";
 
         private int addedReported;
 
@@ -23,33 +23,83 @@ namespace Tests.FilePersisted
         [TestMethod]
         public void AddGroup()
         {
-            IGroup newGroup = this.Persistence.Factory.CreateGroup(GOUP_NAME);
-            this.Persistence.Dispatcher.GroupsChanged +=new GroupsChangedEventHandler(Dispatcher_GroupsChanged);
+            IGroup newGroup = this.Persistence.Factory.CreateGroup(GROUP_NAME);
+            this.Persistence.Dispatcher.GroupsChanged += new GroupsChangedEventHandler(Dispatcher_GroupsChanged);
             this.PersistedGroups.Add(newGroup);
             Assert.AreEqual(1, this.addedReported, "Added group wasnt reported");
             Assert.AreEqual(1, PersistedGroups.Count(), "Group wasnt created properly");
         }
 
         [TestMethod]
-        public void RemoveGroup()
+        public void RemoveFavoriteShouldNotRemoveGroups()
         {
-            Tuple<IFavorite, IGroup> tuple = this.AddFavoriteWithGroup(GOUP_NAME);
-            // now persistence contains one favorite and one group
-            this.Persistence.Dispatcher.GroupsChanged += new GroupsChangedEventHandler(Dispatcher_GroupsChanged);
+            Tuple<IFavorite, IGroup> tuple = this.ObserveAddGroupWithFavorite();
             this.Persistence.Favorites.Delete(tuple.Item1);
-            // now persistence should be empty, because we dont keep empty group
-            int favoritesCount = this.Persistence.Favorites.Count();
-            // redundant check, should be also tested in favorites test
-            Assert.AreEqual(0, favoritesCount, "Favorite wasnt removed properly");
+
+            // now persistence cant be empty, because we keep empty groups
             int groupsCount = this.PersistedGroups.Count();
-            Assert.AreEqual(1, groupsCount, "Groups arent empty");
-            Assert.AreEqual(0, this.removedReported, "Removed group wasnt reported");
+            Assert.AreEqual(1, groupsCount, "Groups are empty");
+            Assert.AreEqual(0, this.removedReported, "Removed group was reported");
+        }
+
+        [TestMethod]
+        public void RemoveGroupShouldReportTheRemove()
+        {
+            Tuple<IFavorite, IGroup> tuple = this.ObserveAddGroupWithFavorite();
+            this.PersistedGroups.Delete(tuple.Item2);
+
+            int groupsCount = this.PersistedGroups.Count();
+            Assert.AreEqual(0, groupsCount, "Group wasnt removed properly.");
+            Assert.AreEqual(1, this.removedReported, "Remove group wasnt reported.");
+        }
+
+        [TestMethod]
+        public void RemoveGroupShouldNotRemoveFavorites()
+        {
+            Tuple<IFavorite, IGroup> tuple = this.ObserveAddGroupWithFavorite();
+            this.PersistedGroups.Delete(tuple.Item2);
+
+            int favoritesCount = this.Persistence.Favorites.Count();
+            Assert.AreEqual(1, favoritesCount, "Favorite cant be removed, even its group was removed.");
+        }
+
+        private Tuple<IFavorite, IGroup> ObserveAddGroupWithFavorite()
+        {
+            Tuple<IFavorite, IGroup> tuple = this.AddFavoriteWithGroup(GROUP_NAME);
+            // now persistence contains one favorite and one group
+            this.Persistence.Dispatcher.GroupsChanged += new GroupsChangedEventHandler(this.Dispatcher_GroupsChanged);
+            return tuple;
+        }
+
+        [TestMethod]
+        public void RemoveGroupUpdatesNestedGroups()
+        {
+            IGroup child = this.RemoveChildRelationShip();
+            Assert.IsNull(child.Parent, "Remove parent group didnt update all childs parent relationship.");
+        }
+
+        [TestMethod]
+        public void RemoveGroupReportsNestedGroupUpdate()
+        {
+            this.RemoveChildRelationShip();
+            Assert.AreEqual(1, this.updateReported, "Remove parent group didnt send child group update.");
+        }
+
+        private IGroup RemoveChildRelationShip()
+        {
+            IGroup parent = this.AddNewGroup(GROUP_NAME);
+            IGroup child = this.AddNewGroup(GROUP_NAME2);
+            child.Parent = parent;
+            this.PersistedGroups.Update(child);
+            this.Persistence.Dispatcher.GroupsChanged += this.Dispatcher_GroupsChanged;
+            this.PersistedGroups.Delete(parent);
+            return child;
         }
 
         [TestMethod]
         public void RebuildGroupsTest()
         {
-            Tuple<IFavorite, IGroup> tuple = this.AddFavoriteWithGroup(GOUP_NAME);
+            Tuple<IFavorite, IGroup> tuple = this.AddFavoriteWithGroup(GROUP_NAME);
             IGroup newGroup = this.Persistence.Factory.CreateGroup(GROUP_NAME2);
             this.PersistedGroups.Add(newGroup);
             this.Persistence.Dispatcher.GroupsChanged += new GroupsChangedEventHandler(Dispatcher_GroupsChanged);
@@ -73,10 +123,10 @@ namespace Tests.FilePersisted
         [TestMethod]
         public void UpdateGroupTest()
         {
-            IGroup group = this.AddNewGroup(GOUP_NAME);
+            IGroup group = this.AddNewGroup(GROUP_NAME);
             IGroup parent = this.AddNewGroup("Parent");
             this.Persistence.Dispatcher.GroupsChanged += new GroupsChangedEventHandler(Dispatcher_GroupsChanged);
-            
+
             this.UpdateGroupInPersistence(group, parent);
             IGroup resolved = GetFromSecondaryPersistence();
 
