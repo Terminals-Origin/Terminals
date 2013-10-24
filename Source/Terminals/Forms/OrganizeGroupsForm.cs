@@ -8,8 +8,11 @@ namespace Terminals
 {
     internal partial class OrganizeGroupsForm : Form
     {
-        internal OrganizeGroupsForm()
+        private readonly IPersistence persistence;
+
+        internal OrganizeGroupsForm(IPersistence persistence)
         {
+            this.persistence = persistence;
             InitializeComponent();
 
             this.gridGroups.AutoGenerateColumns = false;
@@ -19,7 +22,7 @@ namespace Terminals
 
         private void LoadGroups()
         {
-            var groups = Persistence.Instance.Groups.ToList();
+            var groups = this.persistence.Groups.ToList();
             this.gridGroups.DataSource = groups;
         }
 
@@ -59,7 +62,7 @@ namespace Terminals
             IGroup group = GetSelectedGroup();
             if (group != null && OrganizeFavoritesForm.AskIfRealyDelete("group"))
             {
-                Persistence.Instance.Groups.Delete(group);
+                this.persistence.Groups.Delete(group);
                 LoadGroups();
             }
         }
@@ -73,13 +76,13 @@ namespace Terminals
 
         private void AddFavoritesToGroup(IGroup group)
         {
-            using (var frmAddConnection = new AddConnectionForm(Persistence.Instance))
+            using (var frmAddConnection = new AddConnectionForm(this.persistence))
             {
                 if (frmAddConnection.ShowDialog() == DialogResult.OK)
                 {
                     group.AddFavorites(frmAddConnection.SelectedFavorites);
                     this.LoadSelectedGroupFavorites();
-                    Persistence.Instance.SaveAndFinishDelayedUpdate();
+                    this.persistence.SaveAndFinishDelayedUpdate();
                 }
             }
         }
@@ -94,7 +97,7 @@ namespace Terminals
                     List<IFavorite> selectedFavorites = GetSelectedFavorites();
                     group.RemoveFavorites(selectedFavorites);
                     LoadSelectedGroupFavorites();
-                    Persistence.Instance.SaveAndFinishDelayedUpdate();
+                    this.persistence.SaveAndFinishDelayedUpdate();
                 }
             }
         }
