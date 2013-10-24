@@ -1714,7 +1714,7 @@ namespace Terminals
 
         private OrganizeFavoritesForm CreateOrganizeFavoritesForm()
         {
-            var organizeForm = new OrganizeFavoritesForm();
+            var organizeForm = new OrganizeFavoritesForm(Persistence.Instance);
             organizeForm.AssignConnectionsUiFactory(this.connectionsUiFactory);
             return organizeForm;
         }

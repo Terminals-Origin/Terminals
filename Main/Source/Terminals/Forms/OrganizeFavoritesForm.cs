@@ -19,15 +19,18 @@ namespace Terminals
         private ConnectionsUiFactory connectionsUiFactory;
         private SortableList<IFavorite> foundFavorites = new SortableList<IFavorite>();
 
-        private static IFavorites PersistedFavorites
+        private readonly IPersistence persistence;
+
+        private IFavorites PersistedFavorites
         {
-            get { return Persistence.Instance.Favorites; }
+            get { return this.persistence.Favorites; }
         }
 
-        internal OrganizeFavoritesForm()
+        internal OrganizeFavoritesForm(IPersistence persistence)
         {
             InitializeComponent();
 
+            this.persistence = persistence;
             InitializeDataGrid();
             ImportOpenFileDialog.Filter = Integrations.Importers.GetProvidersDialogFilter();
             UpdateCountLabels();
@@ -54,9 +57,9 @@ namespace Terminals
             this.dataGridFavorites.DataSource = this.bsFavorites;
         }
 
-        private static SortableList<FavoriteViewModel> ConvertFavoritesToViewModel(SortableList<IFavorite> source)
+        private SortableList<FavoriteViewModel> ConvertFavoritesToViewModel(SortableList<IFavorite> source)
         {
-            ICredentials storedCredentials = Persistence.Instance.Credentials;
+            ICredentials storedCredentials = this.persistence.Credentials;
             IEnumerable<FavoriteViewModel> sortedFavorites = source.Select(favorite => new FavoriteViewModel(favorite, storedCredentials));
             return new SortableList<FavoriteViewModel>(sortedFavorites);
         }
@@ -70,7 +73,7 @@ namespace Terminals
 
         private void EditFavorite(IFavorite favorite)
         {
-            using (var frmNewTerminal = new NewTerminalForm(Persistence.Instance, favorite))
+            using (var frmNewTerminal = new NewTerminalForm(this.persistence, favorite))
             {
                 if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
                 {
@@ -136,8 +139,8 @@ namespace Terminals
 
         private void ApplyNewName(string newName)
         {
-            var renameService = new RenameService(Persistence.Instance.Favorites);
-            var updateCommand = new FavoriteRenameCommand(Persistence.Instance, renameService);
+            var renameService = new RenameService(this.PersistedFavorites);
+            var updateCommand = new FavoriteRenameCommand(this.persistence, renameService);
             bool newNameValid = updateCommand.ValidateNewName(this.editedFavorite, newName);
             if (!newNameValid)
                 return;
@@ -164,7 +167,7 @@ namespace Terminals
 
         private void ImportFavoritesWithManagerImport(List<FavoriteConfigurationElement> favoritesToImport)
         {
-            var managedImport = new ImportWithDialogs(this, Persistence.Instance);
+            var managedImport = new ImportWithDialogs(this, this.persistence);
             bool imported = managedImport.Import(favoritesToImport);
             if (imported)
                 this.UpdateFavoritesBindingSource();
@@ -221,7 +224,7 @@ namespace Terminals
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmNewTerminal = new NewTerminalForm(Persistence.Instance, String.Empty))
+            using (var frmNewTerminal = new NewTerminalForm(this.persistence, String.Empty))
             {
                 if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
                 {
@@ -290,7 +293,7 @@ namespace Terminals
         private void CopySelectedFavorite()
         {
             IFavorite favorite = this.GetSelectedFavorite();
-            var copyCommand = new CopyFavoriteCommand(Persistence.Instance);
+            var copyCommand = new CopyFavoriteCommand(this.persistence);
             var copy = copyCommand.Copy(favorite);
             if (copy != null)
                 this.UpdateFavoritesBindingSource();
@@ -362,7 +365,7 @@ namespace Terminals
 
         private void OrganizeFavoritesForm_Load(object sender, EventArgs e)
         {
-            this.favoritesSearchBox.LoadEvents(Persistence.Instance);
+            this.favoritesSearchBox.LoadEvents(this.persistence);
         }
 
         private void OrganizeFavoritesForm_FormClosing(object sender, FormClosingEventArgs e)

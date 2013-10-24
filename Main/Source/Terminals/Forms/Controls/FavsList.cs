@@ -58,7 +58,7 @@ namespace Terminals
 
         private void FavsList_Load(object sender, EventArgs e)
         {
-            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, Data.Persistence.Instance);
+            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.Persistence);
             this.treeLoader.LoadGroups();
             this.historyTreeView.Load();
             this.LoadState();
@@ -101,7 +101,7 @@ namespace Terminals
 
         private void CreateFavoriteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmNewTerminal = new NewTerminalForm(Data.Persistence.Instance, string.Empty))
+            using (var frmNewTerminal = new NewTerminalForm(this.Persistence, string.Empty))
             {
                 var groupNode = this.favsTree.SelectedGroupNode;
                 if (groupNode != null)
@@ -120,7 +120,7 @@ namespace Terminals
 
         private void ShowManageTerminalForm(IFavorite favorite)
         {
-            using (var frmNewTerminal = new NewTerminalForm(Data.Persistence.Instance, favorite))
+            using (var frmNewTerminal = new NewTerminalForm(this.Persistence, favorite))
             {
                 TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
 
@@ -303,7 +303,7 @@ namespace Terminals
             InputBoxResult result = this.PromptForVariableChange(VARIABLE);
             if (result.ReturnCode == DialogResult.OK)
             {
-                ICredentialSet credential = Data.Persistence.Instance.Credentials[result.Text];
+                ICredentialSet credential = this.Persistence.Credentials[result.Text];
                 if (credential == null)
                 {
                     MessageBox.Show("The credential you specified does not exist.");
@@ -388,7 +388,7 @@ namespace Terminals
             if (result == DialogResult.Yes)
             {
                 List<IFavorite> selectedFavorites = this.StartBatchUpdate();
-                Data.Persistence.Instance.Favorites.Delete(selectedFavorites);
+                this.Persistence.Favorites.Delete(selectedFavorites);
                 if (this.ParentForm != null)
                     this.ParentForm.Cursor = Cursors.Default;
                 MessageBox.Show("Delete all Favorites by group Complete.");
@@ -459,7 +459,7 @@ namespace Terminals
         {
             var groupNode = this.favsTree.SelectedGroupNode;
             if (groupNode != null && OrganizeFavoritesForm.AskIfRealyDelete("group"))
-                Data.Persistence.Instance.Groups.Delete(groupNode.Group);
+                this.Persistence.Groups.Delete(groupNode.Group);
         }
 
         private void DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -468,7 +468,7 @@ namespace Terminals
             if (selected == null)
                 return;
 
-            var copyCommand = new CopyFavoriteCommand(Data.Persistence.Instance);
+            var copyCommand = new CopyFavoriteCommand(this.Persistence);
             copyCommand.Copy(selected);
         }
 
@@ -512,7 +512,7 @@ namespace Terminals
         private void ClearHistoryButton_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            Data.Persistence.Instance.ConnectionHistory.Clear();
+            this.Persistence.ConnectionHistory.Clear();
             this.Cursor = Cursors.Default;
         }
 
@@ -660,14 +660,14 @@ namespace Terminals
             if (string.IsNullOrEmpty(newGroupName))
                 return;
 
-            var newGroup = Data.Persistence.Instance.Factory.CreateGroup(newGroupName);
+            var newGroup = this.Persistence.Factory.CreateGroup(newGroupName);
             var parentGroupNode = this.favsTree.SelectedGroupNode;
             if (parentGroupNode != null)
             {
                 newGroup.Parent = parentGroupNode.Group;
             }
 
-            Data.Persistence.Instance.Groups.Add(newGroup);
+            this.Persistence.Groups.Add(newGroup);
         }
     }
 }
