@@ -60,7 +60,7 @@ namespace Terminals
         {
             this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.Persistence);
             this.treeLoader.LoadGroups();
-            this.historyTreeView.Load();
+            this.historyTreeView.Load(this.Persistence);
             this.LoadState();
             this.favsTree.MouseUp += new MouseEventHandler(this.FavsTree_MouseUp);
             this.searchPanel1.LoadEvents(this.Persistence);

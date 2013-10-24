@@ -8,6 +8,14 @@ namespace Terminals.Forms.Controls
 {
     internal partial class HistoryTreeView : TreeView
     {
+        private IPersistence persistence;
+
+        /// <summary>
+        /// Gets the time stamp of last full refresh. This allowes to reload the tree nodes
+        /// when Terminals longer than one day
+        /// </summary>
+        private DateTime lastFullRefresh = DateTime.Now;
+
         public HistoryTreeView()
         {
             InitializeComponent();
@@ -16,9 +24,10 @@ namespace Terminals.Forms.Controls
         /// <summary>
         /// Dont call from constructor to support designer
         /// </summary>
-        internal void Load()
+        internal void Load(IPersistence persistence)
         {
-            var connectionHistory = Persistence.Instance.ConnectionHistory;
+            this.persistence = persistence;
+            var connectionHistory = this.persistence.ConnectionHistory;
             connectionHistory.HistoryRecorded += new HistoryRecorded(this.HistoryRecorded);
             connectionHistory.HistoryClear += new Action(this.ConnectionHistory_HistoryClear);
             // init groups before loading the history to prevent to run the callback earlier
@@ -29,12 +38,6 @@ namespace Terminals.Forms.Controls
         {
             RefreshAllExpanded();
         }
-
-        /// <summary>
-        /// Gets the time stamp of last full refresh. This allowes to reload the tree nodes
-        /// when Terminals longer than one day
-        /// </summary>
-        private DateTime lastFullRefresh = DateTime.Now;
 
         private void InitializeTimeLineTreeNodes()
         {
@@ -54,7 +57,7 @@ namespace Terminals.Forms.Controls
 
         private void AddNewHistoryGroupNode(string name, string imageKey)
         {
-            IGroup virtualGroup = Persistence.Instance.Factory.CreateGroup(name);
+            IGroup virtualGroup = this.persistence.Factory.CreateGroup(name);
             var groupNode = new GroupTreeNode(virtualGroup, imageKey);
             this.Nodes.Add(groupNode);
         }
@@ -123,10 +126,10 @@ namespace Terminals.Forms.Controls
             this.Cursor = Cursors.Default;
         }
 
-        private static void RefreshGroupNodes(GroupTreeNode groupNode)
+        private void RefreshGroupNodes(GroupTreeNode groupNode)
         {
             groupNode.Nodes.Clear();
-            var groupFavorites = Persistence.Instance.ConnectionHistory.GetDateItems(groupNode.Name);
+            var groupFavorites = this.persistence.ConnectionHistory.GetDateItems(groupNode.Name);
             CreateGroupNodes(groupNode, groupFavorites);
         }
 

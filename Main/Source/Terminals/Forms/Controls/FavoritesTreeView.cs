@@ -61,6 +61,8 @@ namespace Terminals.Forms.Controls
             }
         }
 
+        internal IPersistence Persistence { get; set; }
+
         public FavoritesTreeView()
         {
             InitializeComponent();
@@ -149,7 +151,7 @@ namespace Terminals.Forms.Controls
         private TreeViewDragDrop CreateTreeViewDragDrop(DragEventArgs e)
         {
             var keyModifiers = new KeyModifiers();
-            return new TreeViewDragDrop(Persistence.Instance, e, keyModifiers,
+            return new TreeViewDragDrop(this.Persistence, e, keyModifiers,
                 this.SelectedGroup, this.SelectedFavorite);
         }
     }

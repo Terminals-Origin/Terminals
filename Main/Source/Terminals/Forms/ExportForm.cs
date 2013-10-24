@@ -16,8 +16,9 @@ namespace Terminals.Forms
 
         private readonly TreeListNodes rootNodes;
 
-        public ExportForm()
+        public ExportForm(IPersistence persistence)
         {
+            this.persistence = persistence;
             this.InitializeComponent();
 
             this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence);
