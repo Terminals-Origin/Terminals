@@ -175,11 +175,35 @@ namespace Terminals.Data
 
         public void Delete(IGroup group)
         {
-            if (DeleteFromCache(group as Group))
+            var toRemove = group as Group;
+            if (DeleteFromCache(toRemove))
             {
+                this.RemoveChildGroupsParent(toRemove);
                 this.dispatcher.ReportGroupsDeleted(new List<IGroup> {group});
                 this.persistence.SaveImmediatelyIfRequested();
             }
+        }
+
+        private void RemoveChildGroupsParent(Group group)
+        {
+            List<IGroup> childs = this.GetChildGroups(group);
+            SetParentToRoot(childs);
+            this.dispatcher.ReportGroupsUpdated(childs);
+        }
+
+        private static void SetParentToRoot(List<IGroup> childs)
+        {
+            foreach (IGroup child in childs)
+            {
+                child.Parent = null;
+            }
+        }
+
+        private List<IGroup> GetChildGroups(Group group)
+        {
+            // Search by id, because the parent already cant be obtained from cache
+            return this.cache.Values.Where(candidate => group.Id == ((Group)candidate).Parent)
+                .ToList();
         }
 
         internal List<IGroup> GetGroupsContainingFavorite(Guid favoriteId)
