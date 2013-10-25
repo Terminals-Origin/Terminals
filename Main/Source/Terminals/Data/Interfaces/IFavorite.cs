@@ -15,6 +15,12 @@ namespace Terminals.Data
         Guid Id { get; }
 
         /// <summary>
+        /// Gets or sets not null name of an item. This is usually validated against persistence to case sensitive unique.
+        /// Hides InamedItem because ob findings and sorting, we need it to be explicitly defined here
+        /// </summary>
+        new string Name { get; set; }
+
+        /// <summary>
         /// Gets or sets the protocol type. Accepted value is one of ConnectionManager values.
         /// Set this value also updates the ProtocolProperties property to provide extra options.
         /// </summary>
