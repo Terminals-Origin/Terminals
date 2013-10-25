@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Terminals.Data;
 
 namespace Terminals.Integration.Import
 {
     internal class Importers : Integration<IImport>
     {
+        private readonly IPersistence persistence;
+
+        public Importers(IPersistence persistence)
+        {
+            this.persistence = persistence;
+        }
+
         internal string GetProvidersDialogFilter()
         {
             // LoadImportersFromAssemblies();
@@ -70,7 +78,7 @@ namespace Terminals.Integration.Import
                 providers = new Dictionary<string, IImport>();
                 providers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ImportTerminals());
                 providers.Add(ImportRDP.FILE_EXTENSION, new ImportRDP());
-                providers.Add(ImportvRD.FILE_EXTENSION, new ImportvRD());
+                providers.Add(ImportvRD.FILE_EXTENSION, new ImportvRD(this.persistence));
                 providers.Add(ImportMuRD.FILE_EXTENSION, new ImportMuRD());
             }
         }

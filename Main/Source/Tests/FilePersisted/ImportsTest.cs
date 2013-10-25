@@ -69,7 +69,7 @@ namespace Tests.FilePersisted
             ExportFavorite(favorite, persistence);
             // to preserve test against identical favorite
             persistence.Favorites.Delete(favorite);
-            List<FavoriteConfigurationElement> toImport = ImportItemsFromFile(path, TEST_FILE);
+            List<FavoriteConfigurationElement> toImport = ImportItemsFromFile(persistence, path, TEST_FILE);
             // persisted favorites are empty, strategy doesnt matter
             InvokeTheImport(toImport, persistence, rename);
             var importedSecurity = persistence.Favorites.First().Security;
@@ -126,7 +126,7 @@ namespace Tests.FilePersisted
         private void ImportDuplicitFavoritesTest(Func<int, DialogResult> strategy, int expectedSecondImportCount)
         {
             // call import first to force the persistence initialization
-            List<FavoriteConfigurationElement> toImport = ImportItemsFromFile(this.TestContext.DeploymentDirectory);
+            List<FavoriteConfigurationElement> toImport = ImportItemsFromFile(this.Persistence, this.TestContext.DeploymentDirectory);
 
             // 887 obtained by manual check of the xml elements
             Assert.AreEqual(887, toImport.Count, "Some items from Import file were not identified");
@@ -157,11 +157,12 @@ namespace Tests.FilePersisted
                            .Count();
         }
 
-        private static List<FavoriteConfigurationElement> ImportItemsFromFile(string path, 
+        private static List<FavoriteConfigurationElement> ImportItemsFromFile(IPersistence persistence, string path, 
             string fileName = DUPLICIT_ITEMS_FILE)
         {
             string fullFileName = Path.Combine(path, fileName);
-            return Integrations.Importers.ImportFavorites(fullFileName);
+            var importers = Integrations.CreateImporters(persistence);
+            return importers.ImportFavorites(fullFileName);
         }
     }
 }

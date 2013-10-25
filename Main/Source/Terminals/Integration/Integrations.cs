@@ -1,15 +1,15 @@
-﻿using Terminals.Integration.Import;
+﻿using Terminals.Data;
+using Terminals.Integration.Import;
 
 namespace Terminals.Integration
 {
     internal static class Integrations
     {
-        private static Importers importers = new Importers();
-        private static Exporters exporters = new Exporters();
+        private static readonly Exporters exporters = new Exporters();
 
-        internal static Importers Importers
+        internal static Importers CreateImporters(IPersistence persistence)
         {
-            get { return importers; }
+            return new Importers(persistence);
         }
 
         internal static Exporters Exporters

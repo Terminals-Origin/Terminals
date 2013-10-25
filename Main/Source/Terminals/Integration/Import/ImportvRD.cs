@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.IO;
 using System.Xml.Serialization;
-using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Forms;
 using vRdImport;
@@ -16,6 +15,13 @@ namespace Terminals.Integration.Import
 {
     internal class ImportvRD : IImport
     {
+        private readonly IPersistence persistence;
+
+        public ImportvRD(IPersistence persistence)
+        {
+            this.persistence = persistence;
+        }
+
         internal const string FILE_EXTENSION = ".vrb";
 
         #region IImport Members
@@ -106,7 +112,7 @@ namespace Terminals.Integration.Import
 
         private void SaveCredentials(Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials)
         {
-            ICredentials storedCredentials = Persistence.Instance.Credentials;
+            ICredentials storedCredentials = this.persistence.Credentials;
             foreach (string guid in credentials.Keys)
             {
                 vRDConfigurationFileCredentialsFolderCredentials toImport = credentials[guid];
@@ -114,7 +120,7 @@ namespace Terminals.Integration.Import
                 ICredentialSet destination = storedCredentials[toImport.Name];
                 if (destination == null)
                 {
-                    destination = Persistence.Instance.Factory.CreateCredentialSet();
+                    destination = this.persistence.Factory.CreateCredentialSet();
                     storedCredentials.Add(destination);
                 }
 
