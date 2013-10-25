@@ -374,8 +374,8 @@ namespace Terminals
             this.newTerminalToolStripMenuItem.Name = "newTerminalToolStripMenuItem";
             this.newTerminalToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.newTerminalToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.newTerminalToolStripMenuItem.Text = "&New Connection";
-            this.newTerminalToolStripMenuItem.ToolTipText = "Make a new connection";
+            this.newTerminalToolStripMenuItem.Text = "&New Favorite";
+            this.newTerminalToolStripMenuItem.ToolTipText = "Creates a new favorite";
             this.newTerminalToolStripMenuItem.Click += new System.EventHandler(this.NewTerminalToolStripMenuItem_Click_1);
             // 
             // toolStripMenuItemImport
@@ -870,7 +870,7 @@ namespace Terminals
             this.tsbNewTerminal.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbNewTerminal.Name = "tsbNewTerminal";
             this.tsbNewTerminal.Size = new System.Drawing.Size(23, 22);
-            this.tsbNewTerminal.ToolTipText = "New Connection (Ctrl+N)";
+            this.tsbNewTerminal.ToolTipText = "New Favorite (Ctrl+N)";
             this.tsbNewTerminal.Click += new System.EventHandler(this.NewTerminalToolStripMenuItem_Click);
             // 
             // toolStripSeparator1

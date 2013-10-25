@@ -76,6 +76,7 @@
             this.connectToAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectToAllExtraMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.renameToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.newGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.setCredentialByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,7 +84,6 @@
             this.setDomainByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setPasswordByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllFavoritesByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoritesContextMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.searchTabPage.SuspendLayout();
@@ -355,7 +355,7 @@
             this.addButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(23, 22);
-            this.addButton.Text = "New Connection";
+            this.addButton.Text = "New Favorite";
             this.addButton.Click += new System.EventHandler(this.CreateFavoriteToolStripMenuItem_Click);
             // 
             // removeButton
@@ -365,7 +365,7 @@
             this.removeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.removeButton.Name = "removeButton";
             this.removeButton.Size = new System.Drawing.Size(23, 22);
-            this.removeButton.Text = "Remove favorite";
+            this.removeButton.Text = "Delete favorite";
             this.removeButton.Click += new System.EventHandler(this.RemoveSelectedToolStripMenuItem_Click);
             // 
             // addGroupButton
@@ -375,7 +375,7 @@
             this.addGroupButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.addGroupButton.Name = "addGroupButton";
             this.addGroupButton.Size = new System.Drawing.Size(23, 22);
-            this.addGroupButton.Text = "Create Group";
+            this.addGroupButton.Text = "New Group";
             this.addGroupButton.Click += new System.EventHandler(this.NewGroupToolStripMenuItem_Click);
             // 
             // removeGroupButton
@@ -484,22 +484,22 @@
             this.createFavoriteToolStripMenuItem1,
             this.collapseAllToolStripMenuItem});
             this.defaultContextMenu.Name = "defaultContextMenu";
-            this.defaultContextMenu.Size = new System.Drawing.Size(164, 70);
+            this.defaultContextMenu.Size = new System.Drawing.Size(144, 70);
             // 
             // createGroupToolStripMenuItem
             // 
             this.createGroupToolStripMenuItem.Image = global::Terminals.Properties.Resources.tag_blue_add;
             this.createGroupToolStripMenuItem.Name = "createGroupToolStripMenuItem";
-            this.createGroupToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-            this.createGroupToolStripMenuItem.Text = "Create Group";
+            this.createGroupToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.createGroupToolStripMenuItem.Text = "New Group";
             this.createGroupToolStripMenuItem.Click += new System.EventHandler(this.NewGroupToolStripMenuItem_Click);
             // 
             // createFavoriteToolStripMenuItem1
             // 
             this.createFavoriteToolStripMenuItem1.Image = global::Terminals.Properties.Resources.add;
             this.createFavoriteToolStripMenuItem1.Name = "createFavoriteToolStripMenuItem1";
-            this.createFavoriteToolStripMenuItem1.Size = new System.Drawing.Size(163, 22);
-            this.createFavoriteToolStripMenuItem1.Text = "New Connection";
+            this.createFavoriteToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.createFavoriteToolStripMenuItem1.Text = "New Favorite";
             this.createFavoriteToolStripMenuItem1.Click += new System.EventHandler(this.CreateFavoriteToolStripMenuItem_Click);
             // 
             // collapseAllToolStripMenuItem
@@ -507,7 +507,7 @@
             this.collapseAllToolStripMenuItem.Image = global::Terminals.Properties.Resources.collapse_all;
             this.collapseAllToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.collapseAllToolStripMenuItem.Name = "collapseAllToolStripMenuItem";
-            this.collapseAllToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.collapseAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.collapseAllToolStripMenuItem.Text = "Collapse all";
             this.collapseAllToolStripMenuItem.Click += new System.EventHandler(this.CollapseAllToolStripMenuItem_Click);
             // 
@@ -527,14 +527,14 @@
             this.setPasswordByTagToolStripMenuItem,
             this.deleteAllFavoritesByTagToolStripMenuItem});
             this.groupsContextMenu.Name = "contextMenuStrip2";
-            this.groupsContextMenu.Size = new System.Drawing.Size(235, 274);
+            this.groupsContextMenu.Size = new System.Drawing.Size(235, 252);
             // 
             // createFavoriteToolStripMenuItem
             // 
             this.createFavoriteToolStripMenuItem.Image = global::Terminals.Properties.Resources.add;
             this.createFavoriteToolStripMenuItem.Name = "createFavoriteToolStripMenuItem";
             this.createFavoriteToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.createFavoriteToolStripMenuItem.Text = "New Connection";
+            this.createFavoriteToolStripMenuItem.Text = "New Favorite";
             this.createFavoriteToolStripMenuItem.ToolTipText = "Creates new favorite adding it to the selected group";
             this.createFavoriteToolStripMenuItem.Click += new System.EventHandler(this.CreateFavoriteToolStripMenuItem_Click);
             // 
@@ -560,6 +560,15 @@
             this.renameToolStripMenuItem1.Size = new System.Drawing.Size(234, 22);
             this.renameToolStripMenuItem1.Text = "Rename";
             this.renameToolStripMenuItem1.Click += new System.EventHandler(this.RenameToolStripMenuItem_Click);
+            // 
+            // newGroupToolStripMenuItem
+            // 
+            this.newGroupToolStripMenuItem.Image = global::Terminals.Properties.Resources.tag_blue_add;
+            this.newGroupToolStripMenuItem.Name = "newGroupToolStripMenuItem";
+            this.newGroupToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.newGroupToolStripMenuItem.Text = "New Group";
+            this.newGroupToolStripMenuItem.ToolTipText = "Adds new group as child of selected group";
+            this.newGroupToolStripMenuItem.Click += new System.EventHandler(this.NewGroupToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
@@ -612,15 +621,6 @@
             this.deleteAllFavoritesByTagToolStripMenuItem.ToolTipText = "Deletes all favorites listed in this group.\r\nThe favorites disapear from all grou" +
     "ps.";
             this.deleteAllFavoritesByTagToolStripMenuItem.Click += new System.EventHandler(this.DeleteAllFavoritesByTagToolStripMenuItem_Click);
-            // 
-            // newGroupToolStripMenuItem
-            // 
-            this.newGroupToolStripMenuItem.Image = global::Terminals.Properties.Resources.tag_blue_add;
-            this.newGroupToolStripMenuItem.Name = "newGroupToolStripMenuItem";
-            this.newGroupToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.newGroupToolStripMenuItem.Text = "New Group";
-            this.newGroupToolStripMenuItem.ToolTipText = "Adds new group as child of selected group";
-            this.newGroupToolStripMenuItem.Click += new System.EventHandler(this.NewGroupToolStripMenuItem_Click);
             // 
             // FavsList
             // 
