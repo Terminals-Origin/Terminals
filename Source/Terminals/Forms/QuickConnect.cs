@@ -15,16 +15,16 @@ namespace Terminals
             }
         }
 
-        public QuickConnect()
+        public QuickConnect(IPersistence persistence)
         {
             InitializeComponent();
-            LoadFavorites();
+            LoadFavorites(persistence);
             this.inputTextbox.Focus();
         }
 
-        private void LoadFavorites()
+        private void LoadFavorites(IPersistence persistence)
         {
-            IFavorites favorites = Persistence.Instance.Favorites;
+            IFavorites favorites = persistence.Favorites;
             string[] favoriteNames = favorites.Select(f => f.Name).ToArray();
             this.inputTextbox.AutoCompleteCustomSource = new AutoCompleteStringCollection();
             this.inputTextbox.AutoCompleteCustomSource.AddRange(favoriteNames);

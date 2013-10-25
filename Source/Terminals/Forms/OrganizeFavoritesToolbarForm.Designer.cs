@@ -57,7 +57,7 @@ namespace Terminals
             this.lvFavoriteButtons.TabIndex = 0;
             this.lvFavoriteButtons.UseCompatibleStateImageBehavior = false;
             this.lvFavoriteButtons.View = System.Windows.Forms.View.Details;
-            this.lvFavoriteButtons.SelectedIndexChanged += new System.EventHandler(this.lvFavoriteButtons_SelectedIndexChanged);
+            this.lvFavoriteButtons.SelectedIndexChanged += new System.EventHandler(this.LvFavoriteButtons_SelectedIndexChanged);
             // 
             // chName
             // 
@@ -85,7 +85,7 @@ namespace Terminals
             this.btnOk.TabIndex = 4;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            this.btnOk.Click += new System.EventHandler(this.BtnOk_Click);
             // 
             // tsTop
             // 
@@ -109,7 +109,7 @@ namespace Terminals
             this.tsbMoveToFirst.Name = "tsbMoveToFirst";
             this.tsbMoveToFirst.Size = new System.Drawing.Size(23, 22);
             this.tsbMoveToFirst.ToolTipText = "Move To First";
-            this.tsbMoveToFirst.Click += new System.EventHandler(this.tsbMoveToFirst_Click);
+            this.tsbMoveToFirst.Click += new System.EventHandler(this.TsbMoveToFirst_Click);
             // 
             // tsbMoveUp
             // 
@@ -121,7 +121,7 @@ namespace Terminals
             this.tsbMoveUp.Size = new System.Drawing.Size(23, 22);
             this.tsbMoveUp.Text = "toolStripButton2";
             this.tsbMoveUp.ToolTipText = "Move Up";
-            this.tsbMoveUp.Click += new System.EventHandler(this.tsbMoveUp_Click);
+            this.tsbMoveUp.Click += new System.EventHandler(this.TsbMoveUp_Click);
             // 
             // tsbMoveDown
             // 
@@ -133,7 +133,7 @@ namespace Terminals
             this.tsbMoveDown.Size = new System.Drawing.Size(23, 22);
             this.tsbMoveDown.Text = "toolStripButton3";
             this.tsbMoveDown.ToolTipText = "Move Down";
-            this.tsbMoveDown.Click += new System.EventHandler(this.tsbMoveDown_Click);
+            this.tsbMoveDown.Click += new System.EventHandler(this.TsbMoveDown_Click);
             // 
             // tsbMoveToLast
             // 
@@ -145,7 +145,7 @@ namespace Terminals
             this.tsbMoveToLast.Size = new System.Drawing.Size(23, 22);
             this.tsbMoveToLast.Text = "toolStripButton4";
             this.tsbMoveToLast.ToolTipText = "Move To Last";
-            this.tsbMoveToLast.Click += new System.EventHandler(this.tsbMoveToLast_Click);
+            this.tsbMoveToLast.Click += new System.EventHandler(this.TsbMoveToLast_Click);
             // 
             // OrganizeFavoritesToolbarForm
             // 

@@ -17,11 +17,11 @@ namespace Terminals
             }
         }
 
-        public OrganizeFavoritesToolbarForm()
+        public OrganizeFavoritesToolbarForm(IPersistence persistence)
         {
             InitializeComponent();
 
-            IFavorites persistedFavorites = Persistence.Instance.Favorites;
+            IFavorites persistedFavorites = persistence.Favorites;
             ListViewItem[] listViewItems = Settings.FavoritesToolbarButtons
                 .Select(id => persistedFavorites[id])
                 .Where(candidate => candidate != null)
@@ -31,7 +31,7 @@ namespace Terminals
             lvFavoriteButtons.Items.AddRange(listViewItems);
         }
 
-        private void lvFavoriteButtons_SelectedIndexChanged(object sender, EventArgs e)
+        private void LvFavoriteButtons_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListViewItem selectedItem = null;
             if (lvFavoriteButtons.SelectedItems.Count == 1)
@@ -45,22 +45,22 @@ namespace Terminals
             tsbMoveToLast.Enabled = (isSelected && selectedItem.Index < lvFavoriteButtons.Items.Count - 1);
         }
 
-        private void tsbMoveUp_Click(object sender, EventArgs e)
+        private void TsbMoveUp_Click(object sender, EventArgs e)
         {
             this.MoveToIndex(this.SelectedItem.Index - 1);
         }
 
-        private void tsbMoveDown_Click(object sender, EventArgs e)
+        private void TsbMoveDown_Click(object sender, EventArgs e)
         {
             this.MoveToIndex(this.SelectedItem.Index + 1);
         }
 
-        private void tsbMoveToFirst_Click(object sender, EventArgs e)
+        private void TsbMoveToFirst_Click(object sender, EventArgs e)
         {
           this.MoveToIndex(0);
         }
 
-        private void tsbMoveToLast_Click(object sender, EventArgs e)
+        private void TsbMoveToLast_Click(object sender, EventArgs e)
         {
             Action<ListViewItem, int> insertAction = (item, index) => this.lvFavoriteButtons.Items.Add(item);
             this.MoveToIndex(insertAction); // index is ignored
@@ -80,7 +80,7 @@ namespace Terminals
             selectedItem.Selected = true;
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
+        private void BtnOk_Click(object sender, EventArgs e)
         {
             List<Guid> favoriteIds = lvFavoriteButtons.Items.Cast<ListViewItem>()
                 .Select(item => item.Tag)

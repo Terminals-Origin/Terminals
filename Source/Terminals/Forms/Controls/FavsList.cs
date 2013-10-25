@@ -651,7 +651,7 @@ namespace Terminals
         {
             // backup the selected tree node, because it will be replaced later by focus of NewGroupForm
             GroupTreeNode parentGroupNode = this.favsTree.SelectedGroupNode;
-            string newGroupName = NewGroupForm.AskFroGroupName();
+            string newGroupName = NewGroupForm.AskFroGroupName(this.Persistence);
             if (string.IsNullOrEmpty(newGroupName))
                 return;
 
