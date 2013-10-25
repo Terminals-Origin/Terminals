@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
 
@@ -7,14 +6,18 @@ namespace Terminals.Credentials
 {
     internal partial class CredentialManager : Form
     {
-        private static ICredentials Credentials
+        private readonly IPersistence persistence;
+
+        private ICredentials Credentials
         {
-            get { return Persistence.Instance.Credentials; }
+            get { return this.persistence.Credentials; }
         }
 
-        internal CredentialManager()
+        internal CredentialManager(IPersistence persistence)
         {
             InitializeComponent();
+
+            this.persistence = persistence;
             Credentials.CredentialsChanged += new EventHandler(this.CredentialsChanged);
         }
 
@@ -67,9 +70,11 @@ namespace Terminals.Credentials
 
         private void EditCredential(ICredentialSet selected)
         {
-            ManageCredentialForm mgr = new ManageCredentialForm(selected);
-            if (mgr.ShowDialog() == DialogResult.OK)
-                this.BindList();
+            using (var mgr = new ManageCredentialForm(this.persistence, selected))
+            {
+                if (mgr.ShowDialog() == DialogResult.OK)
+                    this.BindList();
+            }
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)

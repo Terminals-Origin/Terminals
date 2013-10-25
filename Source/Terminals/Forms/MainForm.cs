@@ -495,8 +495,8 @@ namespace Terminals
 
         private void ShowCredentialsManager()
         {
-            var mgr = new CredentialManager();
-            mgr.ShowDialog();
+            using (var mgr = new CredentialManager(this.persistence))
+                mgr.ShowDialog();
         }
 
         private void OpenSavedConnections()
