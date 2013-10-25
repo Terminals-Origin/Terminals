@@ -266,7 +266,7 @@ namespace Terminals
 
         private void ConnectToFavoritesExtra(List<IFavorite> selectedFavorites)
         {
-            using (var usrForm = new ConnectExtraForm())
+            using (var usrForm = new ConnectExtraForm(this.Persistence))
             {
                 if (usrForm.ShowDialog() != DialogResult.OK)
                     return;

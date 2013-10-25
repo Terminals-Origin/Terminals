@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
@@ -7,6 +8,8 @@ namespace Terminals.Credentials
 {
     internal partial class ConnectExtraForm : Form
     {
+        private readonly IPersistence persistence;
+
         internal bool Console
         {
             get { return this.consoleCheckBox.Checked; }
@@ -37,8 +40,9 @@ namespace Terminals.Credentials
             get { return this.customCredentials == this.credentialsComboBox.SelectedItem; }
         }
 
-        internal ConnectExtraForm()
+        internal ConnectExtraForm(IPersistence persistence)
         {
+            this.persistence = persistence;
             InitializeComponent();
         }
 
@@ -46,9 +50,9 @@ namespace Terminals.Credentials
         private void UserSelectForm_Shown(object sender, EventArgs e)
         {
             // it always has to be present
-            this.customCredentials = Persistence.Instance.Factory.CreateCredentialSet();
+            this.customCredentials = this.persistence.Factory.CreateCredentialSet();
             this.customCredentials.Name = "(custom)";
-            var credentials = Persistence.Instance.Credentials.ToList();
+            List<ICredentialSet> credentials = this.persistence.Credentials.ToList();
             credentials.Insert(0, this.customCredentials);
             this.credentialsComboBox.DataSource = credentials;
             this.credentialsComboBox.SelectedItem = this.customCredentials;

@@ -8,17 +8,21 @@ namespace Terminals.Credentials
     internal partial class ManageCredentialForm : Form
     {
         private string editedCredentialName = "";
+
+        private readonly IPersistence persistence;
+
         private readonly ICredentialSet editedCredential;
 
-        private static ICredentials Credentials
+        private ICredentials Credentials
         {
-            get { return Persistence.Instance.Credentials; }
+            get { return this.persistence.Credentials; }
         }
 
-        internal ManageCredentialForm(ICredentialSet editedCredential)
+        internal ManageCredentialForm(IPersistence persistence, ICredentialSet editedCredential)
         {
             InitializeComponent();
 
+            this.persistence = persistence;
             this.editedCredential = editedCredential;
             FillControlsFromCredential();
         }
@@ -121,7 +125,7 @@ namespace Terminals.Credentials
 
         private ICredentialSet CreateNewCredential()
         {
-            var newItem = Persistence.Instance.Factory.CreateCredentialSet();
+            var newItem = this.persistence.Factory.CreateCredentialSet();
             UpdateFromControls(newItem);
             return newItem;
         }

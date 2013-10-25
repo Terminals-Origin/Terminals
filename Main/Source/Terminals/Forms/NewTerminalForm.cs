@@ -329,8 +329,9 @@ namespace Terminals
             if (selectedCredential != null)
                 selectedCredentialId = selectedCredential.Id;
 
-            CredentialManager mgr = new CredentialManager();
-            mgr.ShowDialog();
+            using(var mgr = new CredentialManager(this.persistence))
+                mgr.ShowDialog();
+
             this.FillCredentialsCombobox(selectedCredentialId);
         }
 
