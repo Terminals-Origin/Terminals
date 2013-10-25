@@ -32,7 +32,8 @@ namespace Terminals
 
             this.persistence = persistence;
             InitializeDataGrid();
-            ImportOpenFileDialog.Filter = Integrations.Importers.GetProvidersDialogFilter();
+            var integrations = Integrations.CreateImporters(this.persistence);
+            ImportOpenFileDialog.Filter = integrations.GetProvidersDialogFilter();
             UpdateCountLabels();
         }
 
@@ -160,7 +161,8 @@ namespace Terminals
                 this.Refresh();
                 this.Cursor = Cursors.WaitCursor;
 
-                List<FavoriteConfigurationElement> favoritesToImport = Integrations.Importers.ImportFavorites(filenames);
+                var integrations = Integrations.CreateImporters(this.persistence);
+                List<FavoriteConfigurationElement> favoritesToImport = integrations.ImportFavorites(filenames);
                 ImportFavoritesWithManagerImport(favoritesToImport);
             }
         }

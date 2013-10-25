@@ -211,7 +211,8 @@ namespace Terminals.Forms.Controls
             if (files == null)
                 return;
 
-            List<FavoriteConfigurationElement> toImport = Integrations.Importers.ImportFavorites(files);
+            var importers = Integrations.CreateImporters(this.persistence);
+            List<FavoriteConfigurationElement> toImport = importers.ImportFavorites(files);
             this.ApplyTargetGroup(toImport);
             var managedImport = new ImportWithDialogs(parentForm, this.persistence);
             managedImport.Import(toImport);
