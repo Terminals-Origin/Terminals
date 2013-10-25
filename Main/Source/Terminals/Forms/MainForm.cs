@@ -170,7 +170,7 @@ namespace Terminals
                 this.formSettings = new FormSettings(this);
 
                 this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals, Persistence.Instance);
-                this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler);
+                this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler, Persistence.Instance);
                 this.terminalsControler.AssingUiFactory(this.connectionsUiFactory);
 
                 // Initialize FavsList outside of InitializeComponent
@@ -498,8 +498,7 @@ namespace Terminals
 
         private void OpenSavedConnections()
         {
-            var definition = new ConnectionDefinition(Settings.SavedConnections);
-            this.connectionsUiFactory.Connect(definition);
+            this.connectionsUiFactory.ConnectByFavoriteNames(Settings.SavedConnections);
             Settings.ClearSavedConnectionsList();
         }
 
@@ -583,8 +582,7 @@ namespace Terminals
         {
             if (commandLineArgs.Favorites.Length > 0)
             {
-                var definition = new ConnectionDefinition(commandLineArgs.Favorites, connectToConsole, false);
-                this.connectionsUiFactory.Connect(definition);
+                this.connectionsUiFactory.ConnectByFavoriteNames(commandLineArgs.Favorites, connectToConsole);
             }
         }
 
@@ -673,7 +671,7 @@ namespace Terminals
             using (var qc = new QuickConnect())
             {
                 if (qc.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(qc.ConnectionName))
-                    this.connectionsUiFactory.Connect(new ConnectionDefinition(qc.ConnectionName));
+                    this.connectionsUiFactory.ConnectByFavoriteNames(new List<string>(){ qc.ConnectionName} );
             }
         }
 
@@ -850,7 +848,7 @@ namespace Terminals
             {
                 String itemName = e.ClickedItem.Text;
                 if (tag == FavoritesMenuLoader.FAVORITE)
-                    this.connectionsUiFactory.Connect(new ConnectionDefinition(itemName));
+                    this.connectionsUiFactory.ConnectByFavoriteNames(new List<string>(){itemName});
 
                 if (tag == GroupMenuItem.TAG)
                 {
@@ -869,7 +867,7 @@ namespace Terminals
                 {
                     IEnumerable<string> connectionNames = parent.DropDownItems.Cast<ToolStripMenuItem>()
                                                                               .Select(menuItem => menuItem.Text);
-                    this.connectionsUiFactory.Connect(new ConnectionDefinition(connectionNames));
+                    this.connectionsUiFactory.ConnectByFavoriteNames(connectionNames);
                 }
             }
         }
@@ -1001,8 +999,7 @@ namespace Terminals
             string connectionName = this.tscConnectTo.Text;
             if (!string.IsNullOrEmpty(connectionName))
             {
-                var definition = new ConnectionDefinition(connectionName, forceConsole, false);
-                this.connectionsUiFactory.Connect(definition);
+                this.connectionsUiFactory.ConnectByFavoriteNames(new List<string>(){connectionName}, forceConsole);
             }
         }
 
@@ -1306,7 +1303,7 @@ namespace Terminals
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmAbout = new AboutForm())
+            using (var frmAbout = new AboutForm(Persistence.Instance.Name))
             {
                 frmAbout.ShowDialog();
             }

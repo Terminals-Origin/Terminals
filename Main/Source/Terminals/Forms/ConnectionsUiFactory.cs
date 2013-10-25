@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Connections;
@@ -16,10 +18,13 @@ namespace Terminals.Forms
         private readonly MainForm mainForm;
         private readonly TerminalTabsSelectionControler terminalsControler;
 
-        internal ConnectionsUiFactory(MainForm mainForm, TerminalTabsSelectionControler terminalsControler)
+        private readonly IPersistence persistence;
+
+        internal ConnectionsUiFactory(MainForm mainForm, TerminalTabsSelectionControler terminalsControler, IPersistence persistence)
         {
             this.mainForm = mainForm;
             this.terminalsControler = terminalsControler;
+            this.persistence = persistence;
         }
 
         internal void CreateCaptureManagerTab()
@@ -62,6 +67,14 @@ namespace Terminals.Forms
             this.BringToFrontOnMainForm(conn);
         }
 
+        internal void ConnectByFavoriteNames(IEnumerable<string> favoriteNames, bool forceConsole = false)
+        {
+            var targets = this.persistence.Favorites
+                .Where(favorite => favoriteNames.Contains(favorite.Name, StringComparer.InvariantCultureIgnoreCase));
+            var definition = new ConnectionDefinition(targets, forceConsole, false);
+            this.Connect(definition);
+        }
+
         /// <summary>
         /// Connects to all favorites required by definition.
         /// </summary>
@@ -85,7 +98,7 @@ namespace Terminals.Forms
         private void Connect(IFavorite favorite, ConnectionDefinition definition)
         {
             IFavorite favoriteCopy = GetFavoriteUpdatedCopy(favorite, definition);
-            Persistence.Instance.ConnectionHistory.RecordHistoryItem(favorite);
+            this.persistence.ConnectionHistory.RecordHistoryItem(favorite);
             this.mainForm.SendNativeMessageToFocus();
             this.CreateTerminalTab(favoriteCopy);
         }
@@ -114,7 +127,7 @@ namespace Terminals.Forms
 
         internal void CreateNewTerminal(String name = null)
         {
-            using (var frmNewTerminal = new NewTerminalForm(Persistence.Instance, name))
+            using (var frmNewTerminal = new NewTerminalForm(this.persistence, name))
             {
                 TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
                 if (result != TerminalFormDialogResult.Cancel)

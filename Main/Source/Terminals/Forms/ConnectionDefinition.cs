@@ -41,33 +41,14 @@ namespace Terminals.Forms
         /// <summary>
         /// Creates new instance of parameters required to open new connection
         /// </summary>
-        /// <param name="favoriteName">Not null favorite name, where to connect</param>
-        /// <param name="forceConsole">For RDP only. If defined, will replace the RDP Console option</param>
-        /// <param name="forceNewWindow">If defined, will replace the favorite option to open connection in new window</param>
-        internal ConnectionDefinition(string favoriteName, bool? forceConsole = null, bool? forceNewWindow = null)
-            : this(new List<string>() { favoriteName }, forceConsole, forceNewWindow)
-        {
-            if (!this.Favorites.Any())
-              this.NewFavorite = favoriteName;
-        }
-
-        /// <summary>
-        /// Creates new instance of parameters required to open new connection
-        /// </summary>
-        /// <param name="favoriteNames">Not null colleciton of favorite names, where to connect</param>
+        /// <param name="favorite">Not null favorite, where to connect</param>
         /// <param name="forceConsole">For RDP only. If defined, will replace the RDP Console option</param>
         /// <param name="forceNewWindow">If defined, will replace the favorite option to open connection in new window</param>
         /// <param name="credentials">If defined, replaces the favorite authentication informations</param>
-        internal ConnectionDefinition(IEnumerable<string> favoriteNames, bool? forceConsole = null,
+        internal ConnectionDefinition(IFavorite favorite, bool? forceConsole = null,
             bool? forceNewWindow = null, ICredentialSet credentials = null)
-            : this(ResolveFavoritesFromPersistence(favoriteNames), forceConsole, forceNewWindow, credentials)
+            : this(new List<IFavorite>() { favorite }, forceConsole, forceNewWindow, credentials)
         {
-        }
-
-        private static IEnumerable<IFavorite> ResolveFavoritesFromPersistence(IEnumerable<string> favoriteNames)
-        {
-            return Persistence.Instance.Favorites
-              .Where(favorite => favoriteNames.Contains(favorite.Name, StringComparer.InvariantCultureIgnoreCase));
         }
 
         /// <summary>
@@ -77,7 +58,8 @@ namespace Terminals.Forms
         /// <param name="forceConsole">For RDP only. If defined, will replace the RDP Console option</param>
         /// <param name="forceNewWindow">If defined, will replace the favorite option to open connection in new window</param>
         /// <param name="credentials">If defined, replaces the favorite authentication informations</param>
-        internal ConnectionDefinition(IEnumerable<IFavorite> favorites, bool? forceConsole = null, bool? forceNewWindow = null, ICredentialSet credentials = null)
+        internal ConnectionDefinition(IEnumerable<IFavorite> favorites, bool? forceConsole = null,
+            bool? forceNewWindow = null, ICredentialSet credentials = null)
         {
             this.Favorites = favorites.ToList(); // evaluate imediately
             this.ForceConsole = forceConsole;

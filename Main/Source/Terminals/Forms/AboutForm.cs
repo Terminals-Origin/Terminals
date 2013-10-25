@@ -8,29 +8,34 @@ namespace Terminals
 {
     internal partial class AboutForm : Form
     {
-        public AboutForm()
+        private readonly string persistenceName;
+
+        public AboutForm(string persistenceName)
         {
-            InitializeComponent();            
+            InitializeComponent();
+
+            this.persistenceName = persistenceName;
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void BtnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void lblTerminals_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LblTerminals_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("http://" + FavoritesFactory.TerminalsReleasesUrl);
         }
 
-        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+        private void LinkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
             Process.Start("http://weblogs.asp.net/rchartier/");
         }
 
         private void AboutForm_Load(object sender, EventArgs e)
         {
             this.titleLabel.Text += string.Format("({0})", Program.Info.Description);
-            this.lblVersion.Text = Program.Info.GetAboutText(Persistence.Instance.Name);
+            this.lblVersion.Text = Program.Info.GetAboutText(persistenceName);
             this.textBox1.Text = this.FormatDetails();
         }
 
