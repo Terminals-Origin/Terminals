@@ -1,4 +1,5 @@
 using System.Windows.Forms;
+using Terminals.Data;
 
 namespace Terminals.Connections
 {
@@ -58,9 +59,9 @@ namespace Terminals.Connections
 
         }
 
-        internal void Execute(NettworkingTools action, string host)
+        internal void Execute(NettworkingTools action, string host, IPersistence persistence)
         {
-            this.networkingToolsLayout1.Execute(action, host);
+            this.networkingToolsLayout1.Execute(action, host, persistence);
         }
     }
 }

@@ -9,13 +9,17 @@ namespace Terminals.Network
 {
     internal partial class ImportFromAD : Form
     {
+        private readonly IPersistence persistence;
+
         private readonly ActiveDirectoryClient adClient;
 
         private string defautlDomainName;
 
-        public ImportFromAD()
+        public ImportFromAD(IPersistence persistence)
         {
             InitializeComponent();
+
+            this.persistence = persistence;
             this.gridComputers.AutoGenerateColumns = false;
 
             adClient = new ActiveDirectoryClient();
@@ -122,7 +126,7 @@ namespace Terminals.Network
         {
             this.Cursor = Cursors.WaitCursor;
             List<FavoriteConfigurationElement> favoritesToImport = GetFavoritesFromBindingSource(this.domainTextbox.Text);
-            var managedImport = new ImportWithDialogs(this, Persistence.Instance);
+            var managedImport = new ImportWithDialogs(this, this.persistence);
             managedImport.Import(favoritesToImport);
         }
 
@@ -155,7 +159,7 @@ namespace Terminals.Network
             adClient.Stop();
         }
 
-        private void gridComputers_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void GridComputers_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             DataGridViewColumn lastSortedColumn = this.gridComputers.FindLastSortedColumn();
             DataGridViewColumn column = this.gridComputers.Columns[e.ColumnIndex];
@@ -166,7 +170,7 @@ namespace Terminals.Network
             column.HeaderCell.SortGlyphDirection = newSortDirection;
         }
 
-        private void resetButton_Click(object sender, EventArgs e)
+        private void ResetButton_Click(object sender, EventArgs e)
         {
             this.ldapFilterTextbox.Text = ActiveDirectorySearchParams.DEFAULT_FILTER;
             this.searchbaseTextbox.Text = string.Empty;

@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using Terminals.Data;
 
 namespace Terminals.Connections
 {
@@ -60,13 +61,19 @@ namespace Terminals.Connections
                 this.tabControl1.TabPages[index].Hide();
         }
 
-        public void Execute(NettworkingTools action, String host)
+        public void Execute(NettworkingTools action, string host, IPersistence persistence)
+        {
+            this.terminalServerManager1.AssignPersistence(persistence);
+            this.ExecuteAction(action, host);
+        }
+
+        private void ExecuteAction(NettworkingTools action, string host)
         {
             switch (action)
             {
                 case NettworkingTools.Ping:
                     this.tabControl1.SelectedTab = this.tabControl1.TabPages[0];
-                    ping1.ForcePing(host);
+                    this.ping1.ForcePing(host);
 
                     break;
                 case NettworkingTools.Dns:
@@ -76,7 +83,7 @@ namespace Terminals.Connections
 
                 case NettworkingTools.Trace:
                     this.tabControl1.SelectedTab = this.tabControl1.TabPages[1];
-                    traceRoute1.ForceTrace(host);
+                    this.traceRoute1.ForceTrace(host);
                     break;
 
                 case NettworkingTools.TsAdmin:

@@ -318,7 +318,7 @@ namespace Terminals {
       this.button2.TabIndex = 20;
       this.button2.Text = "Connect to Server";
       this.button2.UseVisualStyleBackColor = true;
-      this.button2.Click += new System.EventHandler(this.button2_Click);
+      this.button2.Click += new System.EventHandler(this.Button2_Click);
       // 
       // button1
       // 
@@ -328,7 +328,7 @@ namespace Terminals {
       this.button1.TabIndex = 19;
       this.button1.Text = "Start Server";
       this.button1.UseVisualStyleBackColor = true;
-      this.button1.Click += new System.EventHandler(this.button1_Click);
+      this.button1.Click += new System.EventHandler(this.Button1_Click);
       // 
       // statusStrip1
       // 
@@ -402,7 +402,7 @@ namespace Terminals {
       this.gridScanResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
       this.gridScanResults.Size = new System.Drawing.Size(475, 221);
       this.gridScanResults.TabIndex = 13;
-      this.gridScanResults.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridScanResults_ColumnHeaderMouseClick);
+      this.gridScanResults.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.GridScanResults_ColumnHeaderMouseClick);
       // 
       // Computer
       // 

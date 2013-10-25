@@ -35,7 +35,7 @@ namespace Terminals.Forms
 
         internal void OpenNetworkingTools(NettworkingTools action, string host)
         {
-            Action<NetworkingToolsConnection> executeExtra = (connection) => connection.Execute(action, host);
+            Action<NetworkingToolsConnection> executeExtra = connection => connection.Execute(action, host, this.persistence);
             this.OpenConenction("NetworkingTools", "Open Networking Tools Failure", executeExtra);
         }
 

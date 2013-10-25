@@ -167,7 +167,7 @@ namespace Terminals.Network.Servers
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(696, 227);
             this.dataGridView1.TabIndex = 2;
-            this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
+            this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_RowEnter);
             // 
             // contextMenuStrip1
             // 
@@ -185,14 +185,14 @@ namespace Terminals.Network.Servers
             this.sendMessageToolStripMenuItem.Name = "sendMessageToolStripMenuItem";
             this.sendMessageToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
             this.sendMessageToolStripMenuItem.Text = "Send Message";
-            this.sendMessageToolStripMenuItem.Click += new System.EventHandler(this.sendMessageToolStripMenuItem_Click);
+            this.sendMessageToolStripMenuItem.Click += new System.EventHandler(this.SendMessageToolStripMenuItem_Click);
             // 
             // logoffSessionToolStripMenuItem
             // 
             this.logoffSessionToolStripMenuItem.Name = "logoffSessionToolStripMenuItem";
             this.logoffSessionToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
             this.logoffSessionToolStripMenuItem.Text = "Logoff Session";
-            this.logoffSessionToolStripMenuItem.Click += new System.EventHandler(this.logoffSessionToolStripMenuItem_Click);
+            this.logoffSessionToolStripMenuItem.Click += new System.EventHandler(this.LogoffSessionToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -204,14 +204,14 @@ namespace Terminals.Network.Servers
             this.rebootServerToolStripMenuItem.Name = "rebootServerToolStripMenuItem";
             this.rebootServerToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
             this.rebootServerToolStripMenuItem.Text = "Reboot Server";
-            this.rebootServerToolStripMenuItem.Click += new System.EventHandler(this.rebootServerToolStripMenuItem_Click);
+            this.rebootServerToolStripMenuItem.Click += new System.EventHandler(this.RebootServerToolStripMenuItem_Click);
             // 
             // shutdownServerToolStripMenuItem
             // 
             this.shutdownServerToolStripMenuItem.Name = "shutdownServerToolStripMenuItem";
             this.shutdownServerToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
             this.shutdownServerToolStripMenuItem.Text = "Shutdown Server";
-            this.shutdownServerToolStripMenuItem.Click += new System.EventHandler(this.shutdownServerToolStripMenuItem_Click);
+            this.shutdownServerToolStripMenuItem.Click += new System.EventHandler(this.ShutdownServerToolStripMenuItem_Click);
             // 
             // dataGridView2
             // 
