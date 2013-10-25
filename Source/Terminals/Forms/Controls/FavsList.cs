@@ -58,6 +58,7 @@ namespace Terminals
 
         private void FavsList_Load(object sender, EventArgs e)
         {
+            this.favsTree.Persistence = this.Persistence;
             this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.Persistence);
             this.treeLoader.LoadGroups();
             this.historyTreeView.Load(this.Persistence);
