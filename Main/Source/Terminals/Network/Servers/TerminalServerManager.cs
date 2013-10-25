@@ -9,9 +9,9 @@ namespace Terminals.Network.Servers
 {
     internal partial class TerminalServerManager : UserControl
     {
-        private Session SelectedSession = null;
+        private Session selectedSession = null;
         private TerminalServer server;
-        private String _hostName;
+        private String hostName;
 
         public TerminalServerManager()
         {
@@ -20,17 +20,24 @@ namespace Terminals.Network.Servers
 
         public String HostName
         {
-            get { return this._hostName; }
+            get { return this.hostName; }
             set
             {
-                this._hostName = value;
-                this.ServerNameComboBox.Text = this._hostName;
+                this.hostName = value;
+                this.ServerNameComboBox.Text = this.hostName;
             }
         }
 
-        public void ForceTSAdmin(string Host)
+        private IPersistence persistence;
+
+        internal void AssignPersistence(IPersistence persistence)
         {
-            this.ServerNameComboBox.Text = Host;
+            this.persistence = persistence;
+        }
+
+        public void ForceTSAdmin(string host)
+        {
+            this.ServerNameComboBox.Text = host;
             this.ConnectButton_Click(null, null);
         }
 
@@ -56,7 +63,7 @@ namespace Terminals.Network.Servers
             if (this.ParentForm != null)
                 this.ParentForm.Cursor = Cursors.WaitCursor;
 
-            SelectedSession = null;
+            this.selectedSession = null;
             dataGridView1.DataSource = null;
             dataGridView2.DataSource = null;
             this.propertyGrid1.SelectedObject = null;
@@ -85,15 +92,15 @@ namespace Terminals.Network.Servers
                 this.ParentForm.Cursor = Cursors.Default;
         }
 
-        private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
+        private void DataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             if(server.IsATerminalServer)
             {
                 if(dataGridView1.DataSource != null)
                 {
-                    SelectedSession = server.Sessions[e.RowIndex];
-                    this.propertyGrid1.SelectedObject = SelectedSession.Client;
-                    this.dataGridView2.DataSource = SelectedSession.Processes;
+                    this.selectedSession = server.Sessions[e.RowIndex];
+                    this.propertyGrid1.SelectedObject = this.selectedSession.Client;
+                    this.dataGridView2.DataSource = this.selectedSession.Processes;
                 }
             }
         }
@@ -101,7 +108,7 @@ namespace Terminals.Network.Servers
         private void TerminalServerManager_Load(object sender, EventArgs e)
         {
             ServerNameComboBox.Items.Clear();
-            foreach (IFavorite favorite in Persistence.Instance.Favorites)
+            foreach (IFavorite favorite in this.persistence.Favorites)
             {
                 if (favorite.Protocol == ConnectionManager.RDP)
                 {
@@ -110,9 +117,9 @@ namespace Terminals.Network.Servers
             }
         }
 
-        private void sendMessageToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SendMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SendMessageToSession(this.SelectedSession);
+            SendMessageToSession(this.selectedSession);
         }
 
         internal static void SendMessageToSession(Session session)
@@ -130,18 +137,18 @@ namespace Terminals.Network.Servers
             }
         }
 
-        private void logoffSessionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LogoffSessionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(SelectedSession != null)
+            if(this.selectedSession != null)
             {
                 if(MessageBox.Show("Are you sure you want to log off the selected session?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
                 {
-                    TerminalServicesAPI.LogOffSession(SelectedSession, false);
+                    TerminalServicesAPI.LogOffSession(this.selectedSession, false);
                 }
             }
         }
 
-        private void rebootServerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RebootServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(server.IsATerminalServer)
             {
@@ -152,7 +159,7 @@ namespace Terminals.Network.Servers
             }
         }
 
-        private void shutdownServerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShutdownServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(server.IsATerminalServer)
             {

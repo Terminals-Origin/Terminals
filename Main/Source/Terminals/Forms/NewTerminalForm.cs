@@ -577,6 +577,7 @@ namespace Terminals
             this.terminalServerManager.Size = new Size(748, 309);
             this.terminalServerManager.TabIndex = 0;
             this.terminalServerManager.HostName = !this.validator.IsServerNameEmpty() ? this.cmbServers.Text : "localhost";
+            this.terminalServerManager.AssignPersistence(this.persistence);
             this.RdpSessionTabPage.Controls.Add(this.terminalServerManager);
         }
 

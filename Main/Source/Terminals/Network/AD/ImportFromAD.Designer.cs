@@ -189,7 +189,7 @@
       this.resetButton.TabIndex = 17;
       this.toolTip.SetToolTip(this.resetButton, "Set Filter, Domain and Maximum results to default values.\r\n");
       this.resetButton.UseVisualStyleBackColor = true;
-      this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
+      this.resetButton.Click += new System.EventHandler(this.ResetButton_Click);
       // 
       // searchbaseTextbox
       // 
@@ -232,7 +232,7 @@
       this.gridComputers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
       this.gridComputers.Size = new System.Drawing.Size(572, 370);
       this.gridComputers.TabIndex = 0;
-      this.gridComputers.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridComputers_ColumnHeaderMouseClick);
+      this.gridComputers.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.GridComputers_ColumnHeaderMouseClick);
       // 
       // computerNameDataGridViewTextBoxColumn
       // 

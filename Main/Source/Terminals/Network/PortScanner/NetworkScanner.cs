@@ -14,19 +14,20 @@ namespace Terminals
 {
     internal partial class NetworkScanner : Form
     {
+        private readonly IPersistence persistence;
+
         private NetworkScanManager manager;
         private bool validation;
 
-        internal NetworkScanner()
+        internal NetworkScanner(IPersistence persistence)
         {
             InitializeComponent();
-  
+
+            this.persistence = persistence;
             FillTextBoxesFromLocalIp();
             InitScanManager();
             this.gridScanResults.AutoGenerateColumns = false;
-
             Client.OnServerConnection += new ServerConnectionHandler(Client_OnServerConnection);
-            
             this.bsScanResults.DataSource = new SortableList<NetworkScanResult>();
         }
 
@@ -131,8 +132,8 @@ namespace Terminals
             this.scanProgressBar.Maximum = this.manager.AllAddressesToScan;
             scanProgressBar.Value = this.manager.DoneAddressScans;
             Int32 pendingAddresses = this.manager.AllAddressesToScan - scanProgressBar.Value;
-            Debug.WriteLine(String.Format("updating status with pending ({0}): {1}", 
-                this.manager.ScanIsRunning, pendingAddresses));
+            Debug.WriteLine("updating status with pending ({0}): {1}", 
+                            this.manager.ScanIsRunning, pendingAddresses);
 
 
             ScanStatusLabel.Text = String.Format("Pending items:{0}", pendingAddresses);
@@ -199,7 +200,7 @@ namespace Terminals
             return tags;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             if (Server.ServerOnline)
             {
@@ -223,7 +224,7 @@ namespace Terminals
 
         private void ImportSelectedItems(List<FavoriteConfigurationElement> favoritesToImport)
         {
-            var managedImport = new ImportWithDialogs(this, Persistence.Instance);
+            var managedImport = new ImportWithDialogs(this, this.persistence);
             managedImport.Import(favoritesToImport);
         }
 
@@ -232,7 +233,7 @@ namespace Terminals
             ImportSelectedItems(args.Favorites);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             Client.Start(this.ServerAddressTextbox.Text);
         }
@@ -241,6 +242,7 @@ namespace Terminals
         {
             try
             {
+                Client.OnServerConnection -= new ServerConnectionHandler(Client_OnServerConnection);
                 this.manager.StopScan();
                 Server.Stop();
                 Client.Stop();
@@ -283,7 +285,7 @@ namespace Terminals
             validation = false;
         }
 
-        private void gridScanResults_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void GridScanResults_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             DataGridViewColumn lastSortedColumn = this.gridScanResults.FindLastSortedColumn();
             DataGridViewColumn column = this.gridScanResults.Columns[e.ColumnIndex];

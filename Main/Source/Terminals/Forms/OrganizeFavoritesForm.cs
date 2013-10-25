@@ -310,16 +310,20 @@ namespace Terminals
 
         private void ScanActiveDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ImportFromAD activeDirectoryForm = new ImportFromAD();
-            activeDirectoryForm.ShowDialog();
-            this.UpdateFavoritesBindingSource();
+            using (var activeDirectoryForm = new ImportFromAD(this.persistence))
+            {
+                activeDirectoryForm.ShowDialog();
+                this.UpdateFavoritesBindingSource();
+            }
         }
 
         private void ScanNetworkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NetworkScanner networkScanForm = new NetworkScanner();
-            networkScanForm.ShowDialog();
-            this.UpdateFavoritesBindingSource();
+            using (var networkScanForm = new NetworkScanner(this.persistence))
+            {
+                networkScanForm.ShowDialog();
+                this.UpdateFavoritesBindingSource();
+            }
         }
 
         private void ScanRegistryToolStripMenuItem_Click(object sender, EventArgs e)
