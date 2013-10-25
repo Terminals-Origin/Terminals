@@ -19,11 +19,14 @@ namespace Terminals
         private NetworkScanManager manager;
         private bool validation;
 
+        private readonly Server server;
+
         internal NetworkScanner(IPersistence persistence)
         {
             InitializeComponent();
 
             this.persistence = persistence;
+            this.server = new Server(persistence);
             FillTextBoxesFromLocalIp();
             InitScanManager();
             this.gridScanResults.AutoGenerateColumns = false;
@@ -202,17 +205,17 @@ namespace Terminals
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            if (Server.ServerOnline)
+            if (this.server.ServerOnline)
             {
                 this.button1.Text = "Start Server";
-                Server.Stop();
+                this.server.Stop();
             }
             else
             {
                 this.button1.Text = "Stop Server";
-                Server.Start();
+                this.server.Start();
             }
-            if (Server.ServerOnline)
+            if (this.server.ServerOnline)
             {
                 this.ServerStatusLabel.Text = "Server is ONLINE";
             }
@@ -244,7 +247,7 @@ namespace Terminals
             {
                 Client.OnServerConnection -= new ServerConnectionHandler(Client_OnServerConnection);
                 this.manager.StopScan();
-                Server.Stop();
+                this.server.Stop();
                 Client.Stop();
             }
             catch (Exception exc)

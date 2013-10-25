@@ -12,40 +12,47 @@ namespace Terminals.Network
 {
     internal class Server
     {
-        private static TcpListener _server = new TcpListener(IPAddress.Any, ServerPort);
-        internal const int ServerPort = 1216;
-        public static bool ServerOnline { get; private set; }
+        private readonly IPersistence persistence;
 
-        public static void Stop()
+        private readonly TcpListener server = new TcpListener(IPAddress.Any, SERVER_PORT);
+        internal const int SERVER_PORT = 1216;
+        public bool ServerOnline { get; private set; }
+
+        public Server(IPersistence persistence)
+        {
+            this.persistence = persistence;
+        }
+
+        public void Stop()
         {
             ServerOnline = false;
         }
 
-        public static void Start()
+        public void Start()
         {
             ServerOnline = true;
             ThreadPool.QueueUserWorkItem(new WaitCallback(StartServer), null);
         }
 
-        public static void FinishDisconnect(Socket incomingSocket)
+        private static void FinishDisconnect(Socket incomingSocket)
         {
             incomingSocket.Disconnect(true);
         }
 
-        private static void StartServer(object data)
+        private void StartServer(object data)
         {
             try
             {
                 while (ServerOnline)
                 {
-                    _server.Start();
-                    Socket incomingSocket = _server.AcceptSocket();
+                    this.server.Start();
+                    Socket incomingSocket = this.server.AcceptSocket();
                     byte[] received = new byte[512];
                     incomingSocket.Receive(received, received.Length, 0);
                     string userName = Encoding.Default.GetString(received);
                     SendFavorites(incomingSocket);
                 }
-                _server.Stop();
+                this.server.Stop();
             }
             catch (Exception exc)
             {
@@ -53,7 +60,7 @@ namespace Terminals.Network
             }
         }
 
-        private static void SendFavorites(Socket incomingSocket)
+        private void SendFavorites(Socket incomingSocket)
         {
             ArrayList list = FavoritesToSharedList();
             Byte[] data = SharedListToBinaryData(list);
@@ -61,12 +68,11 @@ namespace Terminals.Network
             FinishDisconnect(incomingSocket);
         }
 
-        private static ArrayList FavoritesToSharedList()
+        private ArrayList FavoritesToSharedList()
         {
-            var persistence = Persistence.Instance;
-            var favoritesToShare = persistence.Favorites;
-            
+            IFavorites favoritesToShare = this.persistence.Favorites;
             ArrayList list = new ArrayList();
+            
             foreach (IFavorite favorite in favoritesToShare)
             {
                 FavoriteConfigurationElement configFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, persistence);
