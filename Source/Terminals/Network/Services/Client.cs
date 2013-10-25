@@ -39,7 +39,7 @@ namespace Terminals.Network
             try
             {
                 string server = data as string;
-                client = new TcpClient(server, Server.ServerPort);
+                client = new TcpClient(server, Server.SERVER_PORT);
                 NetworkStream networkStream = client.GetStream();
                 SendUserName(networkStream);
                 ReceiveData(networkStream);
