@@ -27,6 +27,11 @@ namespace Terminals.Forms
             this.rootNodes = new TreeListNodes(this.favsTree.Nodes);
         }
 
+        private void ExportForm_Load(object sender, EventArgs e)
+        {
+            this.favsTree.Persistence = this.persistence;
+        }
+
         private void BtnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
