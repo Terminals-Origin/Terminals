@@ -120,7 +120,7 @@ namespace Terminals
 
         private static void RunMainForm(CommandLineArgs commandLine)
         {
-            var mainForm = new MainForm();
+            var mainForm = new MainForm(Persistence.Instance);
             SingleInstanceApplication.Instance.Initialize(mainForm, commandLine);
             mainForm.HandleCommandLineActions(commandLine);
             Application.Run(mainForm);
