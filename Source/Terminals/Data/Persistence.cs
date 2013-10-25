@@ -58,7 +58,8 @@ namespace Terminals.Data
         #region Thread safe singleton with lazy loading
         
         /// <summary>
-        /// Gets the thread safe singleton instance of the persistence layer
+        /// Gets the thread safe singleton instance of the persistence layer.
+        /// Use only for startup procedure, will removed in the future.
         /// </summary>
         public static IPersistence Instance
         {

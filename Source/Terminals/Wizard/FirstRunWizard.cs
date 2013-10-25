@@ -20,6 +20,7 @@ namespace Terminals
 
     internal partial class FirstRunWizard : Form
     {
+        private readonly IPersistence persistence;
         private WizardForms SelectedForm = WizardForms.Intro;
         private MethodInvoker miv;
         private AddExistingRDPConnections rdp = new AddExistingRDPConnections();
@@ -27,11 +28,13 @@ namespace Terminals
         private CommonOptions co = new CommonOptions();
         private DefaultCredentials dc = new DefaultCredentials();
 
-        public FirstRunWizard()
+        public FirstRunWizard(IPersistence persistence)
         {
             InitializeComponent();
             rdp.OnDiscoveryCompleted += new AddExistingRDPConnections.DiscoveryCompleted(rdp_OnDiscoveryCompleted);
             miv = new MethodInvoker(DiscoComplete);
+            this.persistence = persistence;
+            this.mp.AssignPersistence(persistence);
         }
 
         private void FirstRunWizard_Load(object sender, EventArgs e)
@@ -42,7 +45,7 @@ namespace Terminals
             Settings.StartDelayedUpdate();
         }
 
-        private void nextButton_Click(object sender, EventArgs e)
+        private void NextButton_Click(object sender, EventArgs e)
         {
             if (SelectedForm == WizardForms.Intro)
             {
@@ -140,7 +143,7 @@ namespace Terminals
 
         private void SwitchToDefaultCredentials()
         {
-            Persistence.Instance.Security.UpdateMasterPassword(this.mp.Password);
+            this.persistence.Security.UpdateMasterPassword(this.mp.Password);
             this.nextButton.Enabled = true;
             this.panel1.Controls.Clear();
             this.panel1.Controls.Add(this.dc);
@@ -155,7 +158,7 @@ namespace Terminals
             this.SelectedForm = WizardForms.MasterPassword;
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             rdp.CancelDiscovery();
             this.Hide();
@@ -190,7 +193,7 @@ namespace Terminals
                 if (MessageBox.Show(message, "Terminals Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     List<FavoriteConfigurationElement> favoritesToImport = this.rdp.DiscoveredConnections.ToList();
-                    var managedImport = new ImportWithDialogs(this, Persistence.Instance);
+                    var managedImport = new ImportWithDialogs(this, this.persistence);
                     managedImport.Import(favoritesToImport);
                 }
             }

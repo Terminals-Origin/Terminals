@@ -79,7 +79,7 @@ namespace Terminals
             this.nextButton.TabIndex = 1;
             this.nextButton.Text = "Next >";
             this.nextButton.UseVisualStyleBackColor = true;
-            this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
+            this.nextButton.Click += new System.EventHandler(this.NextButton_Click);
             // 
             // cancelButton
             // 
@@ -90,7 +90,7 @@ namespace Terminals
             this.cancelButton.TabIndex = 0;
             this.cancelButton.Text = "C&ancel";
             this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // FirstRunWizard
             // 
