@@ -16,6 +16,12 @@ namespace Terminals.Data
         IGroup Parent { get; set; }
 
         /// <summary>
+        /// Gets or sets not null name of an item. This is usually validated against persistence to case sensitive unique.
+        /// Hides InamedItem because ob findings and sorting, we need it to be explicitly defined here
+        /// </summary>
+        new string Name { get; set; }
+
+        /// <summary>
         /// Gets list of connection favorites listed in this group. 
         /// To change this collection use AddFavorite or RemoveFavorite methods.
         /// </summary>

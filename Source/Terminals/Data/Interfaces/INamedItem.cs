@@ -6,8 +6,8 @@
     internal interface INamedItem
     {
         /// <summary>
-        /// Gets or sets not null name of an item. This is usually validated against persistence to case sensitive unique.
+        /// Gets not null name of an item. This is usually validated against persistence to case sensitive unique.
         /// </summary>
-        string Name { get; set; }
+        string Name { get; }
     }
 }
