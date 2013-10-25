@@ -86,7 +86,7 @@ namespace Terminals.Forms
             this.chkPasswordProtectTerminals.TabIndex = 0;
             this.chkPasswordProtectTerminals.Text = "Password Protect";
             this.chkPasswordProtectTerminals.UseVisualStyleBackColor = true;
-            this.chkPasswordProtectTerminals.CheckedChanged += new System.EventHandler(this.chkPasswordProtectTerminals_CheckedChanged);
+            this.chkPasswordProtectTerminals.CheckedChanged += new System.EventHandler(this.ChkPasswordProtectTerminals_CheckedChanged);
             // 
             // lblPassword
             // 

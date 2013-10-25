@@ -136,7 +136,7 @@ namespace Terminals
 
             private void CreateUntaggedItem()
             {
-                this.untaggedToolStripMenuItem = new UntagedMenuItem();
+                this.untaggedToolStripMenuItem = new UntagedMenuItem(this.persistence);
                 this.untaggedToolStripMenuItem.DropDownOpening += new EventHandler(this.OnTagMenuDropDownOpening);
                 this.favoritesToolStripMenuItem.DropDownItems.Add(this.untaggedToolStripMenuItem);
             }
@@ -166,7 +166,7 @@ namespace Terminals
 
             private void AddUntaggedQuickContextMenu()
             {
-                this.unTaggedQuickMenuItem = new UntagedMenuItem();
+                this.unTaggedQuickMenuItem = new UntagedMenuItem(this.persistence);
                 unTaggedQuickMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenuItemClicked);
                 unTaggedQuickMenuItem.DropDownOpening += new EventHandler(OnTagTrayMenuItemDropDownOpening);
                 this.quickContextMenu.Items.Add(unTaggedQuickMenuItem);

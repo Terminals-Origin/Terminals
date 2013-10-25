@@ -36,10 +36,10 @@ namespace Terminals
             }
         }
 
-        internal TerminalTabsSelectionControler(TabControl.TabControl tabControl)
+        internal TerminalTabsSelectionControler(TabControl.TabControl tabControl, IPersistence persistence)
         {
             this.mainTabControl = tabControl;
-            Persistence.Instance.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesChanged);
+            persistence.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesChanged);
         }
 
         internal void AssingUiFactory(ConnectionsUiFactory connectionsUiFactory)

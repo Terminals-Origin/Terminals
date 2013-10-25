@@ -5,19 +5,21 @@ using System.Windows.Forms;
 using System.Linq;
 using AxMSTSCLib;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Forms
 {
     internal partial class OptionDialog : Form
     {
-        private UserControl currentPanel = null;
+        private UserControl currentPanel;
 
-        public OptionDialog(AxMsRdpClient6NotSafeForScripting terminal)
+        public OptionDialog(AxMsRdpClient6NotSafeForScripting terminal, IPersistence persistence)
         {
             this.ApplySystemFont();
 
             InitializeComponent();
 
+            this.panelMasterPassword.Security = persistence.Security;
             MovePanelsFromTabsIntoControls();
             Settings.ConfigurationChanged += new ConfigurationChangedHandler(this.SettingsConfigFileReloaded);
             LoadSettings();
@@ -139,7 +141,7 @@ namespace Terminals.Forms
 
         private void SelectNewPanel()
         {
-            string panelName = "panel" + this.OptionsTreeView.SelectedNode.Tag.ToString();
+            string panelName = "panel" + this.OptionsTreeView.SelectedNode.Tag;
             System.Diagnostics.Debug.WriteLine("Selected panel: " + panelName);
             this.currentPanel = this.Controls[panelName] as UserControl;
         }
@@ -151,7 +153,7 @@ namespace Terminals.Forms
             this.currentPanel.Location = new Point(x, y);
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
+        private void BtnOk_Click(object sender, EventArgs e)
         {
             try
             {

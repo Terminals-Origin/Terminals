@@ -169,7 +169,7 @@ namespace Terminals
 
                 this.formSettings = new FormSettings(this);
 
-                this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals);
+                this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals, Persistence.Instance);
                 this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler);
                 this.terminalsControler.AssingUiFactory(this.connectionsUiFactory);
 
@@ -1284,7 +1284,7 @@ namespace Terminals
 
         private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmOptions = new OptionDialog(CurrentTerminal))
+            using (var frmOptions = new OptionDialog(CurrentTerminal, Persistence.Instance))
             {
                 if (frmOptions.ShowDialog() == DialogResult.OK)
                 {
