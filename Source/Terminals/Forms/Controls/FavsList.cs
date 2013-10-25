@@ -433,11 +433,12 @@ namespace Terminals
 
         private void StartConnection(TreeView tv)
         {
-            // connections are always under some parent node in History and in Favorites
             // dont connect in rename in favorites tree
-            if (tv.SelectedNode != null && tv.SelectedNode.Level > 0 && !tv.SelectedNode.IsEditing)
+            var favoriteNode = tv.SelectedNode as FavoriteTreeNode;
+            if (favoriteNode != null && !tv.SelectedNode.IsEditing)
             {
-                this.ConnectionsUiFactory.Connect(new ConnectionDefinition(tv.SelectedNode.Text));
+                var definition = new ConnectionDefinition(favoriteNode.Favorite);
+                this.ConnectionsUiFactory.Connect(definition);
             }
         }
 

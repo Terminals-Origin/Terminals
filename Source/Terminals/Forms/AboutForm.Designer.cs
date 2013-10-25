@@ -62,7 +62,7 @@ namespace Terminals
             this.lblTerminals.TabStop = true;
             this.lblTerminals.Text = "Terminals Home Page at CodePlex";
             this.lblTerminals.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTerminals.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblTerminals_LinkClicked);
+            this.lblTerminals.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LblTerminals_LinkClicked);
             // 
             // btnClose
             // 
@@ -75,7 +75,7 @@ namespace Terminals
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "OK";
             this.btnClose.UseVisualStyleBackColor = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.btnClose.Click += new System.EventHandler(this.BtnClose_Click);
             // 
             // label3
             // 
@@ -121,7 +121,7 @@ namespace Terminals
             this.linkLabel4.Text = "Rob Chartier";
             this.linkLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkLabel4.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
+            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel4_LinkClicked);
             // 
             // textBox1
             // 
