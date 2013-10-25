@@ -14,18 +14,21 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private const String UNTAGGED_NODENAME = "Not grouped";
 
+        private readonly IPersistence persistence;
+
         internal override List<IFavorite> Favorites
         {
             get
             {
-                var favorites = Persistence.Instance.Favorites;
+                IFavorites favorites = this.persistence.Favorites;
                 return FavoriteTreeListLoader.GetUntaggedFavorites(favorites);
             }
         }
 
-        internal UntagedMenuItem()
+        internal UntagedMenuItem(IPersistence persistence)
             : base(UNTAGGED_NODENAME, true)
         {
+            this.persistence = persistence;
         }
     }
 }

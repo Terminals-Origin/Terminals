@@ -7,19 +7,33 @@ namespace Terminals.Forms
 {
     internal partial class MasterPasswordOptionPanel : UserControl, IOptionPanel
     {
-        private PersistenceSecurity security;
+        internal PersistenceSecurity Security { get; set; }
+
+        private bool PasswordsMatch
+        {
+            get { return this.PasswordTextbox.Text.Equals(this.ConfirmPasswordTextBox.Text); }
+        }
+
+        private bool PasswordsAreEntered
+        {
+            get
+            {
+                return !String.IsNullOrEmpty(this.PasswordTextbox.Text) &&
+                       !String.IsNullOrEmpty(this.ConfirmPasswordTextBox.Text);
+            }
+        }
+        
 
         public MasterPasswordOptionPanel()
         {
             InitializeComponent();
 
             this.lblPasswordsMatch.Text = string.Empty;
-            this.security = Persistence.Instance.Security;
         }
 
         public void LoadSettings()
         {
-            bool isMasterPasswordDefined = this.security.IsMasterPasswordDefined;
+            bool isMasterPasswordDefined = this.Security.IsMasterPasswordDefined;
             this.chkPasswordProtectTerminals.Checked = isMasterPasswordDefined;
             this.PasswordTextbox.Enabled = isMasterPasswordDefined;
             this.ConfirmPasswordTextBox.Enabled = isMasterPasswordDefined;
@@ -42,9 +56,9 @@ namespace Terminals.Forms
 
         public void SaveSettings()
         {
-            if (!this.chkPasswordProtectTerminals.Checked && this.security.IsMasterPasswordDefined)
+            if (!this.chkPasswordProtectTerminals.Checked && this.Security.IsMasterPasswordDefined)
             {
-                this.security.UpdateMasterPassword(string.Empty); // remove password
+                this.Security.UpdateMasterPassword(string.Empty); // remove password
             }
             else // new password is defined
             {
@@ -52,26 +66,12 @@ namespace Terminals.Forms
                     !string.IsNullOrEmpty(this.PasswordTextbox.Text) &&
                     this.PasswordTextbox.Text != NewTerminalForm.HIDDEN_PASSWORD)
                 {
-                    this.security.UpdateMasterPassword(this.PasswordTextbox.Text);
+                    this.Security.UpdateMasterPassword(this.PasswordTextbox.Text);
                 }
             }
         }
 
-        private bool PasswordsMatch
-        {
-            get { return this.PasswordTextbox.Text.Equals(this.ConfirmPasswordTextBox.Text); }
-        }
-
-        private bool PasswordsAreEntered
-        {
-            get
-            {
-                return !String.IsNullOrEmpty(this.PasswordTextbox.Text) &&
-                       !String.IsNullOrEmpty(this.ConfirmPasswordTextBox.Text);
-            }
-        }
-
-        private void chkPasswordProtectTerminals_CheckedChanged(object sender, EventArgs e)
+        private void ChkPasswordProtectTerminals_CheckedChanged(object sender, EventArgs e)
         {
             this.PasswordTextbox.Enabled = this.chkPasswordProtectTerminals.Checked;
             this.ConfirmPasswordTextBox.Enabled = this.chkPasswordProtectTerminals.Checked;
