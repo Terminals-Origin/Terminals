@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using Terminals.Configuration;
 using Terminals.Data;
-using Terminals.Forms.Controls;
 using Terminals.Security;
 
 namespace Terminals.Updates
@@ -13,12 +9,19 @@ namespace Terminals.Updates
     /// <summary>
     /// Class containing methods to update config files after an update. 
     /// </summary>
-    internal static class UpdateConfig
+    internal class UpdateConfig
     {
+        private readonly IPersistence persistence;
+
+        public UpdateConfig(IPersistence persistence)
+        {
+            this.persistence = persistence;
+        }
+
         /// <summary>
         /// Updates config file to current version, if it isn't up to date
         /// </summary>
-        internal static void CheckConfigVersionUpdate()
+        internal void CheckConfigVersionUpdate()
         {
             // If the Terminals version is not in the config or the version number in the config
             // is lower then the current assembly version, check for config updates
@@ -32,14 +35,14 @@ namespace Terminals.Updates
             }
         }
 
-        private static void UpdateToVersion20()
+        private void UpdateToVersion20()
         {
             // problem: Settings file is already loaded from new location,
             // but we need to check, if there is one in old location
             if (IsVersion2UpTo21() || IsConfigFileOnV2Location())
             {
                 MoveFilesToVersion2Location();
-                UpdateDefaultFavoriteUrl(Persistence.Instance);
+                UpdateDefaultFavoriteUrl(this.persistence);
             }
         }
 
@@ -49,7 +52,7 @@ namespace Terminals.Updates
                    (Settings.ConfigVersion != null && Settings.ConfigVersion < new Version(2,1,0,0));
         }
 
-        private static void MoveFilesToVersion2Location()
+        private void MoveFilesToVersion2Location()
         {
             // we upgrade only files, there was no SqlPersistence before
             // don't need to refresh the file location, because if the files were changed
@@ -62,7 +65,7 @@ namespace Terminals.Updates
             // only this is already in use if started with default location
             MoveDataFile(FileLocations.CONFIG_FILENAME);
             Settings.ForceReload();
-            var contentUpgrade = new FilesV2ContentUpgrade(Persistence.Instance, RequestPassword.KnowsUserPassword);
+            var contentUpgrade = new FilesV2ContentUpgrade(this.persistence, RequestPassword.KnowsUserPassword);
             contentUpgrade.Run();
         }
 

@@ -50,7 +50,8 @@ namespace Terminals
 
             // do it before config update, because it may import favorites from previous version
             Persistence.AssignFallbackPrompt(PersistenceFallback);
-            UpdateConfig.CheckConfigVersionUpdate();
+            var updateConfig = new UpdateConfig(Persistence.Instance);
+            updateConfig.CheckConfigVersionUpdate();
             Logging.Info("Start state 7 Complete: Configuration upgrade");
 
             ShowFirstRunWizard();
@@ -104,7 +105,7 @@ namespace Terminals
             if (Settings.ShowWizard)
             {
                 //settings file doesn't exist
-                using (var wzrd = new FirstRunWizard())
+                using (var wzrd = new FirstRunWizard(Persistence.Instance))
                     wzrd.ShowDialog();
             }
         }

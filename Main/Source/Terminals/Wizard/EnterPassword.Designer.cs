@@ -47,7 +47,7 @@ namespace Terminals.Wizard
             this.confirmTextBox.PasswordChar = '*';
             this.confirmTextBox.Size = new System.Drawing.Size(182, 20);
             this.confirmTextBox.TabIndex = 12;
-            this.confirmTextBox.TextChanged += new System.EventHandler(this.confirmTextBox_TextChanged);
+            this.confirmTextBox.TextChanged += new System.EventHandler(this.ConfirmTextBox_TextChanged);
             // 
             // label4
             // 
@@ -65,7 +65,7 @@ namespace Terminals.Wizard
             this.masterPasswordTextbox.PasswordChar = '*';
             this.masterPasswordTextbox.Size = new System.Drawing.Size(182, 20);
             this.masterPasswordTextbox.TabIndex = 10;
-            this.masterPasswordTextbox.TextChanged += new System.EventHandler(this.confirmTextBox_TextChanged);
+            this.masterPasswordTextbox.TextChanged += new System.EventHandler(this.ConfirmTextBox_TextChanged);
             // 
             // label3
             // 

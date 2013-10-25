@@ -7,37 +7,42 @@ namespace Terminals.Wizard
 {
     internal partial class EnterPassword : UserControl
     {
-        public EnterPassword()
-        {
-            InitializeComponent();
-
-            EnableMasterPassword.Checked = true;
-            EnableMasterPassword.Enabled = true;
-            panel1.Enabled = true;
-
-            if(Persistence.Instance.Security.IsMasterPasswordDefined)
-            {
-                EnableMasterPassword.Checked = true;
-                EnableMasterPassword.Enabled = false;
-                panel1.Enabled = false;
-            }
-        }
         public bool StorePassword
         {
             get
             {
-                if(EnableMasterPassword.Checked && masterPasswordTextbox.Text!="") return true;
-                return false;
+                return EnableMasterPassword.Checked && !string.IsNullOrEmpty(masterPasswordTextbox.Text);
             }
         }
-        private void confirmTextBox_TextChanged(object sender, EventArgs e)
+
+        public string Password
+        {
+            get
+            {
+                if(this.masterPasswordTextbox.Text == this.confirmTextBox.Text)
+                    return this.masterPasswordTextbox.Text;
+                
+                return string.Empty;
+            }
+        }
+
+        public EnterPassword()
+        {
+            this.InitializeComponent();
+
+            this.EnableMasterPassword.Checked = true;
+            this.EnableMasterPassword.Enabled = true;
+            this.panel1.Enabled = true;
+        }
+
+        private void ConfirmTextBox_TextChanged(object sender, EventArgs e)
         {
             if(masterPasswordTextbox.Text != confirmTextBox.Text)
                 ErrorLabel.Text = "Passwords do not match!";
             else
                 ErrorLabel.Text = "Passwords match!";
 
-            this.progressBar1.Value = Wizard.PasswordStrength.Strength(this.masterPasswordTextbox.Text);
+            this.progressBar1.Value = PasswordStrength.Strength(this.masterPasswordTextbox.Text);
             if(this.progressBar1.Value <= 10)
             {
                 this.progressBar1.ForeColor = Color.Red;
@@ -56,22 +61,20 @@ namespace Terminals.Wizard
             }
 
         }
-        
-        public string Password
-        {
-            get
-            {
-                if(this.masterPasswordTextbox.Text == confirmTextBox.Text)
-                {
-                    return this.masterPasswordTextbox.Text;
-                }
-                return "";
-            }
-        }
 
         private void EnableMasterPassword_CheckedChanged(object sender, EventArgs e)
         {
-            panel1.Enabled = EnableMasterPassword.Checked; ;
+            panel1.Enabled = EnableMasterPassword.Checked;
+        }
+
+        public void AssignPersistence(IPersistence persistence)
+        {
+            if (persistence.Security.IsMasterPasswordDefined)
+            {
+                this.EnableMasterPassword.Checked = true;
+                this.EnableMasterPassword.Enabled = false;
+                this.panel1.Enabled = false;
+            }
         }
     }
 }

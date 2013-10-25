@@ -1,13 +1,10 @@
 using System.Windows.Forms;
+using Terminals.Data;
 
 namespace Terminals.Wizard
 {
     internal partial class MasterPassword : UserControl
     {
-        public MasterPassword()
-        {
-            InitializeComponent();
-        }
         public bool StorePassword
         {
             get
@@ -22,6 +19,16 @@ namespace Terminals.Wizard
             {
                 return this.enterPassword1.Password;
             }
+        }
+
+        public MasterPassword()
+        {
+            this.InitializeComponent();
+        }
+
+        internal void AssignPersistence(IPersistence persistence)
+        {
+            this.enterPassword1.AssignPersistence(persistence);
         }
     }
 }
