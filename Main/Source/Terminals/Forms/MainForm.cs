@@ -668,7 +668,7 @@ namespace Terminals
 
         private void ShowQuickConnect()
         {
-            using (var qc = new QuickConnect())
+            using (var qc = new QuickConnect(Persistence.Instance))
             {
                 if (qc.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(qc.ConnectionName))
                     this.connectionsUiFactory.ConnectByFavoriteNames(new List<string>(){ qc.ConnectionName} );
@@ -1197,7 +1197,7 @@ namespace Terminals
 
         private void SaveTerminalsAsGroupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string newGroupName = NewGroupForm.AskFroGroupName();
+            string newGroupName = NewGroupForm.AskFroGroupName(Persistence.Instance);
             if (string.IsNullOrEmpty(newGroupName))
                 return;
 
@@ -1275,8 +1275,10 @@ namespace Terminals
 
         private void OrganizeFavoritesToolbarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var frmOrganizeFavoritesToolbar = new OrganizeFavoritesToolbarForm();
-            frmOrganizeFavoritesToolbar.ShowDialog();
+            using (var frmOrganizeFavoritesToolbar = new OrganizeFavoritesToolbarForm(Persistence.Instance))
+            {
+                frmOrganizeFavoritesToolbar.ShowDialog();
+            }
         }
 
         private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)

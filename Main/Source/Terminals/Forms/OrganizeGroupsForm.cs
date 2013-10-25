@@ -51,7 +51,7 @@ namespace Terminals
 
         private void TsbAddGroup_Click(object sender, EventArgs e)
         {
-            string newGroupName = NewGroupForm.AskFroGroupName();
+            string newGroupName = NewGroupForm.AskFroGroupName(this.persistence);
             if (string.IsNullOrEmpty(newGroupName))
                 return;
             

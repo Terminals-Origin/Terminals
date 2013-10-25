@@ -21,20 +21,20 @@ namespace Terminals
         /// Shows this dialog to the user asking for group name.
         /// If user confirms, the entered value is returned; otherwiser returns empty string.
         /// </summary>
-        internal static string AskFroGroupName()
+        internal static string AskFroGroupName(IPersistence persistence)
         {
             using (var frmNewGroup = new NewGroupForm())
             {
                 if (frmNewGroup.ShowDialog() == DialogResult.OK)
-                    return ValidateNewGroupName(frmNewGroup.txtGroupName.Text);
+                    return ValidateNewGroupName(persistence, frmNewGroup.txtGroupName.Text);
 
                 return string.Empty;
             }
         }
 
-        private static string ValidateNewGroupName(string newGroupName)
+        private static string ValidateNewGroupName(IPersistence persistence, string newGroupName)
         {
-            string message = new GroupNameValidator(Persistence.Instance).ValidateNew(newGroupName);
+            string message = new GroupNameValidator(persistence).ValidateNew(newGroupName);
 
             if (string.IsNullOrEmpty(message))
                 return newGroupName;
