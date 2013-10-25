@@ -26,6 +26,8 @@ namespace Terminals
 {
     internal partial class MainForm : Form
     {
+        private readonly IPersistence persistence;
+
         #region Declarations
 
         private const String FULLSCREEN_ERROR_MSG = "Screen properties not available for RDP";
@@ -48,7 +50,7 @@ namespace Terminals
 
         private IFavorites PersistedFavorites
         {
-            get { return Persistence.Instance.Favorites; }
+            get { return this.persistence.Favorites; }
         }
 
         private IConnection CurrentConnection
@@ -156,10 +158,11 @@ namespace Terminals
 
         #region Constuctors
 
-        public MainForm()
+        public MainForm(IPersistence persistence)
         {
             try
             {
+                this.persistence = persistence;
                 Settings.StartDelayedUpdate();
 
                 // Set default font type by Windows theme to use for all controls on form
@@ -169,8 +172,8 @@ namespace Terminals
 
                 this.formSettings = new FormSettings(this);
 
-                this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals, Persistence.Instance);
-                this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler, Persistence.Instance);
+                this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals, this.persistence);
+                this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler, this.persistence);
                 this.terminalsControler.AssingUiFactory(this.connectionsUiFactory);
 
                 // Initialize FavsList outside of InitializeComponent
@@ -179,10 +182,10 @@ namespace Terminals
 
                 // Set notifyicon icon from embedded png image
                 this.MainWindowNotifyIcon.Icon = Icon.FromHandle(Properties.Resources.terminalsicon.GetHicon());
-                this.menuLoader = new FavoritesMenuLoader(this, Persistence.Instance);
+                this.menuLoader = new FavoritesMenuLoader(this, this.persistence);
                 this.favoriteToolBar.Visible = this.toolStripMenuItemShowHideFavoriteToolbar.Checked;
                 this.fullScreenSwitch = new MainFormFullScreenSwitch(this);
-                this.favsList1.Persistence = Persistence.Instance;
+                this.favsList1.Persistence = this.persistence;
                 this.AssignToolStripsToContainer();
                 this.ApplyControlsEnableAndVisibleState();
                 
@@ -198,7 +201,7 @@ namespace Terminals
                 this.LoadSpecialCommands();
 
                 ProtocolHandler.Register();
-                Persistence.Instance.AssignSynchronizationObject(this);
+                this.persistence.AssignSynchronizationObject(this);
             }
             catch (Exception exc)
             {
@@ -668,7 +671,7 @@ namespace Terminals
 
         private void ShowQuickConnect()
         {
-            using (var qc = new QuickConnect(Persistence.Instance))
+            using (var qc = new QuickConnect(this.persistence))
             {
                 if (qc.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(qc.ConnectionName))
                     this.connectionsUiFactory.ConnectByFavoriteNames(new List<string>(){ qc.ConnectionName} );
@@ -1119,7 +1122,7 @@ namespace Terminals
             if (Settings.ShowInformationToolTips && selectedTab != null)
                 this.Text = selectedTab.ToolTipText.Replace("\r\n", "; ");
             else
-                this.Text = Program.Info.GetAboutText(Persistence.Instance.Name);
+                this.Text = Program.Info.GetAboutText(this.persistence.Name);
         }
 
         private void TscConnectTo_TextChanged(object sender, EventArgs e)
@@ -1197,7 +1200,7 @@ namespace Terminals
 
         private void SaveTerminalsAsGroupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string newGroupName = NewGroupForm.AskFroGroupName(Persistence.Instance);
+            string newGroupName = NewGroupForm.AskFroGroupName(this.persistence);
             if (string.IsNullOrEmpty(newGroupName))
                 return;
 
@@ -1212,7 +1215,7 @@ namespace Terminals
 
         private void OrganizeGroupsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmOrganizeGroups = new OrganizeGroupsForm(Persistence.Instance))
+            using (var frmOrganizeGroups = new OrganizeGroupsForm(this.persistence))
             {
                 frmOrganizeGroups.ShowDialog();
                 this.menuLoader.LoadGroups();
@@ -1275,7 +1278,7 @@ namespace Terminals
 
         private void OrganizeFavoritesToolbarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmOrganizeFavoritesToolbar = new OrganizeFavoritesToolbarForm(Persistence.Instance))
+            using (var frmOrganizeFavoritesToolbar = new OrganizeFavoritesToolbarForm(this.persistence))
             {
                 frmOrganizeFavoritesToolbar.ShowDialog();
             }
@@ -1283,7 +1286,7 @@ namespace Terminals
 
         private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmOptions = new OptionDialog(CurrentTerminal, Persistence.Instance))
+            using (var frmOptions = new OptionDialog(CurrentTerminal, this.persistence))
             {
                 if (frmOptions.ShowDialog() == DialogResult.OK)
                 {
@@ -1305,7 +1308,7 @@ namespace Terminals
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmAbout = new AboutForm(Persistence.Instance.Name))
+            using (var frmAbout = new AboutForm(this.persistence.Name))
             {
                 frmAbout.ShowDialog();
             }
@@ -1630,7 +1633,7 @@ namespace Terminals
 
         private void RebuildTagsIndexToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Persistence.Instance.Groups.Rebuild();
+            this.persistence.Groups.Rebuild();
             this.menuLoader.LoadGroups();
             this.UpdateControls();
         }
@@ -1691,7 +1694,7 @@ namespace Terminals
 
         private void ExportConnectionsListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frm = new ExportForm(Persistence.Instance))
+            using (var frm = new ExportForm(this.persistence))
                 frm.ShowDialog();
         }
 
@@ -1714,7 +1717,7 @@ namespace Terminals
 
         private OrganizeFavoritesForm CreateOrganizeFavoritesForm()
         {
-            var organizeForm = new OrganizeFavoritesForm(Persistence.Instance);
+            var organizeForm = new OrganizeFavoritesForm(this.persistence);
             organizeForm.AssignConnectionsUiFactory(this.connectionsUiFactory);
             return organizeForm;
         }
@@ -1757,7 +1760,7 @@ namespace Terminals
         private void ClearHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            Persistence.Instance.ConnectionHistory.Clear();
+            this.persistence.ConnectionHistory.Clear();
             this.Cursor = Cursors.Default;
         }
 
