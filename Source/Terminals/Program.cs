@@ -47,11 +47,7 @@ namespace Terminals
             if (commandLine.SingleInstance && SingleInstanceApplication.Instance.NotifyExisting(commandLine))
                 return;
             Logging.Info("Start state 6 Complete: Set Single instance mode");
-
-            // do it before config update, because it may import favorites from previous version
-            Persistence.AssignFallbackPrompt(PersistenceFallback);
-            var updateConfig = new UpdateConfig(Persistence.Instance);
-            updateConfig.CheckConfigVersionUpdate();
+            TryUpdateConfig();
             Logging.Info("Start state 7 Complete: Configuration upgrade");
 
             ShowFirstRunWizard();
@@ -59,6 +55,17 @@ namespace Terminals
 
             Logging.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
                 Info.TitleVersion));
+        }
+
+        private static void TryUpdateConfig()
+        {
+            // moved into separate method till persistence is implemented as singleton, because of optimization
+            // the Persistence class is touched before the FileLocations are realy set.
+            // do it before config update, because it may import favorites from previous version
+            Persistence.AssignFallbackPrompt(PersistenceFallback);
+            // first touch of the Persistence instance.
+            var updateConfig = new UpdateConfig(Persistence.Instance);
+            updateConfig.CheckConfigVersionUpdate();
         }
 
         private static void SetUnhandledExceptions()
