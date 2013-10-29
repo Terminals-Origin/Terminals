@@ -205,10 +205,7 @@ namespace Terminals.Configuration
         private static void SaveDefaultConfigFile()
         {
             string templateConfigFile = Resources.Terminals;
-            using (StreamWriter sr = new StreamWriter(fileLocations.Configuration))
-            {
-                sr.Write(templateConfigFile);
-            }
+            File.WriteAllText(fileLocations.Configuration, templateConfigFile);
         }
 
         private static void MoveAndDeleteFile(string fileName, string tempFileName)
@@ -358,7 +355,7 @@ namespace Terminals.Configuration
                     return null;
                 }
 
-                Logging.Info("Telnet Section Failed", exc);
+                Logging.Error("Telnet Section Failed", exc);
 
                 try
                 {
@@ -371,7 +368,7 @@ namespace Terminals.Configuration
                 }
                 catch (Exception importException)
                 {
-                    Logging.Info("Trying to import connections failed", importException);
+                    Logging.Error("Trying to import connections failed", importException);
 #if !DEBUG
                     string message = string.Format("Terminals was NOT able to automatically upgrade your existing connections.\r\nError:{0}",
                         importException.Message);
