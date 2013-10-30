@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <!--to make new release change all product id, package id and version number-->
-  <Product Id="*" Name="Terminals" Language="1033" Version="3.3.0.0" Manufacturer="Robert Chartier"
-           UpgradeCode="1010280c-d106-47d5-abea-630ebe57887d">
-    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-    <!-- consider variable Id="*"-->
-    <MajorUpgrade DowngradeErrorMessage="A newer version of Terminals is already installed." />
-
-    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+  <Product Id="*" Name="Terminals" Language="1033" Version="3.4.0.0" Manufacturer="Robert Chartier"
+           UpgradeCode="DD0D31A2-2E86-4F3F-98CE-6AED37FF24CD">
+    <Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+    <MajorUpgrade Schedule="afterInstallInitialize" DowngradeErrorMessage="A newer version of Terminals is already installed." />
+    
+      <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
     <Property Id="INSTALLTYPE" Secure="yes" Value="1"></Property>
     <Icon Id="TerminalsSetupIcon" SourceFile="..\Terminals\terminalsicon.ico"/>
     <Property Id="ARPPRODUCTICON" Value="TerminalsSetupIcon" />
@@ -16,7 +15,7 @@
     <WixVariable Id="WixUIDialogBmp" Value="WixUIDialogBmp.bmp" />
     <UIRef Id="WixUI_InstallDirCustom" />
 
-    <Media Id="1" Cabinet="AppToInstall.cab" EmbedCab="yes" />
+    <Media Id="1" Cabinet="TerminalsInstall.cab" EmbedCab="yes" />
 
     <Feature Id="ProductFeature" Title="Terminals" Level="1">
       <ComponentGroupRef Id="MainComponents" />
