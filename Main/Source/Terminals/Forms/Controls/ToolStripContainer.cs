@@ -38,15 +38,12 @@ namespace Terminals.Forms.Controls
 
         internal void SaveLayout()
         {
-            if (!Settings.ToolbarsLocked)
-            {
-                var newSettings = new ToolStripSettings();
-                SaveToolStripPanel(this.TopToolStripPanel, "Top", newSettings);
-                SaveToolStripPanel(this.LeftToolStripPanel, "Left", newSettings);
-                SaveToolStripPanel(this.RightToolStripPanel, "Right", newSettings);
-                SaveToolStripPanel(this.BottomToolStripPanel, "Bottom", newSettings);
-                Settings.ToolbarSettings = newSettings;
-            }
+            var newSettings = new ToolStripSettings();
+            SaveToolStripPanel(this.TopToolStripPanel, "Top", newSettings);
+            SaveToolStripPanel(this.LeftToolStripPanel, "Left", newSettings);
+            SaveToolStripPanel(this.RightToolStripPanel, "Right", newSettings);
+            SaveToolStripPanel(this.BottomToolStripPanel, "Bottom", newSettings);
+            Settings.ToolbarSettings = newSettings;
         }
 
         private static void SaveToolStripPanel(ToolStripPanel panel, String position, ToolStripSettings newSettings)
