@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Configuration;
@@ -13,23 +12,23 @@ namespace Terminals.Forms.Controls
     {
         #region Menu and toolbars
 
-        internal ToolStrip toolbarStd { get; set; }
-        internal ToolStripMenuItem standardToolbarToolStripMenuItem { get; set; }
-        internal ToolStrip favoriteToolBar { get; set; }
-        internal ToolStripMenuItem toolStripMenuItemShowHideFavoriteToolbar { get; set; }
+        internal ToolStrip ToolbarStd { get; set; }
+        internal ToolStripMenuItem StandardToolbarToolStripMenuItem { get; set; }
+        internal ToolStrip FavoriteToolBar { get; set; }
+        internal ToolStripMenuItem ToolStripMenuItemShowHideFavoriteToolbar { get; set; }
         internal ToolStrip SpecialCommandsToolStrip { get; set; }
-        internal ToolStripMenuItem shortcutsToolStripMenuItem { get; set; }
-        internal MenuStrip menuStrip { get; set; }
-        internal ToolStrip tsRemoteToolbar { get; set; }
+        internal ToolStripMenuItem ShortcutsToolStripMenuItem { get; set; }
+        internal MenuStrip MenuStrip { get; set; }
+        internal ToolStrip TsRemoteToolbar { get; set; }
 
         #endregion
 
         internal void AssignToolStripsLocationChangedEventHandler()
         {
-            toolbarStd.EndDrag += new EventHandler(this.OnToolStripLocationChanged);
-            favoriteToolBar.EndDrag += new EventHandler(this.OnToolStripLocationChanged);
-            menuStrip.EndDrag += new EventHandler(this.OnToolStripLocationChanged);
-            tsRemoteToolbar.EndDrag += new EventHandler(this.OnToolStripLocationChanged);
+            this.ToolbarStd.EndDrag += new EventHandler(this.OnToolStripLocationChanged);
+            this.FavoriteToolBar.EndDrag += new EventHandler(this.OnToolStripLocationChanged);
+            this.MenuStrip.EndDrag += new EventHandler(this.OnToolStripLocationChanged);
+            this.TsRemoteToolbar.EndDrag += new EventHandler(this.OnToolStripLocationChanged);
         }
 
         private void OnToolStripLocationChanged(object sender, EventArgs e)
@@ -41,7 +40,7 @@ namespace Terminals.Forms.Controls
         {
             if (!Settings.ToolbarsLocked)
             {
-                ToolStripSettings newSettings = new ToolStripSettings();
+                var newSettings = new ToolStripSettings();
                 SaveToolStripPanel(this.TopToolStripPanel, "Top", newSettings);
                 SaveToolStripPanel(this.LeftToolStripPanel, "Left", newSettings);
                 SaveToolStripPanel(this.RightToolStripPanel, "Right", newSettings);
@@ -50,21 +49,21 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        private static void SaveToolStripPanel(ToolStripPanel Panel, String Position, ToolStripSettings newSettings)
+        private static void SaveToolStripPanel(ToolStripPanel panel, String position, ToolStripSettings newSettings)
         {
-            for (Int32 rowIndex = 0; rowIndex < Panel.Rows.Length; rowIndex++)
+            for (Int32 rowIndex = 0; rowIndex < panel.Rows.Length; rowIndex++)
             {
-                ToolStripPanelRow row = Panel.Rows[rowIndex];
-                SaveToolStripRow(row, newSettings, Position, rowIndex);
+                ToolStripPanelRow row = panel.Rows[rowIndex];
+                SaveToolStripRow(row, newSettings, position, rowIndex);
             }
         }
 
-        private static void SaveToolStripRow(ToolStripPanelRow Row, ToolStripSettings newSettings, String Position, int rowIndex)
+        private static void SaveToolStripRow(ToolStripPanelRow row, ToolStripSettings newSettings, String position, int rowIndex)
         {
-            foreach (ToolStrip strip in Row.Controls)
+            foreach (ToolStrip strip in row.Controls)
             {
                 ToolStripSetting setting = new ToolStripSetting();
-                setting.Dock = Position;
+                setting.Dock = position;
                 setting.Row = rowIndex;
                 setting.Left = strip.Left;
                 setting.Top = strip.Top;
@@ -82,7 +81,7 @@ namespace Terminals.Forms.Controls
                 this.SuspendLayout();
                 this.ClearAllPanels();
                 ReJoinAllPanels(newSettings);
-                
+
                 // paranoic, because the previous join can reset the position
                 // dont assign if already there. Because it can reorder the toolbars
                 // http://www.visualbasicask.com/visual-basic-language/toolstrips-controls-becoming-desorganized.shtml
@@ -128,7 +127,7 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        internal void RestoreStripLayout(ToolStripSetting setting, ToolStrip strip)
+        private void RestoreStripLayout(ToolStripSetting setting, ToolStrip strip)
         {
             if (strip != null)
             {
@@ -139,34 +138,34 @@ namespace Terminals.Forms.Controls
 
         private ToolStripMenuItem FindMenuForSetting(ToolStripSetting setting)
         {
-            if (setting.Name == this.toolbarStd.Name)
-                return this.standardToolbarToolStripMenuItem;
+            if (setting.Name == this.ToolbarStd.Name)
+                return this.StandardToolbarToolStripMenuItem;
 
-            if (setting.Name == this.favoriteToolBar.Name)
-                return this.toolStripMenuItemShowHideFavoriteToolbar;
+            if (setting.Name == this.FavoriteToolBar.Name)
+                return this.ToolStripMenuItemShowHideFavoriteToolbar;
 
             if (setting.Name == this.SpecialCommandsToolStrip.Name)
-                return this.shortcutsToolStripMenuItem;
+                return this.ShortcutsToolStripMenuItem;
 
             return null;
         }
 
         private ToolStrip FindToolStripForSetting(ToolStripSetting setting)
         {
-            if (setting.Name == this.toolbarStd.Name)
-                return this.toolbarStd;
+            if (setting.Name == this.ToolbarStd.Name)
+                return this.ToolbarStd;
 
-            if (setting.Name == this.favoriteToolBar.Name)
-                return this.favoriteToolBar;
+            if (setting.Name == this.FavoriteToolBar.Name)
+                return this.FavoriteToolBar;
 
             if (setting.Name == this.SpecialCommandsToolStrip.Name)
                 return this.SpecialCommandsToolStrip;
 
-            if (setting.Name == this.menuStrip.Name)
-                return this.menuStrip;
+            if (setting.Name == this.MenuStrip.Name)
+                return this.MenuStrip;
 
-            if (setting.Name == this.tsRemoteToolbar.Name)
-                return this.tsRemoteToolbar;
+            if (setting.Name == this.TsRemoteToolbar.Name)
+                return this.TsRemoteToolbar;
 
             return null;
         }
