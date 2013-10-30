@@ -264,14 +264,14 @@ namespace Terminals
         /// </summary>
         private void AssignToolStripsToContainer()
         {
-            this.toolStripContainer.toolbarStd = this.toolbarStd;
-            this.toolStripContainer.standardToolbarToolStripMenuItem = this.standardToolbarToolStripMenuItem;
-            this.toolStripContainer.favoriteToolBar = this.favoriteToolBar;
-            this.toolStripContainer.toolStripMenuItemShowHideFavoriteToolbar = this.toolStripMenuItemShowHideFavoriteToolbar;
+            this.toolStripContainer.ToolbarStd = this.toolbarStd;
+            this.toolStripContainer.StandardToolbarToolStripMenuItem = this.standardToolbarToolStripMenuItem;
+            this.toolStripContainer.FavoriteToolBar = this.favoriteToolBar;
+            this.toolStripContainer.ToolStripMenuItemShowHideFavoriteToolbar = this.toolStripMenuItemShowHideFavoriteToolbar;
             this.toolStripContainer.SpecialCommandsToolStrip = this.SpecialCommandsToolStrip;
-            this.toolStripContainer.shortcutsToolStripMenuItem = this.shortcutsToolStripMenuItem;
-            this.toolStripContainer.menuStrip = this.menuStrip;
-            this.toolStripContainer.tsRemoteToolbar = this.tsRemoteToolbar;
+            this.toolStripContainer.ShortcutsToolStripMenuItem = this.shortcutsToolStripMenuItem;
+            this.toolStripContainer.MenuStrip = this.menuStrip;
+            this.toolStripContainer.TsRemoteToolbar = this.tsRemoteToolbar;
             this.toolStripContainer.AssignToolStripsLocationChangedEventHandler();
         }
 
