@@ -520,8 +520,9 @@ namespace Terminals
                 }
                 else
                 {
-                    splitContainer1.Panel1MinSize = 6;
-                    splitContainer1.SplitterDistance = 6;
+                    // noticed performance issue when set to 6 and Terminals.config file is empty
+                    splitContainer1.Panel1MinSize = 9;
+                    splitContainer1.SplitterDistance = 9;
                     splitContainer1.IsSplitterFixed = true;
                     pnlHideTagsFavorites.Hide();
                     pnlShowTagsFavorites.Show();
