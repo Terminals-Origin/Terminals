@@ -94,6 +94,14 @@ namespace Tests.UserInterface
             this.AssertNotExpandedGroup();
         }
 
+        [TestMethod]
+        public void RemoveNestedGroupMovesFavoritesToRoot()
+        {
+            this.Persistence.Groups.Delete(this.GroupK);
+            AssertTreeNode(this.FavoriteA.Name, this.RootNodes[3]);
+            this.AssertNodesCount(7, 5);
+        }
+
         private void AssertAddedGroupNode(IGroup group, TreeNode addedTreeNode)
         {
             AssertTreeNode(group.Name, addedTreeNode);

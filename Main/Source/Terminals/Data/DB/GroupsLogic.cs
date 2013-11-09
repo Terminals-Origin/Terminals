@@ -178,11 +178,13 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 var toDelete = group as DbGroup;
+                List<IFavorite> changedFavorites = group.Favorites;
                 this.SetChildsToRoot(database, toDelete);
                 database.Groups.Attach(toDelete);
                 database.Groups.Remove(toDelete);
                 database.SaveImmediatelyIfRequested();
                 this.FinishGroupRemove(group);
+                this.dispatcher.ReportFavoritesUpdated(changedFavorites);
             }
         }
 
