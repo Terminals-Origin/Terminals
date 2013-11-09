@@ -56,7 +56,7 @@ namespace Tests.UserInterface
 
         internal IGroup GroupM { get; private set; }
 
-        private IGroup groupK;
+        internal IGroup GroupK { get; private set; }
 
         internal IFavorite FavoriteA { get; private set; }
 
@@ -89,9 +89,9 @@ namespace Tests.UserInterface
             this.Persistence.StartDelayedUpdate();
             this.AddNewGroup("GroupD");
             this.GroupG = this.AddNewGroup("GroupG");
-            this.groupK = this.AddGroupWithParent("GroupK", this.GroupG);
+            this.GroupK = this.AddGroupWithParent("GroupK", this.GroupG);
             this.FavoriteA = this.AddFavorite("FavoriteA");
-            this.Persistence.Favorites.UpdateFavorite(this.FavoriteA, new List<IGroup>() { this.groupK });
+            this.Persistence.Favorites.UpdateFavorite(this.FavoriteA, new List<IGroup>() { this.GroupK });
             this.GroupM = this.AddGroupWithParent("GroupM", this.GroupG);
             this.AddGroupWithParent("GroupS", this.GroupG);
             this.GroupR = this.AddNewGroup("GroupR");

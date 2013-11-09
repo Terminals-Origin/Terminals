@@ -178,8 +178,10 @@ namespace Terminals.Data
             var toRemove = group as Group;
             if (DeleteFromCache(toRemove))
             {
+                List<IFavorite> changedFavorites = group.Favorites;
                 this.RemoveChildGroupsParent(toRemove);
                 this.dispatcher.ReportGroupsDeleted(new List<IGroup> {group});
+                this.dispatcher.ReportFavoritesUpdated(changedFavorites);
                 this.persistence.SaveImmediatelyIfRequested();
             }
         }
