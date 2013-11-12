@@ -38,6 +38,7 @@ namespace Terminals.Forms.Controls
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchPanel));
             this.protocolsImageList = new System.Windows.Forms.ImageList(this.components);
             this.resultsListView = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.searchTextBox = new Terminals.Forms.Controls.FavoritesSearchBox();
             this.SuspendLayout();
             // 
@@ -54,7 +55,10 @@ namespace Terminals.Forms.Controls
             // 
             // resultsListView
             // 
+            this.resultsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
             this.resultsListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resultsListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.resultsListView.LargeImageList = this.protocolsImageList;
             this.resultsListView.Location = new System.Drawing.Point(0, 22);
             this.resultsListView.Name = "resultsListView";
@@ -63,7 +67,7 @@ namespace Terminals.Forms.Controls
             this.resultsListView.SmallImageList = this.protocolsImageList;
             this.resultsListView.TabIndex = 3;
             this.resultsListView.UseCompatibleStateImageBehavior = false;
-            this.resultsListView.View = System.Windows.Forms.View.SmallIcon;
+            this.resultsListView.View = System.Windows.Forms.View.Details;
             this.resultsListView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ResultsListView_MouseUp);
             // 
             // searchTextBox
@@ -95,5 +99,6 @@ namespace Terminals.Forms.Controls
         private FavoritesSearchBox searchTextBox;
         private System.Windows.Forms.ImageList protocolsImageList;
         private System.Windows.Forms.ListView resultsListView;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
