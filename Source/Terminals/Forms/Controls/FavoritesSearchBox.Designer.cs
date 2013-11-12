@@ -31,10 +31,10 @@
             this.searchTextBox = new Terminals.Forms.Controls.SearchTextBox();
             this.SuspendLayout();
             // 
-            // searchTextBox1
+            // searchTextBox
             // 
             this.searchTextBox.BackColor = System.Drawing.SystemColors.Window;
-            this.searchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.searchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.searchTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.searchTextBox.Location = new System.Drawing.Point(0, 0);
             this.searchTextBox.MinimumSize = new System.Drawing.Size(30, 22);

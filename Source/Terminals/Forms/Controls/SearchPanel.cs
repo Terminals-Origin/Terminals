@@ -87,6 +87,7 @@ namespace Terminals.Forms.Controls
         public SearchPanel()
         {
             InitializeComponent();
+            
         }
 
         internal void LoadEvents(IPersistence persistence)
@@ -156,6 +157,9 @@ namespace Terminals.Forms.Controls
             this.resultsListView.Items.Clear();
             ListViewItem[] transformed = favorites.Select(FavoriteToListViewItem).ToArray();
             this.resultsListView.Items.AddRange(transformed);
+            this.resultsListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+
+            
         }
     }
 }
