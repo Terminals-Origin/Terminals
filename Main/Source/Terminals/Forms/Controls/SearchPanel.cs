@@ -93,20 +93,9 @@ namespace Terminals.Forms.Controls
         internal void LoadEvents(IPersistence persistence)
         {
             this.persistence = persistence;
-            this.searchTextBox.LoadEvents(persistence);
             this.LoadAll();
         }
-
-        internal void UnLoadEvents()
-        {
-            this.searchTextBox.UnloadEvents();
-        }
-
-        private void FavoritesSearchFound(object sender, FavoritesFoundEventArgs args)
-        {
-            this.LoadFromFavorites(args.Favorites);
-        }
-
+       
         private static ListViewItem FavoriteToListViewItem(IFavorite favorite)
         {
             var item = new ListViewItem();
@@ -137,11 +126,6 @@ namespace Terminals.Forms.Controls
             this.ResultsContextMenu.Show(this.resultsListView, new Point(e.X, e.Y));
         }
 
-        private void SearchTextBox_Canceled(object sender, EventArgs e)
-        {
-            // this will be reported also in a case the search wasnt peformed yet and we should show all favorites
-            this.LoadAll();
-        }
 
         /// <summary>
         /// Simulation of all favorites loaded by default
@@ -152,14 +136,12 @@ namespace Terminals.Forms.Controls
             this.LoadFromFavorites(favorites);
         }
 
-        private void LoadFromFavorites(List<IFavorite> favorites)
+        public void LoadFromFavorites(List<IFavorite> favorites)
         {
             this.resultsListView.Items.Clear();
             ListViewItem[] transformed = favorites.Select(FavoriteToListViewItem).ToArray();
             this.resultsListView.Items.AddRange(transformed);
             this.resultsListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-
-            
         }
     }
 }

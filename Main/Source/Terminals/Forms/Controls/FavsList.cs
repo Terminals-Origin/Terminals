@@ -35,14 +35,18 @@ namespace Terminals
 
         public FavsList()
         {
-            InitializeComponent();
-
+            this.InitializeComponent();
+            this.InitializeSearchAndFavsPanels();
             // Update the old treeview theme to the new theme from Win Vista and up
             Native.Methods.SetWindowTheme(this.favsTree.Handle, "Explorer", null);
             Native.Methods.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
 
             this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
+
+         
         }
+
+
 
         #region Private methods
 
@@ -50,6 +54,14 @@ namespace Terminals
         {
             this.favoritesContextMenu.Close();
             this.groupsContextMenu.Close();
+        }
+
+        private void InitializeSearchAndFavsPanels()
+        {
+            this.favsTree.Visible = true;
+            this.favsTree.Dock = DockStyle.Fill;
+            this.searchPanel1.Visible = false;
+            this.searchPanel1.Dock = DockStyle.Fill;
         }
 
         #endregion
@@ -64,6 +76,8 @@ namespace Terminals
             this.historyTreeView.Load(this.Persistence);
             this.LoadState();
             this.favsTree.MouseUp += new MouseEventHandler(this.FavsTree_MouseUp);
+            this.searchTextBox.LoadEvents(this.Persistence);
+            // hadle events
             this.searchPanel1.LoadEvents(this.Persistence);
             this.renameCommand = new FavoriteRenameCommand(this.Persistence, new RenameService(this.Persistence.Favorites));
         }
@@ -485,7 +499,7 @@ namespace Terminals
         /// </summary>
         private IFavorite GetSelectedFavorite()
         {
-            if (this.tabControl1.SelectedTab == this.searchTabPage)
+            if (this.searchPanel1.Visible)
                 return this.searchPanel1.SelectedFavorite;
 
             // favorites tree view is selected
@@ -638,7 +652,9 @@ namespace Terminals
             Settings.ExpandedFavoriteNodes = this.favsTree.ExpandedNodes;
             Settings.ExpandedHistoryNodes = this.historyTreeView.ExpandedNodes;
             Settings.SaveAndFinishDelayedUpdate();
-            this.searchPanel1.UnLoadEvents();
+
+            this.searchTextBox.UnloadEvents();
+            
         }
 
         private void LoadState()
@@ -661,5 +677,22 @@ namespace Terminals
 
             this.Persistence.Groups.Add(newGroup);
         }
+
+        #region searchTextBox events
+
+        private void searchTextBox_Found(object sender, FavoritesFoundEventArgs args)
+        {
+            this.searchPanel1.LoadFromFavorites(args.Favorites);
+            this.searchPanel1.Visible = true;
+            this.favsTree.Visible = false;
+        }
+
+        private void searchTextBox_Canceled(object sender, EventArgs e)
+        {
+            this.searchPanel1.Visible = false;
+            this.favsTree.Visible = true;
+        }
+
+        #endregion
     }
 }

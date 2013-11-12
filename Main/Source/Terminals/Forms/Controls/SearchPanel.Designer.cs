@@ -39,7 +39,6 @@ namespace Terminals.Forms.Controls
             this.protocolsImageList = new System.Windows.Forms.ImageList(this.components);
             this.resultsListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.searchTextBox = new Terminals.Forms.Controls.FavoritesSearchBox();
             this.SuspendLayout();
             // 
             // protocolsImageList
@@ -60,34 +59,21 @@ namespace Terminals.Forms.Controls
             this.resultsListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resultsListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.resultsListView.LargeImageList = this.protocolsImageList;
-            this.resultsListView.Location = new System.Drawing.Point(0, 22);
+            this.resultsListView.Location = new System.Drawing.Point(0, 0);
             this.resultsListView.Name = "resultsListView";
             this.resultsListView.ShowItemToolTips = true;
-            this.resultsListView.Size = new System.Drawing.Size(218, 296);
+            this.resultsListView.Size = new System.Drawing.Size(218, 318);
             this.resultsListView.SmallImageList = this.protocolsImageList;
             this.resultsListView.TabIndex = 3;
             this.resultsListView.UseCompatibleStateImageBehavior = false;
             this.resultsListView.View = System.Windows.Forms.View.Details;
             this.resultsListView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ResultsListView_MouseUp);
             // 
-            // searchTextBox
-            // 
-            this.searchTextBox.BackColor = System.Drawing.SystemColors.Window;
-            this.searchTextBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.searchTextBox.Location = new System.Drawing.Point(0, 0);
-            this.searchTextBox.MinimumSize = new System.Drawing.Size(30, 22);
-            this.searchTextBox.Name = "searchTextBox";
-            this.searchTextBox.Size = new System.Drawing.Size(218, 22);
-            this.searchTextBox.TabIndex = 0;
-            this.searchTextBox.Found += new System.EventHandler<Terminals.Forms.Controls.FavoritesFoundEventArgs>(this.FavoritesSearchFound);
-            this.searchTextBox.Canceled += new System.EventHandler(this.SearchTextBox_Canceled);
-            // 
             // SearchPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.resultsListView);
-            this.Controls.Add(this.searchTextBox);
             this.Name = "SearchPanel";
             this.Size = new System.Drawing.Size(218, 318);
             this.ResumeLayout(false);
@@ -96,7 +82,6 @@ namespace Terminals.Forms.Controls
 
         #endregion
 
-        private FavoritesSearchBox searchTextBox;
         private System.Windows.Forms.ImageList protocolsImageList;
         private System.Windows.Forms.ListView resultsListView;
         private System.Windows.Forms.ColumnHeader columnHeader1;
