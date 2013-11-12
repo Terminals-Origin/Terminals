@@ -50,10 +50,12 @@
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.searchTabPage = new System.Windows.Forms.TabPage();
-            this.searchPanel1 = new Terminals.Forms.Controls.SearchPanel();
             this.FavoritesTabPage = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.searchTextBox = new Terminals.Forms.Controls.FavoritesSearchBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.favsTree = new Terminals.Forms.Controls.FavoritesTreeView();
+            this.searchPanel1 = new Terminals.Forms.Controls.SearchPanel();
             this.favoritesTreeMenu = new System.Windows.Forms.ToolStrip();
             this.addButton = new System.Windows.Forms.ToolStripButton();
             this.removeButton = new System.Windows.Forms.ToolStripButton();
@@ -86,8 +88,9 @@
             this.deleteAllFavoritesByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoritesContextMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.searchTabPage.SuspendLayout();
             this.FavoritesTabPage.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.favoritesTreeMenu.SuspendLayout();
             this.HistoryTabPage.SuspendLayout();
             this.historyTreeMenu.SuspendLayout();
@@ -267,70 +270,90 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.searchTabPage);
             this.tabControl1.Controls.Add(this.FavoritesTabPage);
             this.tabControl1.Controls.Add(this.HistoryTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(173, 179);
+            this.tabControl1.Size = new System.Drawing.Size(203, 254);
             this.tabControl1.TabIndex = 1;
-            // 
-            // searchTabPage
-            // 
-            this.searchTabPage.Controls.Add(this.searchPanel1);
-            this.searchTabPage.Location = new System.Drawing.Point(4, 22);
-            this.searchTabPage.Name = "searchTabPage";
-            this.searchTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.searchTabPage.Size = new System.Drawing.Size(165, 153);
-            this.searchTabPage.TabIndex = 2;
-            this.searchTabPage.Text = "Search";
-            this.searchTabPage.UseVisualStyleBackColor = true;
-            // 
-            // searchPanel1
-            // 
-            this.searchPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.searchPanel1.LabelEdit = true;
-            this.searchPanel1.Location = new System.Drawing.Point(3, 3);
-            this.searchPanel1.Name = "searchPanel1";
-            this.searchPanel1.ResultsContextMenu = this.favoritesContextMenu;
-            this.searchPanel1.Size = new System.Drawing.Size(159, 147);
-            this.searchPanel1.TabIndex = 0;
-            this.searchPanel1.ResultListAfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.SearchPanel1_ResultListAfterLabelEdit);
-            this.searchPanel1.ResultListDoubleClick += new System.EventHandler(this.ConnectButton_Click);
-            this.searchPanel1.ResultListKeyUp += new System.Windows.Forms.KeyEventHandler(this.SearchPanel_ResultListKeyUp);
             // 
             // FavoritesTabPage
             // 
-            this.FavoritesTabPage.Controls.Add(this.favsTree);
+            this.FavoritesTabPage.Controls.Add(this.tableLayoutPanel1);
             this.FavoritesTabPage.Controls.Add(this.favoritesTreeMenu);
             this.FavoritesTabPage.Location = new System.Drawing.Point(4, 22);
             this.FavoritesTabPage.Name = "FavoritesTabPage";
             this.FavoritesTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.FavoritesTabPage.Size = new System.Drawing.Size(165, 153);
+            this.FavoritesTabPage.Size = new System.Drawing.Size(195, 228);
             this.FavoritesTabPage.TabIndex = 0;
             this.FavoritesTabPage.Text = "Favorites";
             this.FavoritesTabPage.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.searchTextBox, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 28);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(189, 197);
+            this.tableLayoutPanel1.TabIndex = 3;
+            // 
+            // searchTextBox
+            // 
+            this.searchTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.searchTextBox.Location = new System.Drawing.Point(0, 3);
+            this.searchTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.searchTextBox.Name = "searchTextBox";
+            this.searchTextBox.Size = new System.Drawing.Size(189, 22);
+            this.searchTextBox.TabIndex = 3;
+            this.searchTextBox.Found += new System.EventHandler<Terminals.Forms.Controls.FavoritesFoundEventArgs>(this.searchTextBox_Found);
+            this.searchTextBox.Canceled += new System.EventHandler(this.searchTextBox_Canceled);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.favsTree);
+            this.panel1.Controls.Add(this.searchPanel1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 28);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(189, 169);
+            this.panel1.TabIndex = 4;
             // 
             // favsTree
             // 
             this.favsTree.AllowDrop = true;
             this.favsTree.CausesValidation = false;
-            this.favsTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.favsTree.HideSelection = false;
             this.favsTree.HotTracking = true;
             this.favsTree.ImageIndex = 0;
             this.favsTree.LabelEdit = true;
-            this.favsTree.Location = new System.Drawing.Point(3, 28);
+            this.favsTree.Location = new System.Drawing.Point(30, 83);
+            this.favsTree.Margin = new System.Windows.Forms.Padding(0);
             this.favsTree.Name = "favsTree";
             this.favsTree.SelectedImageIndex = 0;
             this.favsTree.ShowNodeToolTips = true;
-            this.favsTree.Size = new System.Drawing.Size(159, 122);
-            this.favsTree.TabIndex = 2;
-            this.favsTree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.FavsTree_AfterLabelEdit);
-            this.favsTree.DoubleClick += new System.EventHandler(this.FavsTree_DoubleClick);
-            this.favsTree.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FavsTree_KeyUp);
+            this.favsTree.Size = new System.Drawing.Size(122, 70);
+            this.favsTree.TabIndex = 5;
+            // 
+            // searchPanel1
+            // 
+            this.searchPanel1.LabelEdit = true;
+            this.searchPanel1.Location = new System.Drawing.Point(30, 10);
+            this.searchPanel1.Name = "searchPanel1";
+            this.searchPanel1.ResultsContextMenu = this.favoritesContextMenu;
+            this.searchPanel1.Size = new System.Drawing.Size(122, 70);
+            this.searchPanel1.TabIndex = 4;
             // 
             // favoritesTreeMenu
             // 
@@ -344,7 +367,7 @@
             this.collapseButton});
             this.favoritesTreeMenu.Location = new System.Drawing.Point(3, 3);
             this.favoritesTreeMenu.Name = "favoritesTreeMenu";
-            this.favoritesTreeMenu.Size = new System.Drawing.Size(159, 25);
+            this.favoritesTreeMenu.Size = new System.Drawing.Size(189, 25);
             this.favoritesTreeMenu.TabIndex = 1;
             this.favoritesTreeMenu.Text = "Favorites tree menu";
             // 
@@ -416,7 +439,7 @@
             this.HistoryTabPage.Location = new System.Drawing.Point(4, 22);
             this.HistoryTabPage.Name = "HistoryTabPage";
             this.HistoryTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.HistoryTabPage.Size = new System.Drawing.Size(165, 153);
+            this.HistoryTabPage.Size = new System.Drawing.Size(195, 228);
             this.HistoryTabPage.TabIndex = 1;
             this.HistoryTabPage.Text = "History";
             this.HistoryTabPage.UseVisualStyleBackColor = true;
@@ -430,7 +453,7 @@
             this.historyTreeView.Name = "historyTreeView";
             this.historyTreeView.SelectedImageIndex = 0;
             this.historyTreeView.ShowNodeToolTips = true;
-            this.historyTreeView.Size = new System.Drawing.Size(159, 122);
+            this.historyTreeView.Size = new System.Drawing.Size(189, 197);
             this.historyTreeView.TabIndex = 2;
             this.historyTreeView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HistoryTreeView_KeyUp);
             // 
@@ -443,7 +466,7 @@
             this.clearHistoryButton});
             this.historyTreeMenu.Location = new System.Drawing.Point(3, 3);
             this.historyTreeMenu.Name = "historyTreeMenu";
-            this.historyTreeMenu.Size = new System.Drawing.Size(159, 25);
+            this.historyTreeMenu.Size = new System.Drawing.Size(189, 25);
             this.historyTreeMenu.TabIndex = 1;
             this.historyTreeMenu.Text = "History tree menu";
             // 
@@ -490,7 +513,7 @@
             // 
             this.createGroupToolStripMenuItem.Image = global::Terminals.Properties.Resources.tag_blue_add;
             this.createGroupToolStripMenuItem.Name = "createGroupToolStripMenuItem";
-            this.createGroupToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.createGroupToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.createGroupToolStripMenuItem.Text = "New Group";
             this.createGroupToolStripMenuItem.Click += new System.EventHandler(this.NewGroupToolStripMenuItem_Click);
             // 
@@ -498,7 +521,7 @@
             // 
             this.createFavoriteToolStripMenuItem1.Image = global::Terminals.Properties.Resources.add;
             this.createFavoriteToolStripMenuItem1.Name = "createFavoriteToolStripMenuItem1";
-            this.createFavoriteToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.createFavoriteToolStripMenuItem1.Size = new System.Drawing.Size(143, 22);
             this.createFavoriteToolStripMenuItem1.Text = "New Favorite";
             this.createFavoriteToolStripMenuItem1.Click += new System.EventHandler(this.CreateFavoriteToolStripMenuItem_Click);
             // 
@@ -507,7 +530,7 @@
             this.collapseAllToolStripMenuItem.Image = global::Terminals.Properties.Resources.collapse_all;
             this.collapseAllToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.collapseAllToolStripMenuItem.Name = "collapseAllToolStripMenuItem";
-            this.collapseAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.collapseAllToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.collapseAllToolStripMenuItem.Text = "Collapse all";
             this.collapseAllToolStripMenuItem.Click += new System.EventHandler(this.CollapseAllToolStripMenuItem_Click);
             // 
@@ -628,13 +651,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl1);
             this.Name = "FavsList";
-            this.Size = new System.Drawing.Size(173, 179);
+            this.Size = new System.Drawing.Size(203, 254);
             this.Load += new System.EventHandler(this.FavsList_Load);
             this.favoritesContextMenu.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.searchTabPage.ResumeLayout(false);
             this.FavoritesTabPage.ResumeLayout(false);
             this.FavoritesTabPage.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.favoritesTreeMenu.ResumeLayout(false);
             this.favoritesTreeMenu.PerformLayout();
             this.HistoryTabPage.ResumeLayout(false);
@@ -685,7 +709,6 @@
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem duplicateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createFavoriteToolStripMenuItem1;
-        private Forms.Controls.FavoritesTreeView favsTree;
         private System.Windows.Forms.ToolStrip favoritesTreeMenu;
         private System.Windows.Forms.ToolStripButton addButton;
         private System.Windows.Forms.ToolStripButton removeButton;
@@ -699,10 +722,13 @@
         private System.Windows.Forms.ToolStripButton connectHistoryButton;
         private System.Windows.Forms.ToolStripButton collpseHistoryButton;
         private System.Windows.Forms.ToolStripButton clearHistoryButton;
-        private System.Windows.Forms.TabPage searchTabPage;
-        private Forms.Controls.SearchPanel searchPanel1;
         private System.Windows.Forms.ToolStripMenuItem renameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem renameToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem newGroupToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private Forms.Controls.FavoritesSearchBox searchTextBox;
+        private System.Windows.Forms.Panel panel1;
+        private Forms.Controls.FavoritesTreeView favsTree;
+        private Forms.Controls.SearchPanel searchPanel1;
     }
 }

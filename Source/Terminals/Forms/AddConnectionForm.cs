@@ -34,7 +34,8 @@ namespace Terminals
 
         private void AddConnectionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.searchPanel.UnLoadEvents();
+#warning
+           // this.searchPanel.UnLoadEvents();
         }
     }
 }
