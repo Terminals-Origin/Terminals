@@ -120,7 +120,7 @@ namespace Terminals.Forms.Controls
         private IEnumerable<string> SelectValidGroupNames(FavoriteConfigurationElement toImport)
         {
             var validator = new GroupNameValidator(this.persistence);
-            return toImport.TagList.Where(groupName => string.IsNullOrEmpty(validator.ValidateNew(groupName)));
+            return toImport.TagList.Where(groupName => string.IsNullOrEmpty(validator.ValidateNameValue(groupName)));
         }
 
         internal static void AddFavoriteIntoGroups(IFavorite toPerisist, IEnumerable<string> validGroupNames)
