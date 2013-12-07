@@ -221,6 +221,12 @@
     </Compile>
     <Compile Include="Forms\Controls\FavoritesSearch.cs" />
     <Compile Include="Forms\Controls\SearchEventArgs.cs" />
+    <Compile Include="Forms\Controls\SearchPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\SearchPanel.Designer.cs">
+      <DependentUpon>SearchPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Controls\SearchResultsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1082,6 +1088,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Controls\ReconnectingControl.resx">
       <DependentUpon>ReconnectingControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Controls\SearchPanel.resx">
+      <DependentUpon>SearchPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Controls\SearchResultsPanel.resx">
       <DependentUpon>SearchResultsPanel.cs</DependentUpon>

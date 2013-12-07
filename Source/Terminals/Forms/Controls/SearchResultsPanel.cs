@@ -87,7 +87,6 @@ namespace Terminals.Forms.Controls
         public SearchResultsPanel()
         {
             InitializeComponent();
-            
         }
 
         internal void LoadEvents(IPersistence persistence)
@@ -126,17 +125,16 @@ namespace Terminals.Forms.Controls
             this.ResultsContextMenu.Show(this.resultsListView, new Point(e.X, e.Y));
         }
 
-
         /// <summary>
         /// Simulation of all favorites loaded by default
         /// </summary>
-        private void LoadAll()
+        internal void LoadAll()
         {
             SortableList<IFavorite> favorites = this.persistence.Favorites.ToListOrderedByDefaultSorting();
             this.LoadFromFavorites(favorites);
         }
 
-        public void LoadFromFavorites(List<IFavorite> favorites)
+        internal void LoadFromFavorites(List<IFavorite> favorites)
         {
             this.resultsListView.Items.Clear();
             ListViewItem[] transformed = favorites.Select(FavoriteToListViewItem).ToArray();

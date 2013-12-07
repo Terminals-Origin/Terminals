@@ -32,7 +32,7 @@ namespace Terminals
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.searchPanel = new Terminals.Forms.Controls.SearchResultsPanel();
+            this.searchPanel = new Terminals.Forms.Controls.SearchPanel();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -108,6 +108,6 @@ namespace Terminals
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
-        private Forms.Controls.SearchResultsPanel searchPanel;
+        private Forms.Controls.SearchPanel searchPanel;
     }
 }
