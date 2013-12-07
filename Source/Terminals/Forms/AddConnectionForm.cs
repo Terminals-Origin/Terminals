@@ -34,7 +34,7 @@ namespace Terminals
 
         private void AddConnectionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-#warning
+#warning Add missing search panel events deregistration
            // this.searchPanel.UnLoadEvents();
         }
     }

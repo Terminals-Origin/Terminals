@@ -105,6 +105,15 @@ namespace Tests.FilePersisted
             Integrations.Exporters.Export(options);
         }
 
+        [TestMethod]
+        public void ImportingFromXmlFile_ImportsGroups()
+        {
+            // strategy doesnt matter
+            this.ImportDuplicitFavoritesTest(rename, 2);
+            const int EXPECTED_GROUPS = 23;
+            Assert.AreEqual(EXPECTED_GROUPS, this.ImportedGroupsCount, "Groups were not imported from Tags config element.");
+        }
+
         /// <summary>
         /// Tries to import duplicate items into the file persistence renaming duplicate items
         ///</summary>
@@ -137,8 +146,6 @@ namespace Tests.FilePersisted
             InvokeTheImport(toImport, this.Persistence, strategy);
             Assert.AreEqual(expected * expectedSecondImportCount, this.PersistenceFavoritesCount,
                 "Imported favorites count doesn't match after second import");
-            int expectedGroups = this.Persistence.Groups.Count();
-            Assert.AreEqual(expectedGroups, this.ImportedGroupsCount, "Imported groups count doesn't match.");
         }
 
         private static bool InvokeTheImport(List<FavoriteConfigurationElement> toImport, IPersistence persistence,

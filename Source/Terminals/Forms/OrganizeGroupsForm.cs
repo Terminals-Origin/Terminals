@@ -53,7 +53,7 @@ namespace Terminals
             if (string.IsNullOrEmpty(newGroupName))
                 return;
             
-            FavoritesFactory.GetOrAddNewGroup(newGroupName);   
+            FavoritesFactory.GetOrAddNewGroup(this.persistence, newGroupName);   
             this.LoadGroups();
         }
 

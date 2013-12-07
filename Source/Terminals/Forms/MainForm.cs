@@ -1205,7 +1205,7 @@ namespace Terminals
             if (string.IsNullOrEmpty(newGroupName))
                 return;
 
-            IGroup group = FavoritesFactory.GetOrAddNewGroup(newGroupName);
+            IGroup group = FavoritesFactory.GetOrAddNewGroup(this.persistence, newGroupName);
             foreach (TerminalTabControlItem tabControlItem in this.tcTerminals.Items)
             {
                 group.AddFavorite(tabControlItem.Favorite);

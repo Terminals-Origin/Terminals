@@ -126,15 +126,16 @@ namespace Terminals.Data
         /// <summary>
         /// Gets group with required groupName or creates new group which is immediately added to the persistence.
         /// </summary>
+        /// <param name="persistence">Not null persistence, where to search for groups</param>
         /// <param name="groupName">Name of the group to search in persistence.</param>
         /// <returns>Not null value of Group obtained from persistence or newly created group</returns>
-        internal static IGroup GetOrAddNewGroup(string groupName)
+        internal static IGroup GetOrAddNewGroup(IPersistence persistence, string groupName)
         {
-            IGroups groups = Persistence.Instance.Groups;
+            IGroups groups = persistence.Groups;
             IGroup group = groups[groupName];
             if (group == null)
             {
-                group = PersistenceFactory.CreateGroup(groupName);
+                group = persistence.Factory.CreateGroup(groupName);
                 groups.Add(group); 
             }
 
