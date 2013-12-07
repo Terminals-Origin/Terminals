@@ -106,7 +106,7 @@ namespace Terminals.Forms.Controls
         {
             this.ImportToPersistence(context.ToPerisist);
             IEnumerable<string> validGroupNames = this.SelectValidGroupNames(context.ToImport);
-            AddFavoriteIntoGroups(context.ToPerisist, validGroupNames);
+            AddFavoriteIntoGroups(this.persistence, context.ToPerisist, validGroupNames);
             context.Imported = true;
         }
         
@@ -123,11 +123,11 @@ namespace Terminals.Forms.Controls
             return toImport.TagList.Where(groupName => string.IsNullOrEmpty(validator.ValidateNameValue(groupName)));
         }
 
-        internal static void AddFavoriteIntoGroups(IFavorite toPerisist, IEnumerable<string> validGroupNames)
+        internal static void AddFavoriteIntoGroups(IPersistence persistence, IFavorite toPerisist, IEnumerable<string> validGroupNames)
         {
             foreach (string groupName in validGroupNames)
             {
-                IGroup group = FavoritesFactory.GetOrAddNewGroup(groupName);
+                IGroup group = FavoritesFactory.GetOrAddNewGroup(persistence, groupName);
                 group.AddFavorite(toPerisist);
             }
         }

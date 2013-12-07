@@ -101,7 +101,7 @@ namespace Terminals.Updates
 
         private void MoveFavoriteAliasesGroup(GroupConfigurationElement configGroup)
         {
-            IGroup group = FavoritesFactory.GetOrAddNewGroup(configGroup.Name);
+            IGroup group = FavoritesFactory.GetOrAddNewGroup(this.persistence, configGroup.Name);
             List<string> favoriteNames = configGroup.FavoriteAliases.GetFavoriteNames();
             List<IFavorite> groupFavorites = favoriteNames.Select(favoriteName => persistence.Favorites[favoriteName])
                 .Where(favorite => favorite != null).ToList();
@@ -132,7 +132,7 @@ namespace Terminals.Updates
             foreach (FavoriteConfigurationElement favoriteConfigElement in Settings.GetFavorites())
             {
                 IFavorite favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement, this.persistence);
-                ImportWithDialogs.AddFavoriteIntoGroups(favorite, favoriteConfigElement.TagList);
+                ImportWithDialogs.AddFavoriteIntoGroups(this.persistence, favorite, favoriteConfigElement.TagList);
                 this.persistence.Favorites.Add(favorite);
             }
         }
