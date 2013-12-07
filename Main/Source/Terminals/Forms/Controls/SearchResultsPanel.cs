@@ -7,7 +7,7 @@ using Terminals.Data;
 
 namespace Terminals.Forms.Controls
 {
-    internal partial class SearchPanel : UserControl
+    internal partial class SearchResultsPanel : UserControl
     {
         private IPersistence persistence;
 
@@ -84,7 +84,7 @@ namespace Terminals.Forms.Controls
             remove { this.resultsListView.ItemSelectionChanged -= value; }
         }
 
-        public SearchPanel()
+        public SearchResultsPanel()
         {
             InitializeComponent();
             

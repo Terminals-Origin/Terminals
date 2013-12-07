@@ -6,7 +6,7 @@ using Terminals.Data;
 
 namespace Terminals.Forms.Controls
 {
-    partial class SearchPanel
+    partial class SearchResultsPanel
     {
         /// <summary> 
         /// Required designer variable.
@@ -35,7 +35,7 @@ namespace Terminals.Forms.Controls
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchPanel));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchResultsPanel));
             this.protocolsImageList = new System.Windows.Forms.ImageList(this.components);
             this.resultsListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
