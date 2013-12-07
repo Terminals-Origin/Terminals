@@ -19,7 +19,7 @@ namespace Terminals
 
         private void SearchPanel_ResultsSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            btnOk.Enabled = this.searchPanel.SelectedFavorites.Count > 0;
+            this.btnOk.Enabled = this.searchPanel.SelectedFavorites.Count > 0;
         }
 
         private void BtnOk_Click(object sender, EventArgs e)
@@ -34,7 +34,7 @@ namespace Terminals
 
         private void AddConnectionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-             // todo this.searchPanel.UnLoadEvents();
+             this.searchPanel.UnLoadEvents();
         }
     }
 }
