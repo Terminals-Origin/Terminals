@@ -84,7 +84,7 @@
             this.deleteAllFavoritesByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchTextBox = new Terminals.Forms.Controls.FavoritesSearchBox();
             this.favsTree = new Terminals.Forms.Controls.FavoritesTreeView();
-            this.searchPanel1 = new Terminals.Forms.Controls.SearchPanel();
+            this.searchPanel1 = new Terminals.Forms.Controls.SearchResultsPanel();
             this.historyTreeView = new Terminals.Forms.Controls.HistoryTreeView();
             this.favoritesContextMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -735,6 +735,6 @@
         private Forms.Controls.FavoritesSearchBox searchTextBox;
         private System.Windows.Forms.Panel panel1;
         private Forms.Controls.FavoritesTreeView favsTree;
-        private Forms.Controls.SearchPanel searchPanel1;
+        private Forms.Controls.SearchResultsPanel searchPanel1;
     }
 }
