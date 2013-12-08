@@ -141,5 +141,15 @@ namespace Terminals.Forms.Controls
             this.resultsListView.Items.AddRange(transformed);
             this.resultsListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
+
+        internal void BeginRename()
+        {
+            var firstSelected = this.resultsListView.SelectedItems
+                .OfType<ListViewItem>()
+                .FirstOrDefault();
+
+            if (firstSelected != null)
+                firstSelected.BeginEdit();
+        }
     }
 }
