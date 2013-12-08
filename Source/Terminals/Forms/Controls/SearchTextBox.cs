@@ -14,6 +14,7 @@ namespace Terminals.Forms.Controls
         private bool changingState;
         private readonly AutoCompleteStringCollection autocompleteSource = new AutoCompleteStringCollection();
         private readonly System.Threading.Timer timer;
+        private bool alreadyFocused;
 
         /// <summary>
         /// Gets or sets current collection of searched texts used as textbox AutoCompleteSource
@@ -61,6 +62,7 @@ namespace Terminals.Forms.Controls
 
             this.ConfigureAutoComplete();
             this.timer = new System.Threading.Timer(c => this.StartSearch(), null, Timeout.Infinite, Timeout.Infinite);
+            this.valueTextBox.GotFocus += this.ValueTextBox_GotFocus;
         }
 
         private void ConfigureAutoComplete()
@@ -118,7 +120,6 @@ namespace Terminals.Forms.Controls
             this.isSearching = true;
             this.AppendAutoComplete(this.SearchText);
             this.searchButton.Image = Resources.escape;
-            this.valueTextBox.Focus();
             this.FireStart();
         }
 
@@ -142,7 +143,6 @@ namespace Terminals.Forms.Controls
             this.isSearching = false;
             this.searchButton.Image = Resources.search_glyph;
             this.UpdateTextValue();
-            this.valueTextBox.Focus();
             this.FireCancel();
         }
 
@@ -157,6 +157,27 @@ namespace Terminals.Forms.Controls
         {
             if (this.Cancel != null)
                 this.Cancel(this, EventArgs.Empty);
+        }
+
+        private void ValueTextBox_Leave(object sender, EventArgs e)
+        {
+            this.alreadyFocused = false;
+        }
+
+        private void ValueTextBox_GotFocus(object sender, EventArgs e)
+        {
+            if (MouseButtons != MouseButtons.None || this.alreadyFocused)
+                return;
+            this.valueTextBox.SelectAll();
+            this.alreadyFocused = true;
+        }
+
+        private void ValueTextBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (this.alreadyFocused || this.valueTextBox.SelectionLength != 0)
+                return;
+            this.alreadyFocused = true;
+            this.valueTextBox.SelectAll();
         }
     }
 }
