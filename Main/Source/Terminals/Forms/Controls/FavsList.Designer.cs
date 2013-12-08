@@ -604,8 +604,8 @@
             this.searchTextBox.Name = "searchTextBox";
             this.searchTextBox.Size = new System.Drawing.Size(189, 22);
             this.searchTextBox.TabIndex = 3;
-            this.searchTextBox.Found += new System.EventHandler<Terminals.Forms.Controls.FavoritesFoundEventArgs>(this.searchTextBox_Found);
-            this.searchTextBox.Canceled += new System.EventHandler(this.searchTextBox_Canceled);
+            this.searchTextBox.Found += new System.EventHandler<Terminals.Forms.Controls.FavoritesFoundEventArgs>(this.SearchTextBox_Found);
+            this.searchTextBox.Canceled += new System.EventHandler(this.SearchTextBox_Canceled);
             // 
             // favsTree
             // 

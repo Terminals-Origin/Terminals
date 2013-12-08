@@ -42,11 +42,7 @@ namespace Terminals
             Native.Methods.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
 
             this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
-
-         
         }
-
-
 
         #region Private methods
 
@@ -654,7 +650,6 @@ namespace Terminals
             Settings.SaveAndFinishDelayedUpdate();
 
             this.searchTextBox.UnloadEvents();
-            
         }
 
         private void LoadState()
@@ -680,14 +675,14 @@ namespace Terminals
 
         #region searchTextBox events
 
-        private void searchTextBox_Found(object sender, FavoritesFoundEventArgs args)
+        private void SearchTextBox_Found(object sender, FavoritesFoundEventArgs args)
         {
             this.searchPanel1.LoadFromFavorites(args.Favorites);
             this.searchPanel1.Visible = true;
             this.favsTree.Visible = false;
         }
 
-        private void searchTextBox_Canceled(object sender, EventArgs e)
+        private void SearchTextBox_Canceled(object sender, EventArgs e)
         {
             this.searchPanel1.Visible = false;
             this.favsTree.Visible = true;
