@@ -534,7 +534,10 @@ namespace Terminals
 
         private void RenameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.BeginRenameInFavsTree();
+            if (this.searchPanel1.Visible)
+                this.searchPanel1.BeginRename();
+            else
+                this.BeginRenameInFavsTree();
         }
 
         private void BeginRenameInFavsTree()
@@ -628,10 +631,15 @@ namespace Terminals
 
         private void SearchPanel_ResultListKeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Enter)
-                return;
-
-            this.ConnectToSelectedFavorites();
+            switch (e.KeyCode)
+            {
+                case Keys.F2:
+                    this.searchPanel1.BeginRename();
+                    break;
+                case Keys.Enter:
+                    this.ConnectToSelectedFavorites();
+                    break;
+            }
         }
 
         private void ConnectToSelectedFavorites()
