@@ -104,7 +104,8 @@ namespace Terminals
             switch (e.KeyCode)
             {
                 case Keys.Escape:
-                    this.Close();
+                    if (!this.favoritesSearchBox.Focused)
+                        this.Close();
                     break;
                 case Keys.C:
                     if (e.Control)
