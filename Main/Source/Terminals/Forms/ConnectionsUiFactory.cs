@@ -253,6 +253,8 @@ namespace Terminals.Forms
             else
             {
                 String msg = Program.Resources.GetString("SorryTerminalswasunabletoconnecttotheremotemachineTryagainorcheckthelogformoreinformation");
+                if (!string.IsNullOrEmpty(conn.LastError))
+                    msg = msg + "\r\n\r\nDetails:\r\n" + conn.LastError;
                 MessageBox.Show(msg);
                 this.terminalsControler.RemoveAndUnSelect(terminalTabPage);
             }

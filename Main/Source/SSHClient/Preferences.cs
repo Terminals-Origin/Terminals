@@ -14,6 +14,7 @@ namespace SSHClient
 			
 			buttonPublicKey.Checked = true;
 			buttonSSH2.Checked = true;
+            
 		}
 		
 		public KeysSection Keys
@@ -131,9 +132,12 @@ namespace SSHClient
         {
         	// TODO SSH1 ?
             string tag = (string)comboBoxKey.SelectedItem;
-            string keytext = keysSection.Keys[tag].Key;
-            SSH2UserAuthKey key = SSH2UserAuthKey.FromBase64String(keytext);
-            openSSHTextBox.Text = key.PublicPartInOpenSSHStyle()+" "+tag;
+            if (!string.IsNullOrEmpty(tag))
+            {
+                string keytext = keysSection.Keys[tag].Key;
+                SSH2UserAuthKey key = SSH2UserAuthKey.FromBase64String(keytext);
+                openSSHTextBox.Text = key.PublicPartInOpenSSHStyle() + " " + tag;
+            }
         }
 
 		void ButtonSSH1CheckedChanged(object sender, EventArgs e)
@@ -148,5 +152,50 @@ namespace SSHClient
 				buttonGenerateKey.Text = "New";				
 			}
 		}
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            using (System.Windows.Forms.OpenFileDialog dlg = new OpenFileDialog())
+            {
+                string home = System.Environment.GetEnvironmentVariable("HOME");
+                if(string.IsNullOrEmpty(home)) home = string.Format("{0}{1}", System.Environment.GetEnvironmentVariable("HOMEDRIVE"), System.Environment.GetEnvironmentVariable("HOMEPATH"));
+                var sshFolder = System.IO.Path.Combine(home, ".ssh");
+                if (System.IO.Directory.Exists(sshFolder)) home = sshFolder;
+
+                dlg.InitialDirectory = home;
+                dlg.CheckFileExists = true;
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    this.ssh2PrivateKeyPath.Text = dlg.FileName;
+                    buttonPublicKey.Checked = true;
+                    openSSHTextBox.Text = "";
+                    comboBoxKey.SelectedIndex = -1;
+                    comboBoxKey.Text = "";
+                }
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            comboBoxKey.SelectedIndex = -1;
+            openSSHTextBox.Text = "";
+        }
+
+        public string SSHKeyFile { get { return this.ssh2PrivateKeyPath.Text; } set
+        {
+            this.ssh2PrivateKeyPath.Text = value;
+            if (!string.IsNullOrEmpty(value))
+            {
+                this.comboBoxKey.SelectedIndex = -1;
+                this.KeyTag = "";
+                this.openSSHTextBox.Text = "";
+            }
+        } }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            var msg = "This key needs to be a 'ssh.com' key.  Use PuTTY Key Generator to convert your existing keyfiles to this format.";
+            MessageBox.Show(msg);
+        }
 	}
 }

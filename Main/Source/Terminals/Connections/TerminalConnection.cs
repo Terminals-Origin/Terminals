@@ -79,6 +79,7 @@ namespace Terminals.Connections
             catch (Exception exc)
             {
                 Logging.Fatal(String.Format("Connecting to {0} Connection", protocol), exc);
+                LastError = exc.Message;
                 return false;
             }
         }
@@ -132,8 +133,8 @@ namespace Terminals.Connections
 
             if (keyConfigElement != null)
                 key = keyConfigElement.Key;
-
-            this.sshProtocol.setProtocolParams(options.AuthMethod, security.UserName, security.Password, key, options.SSH1);
+            
+            this.sshProtocol.setProtocolParams(options.AuthMethod, security.UserName, security.Password, key, options.SSH1, options.SSHKeyFile);
 
             this.sshProtocol.Connect(client);
             this.connected = true; // SSH will throw if fails

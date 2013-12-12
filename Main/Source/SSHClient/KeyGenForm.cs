@@ -78,6 +78,7 @@ namespace SSHClient
             KeyGenThread t = new KeyGenThread(this, algorithm, Int32.Parse(bitCountBox.Text));
             _mmhandler = t.OnMouseMove;
             progressBarGenerate.MouseMove += _mmhandler;
+            this.MouseMove += _mmhandler;
             t.Start();
         }
 

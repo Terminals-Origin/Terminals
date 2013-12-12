@@ -18,6 +18,7 @@ namespace Terminals.Data
             set { authMethod = value; }
         }
 
+        public string SSHKeyFile { get; set; }
         private string certificateKey;
         /// <summary>
         /// Security key used to authenticate
@@ -48,7 +49,8 @@ namespace Terminals.Data
                     AuthMethod = this.AuthMethod,
                     CertificateKey = this.CertificateKey,
                     SSH1 = this.SSH1,
-                    Console = this.Console.Copy2()
+                    Console = this.Console.Copy2(),
+                    SSHKeyFile = this.SSHKeyFile
                 };
         }
 
@@ -57,6 +59,7 @@ namespace Terminals.Data
             this.SSH1 = source.SSH1;
             this.AuthMethod = source.AuthMethod;
             this.CertificateKey = source.KeyTag;
+            this.SSHKeyFile = source.SSHKeyFile;
         }
 
         internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
@@ -64,6 +67,7 @@ namespace Terminals.Data
             destination.SSH1 = this.SSH1;
             destination.AuthMethod = this.AuthMethod;
             destination.KeyTag = this.CertificateKey;
+            destination.SSHKeyFile = this.SSHKeyFile;
         }
     }
 }

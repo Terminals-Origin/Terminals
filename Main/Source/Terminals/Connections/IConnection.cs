@@ -14,5 +14,7 @@ namespace Terminals.Connections
         void ChangeDesktopSize(DesktopSize Size);
         TerminalServer Server { get; set; }
         bool IsTerminalServer { get; set; }
+
+        string LastError { get; set; }
     }
 }

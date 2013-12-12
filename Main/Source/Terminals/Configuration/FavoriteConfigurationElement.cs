@@ -224,7 +224,8 @@ namespace Terminals
                                                        VMRCReducedColorsMode = this.VMRCReducedColorsMode,
                                                        VncAutoScale = this.VncAutoScale,
                                                        VncDisplayNumber = this.VncDisplayNumber,
-                                                       VncViewOnly = this.VncViewOnly
+                                                       VncViewOnly = this.VncViewOnly,
+                                                       SSHKeyFile = this.SSHKeyFile
                                                    };
             return fav;
 
@@ -389,6 +390,18 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("sSHKeyFile", IsRequired = false, DefaultValue = "")]
+        public String SSHKeyFile
+        {
+            get
+            {
+                return (String)this["SSHKeyFile"];
+            }
+            set
+            {
+                this["SSHKeyFile"] = value;
+            }
+        }
         [ConfigurationProperty("securityStartProgram", IsRequired = false, DefaultValue = "")]
         public String SecurityStartProgram
         {

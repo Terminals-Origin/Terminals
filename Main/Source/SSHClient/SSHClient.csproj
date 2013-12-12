@@ -94,6 +94,11 @@
     <Compile Include="Preferences.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Protocol.cs" />
     <Compile Include="SSH2UserAuthKey.cs" />
     <Compile Include="SShTraceLissener.cs" />
@@ -105,6 +110,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Preferences.resx">
       <DependentUpon>Preferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -129,5 +138,8 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\help.png" />
   </ItemGroup>
 </Project>
