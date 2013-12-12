@@ -743,6 +743,8 @@ namespace Terminals
             this.SSHPreferences.AuthMethod = sshOptions.AuthMethod;
             this.SSHPreferences.KeyTag = sshOptions.CertificateKey;
             this.SSHPreferences.SSH1 = sshOptions.SSH1;
+
+            this.SSHPreferences.SSHKeyFile = sshOptions.SSHKeyFile;
         }
 
         private void FillDisplayControls(IFavorite favorite)
@@ -1044,6 +1046,8 @@ namespace Terminals
             sshOptions.AuthMethod = this.SSHPreferences.AuthMethod;
             sshOptions.CertificateKey = this.SSHPreferences.KeyTag;
             sshOptions.SSH1 = this.SSHPreferences.SSH1;
+
+            sshOptions.SSHKeyFile = this.SSHPreferences.SSHKeyFile;
         }
 
         private void FillFavoriteICAOPtions(IFavorite favorite)

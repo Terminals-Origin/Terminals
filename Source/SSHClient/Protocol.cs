@@ -9,6 +9,7 @@
 using System;
 using Granados;
 using System.Net.Sockets;
+using Granados.PKI;
 
 namespace SSHClient
 {
@@ -78,6 +79,8 @@ namespace SSHClient
             	_params.TerminalHeight = value;
             }
         }
+
+        public string SSH2PrivateKeyFile { get; set; }
 		#endregion
 		#region Public Enums
 		#endregion
@@ -116,11 +119,12 @@ namespace SSHClient
 			string userName,
 			string pass,
 			string key,
-			bool SSH1)
+			bool SSH1, string SSH2PrivateKeyFile)
 		{
+		    this.SSH2PrivateKeyFile = SSH2PrivateKeyFile;
             // each following check can force to different authentication
             authMethod = CheckUserName(userName, authMethod);
-		    authMethod = CheckPublickKey(key, authMethod);
+            //authMethod = CheckPublickKey(key, authMethod);
             authMethod = CheckPassword(pass, authMethod);
 		    AssingAuthentization(authMethod);
             ChooseProtocolVersion(SSH1);
@@ -139,14 +143,15 @@ namespace SSHClient
             return authMethod;
         }
 
-	    private AuthMethod CheckPublickKey(String key, AuthMethod authMethod)
+        private AuthMethod CheckPublickKey(String key, AuthMethod authMethod, string SSH2PrivateKeyFile)
         {
             if (authMethod == AuthMethod.PublicKey)
             {
-                if (string.IsNullOrEmpty(key))
+                if (string.IsNullOrEmpty(key) && string.IsNullOrEmpty(SSH2PrivateKeyFile))
                     return AuthMethod.Password;
-                
-                this.Key = SSH2UserAuthKey.FromBase64String(key).toSECSHStyle("");
+
+                if (string.IsNullOrEmpty(SSH2PrivateKeyFile))
+                    this.Key = SSH2UserAuthKey.FromBase64String(key).toSECSHStyle("");
             }
 
             return authMethod;
@@ -201,6 +206,7 @@ namespace SSHClient
 		public void Connect (Socket s)
 		{
 			_params.WindowSize = 0x1000;
+		    _params.IdentityFile = SSH2PrivateKeyFile;
 			_conn = SSHConnection.Connect(_params, this, s);
 			_pf = _conn.OpenShell(this);
 			SSHConnectionInfo ci = _conn.ConnectionInfo;

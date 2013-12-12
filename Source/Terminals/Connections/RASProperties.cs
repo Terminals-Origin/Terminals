@@ -7,6 +7,7 @@ namespace Terminals.Connections
 {
     internal partial class RASProperties : UserControl, IConnection
     {
+        public string LastError { get; set; }
         private RASConnection rASConnection;
         private Timer timer;
         private MethodInvoker logMiv;

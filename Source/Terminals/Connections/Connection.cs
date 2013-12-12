@@ -12,7 +12,7 @@ namespace Terminals.Connections
     internal abstract class Connection : Control, IConnection
     {
         #region IConnection Members
-
+        public string LastError { get; set; }
         private TerminalServer server;
         private bool isTerminalServer = false;
         private IFavorite favorite;
