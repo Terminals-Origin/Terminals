@@ -84,6 +84,7 @@ namespace Terminals.CaptureManager
 
         private void LoadRoot()
         {
+            CaptureManager.EnsureRoot();
             this.root.Tag = new DirectoryInfo(CaptureManager.CaptureRoot);
             AssignImageIndexes(this.root);
             

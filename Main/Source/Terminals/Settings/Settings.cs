@@ -561,9 +561,9 @@ namespace Terminals.Configuration
             {
                 string root = GetSection().CaptureRoot;
                 if (String.IsNullOrEmpty(root))
-                    root = GetDefaultCaptureRootDirectory();
+                    root = FileLocations.DefaultCaptureRootDirectory;
 
-                return EnsureCaptureDirectory(root);
+                return root;
             }
 
             set
@@ -571,45 +571,6 @@ namespace Terminals.Configuration
                 GetSection().CaptureRoot = value;
                 SaveImmediatelyIfRequested();
             }
-        }
-
-        private static string EnsureCaptureDirectory(string root)
-        {
-            try
-            {
-                if (!Directory.Exists(root))
-                {
-                    Logging.Info(String.Format("Capture root folder does not exist:{0}. Lets try to create it now.", root));
-                    Directory.CreateDirectory(root);
-                }
-            }
-            catch (Exception exception)
-            {
-                root = GetDefaultCaptureRootDirectory();
-                string logMessage = String.Format("Capture root could not be created, set it to the default value : {0}", root);
-                Logging.Error(logMessage, exception);
-                SwitchToDefaultDirectory(root);
-            }
-
-            return root;
-        }
-
-        private static void SwitchToDefaultDirectory(string defaultRoot)
-        {
-            try
-            {
-                Directory.CreateDirectory(defaultRoot);
-                CaptureRoot = defaultRoot;
-            }
-            catch (Exception exception)
-            {
-                Logging.Error(@"Capture root could not be created again. Abort!", exception);
-            }
-        }
-
-        private static string GetDefaultCaptureRootDirectory()
-        {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Terminals Captures");
         }
 
         #endregion

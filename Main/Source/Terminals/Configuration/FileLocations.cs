@@ -86,6 +86,15 @@ namespace Terminals.Configuration
             get { return GetFullPath(HISTORY_FILENAME); }
         }
 
+        internal static string DefaultCaptureRootDirectory
+        {
+            get
+            {
+                string rootDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                return Path.Combine(rootDirectory, "Terminals Captures");
+            }
+        }
+
         /// <summary>
         /// Gets full path to the Sql migration scripts directory in application install directory
         /// </summary>
