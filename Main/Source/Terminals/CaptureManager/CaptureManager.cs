@@ -7,7 +7,7 @@ using Terminals.Configuration;
 
 namespace Terminals.CaptureManager
 {
-    internal class CaptureManager
+    internal static class CaptureManager
     {
         public static string CaptureRoot
         {
@@ -15,24 +15,20 @@ namespace Terminals.CaptureManager
             {
                 return Settings.CaptureRoot;
             }
-
-            set
-            {
-                Settings.CaptureRoot = value;
-            }
         }
 
-        public static Captures LoadCaptures(string Path)
+        public static Captures LoadCaptures(string path)
         {
-            Captures c = new Captures();
-            DirectoryInfo dir = new DirectoryInfo(Path);
+            var captures = new Captures();
+            var dir = new DirectoryInfo(path);
+
             foreach (FileInfo cap in GetFiles(dir))
             {
-                Capture newCap = new Capture(cap.FullName);
-                c.Add(newCap);
+                var newCap = new Capture(cap.FullName);
+                captures.Add(newCap);
             }
 
-            return c;
+            return captures;
         }
 
         private static FileInfo[] GetFiles(DirectoryInfo dir)
@@ -47,10 +43,10 @@ namespace Terminals.CaptureManager
             }
         }
 
-        public static Capture PerformScreenCapture(TabControl.TabControl tab)
+        internal static void PerformScreenCapture(TabControl.TabControl tab)
         {
-            TerminalTabControlItem activeTab = tab.SelectedItem as TerminalTabControlItem;
-            string name = "";
+            var activeTab = tab.SelectedItem as TerminalTabControlItem;
+            string name = string.Empty;
             if (activeTab != null && activeTab.Favorite != null && !string.IsNullOrEmpty(activeTab.Favorite.Name))
             {
                 name = activeTab.Favorite.Name + "-";
@@ -62,16 +58,14 @@ namespace Terminals.CaptureManager
 
             if (Settings.EnableCaptureToClipboard)
                 Clipboard.SetImage(bmp);
-
-            return null;
         }
 
-        public static List<DirectoryInfo> LoadCaptureFolder(string Path)
+        public static List<DirectoryInfo> LoadCaptureFolder(string path)
         {
-            if (!Directory.Exists(Path))
+            if (!Directory.Exists(path))
                 return new List<DirectoryInfo>();
 
-            DirectoryInfo dir = new DirectoryInfo(Path);
+            DirectoryInfo dir = new DirectoryInfo(path);
             return new List<DirectoryInfo>(dir.GetDirectories());
         }
 
