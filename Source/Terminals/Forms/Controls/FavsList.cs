@@ -80,7 +80,7 @@ namespace Terminals
 
         private void HistoryTreeView_DoubleClick(object sender, EventArgs e)
         {
-            this.StartConnection(this.historyTreeView);
+            this.StartConnectionByDoubleClick(this.historyTreeView, e);
         }
 
         private void PingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -438,7 +438,15 @@ namespace Terminals
 
         private void FavsTree_DoubleClick(object sender, EventArgs e)
         {
-            this.StartConnection(favsTree);
+            this.StartConnectionByDoubleClick(favsTree, e);
+        }
+
+        private void StartConnectionByDoubleClick(TreeView treeView, EventArgs e)
+        {
+            Point doubleClickLocation = ((MouseEventArgs)e).Location;
+            TreeNode doubleClickedNode = treeView.GetNodeAt(doubleClickLocation);
+            if (doubleClickedNode == treeView.SelectedNode)
+                this.StartConnection(treeView);
         }
 
         private void StartConnection(TreeView tv)
