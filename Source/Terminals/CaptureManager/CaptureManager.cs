@@ -8,7 +8,7 @@ using Terminals.Configuration;
 namespace Terminals.CaptureManager
 {
     internal class CaptureManager
-    {  
+    {
         public static string CaptureRoot
         {
             get
@@ -26,7 +26,7 @@ namespace Terminals.CaptureManager
         {
             Captures c = new Captures();
             DirectoryInfo dir = new DirectoryInfo(Path);
-            foreach (FileInfo cap in dir.GetFiles("*.png"))
+            foreach (FileInfo cap in GetFiles(dir))
             {
                 Capture newCap = new Capture(cap.FullName);
                 c.Add(newCap);
@@ -35,12 +35,23 @@ namespace Terminals.CaptureManager
             return c;
         }
 
+        private static FileInfo[] GetFiles(DirectoryInfo dir)
+        {
+            try
+            {
+                return dir.GetFiles("*.png");
+            }
+            catch (Exception)
+            {
+                return new FileInfo[0];
+            }
+        }
+
         public static Capture PerformScreenCapture(TabControl.TabControl tab)
         {
-
             TerminalTabControlItem activeTab = tab.SelectedItem as TerminalTabControlItem;
             string name = "";
-            if (activeTab != null && activeTab.Favorite!=null && !string.IsNullOrEmpty(activeTab.Favorite.Name))
+            if (activeTab != null && activeTab.Favorite != null && !string.IsNullOrEmpty(activeTab.Favorite.Name))
             {
                 name = activeTab.Favorite.Name + "-";
             }
@@ -57,11 +68,34 @@ namespace Terminals.CaptureManager
 
         public static List<DirectoryInfo> LoadCaptureFolder(string Path)
         {
-            if (!Directory.Exists(Path)) 
-                return null;
+            if (!Directory.Exists(Path))
+                return new List<DirectoryInfo>();
 
             DirectoryInfo dir = new DirectoryInfo(Path);
             return new List<DirectoryInfo>(dir.GetDirectories());
+        }
+
+        internal static void EnsureRoot()
+        {
+            try
+            {
+                TryEnsureRoot();
+            }
+            catch (Exception exception)
+            {
+                string logMessage = String.Format("Capture root could not be created, set it to the default value : {0}", CaptureRoot);
+                Logging.Error(logMessage, exception);
+            }
+        }
+
+        private static void TryEnsureRoot()
+        {
+            string root = CaptureRoot;
+            if (Directory.Exists(root))
+                return;
+
+            Logging.Info(String.Format("Capture root folder does not exist:{0}. Lets try to create it now.", root));
+            Directory.CreateDirectory(root);
         }
     }
 }
