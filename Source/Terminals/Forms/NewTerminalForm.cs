@@ -513,7 +513,12 @@ namespace Terminals
         {
             this.LoadMRUs();
             this.SetOkButtonState();
-            this.SSHPreferences.Keys = Settings.SSHKeys;
+
+            try { this.SSHPreferences.Keys = Settings.SSHKeys; }
+            catch (System.Security.Cryptography.CryptographicException)
+            {
+                Logging.Error("A CryptographicException occured on decrypting SSH keys. Favorite credentials possibly encrypted by another user. Ignore and continue.");
+            }
 
             // move following line down to default value only once smart card access worked out.
             this.cmbTSGWLogonMethod.SelectedIndex = 0;
