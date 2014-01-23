@@ -26,6 +26,8 @@ namespace Terminals
 
         private FavoriteRenameCommand renameCommand;
 
+        private bool isRenaming;
+
         internal IPersistence Persistence { get; set; }
 
         private IFavorites PersistedFavorites
@@ -531,11 +533,12 @@ namespace Terminals
         {
             switch (e.KeyCode)
             {
-                case Keys.Enter:
-                    this.StartConnection(this.favsTree);
-                    break;
                 case Keys.F2:
                     this.BeginRenameInFavsTree();
+                    break;
+                case Keys.Enter:
+                     if (!this.isRenaming)
+                         this.StartConnection(this.favsTree);
                     break;
             }
         }
@@ -627,14 +630,24 @@ namespace Terminals
 
             bool isValid = this.renameCommand.ValidateNewName(favorite, newName);
             if (isValid)
+            {
+                this.isRenaming = true;
                 this.SheduleRename(favorite, newName);
+            }
+
             return !isValid;
         }
 
         private void SheduleRename(IFavorite favorite, string newName)
         {
             var favoriteArguments = new object[] { favorite, newName };
-            this.favsTree.BeginInvoke(new Action<IFavorite, string>(this.renameCommand.ApplyRename), favoriteArguments);
+            this.favsTree.BeginInvoke(new Action<IFavorite, string>(this.ApplyRename), favoriteArguments);
+        }
+
+        private void ApplyRename(IFavorite favorite, string newName)
+        {
+            this.renameCommand.ApplyRename(favorite, newName);
+            this.isRenaming = false;
         }
 
         private void SearchPanel_ResultListKeyUp(object sender, KeyEventArgs e)
@@ -645,7 +658,8 @@ namespace Terminals
                     this.searchPanel1.BeginRename();
                     break;
                 case Keys.Enter:
-                    this.ConnectToSelectedFavorites();
+                    if(!this.isRenaming)
+                        this.ConnectToSelectedFavorites();
                     break;
             }
         }
