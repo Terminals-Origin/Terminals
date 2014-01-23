@@ -34,13 +34,13 @@ namespace Terminals
             this.panel2 = new System.Windows.Forms.Panel();
             this.gridGroups = new System.Windows.Forms.DataGridView();
             this.colGroupName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.groupsToolStrip = new System.Windows.Forms.ToolStrip();
             this.tsbAddGroup = new System.Windows.Forms.ToolStripButton();
             this.tsbDeleteGroup = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.gridGroupFavorites = new System.Windows.Forms.DataGridView();
             this.colFavorite = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.favoritesToolStrip = new System.Windows.Forms.ToolStrip();
             this.tsbAddConnection = new System.Windows.Forms.ToolStripButton();
             this.tsbDeleteConnection = new System.Windows.Forms.ToolStripButton();
             this.panel3.SuspendLayout();
@@ -50,10 +50,10 @@ namespace Terminals
             this.splitContainer1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridGroups)).BeginInit();
-            this.toolStrip1.SuspendLayout();
+            this.groupsToolStrip.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridGroupFavorites)).BeginInit();
-            this.toolStrip2.SuspendLayout();
+            this.favoritesToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel3
@@ -89,27 +89,28 @@ namespace Terminals
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.panel1);
-            this.splitContainer1.Size = new System.Drawing.Size(389, 353);
+            this.splitContainer1.Size = new System.Drawing.Size(389, 316);
             this.splitContainer1.SplitterDistance = 186;
             this.splitContainer1.SplitterWidth = 6;
-            this.splitContainer1.TabIndex = 6;
+            this.splitContainer1.TabIndex = 7;
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.gridGroups);
-            this.panel2.Controls.Add(this.toolStrip1);
+            this.panel2.Controls.Add(this.groupsToolStrip);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(3);
-            this.panel2.Size = new System.Drawing.Size(186, 353);
+            this.panel2.Size = new System.Drawing.Size(186, 316);
             this.panel2.TabIndex = 4;
             // 
             // gridGroups
             // 
             this.gridGroups.AllowUserToAddRows = false;
             this.gridGroups.AllowUserToDeleteRows = false;
+            this.gridGroups.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.gridGroups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridGroups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colGroupName});
@@ -119,7 +120,7 @@ namespace Terminals
             this.gridGroups.Name = "gridGroups";
             this.gridGroups.RowHeadersVisible = false;
             this.gridGroups.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridGroups.Size = new System.Drawing.Size(180, 322);
+            this.gridGroups.Size = new System.Drawing.Size(180, 285);
             this.gridGroups.TabIndex = 4;
             this.gridGroups.SelectionChanged += new System.EventHandler(this.GridGroups_SelectedRowChanged);
             // 
@@ -131,16 +132,17 @@ namespace Terminals
             this.colGroupName.Name = "colGroupName";
             this.colGroupName.ReadOnly = true;
             // 
-            // toolStrip1
+            // groupsToolStrip
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.groupsToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.groupsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbAddGroup,
             this.tsbDeleteGroup});
-            this.toolStrip1.Location = new System.Drawing.Point(3, 3);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(180, 25);
-            this.toolStrip1.TabIndex = 3;
-            this.toolStrip1.Text = "toolStrip1";
+            this.groupsToolStrip.Location = new System.Drawing.Point(3, 3);
+            this.groupsToolStrip.Name = "groupsToolStrip";
+            this.groupsToolStrip.Size = new System.Drawing.Size(180, 25);
+            this.groupsToolStrip.TabIndex = 3;
+            this.groupsToolStrip.Text = "toolStrip1";
             // 
             // tsbAddGroup
             // 
@@ -165,19 +167,20 @@ namespace Terminals
             // panel1
             // 
             this.panel1.Controls.Add(this.gridGroupFavorites);
-            this.panel1.Controls.Add(this.toolStrip2);
+            this.panel1.Controls.Add(this.favoritesToolStrip);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(3);
-            this.panel1.Size = new System.Drawing.Size(197, 353);
+            this.panel1.Size = new System.Drawing.Size(197, 316);
             this.panel1.TabIndex = 5;
             // 
             // gridGroupFavorites
             // 
             this.gridGroupFavorites.AllowUserToAddRows = false;
             this.gridGroupFavorites.AllowUserToDeleteRows = false;
+            this.gridGroupFavorites.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.gridGroupFavorites.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridGroupFavorites.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFavorite});
@@ -186,7 +189,7 @@ namespace Terminals
             this.gridGroupFavorites.Name = "gridGroupFavorites";
             this.gridGroupFavorites.RowHeadersVisible = false;
             this.gridGroupFavorites.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridGroupFavorites.Size = new System.Drawing.Size(191, 322);
+            this.gridGroupFavorites.Size = new System.Drawing.Size(191, 285);
             this.gridGroupFavorites.TabIndex = 7;
             // 
             // colFavorite
@@ -197,16 +200,17 @@ namespace Terminals
             this.colFavorite.Name = "colFavorite";
             this.colFavorite.ReadOnly = true;
             // 
-            // toolStrip2
+            // favoritesToolStrip
             // 
-            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.favoritesToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.favoritesToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbAddConnection,
             this.tsbDeleteConnection});
-            this.toolStrip2.Location = new System.Drawing.Point(3, 3);
-            this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(191, 25);
-            this.toolStrip2.TabIndex = 6;
-            this.toolStrip2.Text = "toolStrip2";
+            this.favoritesToolStrip.Location = new System.Drawing.Point(3, 3);
+            this.favoritesToolStrip.Name = "favoritesToolStrip";
+            this.favoritesToolStrip.Size = new System.Drawing.Size(191, 25);
+            this.favoritesToolStrip.TabIndex = 6;
+            this.favoritesToolStrip.Text = "toolStrip2";
             // 
             // tsbAddConnection
             // 
@@ -235,8 +239,8 @@ namespace Terminals
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(389, 353);
-            this.Controls.Add(this.panel3);
             this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.panel3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(380, 380);
@@ -253,13 +257,13 @@ namespace Terminals
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridGroups)).EndInit();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.groupsToolStrip.ResumeLayout(false);
+            this.groupsToolStrip.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridGroupFavorites)).EndInit();
-            this.toolStrip2.ResumeLayout(false);
-            this.toolStrip2.PerformLayout();
+            this.favoritesToolStrip.ResumeLayout(false);
+            this.favoritesToolStrip.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -272,13 +276,13 @@ namespace Terminals
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridView gridGroups;
         private System.Windows.Forms.DataGridViewTextBoxColumn colGroupName;
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip groupsToolStrip;
         private System.Windows.Forms.ToolStripButton tsbAddGroup;
         private System.Windows.Forms.ToolStripButton tsbDeleteGroup;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView gridGroupFavorites;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFavorite;
-        private System.Windows.Forms.ToolStrip toolStrip2;
+        private System.Windows.Forms.ToolStrip favoritesToolStrip;
         private System.Windows.Forms.ToolStripButton tsbAddConnection;
         private System.Windows.Forms.ToolStripButton tsbDeleteConnection;
 
