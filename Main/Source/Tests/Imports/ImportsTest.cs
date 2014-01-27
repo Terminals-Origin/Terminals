@@ -10,8 +10,9 @@ using Terminals.Forms.Controls;
 using Terminals.Integration;
 using Terminals.Integration.Export;
 using Terminals.Integration.Import;
+using Tests.FilePersisted;
 
-namespace Tests.FilePersisted
+namespace Tests.Imports
 {
     [TestClass]
     [DeploymentItem(@"..\Resources\TestData\" + DUPLICIT_ITEMS_FILE)]

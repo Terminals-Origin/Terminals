@@ -124,6 +124,7 @@
     <Compile Include="FilePersisted\GroupsTestLab.cs" />
     <Compile Include="FilePersisted\TestFileWatch.cs" />
     <Compile Include="FilePersisted\TestImportUi.cs" />
+    <Compile Include="Imports\RdcManImporterTests.cs" />
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />
     <Compile Include="FilePersisted\SearchEngineTest.cs" />
     <Compile Include="SqlPersisted\ComparersTest.cs" />
@@ -131,7 +132,7 @@
     <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />
     <Compile Include="FilePersisted\FilesHistoryTest.cs" />
     <Compile Include="FilePersisted\InjectionDateTime.cs" />
-    <Compile Include="FilePersisted\ImportsTest.cs" />
+    <Compile Include="Imports\ImportsTest.cs" />
     <Compile Include="Passwords\PasswordTests.cs" />
     <Compile Include="SqlPersisted\ConcurentUpdatesTest.cs" />
     <Compile Include="SqlPersisted\ConnectionsHistoryTest.cs" />
@@ -238,6 +239,14 @@
     </None>
     <None Include="..\..\Resources\TestData\NoMasterTerminals.config">
       <Link>NoMasterTerminals.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Resources\TestData\RdcManGroupsAndFavorites.rdg">
+      <Link>RdcManGroupsAndFavorites.rdg</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Resources\TestData\RdcManGroupsEmpty.rdg">
+      <Link>RdcManGroupsEmpty.rdg</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="..\..\Resources\TestData\SecuredTerminals.config">
