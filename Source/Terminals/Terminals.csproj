@@ -275,6 +275,7 @@
       <DependentUpon>YesNoDisableForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\YesNoDisableResult.cs" />
+    <Compile Include="Integration\Import\ImportRdcMan.cs" />
     <Compile Include="Integration\Import\PropertyReader.cs" />
     <Compile Include="Network\AD\ActiveDirectorySearchParams.cs" />
     <Compile Include="Network\RemoteManagement.cs" />
