@@ -36,9 +36,11 @@ namespace Terminals.Integration.Import
         private static List<FavoriteConfigurationElement> TryImport(string filename)
         {
             var importedItems = new List<FavoriteConfigurationElement>();
-            var document = XDocument.Load(filename);
-            var rootProperties = document.Root.Descendants("properties");
-            var groups = document.Root.Descendants("group");
+            XDocument document = XDocument.Load(filename);
+            var root = new RdcManDocument(document.Root);
+
+            var rootProperties = root.Properties;
+            var groups = root.Groups;
 
             return importedItems;
         }

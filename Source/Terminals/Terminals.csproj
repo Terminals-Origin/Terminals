@@ -276,6 +276,9 @@
     </Compile>
     <Compile Include="Forms\YesNoDisableResult.cs" />
     <Compile Include="Integration\Import\ImportRdcMan.cs" />
+    <Compile Include="Integration\Import\RdcManDocument.cs" />
+    <Compile Include="Integration\Import\RdcManGroup.cs" />
+    <Compile Include="Integration\Import\RdcManProperties.cs" />
     <Compile Include="Integration\Import\PropertyReader.cs" />
     <Compile Include="Network\AD\ActiveDirectorySearchParams.cs" />
     <Compile Include="Network\RemoteManagement.cs" />
