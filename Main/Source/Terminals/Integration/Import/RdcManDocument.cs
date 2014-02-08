@@ -8,6 +8,8 @@ namespace Terminals.Integration.Import
     {
         private readonly XElement root;
 
+        private readonly RdcManProperties properties;
+
         /// <summary>
         /// Gets true, if the file contains version element with value "2.2".
         /// Other versions were not tested.
@@ -16,17 +18,8 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                XElement version = this.root.Element("version");
+                XElement version = this.root.GetVersionElement();
                 return version != null && version.Value == "2.2";
-            }
-        }
-
-        internal RdcManProperties Properties
-        {
-            get
-            {
-                XElement current = this.File.Element("properties");
-                return new RdcManProperties(current);
             }
         }
 
@@ -35,7 +28,16 @@ namespace Terminals.Integration.Import
             get
             {
                 return this.File.Elements("group")
-                    .Select(group => new RdcManGroup(group));
+                    .Select(group => new RdcManGroup(group, this.properties));
+            }
+        }
+
+        internal IEnumerable<RdcManServer> Servers
+        {
+            get
+            {
+                return this.File.GetServerElements()
+                    .Select(server => new RdcManServer(server, this.properties));
             }
         }
 
@@ -43,19 +45,22 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.root.Element("file");
+                return this.root.GetFileElement();
             }
         }
 
-        public RdcManDocument(XElement root)
+        public RdcManDocument(string fileName)
         {
-            this.root = root;
+            XDocument document = XDocument.Load(fileName);
+            this.root = document.Root;
+            XElement propertiesElement = this.File.Element("properties");
+            this.properties = new RdcManProperties(propertiesElement);
         }
 
         public override string ToString()
         {
-            return string.Format("RdcManDocument:Is2.2={0},Groups={1}",
-                this.IsVersion22, this.Groups.Count());
+            return string.Format("RdcManDocument:Is2.2={0},Groups={1},Servers={2}",
+                this.IsVersion22, this.Groups.Count(), this.Servers.Count());
         }
     }
 }
