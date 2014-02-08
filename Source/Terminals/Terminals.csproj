@@ -280,6 +280,8 @@
     <Compile Include="Integration\Import\RdcManGroup.cs" />
     <Compile Include="Integration\Import\RdcManProperties.cs" />
     <Compile Include="Integration\Import\PropertyReader.cs" />
+    <Compile Include="Integration\Import\RdcManSchema.cs" />
+    <Compile Include="Integration\Import\RdcManServer.cs" />
     <Compile Include="Network\AD\ActiveDirectorySearchParams.cs" />
     <Compile Include="Network\RemoteManagement.cs" />
     <Compile Include="Network\WMI\Share.cs" />

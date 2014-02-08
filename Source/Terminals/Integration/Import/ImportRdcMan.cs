@@ -9,6 +9,7 @@ namespace Terminals.Integration.Import
     /// Supports goup nesting and properties inheritance.
     /// File version is stored in root properties.
     /// Groups dont have to be unique.
+    /// File doesnt support mixing groups and servers on one level.
     /// </summary>
     internal class ImportRdcMan : IImport
     {
@@ -20,11 +21,11 @@ namespace Terminals.Integration.Import
 
         public string KnownExtension { get { return EXTENSION; } }
 
-        public List<FavoriteConfigurationElement> ImportFavorites(string filename)
+        public List<FavoriteConfigurationElement> ImportFavorites(string fileName)
         {
             try
             {
-                return TryImport(filename);
+                return TryImport(fileName);
             }
             catch (Exception exception)
             {
@@ -33,14 +34,13 @@ namespace Terminals.Integration.Import
             }
         }
 
-        private static List<FavoriteConfigurationElement> TryImport(string filename)
+        private static List<FavoriteConfigurationElement> TryImport(string fileName)
         {
             var importedItems = new List<FavoriteConfigurationElement>();
-            XDocument document = XDocument.Load(filename);
-            var root = new RdcManDocument(document.Root);
-
-            var rootProperties = root.Properties;
-            var groups = root.Groups;
+            
+            var document = new RdcManDocument(fileName);
+            if (!document.IsVersion22)
+                throw new NotSupportedException("Rdc manager supports only version 2.2 import");
 
             return importedItems;
         }

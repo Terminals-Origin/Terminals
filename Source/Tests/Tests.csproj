@@ -249,6 +249,10 @@
       <Link>RdcManGroupsEmpty.rdg</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\Resources\TestData\RdcManRootServers.rdg">
+      <Link>RdcManRootServers.rdg</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\Resources\TestData\SecuredTerminals.config">
       <Link>SecuredTerminals.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
