@@ -27,7 +27,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.File.Elements("group")
+                return this.File.GetGroupElements()
                     .Select(group => new RdcManGroup(group, this.properties));
             }
         }
@@ -51,9 +51,9 @@ namespace Terminals.Integration.Import
 
         public RdcManDocument(string fileName)
         {
-            XDocument document = XDocument.Load(fileName);
+            var document = XDocument.Load(fileName);
             this.root = document.Root;
-            XElement propertiesElement = this.File.Element("properties");
+            XElement propertiesElement = this.File.GetPropertiesElement();
             this.properties = new RdcManProperties(propertiesElement);
         }
 

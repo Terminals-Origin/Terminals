@@ -12,7 +12,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.groupElement.Elements("group")
+                return this.groupElement.GetGroupElements()
                     .Select(group => new RdcManGroup(group, this));
             }
         }
@@ -21,13 +21,13 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.groupElement.Elements("server")
+                return this.groupElement.GetServerElements()
                     .Select(server => new RdcManServer(server, this));
             }
         }
 
         public RdcManGroup(XElement groupElement, RdcManProperties parentProperties)
-            : base(groupElement.Element("properties"), parentProperties)
+            : base(groupElement.GetPropertiesElement(), parentProperties)
         {
             this.groupElement = groupElement;
         }
