@@ -8,7 +8,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                XElement name = this.PropertiesElement.Element("displayName");
+                XElement name = this.PropertiesElement.GetDisplayNameElement();
                 return name != null ? name.Value : string.Empty;
             }
         }
