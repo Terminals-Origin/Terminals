@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Terminals.Integration.Import
@@ -23,6 +24,9 @@ namespace Terminals.Integration.Import
         private const string LOCAL_RESOURCES = "localResources";
         private const string SECURITY_SETTINGS = "securitySettings";
         private const string DISPLAY_SETTINGS = "displaySettings";
+        private const string INHERITS = "inherit";
+        private const string FROMPARENT = "FromParent";
+        private const string CONNECT_TO_CONSOLE = "connectToConsole";
 
         internal static IEnumerable<XElement> GetGroupElements(this XElement currenElement)
         {
@@ -107,5 +111,161 @@ namespace Terminals.Integration.Import
 
             return new XElement("Dummmy");
         }
+
+        internal static bool Inherits(this XElement currentElement)
+        {
+            XAttribute inheritAttribute = currentElement.Attribute(INHERITS);
+            return inheritAttribute == null || inheritAttribute.Value == FROMPARENT;
+        }
+
+        internal static bool GetConnectToConsole(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement(CONNECT_TO_CONSOLE);
+            return Convert.ToBoolean(element.Value);
+        }
+
+        internal static string GetWorkingDir(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("workingDir");
+            return element.Value;
+        }
+
+        internal static string GetStartProgram(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("startProgram");
+            return element.Value;
+        }
+
+        internal static int GetPort(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("port");
+            return Convert.ToInt32(element.Value);
+        }
+
+        internal static string GetUserName(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("userName");
+            return element.Value;
+        }
+
+        internal static string GetDomain(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("domain");
+            return element.Value;
+        }
+
+        internal static string GetPassword(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("password");
+            return element.IsClearText() ? element.Value : string.Empty;
+        }
+        
+        private static bool IsClearText(this XElement currenElement)
+        {
+            var attribute = currenElement.Attribute("storeAsClearText");
+            return Convert.ToBoolean(attribute.Value);
+        }
+
+        internal static bool IsEnabled(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("enabled");
+            return Convert.ToBoolean(element.Value);
+        }
+        
+        internal static string GetTsGwHostName(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("hostName");
+            return element.Value;
+        }
+        
+        /// <summary>
+        /// values: 0=NTLM, 4= dont defined, 1=SmartCard
+        /// </summary>
+        internal static int GetLogonMethod(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("logonMethod");
+            return Convert.ToInt32(element.Value);
+        }
+
+        // todo Are these properties from Gateway localBypass and credSharing needed?
+        
+        /// <summary>
+        /// Gets all possible sizes as two numbers delimetd by "x" and spaces, eg. "1024 x 576".
+        /// If custom is selected, the numbers dont have to fit to our enum values.
+        /// </summary>
+        internal static string GetSize(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("size");
+            return element.Value; // todo needs to evaluate all possible values
+        }
+
+        // todo needed sameSizeAsClientArea?
+
+        internal static bool GetFullScreen(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("fullScreen");
+            return Convert.ToBoolean(element.Value);
+        }
+
+        /// <summary>
+        /// Possible values 8,15,16,24,32
+        /// </summary>
+        internal static int GetColorDepth(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("colorDepth");
+            return Convert.ToInt32(element.Value);
+        }
+
+        /// <summary>
+        /// Values compatible with our values
+        /// </summary>
+        internal static bool GetAudioRedirection(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("audioRedirection");
+            return Convert.ToBoolean(element.Value);
+        }
+
+        // todo do we need audioRedirectionQuality, audioCaptureRedirection
+
+        /// <summary>
+        /// values: local=0, Remote=1, InFullScreen=2
+        /// </summary>
+        internal static int GetKeyboardHook(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("keyboardHook");
+            return Convert.ToInt32(element.Value);
+        }
+
+        internal static bool GetRedirectClipboard(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("redirectClipboard");
+            return Convert.ToBoolean(element.Value);
+        }
+
+        internal static bool GetRedirectDrives(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("redirectDrives");
+            return Convert.ToBoolean(element.Value);
+        }
+
+
+        internal static bool GetRedirectPorts(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("redirectPorts");
+            return Convert.ToBoolean(element.Value);
+        }
+
+        internal static bool GetRedirectPrinters(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("redirectPrinters");
+            return Convert.ToBoolean(element.Value);
+        }
+
+        internal static bool GetRedirectSmartCards(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("redirectSmartCards");
+            return Convert.ToBoolean(element.Value);
+        }
+        
     }
 }

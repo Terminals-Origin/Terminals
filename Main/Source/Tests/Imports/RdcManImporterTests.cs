@@ -89,6 +89,18 @@ namespace Tests.Imports
             Assert.AreEqual(SERVER_NAME2, server2.DisplayName, MESSAGE);
         }
 
+        [Ignore] // "Not implemented yet"
+        [DeploymentItem(SERVERSONLY_FILE)]
+        [TestMethod]
+        public void ReadFullDocument_ResolvesNotInheritedConnectionSettings()
+        {
+            //string fileName = this.GetFullFileName();
+            //var document = new RdcManDocument(fileName);
+            //RdcManServer server2 = document.Servers.ToList()[1];
+            const string MESSAGE = "Second server shouldnt inherit any property";
+            // Assert.AreEqual(SERVER_NAME2, server2.DisplayName, MESSAGE);
+        }
+
         private RdcManDocument ReadFullDocument()
         {
             string fileName = this.GetFullFileName();
