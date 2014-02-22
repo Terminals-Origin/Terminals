@@ -2,17 +2,8 @@ using System.Xml.Linq;
 
 namespace Terminals.Integration.Import
 {
-    internal class RdcManProperties
+    internal class RdcManProperties : RdcManSettings<RdcManProperties>
     {
-        private readonly RdcManProperties parent;
-
-        protected XElement PropertiesElement { get; private set; }
-        
-        private bool HasParent
-        {
-            get { return this.parent != null; }
-        }
-
         internal string Name
         {
             get
@@ -33,68 +24,56 @@ namespace Terminals.Integration.Import
 
         # region inherit="FromParent" or "None"
 
-        internal XElement LogonCredentials
+        internal LogonCredentials LogonCredentials
         {
             get
             {
-                return this.PropertiesElement.GetLogonCredentialsElement();
+                var settingsElement = this.PropertiesElement.GetLogonCredentialsElement();
+                return new LogonCredentials(settingsElement, this.Parent.LogonCredentials);
             }
         }
 
-        internal XElement ConnectionSettings
+        internal ConnectionSettings ConnectionSettings
         {
             get
             {
-                return this.PropertiesElement.GetConnectionSettingsElement();
+                var settingsElement = this.PropertiesElement.GetConnectionSettingsElement();
+                return new ConnectionSettings(settingsElement, this.Parent.ConnectionSettings);
             }
         }
 
-        internal XElement GatewaySettings
+        internal GatewaySettings GatewaySettings
         {
             get
             {
-                return this.PropertiesElement.GetGatewaySettingsElement();
+                var settingsElement = this.PropertiesElement.GetGatewaySettingsElement();
+                return new GatewaySettings(settingsElement, this.Parent.GatewaySettings);
             }
         }
 
-        internal XElement RemoteDesktop
+        internal RdcManRemoteDesktop RemoteDesktop
         {
             get
             {
-                return this.PropertiesElement.GetRemoteDesktopElement();
+                var settingsElement = this.PropertiesElement.GetRemoteDesktopElement();
+                return new RdcManRemoteDesktop(settingsElement, this.Parent.RemoteDesktop);
             }
         }
         
-        internal XElement LocalResources
+        internal LocalResources LocalResources
         {
             get
             {
-                return this.PropertiesElement.GetLocalResourcesElement();
-            }
-        }
-
-        internal XElement SecuritySettings
-        {
-            get
-            {
-                return this.PropertiesElement.GetSecuritySettingsElement();
-            }
-        }
-
-        internal XElement DisplaySettings
-        {
-            get
-            {
-                return this.PropertiesElement.GetDisplaySettingsElement();
+                var settingsElement = this.PropertiesElement.GetLocalResourcesElement();
+                return new LocalResources(settingsElement, this.Parent.LocalResources);
             }
         }
 
         #endregion
 
         public RdcManProperties(XElement propertiesElement, RdcManProperties parent = null)
+            :base(propertiesElement, parent)
         {
-            this.PropertiesElement = propertiesElement;
-            this.parent = parent;
         }
 
         public override string ToString()
@@ -106,7 +85,7 @@ namespace Terminals.Integration.Import
 
         private string GetParentName()
         {
-            return this.HasParent ? this.parent.Name : "None";
+            return this.HasParent ? this.Parent.Name : "None";
         }
     }
 }
