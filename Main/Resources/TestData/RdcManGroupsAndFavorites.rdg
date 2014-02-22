@@ -57,23 +57,23 @@
                         <password storeAsClearText="False" />
                         <enabled>True</enabled>
                         <hostName>TSGWServer</hostName>
-                        <logonMethod>0</logonMethod>
+                        <logonMethod>1</logonMethod>
                         <localBypass>False</localBypass>
                         <credSharing>True</credSharing>
                     </gatewaySettings>
                     <remoteDesktop inherit="None">
-                        <size>1024 x 768</size>
+                        <size>1024 x 576</size>
                         <sameSizeAsClientArea>False</sameSizeAsClientArea>
-                        <fullScreen>False</fullScreen>
+                        <fullScreen>True</fullScreen>
                         <colorDepth>32</colorDepth>
                     </remoteDesktop>
                     <localResources inherit="None">
-                        <audioRedirection>0</audioRedirection>
+                        <audioRedirection>1</audioRedirection>
                         <audioRedirectionQuality>0</audioRedirectionQuality>
                         <audioCaptureRedirection>0</audioCaptureRedirection>
                         <keyboardHook>2</keyboardHook>
                         <redirectClipboard>True</redirectClipboard>
-                        <redirectDrives>False</redirectDrives>
+                        <redirectDrives>True</redirectDrives>
                         <redirectPorts>False</redirectPorts>
                         <redirectPrinters>True</redirectPrinters>
                         <redirectSmartCards>False</redirectSmartCards>

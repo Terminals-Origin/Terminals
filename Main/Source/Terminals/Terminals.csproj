@@ -275,13 +275,19 @@
       <DependentUpon>YesNoDisableForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\YesNoDisableResult.cs" />
+    <Compile Include="Integration\Import\ConnectionSettings.cs" />
+    <Compile Include="Integration\Import\GatewaySettings.cs" />
     <Compile Include="Integration\Import\ImportRdcMan.cs" />
+    <Compile Include="Integration\Import\LocalResources.cs" />
+    <Compile Include="Integration\Import\LogonCredentials.cs" />
     <Compile Include="Integration\Import\RdcManDocument.cs" />
     <Compile Include="Integration\Import\RdcManGroup.cs" />
     <Compile Include="Integration\Import\RdcManProperties.cs" />
     <Compile Include="Integration\Import\PropertyReader.cs" />
+    <Compile Include="Integration\Import\RdcManRemoteDesktop.cs" />
     <Compile Include="Integration\Import\RdcManSchema.cs" />
     <Compile Include="Integration\Import\RdcManServer.cs" />
+    <Compile Include="Integration\Import\RdcManSettings.cs" />
     <Compile Include="Network\AD\ActiveDirectorySearchParams.cs" />
     <Compile Include="Network\RemoteManagement.cs" />
     <Compile Include="Network\WMI\Share.cs" />
