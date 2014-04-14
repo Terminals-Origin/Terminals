@@ -8,7 +8,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.PropertiesElement.GetSize();
+                return this.Inherited ? this.Parent.Size : this.PropertiesElement.GetSize();
             }
         }
 
@@ -16,7 +16,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.PropertiesElement.GetColorDepth();
+                return this.Inherited ? this.Parent.ColorDept : this.PropertiesElement.GetColorDepth();
             }
         }
 
@@ -24,7 +24,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.PropertiesElement.GetFullScreen();
+                return this.Inherited ? this.Parent.FullScreen : this.PropertiesElement.GetFullScreen();
             }
         }
 

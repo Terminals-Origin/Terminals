@@ -8,7 +8,7 @@ namespace Terminals.Integration.Import
         {
             get 
             {
-                return this.PropertiesElement.GetWorkingDir();
+                return this.Inherited ? this.Parent.StartDir : this.PropertiesElement.GetWorkingDir();
             }
         }
 
@@ -16,7 +16,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.PropertiesElement.GetStartProgram();
+                return this.Inherited ? this.Parent.StartProgram : this.PropertiesElement.GetStartProgram();
             }
         }
 
@@ -24,7 +24,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.PropertiesElement.GetConnectToConsole();
+                return this.Inherited ? this.Parent.ConnectToConsole : this.PropertiesElement.GetConnectToConsole();
             }
         }
 
@@ -32,7 +32,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.PropertiesElement.GetPort();
+                return this.Inherited ? this.Parent.Port : this.PropertiesElement.GetPort();
             }
         }
 

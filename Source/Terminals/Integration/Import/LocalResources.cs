@@ -6,37 +6,40 @@ namespace Terminals.Integration.Import
     {
         internal bool AudioRedirect
         {
-            get { return this.PropertiesElement.GetAudioRedirection(); }
+            get
+            {
+                return this.Inherited ? this.Parent.AudioRedirect : this.PropertiesElement.GetAudioRedirection();
+            }
         }
 
         internal int KeyboardHook
         {
-            get { return this.PropertiesElement.GetKeyboardHook(); }
+            get { return this.Inherited ? this.Parent.KeyboardHook : this.PropertiesElement.GetKeyboardHook(); }
         }
 
         internal bool RedirectClipboard
         {
-            get { return this.PropertiesElement.GetRedirectClipboard(); }
+            get { return this.Inherited ? this.Parent.RedirectClipboard : this.PropertiesElement.GetRedirectClipboard(); }
         }
 
         internal bool RedirectDrives
         {
-            get { return this.PropertiesElement.GetRedirectDrives(); }
+            get { return this.Inherited ? this.Parent.RedirectDrives : this.PropertiesElement.GetRedirectDrives(); }
         }
 
         internal bool RedirectPorts
         {
-            get { return this.PropertiesElement.GetRedirectPorts(); }
+            get { return this.Inherited ? this.Parent.RedirectPorts : this.PropertiesElement.GetRedirectPorts(); }
         }
 
         internal bool RedirectPrinters
         {
-            get { return this.PropertiesElement.GetRedirectPrinters(); }
+            get { return this.Inherited ? this.Parent.RedirectPrinters : this.PropertiesElement.GetRedirectPrinters(); }
         }
 
         internal bool RedirectSmartCards
         {
-            get { return this.PropertiesElement.GetRedirectSmartCards(); }
+            get { return this.Inherited ? this.Parent.RedirectSmartCards : this.PropertiesElement.GetRedirectSmartCards(); }
         }
 
         public LocalResources(XElement settingsElement, LocalResources parent = null)
