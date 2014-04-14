@@ -15,6 +15,8 @@ namespace Tests.Imports
         private const string FULL_FILE = RELATIVE_PATH + FULL_FILE_NAME;
         private const string SERVERSONLY_FILE_NAME = "RdcManRootServers.rdg";
         private const string SERVERSONLY_FILE = RELATIVE_PATH + SERVERSONLY_FILE_NAME;
+        private const string INHERITED_FILE_NAME = "RdcManInheritedProperties.rdg";
+        private const string INHERITED_FILE = RELATIVE_PATH + INHERITED_FILE_NAME;
 
         private const string SERVER_NAME2 = "ServerName2";
 
@@ -89,16 +91,27 @@ namespace Tests.Imports
             Assert.AreEqual(SERVER_NAME2, server2.DisplayName, MESSAGE);
         }
 
-        [Ignore] // "Not implemented yet"
-        [DeploymentItem(SERVERSONLY_FILE)]
+        [DeploymentItem(INHERITED_FILE)]
+        [TestMethod]
+        public void ReadInheritedDocument_ResolvesInheritedConnectionSettings()
+        {
+            string fileName = this.GetFullFileName(INHERITED_FILE_NAME);
+            var document = new RdcManDocument(fileName);
+            var group = document.Groups.First();
+            RdcManServer server2 = group.Servers.First();
+            const string MESSAGE = "Server should contain not inherited port value";
+            Assert.AreEqual(9999, server2.ConnectionSettings.Port, MESSAGE);
+        }
+
+        [DeploymentItem(FULL_FILE)]
         [TestMethod]
         public void ReadFullDocument_ResolvesNotInheritedConnectionSettings()
         {
-            //string fileName = this.GetFullFileName();
-            //var document = new RdcManDocument(fileName);
-            //RdcManServer server2 = document.Servers.ToList()[1];
-            const string MESSAGE = "Second server shouldnt inherit any property";
-            // Assert.AreEqual(SERVER_NAME2, server2.DisplayName, MESSAGE);
+            RdcManDocument document = this.ReadFullDocument();
+            var group = document.Groups.First().Groups.First();
+            RdcManServer server1 = group.Servers.First();
+            const string MESSAGE = "Server should contain not inherited port value";
+            Assert.AreEqual(4444, server1.ConnectionSettings.Port, MESSAGE);
         }
 
         private RdcManDocument ReadFullDocument()

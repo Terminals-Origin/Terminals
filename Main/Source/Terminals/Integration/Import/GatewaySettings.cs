@@ -8,7 +8,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.PropertiesElement.GetUserName();
+                return this.Inherited ? this.Parent.UserName : this.PropertiesElement.GetUserName();
             }
         }
 
@@ -16,7 +16,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.PropertiesElement.GetDomain();
+                return this.Inherited ? this.Parent.Domain : this.PropertiesElement.GetDomain();
             }
         }
 
@@ -24,7 +24,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.PropertiesElement.GetTsGwHostName();
+                return this.Inherited ? this.Parent.HostName : this.PropertiesElement.GetTsGwHostName();
             }
         }
 
@@ -32,7 +32,7 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.PropertiesElement.GetLogonMethod();
+                return this.Inherited ? this.Parent.LogonMethod : this.PropertiesElement.GetLogonMethod();
             }
         }
 

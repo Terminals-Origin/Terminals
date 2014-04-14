@@ -22,14 +22,15 @@ namespace Terminals.Integration.Import
             }
         }
 
-        # region inherit="FromParent" or "None"
+        # region Inheritable properties inherit="FromParent" or "None"
 
         internal LogonCredentials LogonCredentials
         {
             get
             {
                 var settingsElement = this.PropertiesElement.GetLogonCredentialsElement();
-                return new LogonCredentials(settingsElement, this.Parent.LogonCredentials);
+                var parentSettings = this.HasParent ? this.Parent.LogonCredentials : null;
+                return new LogonCredentials(settingsElement, parentSettings);
             }
         }
 
@@ -38,7 +39,8 @@ namespace Terminals.Integration.Import
             get
             {
                 var settingsElement = this.PropertiesElement.GetConnectionSettingsElement();
-                return new ConnectionSettings(settingsElement, this.Parent.ConnectionSettings);
+                var parentSettings = this.HasParent ? this.Parent.ConnectionSettings : null;
+                return new ConnectionSettings(settingsElement, parentSettings);
             }
         }
 
@@ -47,7 +49,8 @@ namespace Terminals.Integration.Import
             get
             {
                 var settingsElement = this.PropertiesElement.GetGatewaySettingsElement();
-                return new GatewaySettings(settingsElement, this.Parent.GatewaySettings);
+                var parentSettings = this.HasParent ? this.Parent.GatewaySettings : null;
+                return new GatewaySettings(settingsElement, parentSettings);
             }
         }
 
@@ -56,7 +59,8 @@ namespace Terminals.Integration.Import
             get
             {
                 var settingsElement = this.PropertiesElement.GetRemoteDesktopElement();
-                return new RdcManRemoteDesktop(settingsElement, this.Parent.RemoteDesktop);
+                var parentSettings = this.HasParent ? this.Parent.RemoteDesktop : null;
+                return new RdcManRemoteDesktop(settingsElement, parentSettings);
             }
         }
         
@@ -65,7 +69,8 @@ namespace Terminals.Integration.Import
             get
             {
                 var settingsElement = this.PropertiesElement.GetLocalResourcesElement();
-                return new LocalResources(settingsElement, this.Parent.LocalResources);
+                var parentSettings = this.HasParent ? this.Parent.LocalResources : null;
+                return new LocalResources(settingsElement, parentSettings);
             }
         }
 

@@ -6,17 +6,17 @@ namespace Terminals.Integration.Import
     {
         internal string UserName
         {
-            get { return this.PropertiesElement.GetUserName(); }
+            get { return this.Inherited ? this.Parent.UserName : this.PropertiesElement.GetUserName(); }
         }
 
         internal string Domain
         {
-            get { return this.PropertiesElement.GetDomain(); }
+            get { return this.Inherited ? this.Parent.Domain : this.PropertiesElement.GetDomain(); }
         }
 
         internal string Password
         {
-            get { return this.PropertiesElement.GetPassword(); }
+            get { return this.Inherited ? this.Parent.Password : this.PropertiesElement.GetPassword(); }
         }
 
         public LogonCredentials(XElement settingsElement, LogonCredentials parent = null)

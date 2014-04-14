@@ -13,6 +13,14 @@ namespace Terminals.Integration.Import
             get { return this.Parent != null; }
         }
 
+        internal bool Inherited
+        {
+            get
+            {
+                return this.PropertiesElement.Inherits();
+            }
+        }
+
         protected RdcManSettings(XElement element, TSettings parent)
         {
             this.PropertiesElement = element;
