@@ -47,7 +47,7 @@ namespace Tests.Imports
         {
             string fileName = this.GetFullFileName();
             var importedItems = this.importer.ImportFavorites(fileName);
-            Assert.AreEqual(0, importedItems.Count, "The full file should import 3 favorites");
+            Assert.AreEqual(3, importedItems.Count, "The full file should import 3 favorites");
         }
 
         [DeploymentItem(FULL_FILE)]
