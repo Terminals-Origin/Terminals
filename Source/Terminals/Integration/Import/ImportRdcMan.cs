@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace Terminals.Integration.Import
 {
@@ -36,13 +35,13 @@ namespace Terminals.Integration.Import
 
         private static List<FavoriteConfigurationElement> TryImport(string fileName)
         {
-            var importedItems = new List<FavoriteConfigurationElement>();
-            
             var document = new RdcManDocument(fileName);
             if (!document.IsVersion22)
                 throw new NotSupportedException("Rdc manager supports only version 2.2 import");
 
-            return importedItems;
+            var context = new RdcManImportContext(document.Groups, document.Servers);
+            context.ImportContent();
+            return context.Imported;
         }
     }
 }

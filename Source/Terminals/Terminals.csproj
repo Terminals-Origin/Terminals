@@ -281,7 +281,9 @@
     <Compile Include="Integration\Import\LocalResources.cs" />
     <Compile Include="Integration\Import\LogonCredentials.cs" />
     <Compile Include="Integration\Import\RdcManDocument.cs" />
+    <Compile Include="Integration\Import\RdcManFavoriteImporter.cs" />
     <Compile Include="Integration\Import\RdcManGroup.cs" />
+    <Compile Include="Integration\Import\RdcManImportContext.cs" />
     <Compile Include="Integration\Import\RdcManProperties.cs" />
     <Compile Include="Integration\Import\PropertyReader.cs" />
     <Compile Include="Integration\Import\RdcManRemoteDesktop.cs" />
