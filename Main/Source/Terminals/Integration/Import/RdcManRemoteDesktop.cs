@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Linq;
 
 namespace Terminals.Integration.Import
@@ -8,7 +9,9 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.Inherited ? this.Parent.Size : this.PropertiesElement.GetSize();
+                Func<string> getParentValue = () => this.Parent.Size;
+                Func<string> getElementValue = this.PropertiesElement.GetSize;
+                return this.ResolveValue(getParentValue, getElementValue, "1024 x 768");
             }
         }
 
@@ -16,7 +19,9 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.Inherited ? this.Parent.ColorDept : this.PropertiesElement.GetColorDepth();
+                Func<int> getParentValue = () => this.Parent.ColorDept;
+                Func<int> getElementValue = this.PropertiesElement.GetColorDepth;
+                return this.ResolveValue(getParentValue, getElementValue, 16);
             }
         }
 
@@ -24,7 +29,9 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.Inherited ? this.Parent.FullScreen : this.PropertiesElement.GetFullScreen();
+                Func<bool> getParentValue = () => this.Parent.FullScreen;
+                Func<bool> getElementValue = this.PropertiesElement.GetFullScreen;
+                return this.ResolveValue(getParentValue, getElementValue);
             }
         }
 

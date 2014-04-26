@@ -15,11 +15,11 @@ namespace Terminals.Integration.Import
         internal FavoriteConfigurationElement ImportServer()
         {
             ImportGeneralProperties();
-            //ImportConnectionSettings();
-            //ImportLocalResources();
-            //ImportCredentials();
-            //ImportGatewaySettings();
-            //ImportDesktopSettings();
+            ImportConnectionSettings();
+            ImportLocalResources();
+            ImportCredentials();
+            ImportGatewaySettings();
+            ImportDesktopSettings();
             return this.favorite;
         }
 
@@ -61,7 +61,7 @@ namespace Terminals.Integration.Import
         private void ImportGatewaySettings()
         {
             GatewaySettings tsgwSettings = this.server.GatewaySettings;
-            this.favorite.TsgwSeparateLogin = !string.IsNullOrEmpty(tsgwSettings.UserName);
+            this.favorite.TsgwSeparateLogin = tsgwSettings.IsEnabled;
             this.favorite.TsgwCredsSource = tsgwSettings.LogonMethod;
             this.favorite.TsgwHostname = tsgwSettings.HostName;
             this.favorite.TsgwDomain = tsgwSettings.Domain;
@@ -77,7 +77,13 @@ namespace Terminals.Integration.Import
 
         private Colors ConvertColorDepthToColors(int colorDept)
         {
-            return Colors.Bits32;
+            switch (colorDept)
+            {
+                case 32: return Colors.Bits32;
+                case 24: return Colors.Bits24;
+                case 8: return Colors.Bits8;
+                default: return Colors.Bit16;
+            }
         }
 
         private DesktopSize ConvertSizeToDeskopSize(RdcManRemoteDesktop desktopSettings)
@@ -99,6 +105,7 @@ namespace Terminals.Integration.Import
             // full screen 
             // custom
 
+            // todo implement conversion of desktop size values
             return DesktopSize.AutoScale;
         }
     }
