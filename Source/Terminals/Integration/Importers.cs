@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Terminals.Data;
+using Terminals.Integration.Import.RdcMan;
 
 namespace Terminals.Integration.Import
 {
@@ -80,6 +81,7 @@ namespace Terminals.Integration.Import
                 providers.Add(ImportRDP.FILE_EXTENSION, new ImportRDP());
                 providers.Add(ImportvRD.FILE_EXTENSION, new ImportvRD(this.persistence));
                 providers.Add(ImportMuRD.FILE_EXTENSION, new ImportMuRD());
+                providers.Add(ImportRdcMan.FILE_EXTENSION, new ImportRdcMan());
             }
         }
 
