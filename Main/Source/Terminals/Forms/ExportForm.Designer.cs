@@ -113,7 +113,7 @@
             this.favsTree.ShowNodeToolTips = true;
             this.favsTree.Size = new System.Drawing.Size(368, 310);
             this.favsTree.TabIndex = 1;
-            this.favsTree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.FavsTree_NodeMouseClick);
+            this.favsTree.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.FavsTree_AfterCheck);
             // 
             // ExportForm
             // 
