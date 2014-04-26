@@ -79,7 +79,7 @@ namespace Terminals.Forms
                 .ToList();
         }
 
-        private void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void FavsTree_AfterCheck(object sender, TreeViewEventArgs e)
         {
             var groupNode = e.Node as GroupTreeNode;
             if (groupNode != null)
