@@ -187,7 +187,7 @@ namespace Terminals.Integration.Import
             return Convert.ToInt32(element.Value);
         }
 
-        // todo Are these properties from Gateway localBypass and credSharing needed?
+        // Gateway properties localBypass and credSharing not covered in our application
         
         /// <summary>
         /// Gets all possible sizes as two numbers delimetd by "x" and spaces, eg. "1024 x 576".
@@ -196,10 +196,14 @@ namespace Terminals.Integration.Import
         internal static string GetSize(this XElement currenElement)
         {
             XElement element = currenElement.ResolveChildElement("size");
-            return element.Value; // todo needs to evaluate all possible values
+            return element.Value;
         }
 
-        // todo needed sameSizeAsClientArea?
+        internal static bool GetSameSizeAsClientArea(this XElement currenElement)
+        {
+            XElement element = currenElement.ResolveChildElement("sameSizeAsClientArea");
+            return Convert.ToBoolean(element.Value);
+        }
 
         internal static bool GetFullScreen(this XElement currenElement)
         {
@@ -225,7 +229,7 @@ namespace Terminals.Integration.Import
             return Convert.ToBoolean(element.Value);
         }
 
-        // todo do we need audioRedirectionQuality, audioCaptureRedirection
+        // Redirect audioRedirectionQuality, audioCaptureRedirection properties not covered in our application
 
         /// <summary>
         /// values: local=0, Remote=1, InFullScreen=2

@@ -1,3 +1,6 @@
+using System;
+using System.Drawing;
+
 namespace Terminals.Integration.Import
 {
     internal class RdcManFavoriteImporter
@@ -71,8 +74,11 @@ namespace Terminals.Integration.Import
         private void ImportDesktopSettings()
         {
             RdcManRemoteDesktop desktopSettings = this.server.RemoteDesktop;
-            this.favorite.DesktopSize = this.ConvertSizeToDeskopSize(desktopSettings);
             this.favorite.Colors = this.ConvertColorDepthToColors(desktopSettings.ColorDept);
+            this.favorite.DesktopSize = this.ConvertDeskopSize(desktopSettings);
+            Size screenSize = this.ConvertSize(desktopSettings.Size);
+            this.favorite.DesktopSizeHeight = screenSize.Height;
+            this.favorite.DesktopSizeWidth = screenSize.Width;
         }
 
         private Colors ConvertColorDepthToColors(int colorDept)
@@ -86,27 +92,37 @@ namespace Terminals.Integration.Import
             }
         }
 
-        private DesktopSize ConvertSizeToDeskopSize(RdcManRemoteDesktop desktopSettings)
+        private DesktopSize ConvertDeskopSize(RdcManRemoteDesktop desktopSettings)
         {
             if (desktopSettings.FullScreen)
-            {
                 return DesktopSize.FullScreen;
-            }
-             
-            // "800 x 600"
-            // 1024 x 768
-            // 1280 x 800
-            // 1280 x 1024
-            // 1440 x 900
-            // 1600 x 1200
-            // 1680 x 1050
-            // 1920 x 1200
-            // same as client arrea
-            // full screen 
-            // custom
 
-            // todo implement conversion of desktop size values
-            return DesktopSize.AutoScale;
+            if (desktopSettings.SameSizeAsClientArea)
+                return DesktopSize.FitToWindow;
+
+            return ResolveConcreateSize(desktopSettings.Size);
+        }
+
+        private DesktopSize ResolveConcreateSize(string size)
+        {
+            switch (size) // compatible values only
+            {
+                case "800 x 600": return DesktopSize.x800;
+                case "1024 x 768": return DesktopSize.x1024;
+                case "1280 x 1024": return DesktopSize.x1280;
+            }
+
+            // Other applicable, but handled as custom:
+            // 1280 x 800, 1440 x 900, 1600 x 1200, 1680 x 1050, 1920 x 1200
+            return DesktopSize.Custom;
+        }
+
+        private Size ConvertSize(string size)
+        {
+            var sizeParts = size.Split(new string[]{ " x " }, StringSplitOptions.None);
+            int width = Convert.ToInt32(sizeParts[0]);
+            int height = Convert.ToInt32(sizeParts[1]);
+            return new Size(width, height);
         }
     }
 }
