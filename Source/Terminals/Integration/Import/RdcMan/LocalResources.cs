@@ -1,9 +1,9 @@
 using System;
 using System.Xml.Linq;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
-    internal class LocalResources : RdcManSettings<LocalResources>
+    internal class LocalResources : Settings<LocalResources>
     {
         internal bool AudioRedirect
         {

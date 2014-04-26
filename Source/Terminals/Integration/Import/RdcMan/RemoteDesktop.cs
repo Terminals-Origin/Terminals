@@ -1,9 +1,9 @@
 using System;
 using System.Xml.Linq;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
-    internal class RdcManRemoteDesktop : RdcManSettings<RdcManRemoteDesktop>
+    internal class RemoteDesktop : Settings<RemoteDesktop>
     {
         internal string Size
         {
@@ -45,7 +45,7 @@ namespace Terminals.Integration.Import
             }
         }
 
-        public RdcManRemoteDesktop(XElement settingsElement, RdcManRemoteDesktop parent = null)
+        public RemoteDesktop(XElement settingsElement, RemoteDesktop parent = null)
             : base(settingsElement, parent)
         {         
         }

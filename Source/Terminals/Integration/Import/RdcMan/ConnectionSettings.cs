@@ -2,9 +2,9 @@ using System;
 using System.Xml.Linq;
 using Terminals.Connections;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
-    internal class ConnectionSettings : RdcManSettings<ConnectionSettings>
+    internal class ConnectionSettings : Settings<ConnectionSettings>
     {
         internal string StartDir
         {

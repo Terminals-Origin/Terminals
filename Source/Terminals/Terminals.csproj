@@ -275,21 +275,21 @@
       <DependentUpon>YesNoDisableForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\YesNoDisableResult.cs" />
-    <Compile Include="Integration\Import\ConnectionSettings.cs" />
-    <Compile Include="Integration\Import\GatewaySettings.cs" />
-    <Compile Include="Integration\Import\ImportRdcMan.cs" />
-    <Compile Include="Integration\Import\LocalResources.cs" />
-    <Compile Include="Integration\Import\LogonCredentials.cs" />
-    <Compile Include="Integration\Import\RdcManDocument.cs" />
-    <Compile Include="Integration\Import\RdcManFavoriteImporter.cs" />
-    <Compile Include="Integration\Import\RdcManGroup.cs" />
-    <Compile Include="Integration\Import\RdcManImportContext.cs" />
-    <Compile Include="Integration\Import\RdcManProperties.cs" />
+    <Compile Include="Integration\Import\RdcMan\ConnectionSettings.cs" />
+    <Compile Include="Integration\Import\RdcMan\GatewaySettings.cs" />
+    <Compile Include="Integration\Import\RdcMan\ImportRdcMan.cs" />
+    <Compile Include="Integration\Import\RdcMan\LocalResources.cs" />
+    <Compile Include="Integration\Import\RdcMan\LogonCredentials.cs" />
+    <Compile Include="Integration\Import\RdcMan\Document.cs" />
+    <Compile Include="Integration\Import\RdcMan\FavoriteImporter.cs" />
+    <Compile Include="Integration\Import\RdcMan\Group.cs" />
+    <Compile Include="Integration\Import\RdcMan\ImportContext.cs" />
+    <Compile Include="Integration\Import\RdcMan\Properties.cs" />
     <Compile Include="Integration\Import\PropertyReader.cs" />
-    <Compile Include="Integration\Import\RdcManRemoteDesktop.cs" />
-    <Compile Include="Integration\Import\RdcManSchema.cs" />
-    <Compile Include="Integration\Import\RdcManServer.cs" />
-    <Compile Include="Integration\Import\RdcManSettings.cs" />
+    <Compile Include="Integration\Import\RdcMan\RemoteDesktop.cs" />
+    <Compile Include="Integration\Import\RdcMan\Schema.cs" />
+    <Compile Include="Integration\Import\RdcMan\Server.cs" />
+    <Compile Include="Integration\Import\RdcMan\Settings.cs" />
     <Compile Include="Network\AD\ActiveDirectorySearchParams.cs" />
     <Compile Include="Network\RemoteManagement.cs" />
     <Compile Include="Network\WMI\Share.cs" />

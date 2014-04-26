@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
-    internal class RdcManImportContext
+    internal class ImportContext
     {
-        private readonly IEnumerable<RdcManGroup> groups;
+        private readonly IEnumerable<Group> groups;
 
-        private readonly IEnumerable<RdcManServer> servers;
+        private readonly IEnumerable<Server> servers;
 
         internal List<FavoriteConfigurationElement> Imported { get; private set; }
 
-        public RdcManImportContext(IEnumerable<RdcManGroup> groups, IEnumerable<RdcManServer> servers)
+        public ImportContext(IEnumerable<Group> groups, IEnumerable<Server> servers)
         {
             this.Imported = new List<FavoriteConfigurationElement>();
             this.groups = groups;
@@ -25,9 +25,9 @@ namespace Terminals.Integration.Import
 
         private void ImportGroups()
         {
-            foreach (RdcManGroup rdcManGroup in this.groups)
+            foreach (Group rdcManGroup in this.groups)
             {
-                var context = new RdcManImportContext(rdcManGroup.Groups, rdcManGroup.Servers);
+                var context = new ImportContext(rdcManGroup.Groups, rdcManGroup.Servers);
                 context.ImportContent();
                 this.Imported.AddRange(context.Imported);
             }
@@ -35,9 +35,9 @@ namespace Terminals.Integration.Import
 
         private void ImportFavorites()
         {
-            foreach (RdcManServer server in this.servers)
+            foreach (Server server in this.servers)
             {
-                var serverImporter = new RdcManFavoriteImporter(server);
+                var serverImporter = new FavoriteImporter(server);
                 FavoriteConfigurationElement favorite = serverImporter.ImportServer();
                 this.Imported.Add(favorite);
             }
