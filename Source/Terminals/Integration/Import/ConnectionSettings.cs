@@ -1,4 +1,6 @@
+using System;
 using System.Xml.Linq;
+using Terminals.Connections;
 
 namespace Terminals.Integration.Import
 {
@@ -8,7 +10,9 @@ namespace Terminals.Integration.Import
         {
             get 
             {
-                return this.Inherited ? this.Parent.StartDir : this.PropertiesElement.GetWorkingDir();
+                Func<string> getParentValue = () => this.Parent.StartDir;
+                Func<string> getElementValue = this.PropertiesElement.GetWorkingDir;
+                return this.ResolveValue(getParentValue, getElementValue, string.Empty);
             }
         }
 
@@ -16,7 +20,9 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.Inherited ? this.Parent.StartProgram : this.PropertiesElement.GetStartProgram();
+                Func<string> getParentValue = () => this.Parent.StartProgram;
+                Func<string> getElementValue = this.PropertiesElement.GetStartProgram;
+                return this.ResolveValue(getParentValue, getElementValue, string.Empty);
             }
         }
 
@@ -24,7 +30,9 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.Inherited ? this.Parent.ConnectToConsole : this.PropertiesElement.GetConnectToConsole();
+                Func<bool> getParentValue = () => this.Parent.ConnectToConsole;
+                Func<bool> getElementValue = this.PropertiesElement.GetConnectToConsole;
+                return this.ResolveValue(getParentValue, getElementValue);
             }
         }
 
@@ -32,7 +40,9 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.Inherited ? this.Parent.Port : this.PropertiesElement.GetPort();
+                Func<int> getParentValue = () => this.Parent.Port;
+                Func<int> getElementValue = this.PropertiesElement.GetPort;
+                return this.ResolveValue(getParentValue, getElementValue, ConnectionManager.RDPPort);
             }
         }
 

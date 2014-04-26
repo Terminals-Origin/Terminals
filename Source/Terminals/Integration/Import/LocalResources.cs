@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Linq;
 
 namespace Terminals.Integration.Import
@@ -8,38 +9,70 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.Inherited ? this.Parent.AudioRedirect : this.PropertiesElement.GetAudioRedirection();
+                Func<bool> getParentValue = () => this.Parent.AudioRedirect;
+                Func<bool> getElementValue = this.PropertiesElement.GetAudioRedirection;
+                return this.ResolveValue(getParentValue, getElementValue);
             }
         }
 
         internal int KeyboardHook
         {
-            get { return this.Inherited ? this.Parent.KeyboardHook : this.PropertiesElement.GetKeyboardHook(); }
+            get
+            {
+                Func<int> getParentValue = () => this.Parent.KeyboardHook;
+                Func<int> getElementValue = this.PropertiesElement.GetKeyboardHook;
+                return this.ResolveValue(getParentValue, getElementValue, 2);
+            }
         }
 
         internal bool RedirectClipboard
         {
-            get { return this.Inherited ? this.Parent.RedirectClipboard : this.PropertiesElement.GetRedirectClipboard(); }
+            get
+            {
+                Func<bool> getParentValue = () => this.Parent.RedirectClipboard;
+                Func<bool> getElementValue = this.PropertiesElement.GetRedirectClipboard;
+                return this.ResolveValue(getParentValue, getElementValue, true);
+            }
         }
 
         internal bool RedirectDrives
         {
-            get { return this.Inherited ? this.Parent.RedirectDrives : this.PropertiesElement.GetRedirectDrives(); }
+            get
+            {
+                Func<bool> getParentValue = () => this.Parent.RedirectDrives;
+                Func<bool> getElementValue = this.PropertiesElement.GetRedirectDrives;
+                return this.ResolveValue(getParentValue, getElementValue);
+            }
         }
 
         internal bool RedirectPorts
         {
-            get { return this.Inherited ? this.Parent.RedirectPorts : this.PropertiesElement.GetRedirectPorts(); }
+            get
+            {
+                Func<bool> getParentValue = () => this.Parent.RedirectPorts;
+                Func<bool> getElementValue = this.PropertiesElement.GetRedirectPorts;
+                return this.ResolveValue(getParentValue, getElementValue);
+            }
         }
 
         internal bool RedirectPrinters
         {
-            get { return this.Inherited ? this.Parent.RedirectPrinters : this.PropertiesElement.GetRedirectPrinters(); }
+            get
+            {
+                Func<bool> getParentValue = () => this.Parent.RedirectPrinters;
+                Func<bool> getElementValue = this.PropertiesElement.GetRedirectPrinters;
+                return this.ResolveValue(getParentValue, getElementValue);
+            }
         }
 
         internal bool RedirectSmartCards
         {
-            get { return this.Inherited ? this.Parent.RedirectSmartCards : this.PropertiesElement.GetRedirectSmartCards(); }
+            get
+            {
+                Func<bool> getParentValue = () => this.Parent.RedirectSmartCards;
+                Func<bool> getElementValue = this.PropertiesElement.GetRedirectSmartCards;
+                return this.ResolveValue(getParentValue, getElementValue);
+            }
         }
 
         public LocalResources(XElement settingsElement, LocalResources parent = null)

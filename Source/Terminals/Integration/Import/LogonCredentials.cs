@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Linq;
 
 namespace Terminals.Integration.Import
@@ -6,17 +7,32 @@ namespace Terminals.Integration.Import
     {
         internal string UserName
         {
-            get { return this.Inherited ? this.Parent.UserName : this.PropertiesElement.GetUserName(); }
+            get
+            {
+                Func<string> getParentValue = () => this.Parent.UserName;
+                Func<string> getElementValue = this.PropertiesElement.GetUserName;
+                return this.ResolveValue(getParentValue, getElementValue, string.Empty);
+            }
         }
 
         internal string Domain
         {
-            get { return this.Inherited ? this.Parent.Domain : this.PropertiesElement.GetDomain(); }
+            get
+            {
+                Func<string> getParentValue = () => this.Parent.Domain;
+                Func<string> getElementValue = this.PropertiesElement.GetDomain;
+                return this.ResolveValue(getParentValue, getElementValue, string.Empty);
+            }
         }
 
         internal string Password
         {
-            get { return this.Inherited ? this.Parent.Password : this.PropertiesElement.GetPassword(); }
+            get
+            {
+                Func<string> getParentValue = () => this.Parent.Password;
+                Func<string> getElementValue = this.PropertiesElement.GetPassword;
+                return this.ResolveValue(getParentValue, getElementValue, string.Empty);
+            }
         }
 
         public LogonCredentials(XElement settingsElement, LogonCredentials parent = null)

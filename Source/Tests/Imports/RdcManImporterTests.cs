@@ -2,11 +2,14 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Integration.Import;
+using Tests.FilePersisted;
 
 namespace Tests.Imports
 {
+    // we have to use FilePersisedTestLab, because import of passwords into FavoriteConfigurationElement
+    // requires Persistence.Instance to resolve passwords
     [TestClass]
-    public class RdcManImporterTests
+    public class RdcManImporterTests : FilePersistedTestLab
     {
         private const string RELATIVE_PATH = @"..\Resources\TestData\";
         private const string EMPTY_FILE_NAME = "RdcManGroupsEmpty.rdg";
@@ -55,7 +58,7 @@ namespace Tests.Imports
         public void ReadFullDocument_ResolvesVersion()
         {
             RdcManDocument document = this.ReadFullDocument();
-            Assert.IsTrue(document.IsVersion22, "Loaded document should contain version version 2.2");
+            Assert.IsTrue(document.IsVersion22, "Loaded document should contain version 2.2");
         }
 
         [DeploymentItem(FULL_FILE)]

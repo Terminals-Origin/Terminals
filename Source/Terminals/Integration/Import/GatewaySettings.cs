@@ -1,14 +1,27 @@
+using System;
 using System.Xml.Linq;
 
 namespace Terminals.Integration.Import
 {
     internal class GatewaySettings : RdcManSettings<GatewaySettings>
     {
+        internal bool IsEnabled
+        {
+            get
+            {
+                Func<bool> getParentValue = () => this.Parent.IsEnabled;
+                Func<bool> getElementValue = this.PropertiesElement.IsEnabled;
+                return this.ResolveValue(getParentValue, getElementValue);
+            }
+        }
+
         internal string UserName
         {
             get
             {
-                return this.Inherited ? this.Parent.UserName : this.PropertiesElement.GetUserName();
+                Func<string> getParentValue = () => this.Parent.UserName;
+                Func<string> getElementValue = this.PropertiesElement.GetUserName;
+                return this.ResolveValue(getParentValue, getElementValue, string.Empty);
             }
         }
 
@@ -16,7 +29,9 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.Inherited ? this.Parent.Domain : this.PropertiesElement.GetDomain();
+                Func<string> getParentValue = () => this.Parent.Domain;
+                Func<string> getElementValue = this.PropertiesElement.GetDomain;
+                return this.ResolveValue(getParentValue, getElementValue, string.Empty);
             }
         }
 
@@ -24,7 +39,9 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.Inherited ? this.Parent.HostName : this.PropertiesElement.GetTsGwHostName();
+                Func<string> getParentValue = () => this.Parent.HostName;
+                Func<string> getElementValue = this.PropertiesElement.GetTsGwHostName;
+                return this.ResolveValue(getParentValue, getElementValue, string.Empty);
             }
         }
 
@@ -32,7 +49,9 @@ namespace Terminals.Integration.Import
         {
             get
             {
-                return this.Inherited ? this.Parent.LogonMethod : this.PropertiesElement.GetLogonMethod();
+                Func<int> getParentValue = () => this.Parent.LogonMethod;
+                Func<int> getElementValue = this.PropertiesElement.GetLogonMethod;
+                return this.ResolveValue(getParentValue, getElementValue);
             }
         }
 
