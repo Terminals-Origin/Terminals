@@ -14,11 +14,11 @@ namespace Terminals.Integration.Import.RdcMan
     {
         private const string NAME = "Microsoft Remote desktop connetion manager 2.2";
 
-        private const string EXTENSION = ".rdg";
+        internal const string FILE_EXTENSION = ".rdg";
 
         public string Name { get { return NAME; } }
 
-        public string KnownExtension { get { return EXTENSION; } }
+        public string KnownExtension { get { return FILE_EXTENSION; } }
 
         public List<FavoriteConfigurationElement> ImportFavorites(string fileName)
         {
