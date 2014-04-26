@@ -1,9 +1,9 @@
 using System;
 using System.Xml.Linq;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
-    internal class GatewaySettings : RdcManSettings<GatewaySettings>
+    internal class GatewaySettings : Settings<GatewaySettings>
     {
         internal bool IsEnabled
         {

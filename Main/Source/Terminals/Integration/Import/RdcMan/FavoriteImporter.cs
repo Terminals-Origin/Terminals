@@ -1,15 +1,16 @@
 using System;
 using System.Drawing;
+using Terminals.Integration.Import.RdcMan;
 
 namespace Terminals.Integration.Import
 {
-    internal class RdcManFavoriteImporter
+    internal class FavoriteImporter
     {
-        private readonly RdcManServer server;
+        private readonly Server server;
 
         private readonly FavoriteConfigurationElement favorite;
 
-        public RdcManFavoriteImporter(RdcManServer server)
+        public FavoriteImporter(Server server)
         {
             this.server = server;
             this.favorite = new FavoriteConfigurationElement();
@@ -73,7 +74,7 @@ namespace Terminals.Integration.Import
 
         private void ImportDesktopSettings()
         {
-            RdcManRemoteDesktop desktopSettings = this.server.RemoteDesktop;
+            RemoteDesktop desktopSettings = this.server.RemoteDesktop;
             this.favorite.Colors = this.ConvertColorDepthToColors(desktopSettings.ColorDept);
             this.favorite.DesktopSize = this.ConvertDeskopSize(desktopSettings);
             Size screenSize = this.ConvertSize(desktopSettings.Size);
@@ -92,7 +93,7 @@ namespace Terminals.Integration.Import
             }
         }
 
-        private DesktopSize ConvertDeskopSize(RdcManRemoteDesktop desktopSettings)
+        private DesktopSize ConvertDeskopSize(RemoteDesktop desktopSettings)
         {
             if (desktopSettings.FullScreen)
                 return DesktopSize.FullScreen;

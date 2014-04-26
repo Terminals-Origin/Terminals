@@ -1,9 +1,9 @@
 using System;
 using System.Xml.Linq;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
-    internal abstract class RdcManSettings<TSettings> where TSettings : class
+    internal abstract class Settings<TSettings> where TSettings : class
     {
         protected TSettings Parent { get; private set; }
 
@@ -22,7 +22,7 @@ namespace Terminals.Integration.Import
             }
         }
 
-        protected RdcManSettings(XElement element, TSettings parent)
+        protected Settings(XElement element, TSettings parent)
         {
             this.PropertiesElement = element;
             this.Parent = parent;

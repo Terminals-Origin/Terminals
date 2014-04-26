@@ -1,8 +1,8 @@
 ﻿using System.Xml.Linq;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
-    internal class RdcManServer : RdcManProperties 
+    internal class Server : Properties 
     {
         internal string DisplayName
         {
@@ -13,7 +13,7 @@ namespace Terminals.Integration.Import
             }
         }
 
-        public RdcManServer(XElement serverElement, RdcManProperties parentProperties)
+        public Server(XElement serverElement, Properties parentProperties)
             : base(serverElement, parentProperties)
         {
         }

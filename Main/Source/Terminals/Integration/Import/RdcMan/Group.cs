@@ -2,31 +2,31 @@
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
-    internal class RdcManGroup : RdcManProperties
+    internal class Group : Properties
     {
         private readonly XElement groupElement;
 
-        internal IEnumerable<RdcManGroup> Groups
+        internal IEnumerable<Group> Groups
         {
             get
             {
                 return this.groupElement.GetGroupElements()
-                    .Select(group => new RdcManGroup(group, this));
+                    .Select(group => new Group(group, this));
             }
         }
 
-        internal IEnumerable<RdcManServer> Servers
+        internal IEnumerable<Server> Servers
         {
             get
             {
                 return this.groupElement.GetServerElements()
-                    .Select(server => new RdcManServer(server, this));
+                    .Select(server => new Server(server, this));
             }
         }
 
-        public RdcManGroup(XElement groupElement, RdcManProperties parentProperties)
+        public Group(XElement groupElement, Properties parentProperties)
             : base(groupElement.GetPropertiesElement(), parentProperties)
         {
             this.groupElement = groupElement;

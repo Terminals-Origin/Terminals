@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
     /// <summary>
     /// Free Microsoft tool xml based file.
@@ -35,11 +35,11 @@ namespace Terminals.Integration.Import
 
         private static List<FavoriteConfigurationElement> TryImport(string fileName)
         {
-            var document = new RdcManDocument(fileName);
+            var document = new Document(fileName);
             if (!document.IsVersion22)
                 throw new NotSupportedException("Rdc manager supports only version 2.2 import");
 
-            var context = new RdcManImportContext(document.Groups, document.Servers);
+            var context = new ImportContext(document.Groups, document.Servers);
             context.ImportContent();
             return context.Imported;
         }

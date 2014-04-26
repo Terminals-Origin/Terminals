@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
 using Terminals.Integration.Import;
+using Terminals.Integration.Import.RdcMan;
 using Tests.FilePersisted;
 
 namespace Tests.Imports
@@ -107,7 +108,7 @@ namespace Tests.Imports
         [TestMethod]
         public void ReadFullDocument_ResolvesVersion()
         {
-            RdcManDocument document = this.ReadFullDocument();
+            Document document = this.ReadFullDocument();
             Assert.IsTrue(document.IsVersion22, "Loaded document should contain version 2.2");
         }
 
@@ -115,9 +116,9 @@ namespace Tests.Imports
         [TestMethod]
         public void ReadFullDocument_ResolvesGroupA2()
         {
-            RdcManDocument document = this.ReadFullDocument();
-            RdcManGroup firstLevelGroup = document.Groups.First();
-            RdcManGroup groupA2 = firstLevelGroup.Groups.ToList()[1];
+            Document document = this.ReadFullDocument();
+            Group firstLevelGroup = document.Groups.First();
+            Group groupA2 = firstLevelGroup.Groups.ToList()[1];
             Assert.AreEqual("GroupA2", groupA2.Name, "First group in second level should contain GroupA2");
         }
 
@@ -125,10 +126,10 @@ namespace Tests.Imports
         [TestMethod]
         public void ReadFullDocument_ResolvesServerName2()
         {
-            RdcManDocument document = this.ReadFullDocument();
-            RdcManGroup firstLevelGroup = document.Groups.First();
-            RdcManGroup groupA2 = firstLevelGroup.Groups.First();
-            RdcManServer server2 = groupA2.Servers.ToList()[1];
+            Document document = this.ReadFullDocument();
+            Group firstLevelGroup = document.Groups.First();
+            Group groupA2 = firstLevelGroup.Groups.First();
+            Server server2 = groupA2.Servers.ToList()[1];
             const string MESSAGE = "Second server in second level group should contain ServerName2 display name";
             Assert.AreEqual(SERVER_NAME2, server2.DisplayName, MESSAGE);
         }
@@ -138,8 +139,8 @@ namespace Tests.Imports
         public void ReadServersOnlyDocument_ResolvesServerName2()
         {
             string fileName = this.GetFullFileName(SERVERSONLY_FILE_NAME);
-            var document = new RdcManDocument(fileName);
-            RdcManServer server2 = document.Servers.ToList()[1];
+            var document = new Document(fileName);
+            Server server2 = document.Servers.ToList()[1];
             const string MESSAGE = "Second server in document root level should contain ServerName2 display name";
             Assert.AreEqual(SERVER_NAME2, server2.DisplayName, MESSAGE);
         }
@@ -149,9 +150,9 @@ namespace Tests.Imports
         public void ReadInheritedDocument_ResolvesInheritedConnectionSettings()
         {
             string fileName = this.GetFullFileName(INHERITED_FILE_NAME);
-            var document = new RdcManDocument(fileName);
+            var document = new Document(fileName);
             var group = document.Groups.First();
-            RdcManServer server2 = group.Servers.First();
+            Server server2 = group.Servers.First();
             const string MESSAGE = "Server should contain not inherited port value";
             Assert.AreEqual(9999, server2.ConnectionSettings.Port, MESSAGE);
         }
@@ -160,17 +161,17 @@ namespace Tests.Imports
         [TestMethod]
         public void ReadFullDocument_ResolvesNotInheritedConnectionSettings()
         {
-            RdcManDocument document = this.ReadFullDocument();
+            Document document = this.ReadFullDocument();
             var group = document.Groups.First().Groups.First();
-            RdcManServer server1 = group.Servers.First();
+            Server server1 = group.Servers.First();
             const string MESSAGE = "Server should contain not inherited port value";
             Assert.AreEqual(4444, server1.ConnectionSettings.Port, MESSAGE);
         }
 
-        private RdcManDocument ReadFullDocument()
+        private Document ReadFullDocument()
         {
             string fileName = this.GetFullFileName();
-            return new RdcManDocument(fileName);
+            return new Document(fileName);
         }
 
         private string GetFullFileName(string fileName = FULL_FILE_NAME)

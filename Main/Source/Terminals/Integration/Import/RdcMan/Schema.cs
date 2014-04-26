@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
     /// <summary>
     /// All constants and element resolution extension methods for RdcMan xml structure
     /// </summary>
-    internal static class RdcManSchema
+    internal static class Schema
     {
         private const string VERSION = "version";
         private const string FILE = "file";

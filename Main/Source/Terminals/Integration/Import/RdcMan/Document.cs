@@ -2,13 +2,13 @@
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
-    internal class RdcManDocument
+    internal class Document
     {
         private readonly XElement root;
 
-        private readonly RdcManProperties properties;
+        private readonly Properties properties;
 
         /// <summary>
         /// Gets true, if the file contains version element with value "2.2".
@@ -23,21 +23,21 @@ namespace Terminals.Integration.Import
             }
         }
 
-        internal IEnumerable<RdcManGroup> Groups
+        internal IEnumerable<Group> Groups
         {
             get
             {
                 return this.File.GetGroupElements()
-                    .Select(group => new RdcManGroup(group, this.properties));
+                    .Select(group => new Group(group, this.properties));
             }
         }
 
-        internal IEnumerable<RdcManServer> Servers
+        internal IEnumerable<Server> Servers
         {
             get
             {
                 return this.File.GetServerElements()
-                    .Select(server => new RdcManServer(server, this.properties));
+                    .Select(server => new Server(server, this.properties));
             }
         }
 
@@ -49,12 +49,12 @@ namespace Terminals.Integration.Import
             }
         }
 
-        public RdcManDocument(string fileName)
+        public Document(string fileName)
         {
             var document = XDocument.Load(fileName);
             this.root = document.Root;
             XElement propertiesElement = this.File.GetPropertiesElement();
-            this.properties = new RdcManProperties(propertiesElement);
+            this.properties = new Properties(propertiesElement);
         }
 
         public override string ToString()

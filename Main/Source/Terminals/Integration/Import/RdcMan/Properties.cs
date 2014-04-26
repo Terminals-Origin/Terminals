@@ -1,8 +1,8 @@
 using System.Xml.Linq;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
-    internal class RdcManProperties : RdcManSettings<RdcManProperties>
+    internal class Properties : Settings<Properties>
     {
         internal string Name
         {
@@ -54,13 +54,13 @@ namespace Terminals.Integration.Import
             }
         }
 
-        internal RdcManRemoteDesktop RemoteDesktop
+        internal RemoteDesktop RemoteDesktop
         {
             get
             {
                 var settingsElement = this.PropertiesElement.GetRemoteDesktopElement();
                 var parentSettings = this.HasParent ? this.Parent.RemoteDesktop : null;
-                return new RdcManRemoteDesktop(settingsElement, parentSettings);
+                return new RemoteDesktop(settingsElement, parentSettings);
             }
         }
         
@@ -76,7 +76,7 @@ namespace Terminals.Integration.Import
 
         #endregion
 
-        public RdcManProperties(XElement propertiesElement, RdcManProperties parent = null)
+        public Properties(XElement propertiesElement, Properties parent = null)
             :base(propertiesElement, parent)
         {
         }

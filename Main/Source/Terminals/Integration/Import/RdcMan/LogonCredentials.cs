@@ -1,9 +1,9 @@
 using System;
 using System.Xml.Linq;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
-    internal class LogonCredentials : RdcManSettings<LogonCredentials>
+    internal class LogonCredentials : Settings<LogonCredentials>
     {
         internal string UserName
         {
