@@ -35,6 +35,16 @@ namespace Terminals.Integration.Import
             }
         }
 
+        internal bool SameSizeAsClientArea
+        {
+            get
+            {
+                Func<bool> getParentValue = () => this.Parent.SameSizeAsClientArea;
+                Func<bool> getElementValue = this.PropertiesElement.GetSameSizeAsClientArea;
+                return this.ResolveValue(getParentValue, getElementValue);
+            }
+        }
+
         public RdcManRemoteDesktop(XElement settingsElement, RdcManRemoteDesktop parent = null)
             : base(settingsElement, parent)
         {         

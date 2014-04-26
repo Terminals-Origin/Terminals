@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Terminals;
 using Terminals.Integration.Import;
 using Tests.FilePersisted;
 
@@ -51,6 +52,55 @@ namespace Tests.Imports
             string fileName = this.GetFullFileName();
             var importedItems = this.importer.ImportFavorites(fileName);
             Assert.AreEqual(3, importedItems.Count, "The full file should import 3 favorites");
+        }
+
+        [DeploymentItem(FULL_FILE)]
+        [TestMethod]
+        public void ImportFullFile_Server1_ImportsFullScreen()
+        {
+            FavoriteConfigurationElement server1 = this.ImportServer(0);
+            Assert.AreEqual(DesktopSize.FullScreen, server1.DesktopSize, "DesktopSize of server1 should be FullScreen");
+        }
+
+        [DeploymentItem(FULL_FILE)]
+        [TestMethod]
+        public void ImportFullFile_Server1_ImportsScreenHeight()
+        {
+            FavoriteConfigurationElement server1 = this.ImportServer(0);
+            Assert.AreEqual(576, server1.DesktopSizeHeight, "Imported screen height of server1 should be 512");
+        }
+
+        [DeploymentItem(FULL_FILE)]
+        [TestMethod]
+        public void ImportFullFile_Server2_ImportsUserName()
+        {
+            FavoriteConfigurationElement server2 = this.ImportServer(1);
+            Assert.AreEqual("UserA2", server2.UserName, "Imported user name of server2 should be UserA2");
+        }
+
+        [DeploymentItem(FULL_FILE)]
+        [TestMethod]
+        public void ImportFullFile_Server2_ImportsEmptyPassword()
+        {
+            FavoriteConfigurationElement server2 = this.ImportServer(1);
+            const string MESSAGE = "Imported password of server2 should be empty string," +
+                                   " because we cant import encrypted paswords";
+            Assert.AreEqual(string.Empty, server2.Password, MESSAGE);
+        }
+
+        [DeploymentItem(FULL_FILE)]
+        [TestMethod]
+        public void ImportFullFile_Server3_ImportClearTextPassword()
+        {
+            FavoriteConfigurationElement server3 = this.ImportServer(2);
+            Assert.AreEqual("UserB", server3.Password, "Imported password of server3 should be UserB");
+        }
+
+        private FavoriteConfigurationElement ImportServer(int index)
+        {
+            string fileName = this.GetFullFileName();
+            var importedItems = this.importer.ImportFavorites(fileName);
+            return importedItems[index];
         }
 
         [DeploymentItem(FULL_FILE)]
