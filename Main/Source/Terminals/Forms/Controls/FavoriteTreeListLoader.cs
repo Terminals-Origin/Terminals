@@ -100,7 +100,7 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        internal void LoadGroups()
+        internal void LoadRootNodes()
         {
             if (persistedGroups == null) // because of designer
                 return;
@@ -123,6 +123,16 @@ namespace Terminals.Forms.Controls
         {
             return this.persistedGroups.Where(candidate => candidate.Parent == null)
                                   .OrderBy(group => group.Name);
+        }
+
+        internal void LoadGroupNodesRecursive(TreeListNodes nodes)
+        {
+            foreach (var groupNode in nodes.GroupNodes)
+            {
+                this.LoadGroupNode(groupNode);
+                var childNodes = new TreeListNodes(groupNode.Nodes);
+                this.LoadGroupNodesRecursive(childNodes);
+            }
         }
 
         private void LoadGroupNode(GroupTreeNode groupNode)
