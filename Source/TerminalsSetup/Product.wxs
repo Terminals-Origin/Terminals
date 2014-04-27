@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <!--to make new release change all product id, package id and version number-->
-  <Product Id="*" Name="Terminals" Language="1033" Version="3.4.0.0" Manufacturer="Robert Chartier"
+  <Product Id="*" Name="Terminals" Language="1033" Version="3.5.0.0" Manufacturer="Robert Chartier"
            UpgradeCode="DD0D31A2-2E86-4F3F-98CE-6AED37FF24CD">
     <Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     <MajorUpgrade Schedule="afterInstallInitialize" DowngradeErrorMessage="A newer version of Terminals is already installed." />
