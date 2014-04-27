@@ -233,6 +233,9 @@ namespace Terminals.Integration.Import
                         case "keyTag":
                             favorite.KeyTag = reader.ReadString();
                             break;
+                        case "SSHKeyFile":
+                            favorite.SSHKeyFile = reader.ReadString();
+                            break;
                         case "newWindow":
                             favorite.NewWindow = reader.ReadBool();
                             break;
