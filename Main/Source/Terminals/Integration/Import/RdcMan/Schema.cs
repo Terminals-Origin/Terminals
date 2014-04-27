@@ -22,8 +22,6 @@ namespace Terminals.Integration.Import.RdcMan
         private const string GATEWAY_SETTINGS = "gatewaySettings";
         private const string REMOTE_DESKTOP = "remoteDesktop";
         private const string LOCAL_RESOURCES = "localResources";
-        private const string SECURITY_SETTINGS = "securitySettings";
-        private const string DISPLAY_SETTINGS = "displaySettings";
         private const string INHERITS = "inherit";
         private const string FROMPARENT = "FromParent";
         private const string CONNECT_TO_CONSOLE = "connectToConsole";
@@ -91,16 +89,6 @@ namespace Terminals.Integration.Import.RdcMan
         internal static XElement GetLocalResourcesElement(this XElement currenElement)
         {
             return currenElement.ResolveChildElement(LOCAL_RESOURCES);
-        }
-
-        internal static XElement GetSecuritySettingsElement(this XElement currenElement)
-        {
-            return currenElement.ResolveChildElement(SECURITY_SETTINGS);
-        }
-
-        internal static XElement GetDisplaySettingsElement(this XElement currenElement)
-        {
-            return currenElement.ResolveChildElement(DISPLAY_SETTINGS);
         }
 
         private static XElement ResolveChildElement(this XElement currenElement, string elementName)
@@ -223,10 +211,10 @@ namespace Terminals.Integration.Import.RdcMan
         /// <summary>
         /// Values compatible with our values
         /// </summary>
-        internal static bool GetAudioRedirection(this XElement currenElement)
+        internal static int GetAudioRedirection(this XElement currenElement)
         {
             XElement element = currenElement.ResolveChildElement("audioRedirection");
-            return Convert.ToBoolean(element.Value);
+            return Convert.ToInt32(element.Value);
         }
 
         // Redirect audioRedirectionQuality, audioCaptureRedirection properties not covered in our application
@@ -245,13 +233,6 @@ namespace Terminals.Integration.Import.RdcMan
             XElement element = currenElement.ResolveChildElement("redirectClipboard");
             return Convert.ToBoolean(element.Value);
         }
-
-        internal static bool GetRedirectDrives(this XElement currenElement)
-        {
-            XElement element = currenElement.ResolveChildElement("redirectDrives");
-            return Convert.ToBoolean(element.Value);
-        }
-
 
         internal static bool GetRedirectPorts(this XElement currenElement)
         {

@@ -5,12 +5,12 @@ namespace Terminals.Integration.Import.RdcMan
 {
     internal class LocalResources : Settings<LocalResources>
     {
-        internal bool AudioRedirect
+        internal int AudioRedirect
         {
             get
             {
-                Func<bool> getParentValue = () => this.Parent.AudioRedirect;
-                Func<bool> getElementValue = this.PropertiesElement.GetAudioRedirection;
+                Func<int> getParentValue = () => this.Parent.AudioRedirect;
+                Func<int> getElementValue = this.PropertiesElement.GetAudioRedirection;
                 return this.ResolveValue(getParentValue, getElementValue);
             }
         }
@@ -32,16 +32,6 @@ namespace Terminals.Integration.Import.RdcMan
                 Func<bool> getParentValue = () => this.Parent.RedirectClipboard;
                 Func<bool> getElementValue = this.PropertiesElement.GetRedirectClipboard;
                 return this.ResolveValue(getParentValue, getElementValue, true);
-            }
-        }
-
-        internal bool RedirectDrives
-        {
-            get
-            {
-                Func<bool> getParentValue = () => this.Parent.RedirectDrives;
-                Func<bool> getElementValue = this.PropertiesElement.GetRedirectDrives;
-                return this.ResolveValue(getParentValue, getElementValue);
             }
         }
 
