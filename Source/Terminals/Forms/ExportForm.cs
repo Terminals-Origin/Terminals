@@ -22,7 +22,7 @@ namespace Terminals.Forms
             this.InitializeComponent();
 
             this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence);
-            this.treeLoader.LoadGroups();
+            this.treeLoader.LoadRootNodes();
             this.saveFileDialog.Filter = Integrations.Exporters.GetProvidersDialogFilter();
             this.rootNodes = new TreeListNodes(this.favsTree.Nodes);
         }
@@ -88,6 +88,8 @@ namespace Terminals.Forms
 
         private void BtnSelect_Click(object sender, EventArgs e)
         {
+            // dont expand only load compleate subtree
+            this.treeLoader.LoadGroupNodesRecursive(this.rootNodes);
             this.rootNodes.CheckChildNodesRecursive(true);
         }
 

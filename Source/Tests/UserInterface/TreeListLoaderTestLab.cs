@@ -72,7 +72,7 @@ namespace Tests.UserInterface
 
             // loaded tree is needed for all tests, if if there is a "load all test", which tests next line only
             this.treeLoader = new FavoriteTreeListLoader(this.treeView, this.Persistence);
-            this.treeLoader.LoadGroups();
+            this.treeLoader.LoadRootNodes();
             this.treeView.ExpandAllTreeNodes();
         }
 
