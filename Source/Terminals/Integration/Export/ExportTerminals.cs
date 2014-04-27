@@ -152,6 +152,7 @@ namespace Terminals.Integration.Export
                 w.WriteElementString("ssh1", favorite.SSH1.ToString());
                 w.WriteElementString("authMethod", favorite.AuthMethod.ToString());
                 w.WriteElementString("keyTag", favorite.KeyTag);
+                w.WriteElementString("SSHKeyFile", favorite.SSHKeyFile);
             }
 
             // Telnet

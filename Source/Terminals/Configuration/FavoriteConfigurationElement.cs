@@ -6,19 +6,26 @@ using Terminals.Connections;
 using Terminals.Converters;
 using Terminals.Data;
 using Terminals.Network;
-using Terminals.Security;
 
 namespace Terminals
 {
-    ///If adding a value here, update Clone() and ExportImport.ExportImport.cs.
+    /// <summary>
+    /// If adding a value here, update constructor, Clone() and native Export and Import.
+    /// </summary>
     [Serializable]
     public class FavoriteConfigurationElement : ConfigurationElement, ICloneable
     {
+        private const int DEFAULT_PORT = 3389;
+        private const string DEFAULT_PROTOCOL = "RDP";
+        private const string DEFAULT_BACKCOLOR = "Black";
+        private const string DEFAULT_CURSORCOLOR = "Green";
+        private const string DEFAULT_TEXTCOLOR = "White";
+
         public FavoriteConfigurationElement()
         {
         }
 
-        public FavoriteConfigurationElement(String name)
+        public FavoriteConfigurationElement(String name): this()
         {
             Name = name;
         }
@@ -390,7 +397,10 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("sSHKeyFile", IsRequired = false, DefaultValue = "")]
+        /// <summary>
+        /// added in v3.4
+        /// </summary>
+        [ConfigurationProperty("SSHKeyFile", IsRequired = false, DefaultValue = "")]
         public String SSHKeyFile
         {
             get
@@ -402,6 +412,7 @@ namespace Terminals
                 this["SSHKeyFile"] = value;
             }
         }
+
         [ConfigurationProperty("securityStartProgram", IsRequired = false, DefaultValue = "")]
         public String SecurityStartProgram
         {
@@ -711,7 +722,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("consolefont", IsRequired = false)]
+        [ConfigurationProperty("consolefont", IsRequired = false, DefaultValue = "")]
         public String ConsoleFont
         {
             get
@@ -728,7 +739,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("consolebackcolor", IsRequired = false, DefaultValue = "Black")]
+        [ConfigurationProperty("consolebackcolor", IsRequired = false, DefaultValue = DEFAULT_BACKCOLOR)]
         public String ConsoleBackColor
         {
             get
@@ -741,7 +752,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("consoletextcolor", IsRequired = false, DefaultValue = "White")]
+        [ConfigurationProperty("consoletextcolor", IsRequired = false, DefaultValue = DEFAULT_TEXTCOLOR)]
         public String ConsoleTextColor
         {
             get
@@ -754,7 +765,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("consolecursorcolor", IsRequired = false, DefaultValue = "Green")]
+        [ConfigurationProperty("consolecursorcolor", IsRequired = false, DefaultValue = DEFAULT_CURSORCOLOR)]
         public String ConsoleCursorColor
         {
             get
@@ -767,7 +778,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("protocol", IsRequired = true, DefaultValue = "RDP")]
+        [ConfigurationProperty("protocol", IsRequired = true, DefaultValue = DEFAULT_PROTOCOL)]
         public String Protocol
         {
             get
@@ -809,7 +820,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("telnetbackcolor", IsRequired = false, DefaultValue = "Black")]
+        [ConfigurationProperty("telnetbackcolor", IsRequired = false, DefaultValue = DEFAULT_BACKCOLOR)]
         public String TelnetBackColor
         {
             get
@@ -822,7 +833,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("telnettextcolor", IsRequired = false, DefaultValue = "White")]
+        [ConfigurationProperty("telnettextcolor", IsRequired = false, DefaultValue = DEFAULT_TEXTCOLOR)]
         public String TelnetTextColor
         {
             get
@@ -835,7 +846,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("telnetcursorcolor", IsRequired = false, DefaultValue = "Green")]
+        [ConfigurationProperty("telnetcursorcolor", IsRequired = false, DefaultValue = DEFAULT_CURSORCOLOR)]
         public String TelnetCursorColor
         {
             get
@@ -1445,7 +1456,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("port", DefaultValue = 3389)]
+        [ConfigurationProperty("port", DefaultValue = DEFAULT_PORT)]
         public Int32 Port
         {
             get
