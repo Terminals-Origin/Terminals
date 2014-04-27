@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
+using Terminals.Forms.Controls;
 
 namespace Tests.UserInterface
 {
@@ -100,6 +101,23 @@ namespace Tests.UserInterface
             this.Persistence.Groups.Delete(this.GroupK);
             AssertTreeNode(this.FavoriteA.Name, this.RootNodes[3]);
             this.AssertNodesCount(7, 5);
+        }
+
+        [TestMethod]
+        public void LoadRecursiveLoadsCompleateSubtree()
+        {
+            var treeView = new TestTreeView();
+            var treeLoader = new FavoriteTreeListLoader(treeView, this.Persistence);
+            treeLoader.LoadRootNodes(); // now we have 7 including Dummy nodes 
+            var rootNodes = new TreeListNodes(treeView.Nodes);
+
+            treeLoader.LoadGroupNodesRecursive(rootNodes);
+            int allLoadedCount = treeView.GetNodeCount(true);
+            // or assert: treeView.Nodes[1].Nodes[0].Nodes[0].Name = "FavoriteA"
+            // Dummy are replaced, and also Favorite nodes are included
+            Assert.AreEqual(8, allLoadedCount, "Loading recursive subtree should load all nodes without expanding them");
+
+            treeView.Dispose();
         }
 
         private void AssertAddedGroupNode(IGroup group, TreeNode addedTreeNode)
