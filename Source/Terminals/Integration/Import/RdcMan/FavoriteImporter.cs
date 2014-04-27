@@ -1,8 +1,7 @@
 using System;
 using System.Drawing;
-using Terminals.Integration.Import.RdcMan;
 
-namespace Terminals.Integration.Import
+namespace Terminals.Integration.Import.RdcMan
 {
     internal class FavoriteImporter
     {
@@ -18,12 +17,12 @@ namespace Terminals.Integration.Import
 
         internal FavoriteConfigurationElement ImportServer()
         {
-            ImportGeneralProperties();
-            ImportConnectionSettings();
-            ImportLocalResources();
-            ImportCredentials();
-            ImportGatewaySettings();
-            ImportDesktopSettings();
+            this.ImportGeneralProperties();
+            this.ImportConnectionSettings();
+            this.ImportLocalResources();
+            this.ImportCredentials();
+            this.ImportGatewaySettings();
+            this.ImportDesktopSettings();
             return this.favorite;
         }
 
@@ -50,6 +49,7 @@ namespace Terminals.Integration.Import
             this.favorite.RedirectPrinters = localResources.RedirectPrinters;
             this.favorite.RedirectPorts = localResources.RedirectPorts;
             this.favorite.RedirectClipboard = localResources.RedirectClipboard;
+            this.favorite.Sounds = (RemoteSounds)localResources.AudioRedirect;
             // todo is the mapping correct of keyboardHook?
             this.favorite.GrabFocusOnConnect = localResources.KeyboardHook == 0;
         }
@@ -101,7 +101,7 @@ namespace Terminals.Integration.Import
             if (desktopSettings.SameSizeAsClientArea)
                 return DesktopSize.FitToWindow;
 
-            return ResolveConcreateSize(desktopSettings.Size);
+            return this.ResolveConcreateSize(desktopSettings.Size);
         }
 
         private DesktopSize ResolveConcreateSize(string size)
