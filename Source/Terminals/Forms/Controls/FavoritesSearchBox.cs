@@ -43,7 +43,10 @@ namespace Terminals.Forms.Controls
         internal void UnloadEvents()
         {
             Settings.SavedSearches = this.searchTextBox.SearchedTexts;
-            this.persistence.Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
+            // if the panel is not visible, the loading never happens, and the persistence
+            // doesnt have to be assigned
+            if (this.persistence != null)
+                this.persistence.Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
         }
 
         /// <summary>
