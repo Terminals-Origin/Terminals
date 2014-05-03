@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
@@ -79,6 +80,16 @@ namespace Terminals.Forms.EditFavorite
             {
                 this.lvConnectionTags.Items.Remove(groupItem);
             }
+        }
+
+        /// <summary>
+        /// Confirms changes into the favorite tags and returns collection of newly assigned tags.
+        /// </summary>
+        internal List<IGroup> GetNewlySelectedGroups()
+        {
+            return this.lvConnectionTags.Items.Cast<GroupListViewItem>()
+                 .Select(candidate => candidate.FavoritesGroup)
+                 .ToList();
         }
     }
 }

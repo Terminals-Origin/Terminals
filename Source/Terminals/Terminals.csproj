@@ -273,6 +273,7 @@
     <Compile Include="Forms\EditFavorite\GroupsControl.Designer.cs">
       <DependentUpon>GroupsControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\EditFavorite\IProtocolOptionsControl.cs" />
     <Compile Include="Forms\EditFavorite\NewTerminalForm.cs">
       <SubType>Form</SubType>
     </Compile>

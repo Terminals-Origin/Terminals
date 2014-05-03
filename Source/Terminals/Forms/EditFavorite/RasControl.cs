@@ -1,23 +1,39 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using FalafelSoftware.TransPort;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class RasControl : UserControl
+    public partial class RasControl : UserControl, IProtocolOptionsControl
     {
         private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
 
         public RasControl()
         {
             InitializeComponent();
+        }
+
+        internal void FillRasControls(string serverName)
+        {
+            this.LoadDialupConnections();
+            this.RASDetailsListBox.Items.Clear();
+            if (this.dialupList != null && this.dialupList.ContainsKey(serverName))
+            {
+                RASENTRY selectedRAS = this.dialupList[serverName];
+                this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Connection", serverName));
+                this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Area Code", selectedRAS.AreaCode));
+                this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Country Code", selectedRAS.CountryCode));
+                this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Device Name", selectedRAS.DeviceName));
+                this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Device Type", selectedRAS.DeviceType));
+                this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Local Phone Number", selectedRAS.LocalPhoneNumber));
+            }
+        }
+
+        public void SetControls()
+        {
+            this.LoadDialupConnections();
+            this.RASDetailsListBox.Items.Clear();
         }
 
         private void LoadDialupConnections()

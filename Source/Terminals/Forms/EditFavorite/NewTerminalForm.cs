@@ -15,6 +15,7 @@ using Terminals.Data;
 using Terminals.Data.Validation;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
+using Terminals.Forms.EditFavorite;
 using Terminals.Network.Servers;
 
 namespace Terminals
@@ -271,7 +272,7 @@ namespace Terminals
 
             if (favorite == null)
             {
-                this.FillCredentialsCombobox(Guid.Empty);
+                // todo generalcontrol this.FillCredentialsCombobox(Guid.Empty);
 
                 var defaultSavedFavorite = Settings.GetDefaultFavorite();
                 if (defaultSavedFavorite != null)
@@ -289,7 +290,8 @@ namespace Terminals
 
                 String server;
                 Int32 port;
-                GetServerAndPort(serverName, out server, out port);
+                // todo move to the general properties control
+                GeneralPropertiesUserControl.GetServerAndPort(serverName, out server, out port);
                 this.cmbServers.Text = server;
                 this.txtPort.Text = port.ToString(CultureInfo.InvariantCulture);
             }
@@ -298,26 +300,6 @@ namespace Terminals
                 this.EditedId = favorite.Id;
                 this.Text = "Edit Connection";
                 this.FillControls(favorite);
-            }
-        }
-
-        private void FillCredentialsCombobox(Guid credential)
-        {
-            this.CredentialDropdown.Items.Clear();
-            this.CredentialDropdown.Items.Add("(custom)");
-            this.FillCredentialsComboboxWithStoredCredentials();
-            this.CredentialDropdown.SelectedItem = this.persistence.Credentials[credential];
-        }
-
-        private void FillCredentialsComboboxWithStoredCredentials()
-        {
-            IEnumerable<ICredentialSet> credentials = this.persistence.Credentials;
-            if (credentials != null)
-            {
-                foreach (ICredentialSet item in credentials)
-                {
-                    this.CredentialDropdown.Items.Add(item);
-                }
             }
         }
 
@@ -354,7 +336,7 @@ namespace Terminals
             FillGeneralPropertiesControls(favorite);
             FillDescriptionPropertiesControls(favorite);
             FillSecurityControls(favorite);
-            this.FillCredentialsCombobox(favorite.Security.Credential);
+            // todo generals control this.FillCredentialsCombobox(favorite.Security.Credential);
             FillDisplayControls(favorite);
             FillExecuteBeforeControls(favorite);
             this.consolePreferences.FillControls(favorite);
@@ -400,7 +382,7 @@ namespace Terminals
             this.txtDesktopShare.Text = favorite.DesktopShare;
             this.chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Id);
             this.pictureBox2.Image = favorite.ToolBarIconImage;
-            this.currentToolBarFileName = favorite.ToolBarIconFile;
+            // this.currentToolBarFileName = favorite.ToolBarIconFile;
             this.NotesTextbox.Text = favorite.Notes;
         }
 
@@ -683,7 +665,7 @@ namespace Terminals
         {
             favorite.NewWindow = this.NewWindowCheckbox.Checked;
             favorite.DesktopShare = this.txtDesktopShare.Text;
-            favorite.ToolBarIconFile = this.currentToolBarFileName;
+            // favorite.ToolBarIconFile = this.currentToolBarFileName;
             favorite.Notes = this.NotesTextbox.Text;
             this.ShowOnToolbar = this.chkAddtoToolbar.Checked;
         }
@@ -911,6 +893,10 @@ namespace Terminals
             vmrcOptions.ReducedColorsMode = this.VMRCReducedColorsCheckbox.Checked;
         }
 
+        #endregion
+
+        #region Refactoring finished
+
         private void SaveDefaultFavorite(IFavorite favorite)
         {
             favorite.Name = String.Empty;
@@ -943,8 +929,8 @@ namespace Terminals
             else
                 Settings.EditFavoriteButton(this.EditedId, favorite.Id, this.ShowOnToolbar);
 
-            List<IGroup> updatedGroups = this.GetNewlySelectedGroups();
-            PersistedFavorites.UpdateFavorite(favorite, updatedGroups);
+            // todo moved to Groups control List<IGroup> updatedGroups = this.GetNewlySelectedGroups();
+            // PersistedFavorites.UpdateFavorite(favorite, updatedGroups);
             this.persistence.SaveAndFinishDelayedUpdate();
             Settings.SaveAndFinishDelayedUpdate();
         }
@@ -961,16 +947,6 @@ namespace Terminals
             MessageBox.Show(this, message, Program.Info.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        /// <summary>
-        /// Confirms changes into the favorite tags and returns collection of newly assigned tags.
-        /// </summary>
-        private List<IGroup> GetNewlySelectedGroups()
-        {
-            return this.lvConnectionTags.Items.Cast<GroupListViewItem>()
-                 .Select(candidate => candidate.FavoritesGroup)
-                 .ToList();
-        }
-
         internal void SetErrorInfo(Control target, string message)
         {
             if (target == null)
@@ -981,7 +957,7 @@ namespace Terminals
 
         private void SetOkButtonState()
         {
-            if (this.httpUrlTextBox.Visible)
+            if (this.httpUrlTextBox.Visible) // todo replace with general properties control property
             {
                 this.btnSave.Enabled = this.validator.IsUrlValid();
             }
@@ -991,131 +967,18 @@ namespace Terminals
             }
         }
 
-        private static void GetServerAndPort(String connection, out String server, out Int32 port)
-        {
-            server = connection;
-            port = ConnectionManager.RDPPort;
-            if (connection != null && connection.Trim() != String.Empty && connection.Contains(":"))
-            {
-                int separatorIndex = connection.IndexOf(":", StringComparison.Ordinal);
-                String parsedServer = connection.Substring(0, separatorIndex);
-                String rawPort = connection.Substring(separatorIndex + 1);
-                Int32 parsedPort = ConnectionManager.RDPPort;
-                if (rawPort.Trim() != String.Empty)
-                {
-                    rawPort = rawPort.Trim();
-                    Int32.TryParse(rawPort, out parsedPort);
-                }
-
-                server = parsedServer;
-                port = parsedPort;
-            }
-        }
-
-        private void SetControlsForWeb()
-        {
-            this.lblServerName.Text = "Url:";
-            this.cmbServers.Enabled = false;
-            this.txtPort.Enabled = false;
-            this.httpUrlTextBox.Enabled = true;
-            this.httpUrlTextBox.Visible = true;
-        }
-
-        private void SetControlsForRas()
-        {
-            this.cmbServers.Items.Clear();
-            // this.LoadDialupConnections();
-            this.RASGroupBox.Enabled = true;
-            this.txtPort.Enabled = false;
-            this.RASDetailsListBox.Items.Clear();
-        }
-
-        private void SetControlsForRdp()
-        {
-            this.DisplaySettingsGroupBox.Enabled = true;
-            this.LocalResourceGroupBox.Enabled = true;
-            this.ExtendedSettingsGgroupBox.Enabled = true;
-            this.SecuritySettingsGroupBox.Enabled = true;
-            this.TerminalGwLoginSettingsGroupBox.Enabled = true;
-            this.TerminalGwSettingsGroupBox.Enabled = true;
-
-            this.chkConnectToConsole.Enabled = true;
-        }
-
-        private void SetControlsProtocolIndependent()
-        {
-            this.lblServerName.Text = "Computer:";
-            this.cmbServers.Enabled = true;
-            this.txtPort.Enabled = true;
-
-            this.DisplaySettingsGroupBox.Enabled = false;
-            this.LocalResourceGroupBox.Enabled = false;
-            this.ExtendedSettingsGgroupBox.Enabled = false;
-            this.SecuritySettingsGroupBox.Enabled = false;
-            this.TerminalGwLoginSettingsGroupBox.Enabled = false;
-            this.TerminalGwSettingsGroupBox.Enabled = false;
-
-            this.VmrcGroupBox.Enabled = false;
-            this.ConsoleGroupBox.Enabled = false;
-            this.RASGroupBox.Enabled = false;
-            this.IcaGroupBox.Enabled = false;
-            this.VncGroupBox.Enabled = false;
-            this.SshGroupBox.Enabled = false;
-
-            this.httpUrlTextBox.Enabled = false;
-            this.httpUrlTextBox.Visible = false;
-            this.txtPort.Enabled = true;
-        }
-
-        private void TryToAssignNewToolbarIcon(string newImagefilePath)
-        {
-            try
-            {
-                this.TryToLoadSelectedImage(newImagefilePath);
-            }
-            catch (Exception exception)
-            {
-                Logging.Info("Set Terminal Image Failed", exception);
-                this.currentToolBarFileName = String.Empty;
-                MessageBox.Show("You have chosen an invalid image. Try again.");
-            }
-        }
-
-        private void TryToLoadSelectedImage(string newImagefilePath)
-        {
-            string newFileInThumbsDir = FavoriteIcons.CopySelectedImageToThumbsDir(newImagefilePath);
-            this.pictureBox2.Image = Image.FromFile(newImagefilePath);
-            this.currentToolBarFileName = newFileInThumbsDir;
-        }
-
-        private static OpenFileDialog CreateIconSelectionDialog()
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.InitialDirectory = FileLocations.ThumbsDirectoryFullPath;
-            openFileDialog.Filter = "PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|All files (*.*)|*.*";
-            openFileDialog.Multiselect = false;
-            openFileDialog.Title = "Select Custom Terminal Image .";
-            return openFileDialog;
-        }
-
         internal Uri GetFullUrlFromHttpTextBox()
         {
-            string newUrlText = this.httpUrlTextBox.Text.ToLower();
-            string protocolPrefix = this.ProtocolComboBox.Text.ToLower();
-
-            if (!newUrlText.StartsWith(ConnectionManager.HTTP.ToLower()) &&
-                !newUrlText.StartsWith(ConnectionManager.HTTPS.ToLower()))
-                newUrlText = String.Format("{0}://{1}", protocolPrefix, newUrlText);
-            return WebOptions.TryParseUrl(newUrlText);
+            // todo call general properties control
+            return new Uri("nothing");
         }
-
-        #endregion
 
         internal void AssingSelectedGroup(IGroup group)
         {
             if (group != null)
                 BindGroupsToListView(this.lvConnectionTags, new[] { group });
         }
+
+        #endregion
     }
 }
