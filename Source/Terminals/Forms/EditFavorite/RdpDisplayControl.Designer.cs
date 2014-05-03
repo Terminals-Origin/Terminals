@@ -1,6 +1,6 @@
 ﻿namespace Terminals.Forms.EditFavorite
 {
-    partial class RdpDisplayUserControl
+    partial class RdpDisplayControl
     {
         /// <summary> 
         /// Required designer variable.

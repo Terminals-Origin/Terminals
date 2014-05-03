@@ -1950,7 +1950,6 @@ namespace Terminals
             this.SecuritySettingsEnabledCheckbox.TabIndex = 2;
             this.SecuritySettingsEnabledCheckbox.Text = "Enabled";
             this.SecuritySettingsEnabledCheckbox.UseVisualStyleBackColor = true;
-            this.SecuritySettingsEnabledCheckbox.CheckedChanged += new System.EventHandler(this.SecuritySettingsEnabledCheckbox_CheckedChanged);
             // 
             // RdpSessionTabPage
             // 
@@ -2059,7 +2058,6 @@ namespace Terminals
             this.chkTSGWlogin.TabIndex = 0;
             this.chkTSGWlogin.Text = "Use Separate Login Credentials";
             this.chkTSGWlogin.UseVisualStyleBackColor = true;
-            this.chkTSGWlogin.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
             // 
             // TerminalGwSettingsGroupBox
             // 
@@ -2084,7 +2082,6 @@ namespace Terminals
             this.radTSGWenable.TabIndex = 2;
             this.radTSGWenable.Text = "Use the following TS Gateway settings:";
             this.radTSGWenable.UseVisualStyleBackColor = true;
-            this.radTSGWenable.CheckedChanged += new System.EventHandler(this.RadTsgWenable_CheckedChanged);
             // 
             // radTSGWdisable
             // 

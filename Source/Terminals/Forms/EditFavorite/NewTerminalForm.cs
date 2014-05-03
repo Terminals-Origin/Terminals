@@ -224,11 +224,6 @@ namespace Terminals
             this.contextMenuStripDefaults.Show(this.btnSaveDefault, 0, this.btnSaveDefault.Height);
         }
 
-        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            this.pnlTSGWlogon.Enabled = this.chkTSGWlogin.Checked;
-        }
-
         private void ClientINIBrowseButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog d = new OpenFileDialog();
@@ -250,11 +245,6 @@ namespace Terminals
         private void LvConnectionTags_DoubleClick(object sender, EventArgs e)
         {
             this.DeleteGroup();
-        }
-
-        private void RadTsgWenable_CheckedChanged(object sender, EventArgs e)
-        {
-            this.pnlTSGWsettings.Enabled = this.radTSGWenable.Checked;
         }
 
         private void RDPSubTabPage_SelectedIndexChanged(object sender, EventArgs e)
@@ -317,11 +307,6 @@ namespace Terminals
                 this.Init(null, String.Empty);
                 this.cmbServers.Focus();
             }
-        }
-
-        private void SecuritySettingsEnabledCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            this.panel2.Enabled = this.SecuritySettingsEnabledCheckbox.Checked;
         }
 
         private void ServerINIBrowseButton_Click(object sender, EventArgs e)
