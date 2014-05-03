@@ -249,17 +249,41 @@
     </Compile>
     <Compile Include="Forms\Controls\TreeViewDragDrop.cs" />
     <Compile Include="Forms\CopyFavoriteCommand.cs" />
+    <Compile Include="Forms\EditFavorite\CitrixControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\CitrixControl.Designer.cs">
+      <DependentUpon>CitrixControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\ExecuteControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\ExecuteControl.Designer.cs">
+      <DependentUpon>ExecuteControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\EditFavorite\GeneralPropertiesUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\EditFavorite\GeneralPropertiesUserControl.Designer.cs">
       <DependentUpon>GeneralPropertiesUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\EditFavorite\GroupsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\GroupsControl.Designer.cs">
+      <DependentUpon>GroupsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\EditFavorite\NewTerminalForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\EditFavorite\NewTerminalForm.Designer.cs">
       <DependentUpon>NewTerminalForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\RasControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\RasControl.Designer.cs">
+      <DependentUpon>RasControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\EditFavorite\RdpDisplayControl.cs">
       <SubType>UserControl</SubType>
@@ -290,6 +314,18 @@
     </Compile>
     <Compile Include="Forms\EditFavorite\RdpTsGatewayControl.Designer.cs">
       <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\VmrcControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\VmrcControl.Designer.cs">
+      <DependentUpon>VmrcControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\VncControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\VncControl.Designer.cs">
+      <DependentUpon>VncControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Data\Validation\GroupNameValidator.cs" />
@@ -1154,12 +1190,24 @@
     <EmbeddedResource Include="Forms\Controls\SearchTextBox.resx">
       <DependentUpon>SearchTextBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditFavorite\CitrixControl.resx">
+      <DependentUpon>CitrixControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditFavorite\ExecuteControl.resx">
+      <DependentUpon>ExecuteControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditFavorite\GeneralPropertiesUserControl.resx">
       <DependentUpon>GeneralPropertiesUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditFavorite\GroupsControl.resx">
+      <DependentUpon>GroupsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditFavorite\NewTerminalForm.resx">
       <DependentUpon>NewTerminalForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditFavorite\RasControl.resx">
+      <DependentUpon>RasControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditFavorite\RdpDisplayControl.resx">
       <DependentUpon>RdpDisplayControl.cs</DependentUpon>
@@ -1175,6 +1223,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditFavorite\RdpTsGatewayControl.resx">
       <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditFavorite\VmrcControl.resx">
+      <DependentUpon>VmrcControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditFavorite\VncControl.resx">
+      <DependentUpon>VncControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\DefaultPasswordOptionPanel.resx">
       <DependentUpon>DefaultPasswordOptionPanel.cs</DependentUpon>

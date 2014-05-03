@@ -26,7 +26,6 @@ namespace Terminals
     {
         private NewTerminalFormValidator validator;
         private readonly TerminalServerManager terminalServerManager = new TerminalServerManager();
-        private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
         private String currentToolBarFileName;
         internal Guid EditedId { get; set; }
 
@@ -164,48 +163,6 @@ namespace Terminals
 
         #region Private form control event handler methods
 
-        private void AllTagsAddButton_Click(object sender, EventArgs e)
-        {
-            this.AddGroupsToFavorite();
-        }
-
-        private void AllTagsListView_DoubleClick(object sender, EventArgs e)
-        {
-            this.AddGroupsToFavorite();
-        }
-
-        private void AppPathBrowseButton_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog d = new FolderBrowserDialog();
-
-            DialogResult result = d.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                ICAApplicationPath.Text = d.SelectedPath;
-            }
-        }
-
-        private void AppWorkingFolderBrowseButton_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog d = new FolderBrowserDialog();
-
-            DialogResult result = d.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                ICAWorkingFolder.Text = d.SelectedPath;
-            }
-        }
-
-        private void BtnAddNewTag_Click(object sender, EventArgs e)
-        {
-            this.AddGroup();
-        }
-
-        private void BtnRemoveTag_Click(object sender, EventArgs e)
-        {
-            this.DeleteGroup();
-        }
-
         /// <summary>
         /// Save favorite and close form. If the form isnt valid the form control is focused.
         /// </summary>
@@ -222,29 +179,6 @@ namespace Terminals
         private void BtnSaveDefault_Click(object sender, EventArgs e)
         {
             this.contextMenuStripDefaults.Show(this.btnSaveDefault, 0, this.btnSaveDefault.Height);
-        }
-
-        private void ClientINIBrowseButton_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog d = new OpenFileDialog();
-            d.DefaultExt = "*.ini";
-            d.CheckFileExists = true;
-
-            DialogResult result = d.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                ICAClientINI.Text = d.FileName;
-            }
-        }
-
-        private void ICAEnableEncryptionCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            this.ICAEncryptionLevelCombobox.Enabled = this.ICAEnableEncryptionCheckbox.Checked;
-        }
-
-        private void LvConnectionTags_DoubleClick(object sender, EventArgs e)
-        {
-            this.DeleteGroup();
         }
 
         private void RDPSubTabPage_SelectedIndexChanged(object sender, EventArgs e)
@@ -306,18 +240,6 @@ namespace Terminals
                 this.EditedId = Guid.Empty;
                 this.Init(null, String.Empty);
                 this.cmbServers.Focus();
-            }
-        }
-
-        private void ServerINIBrowseButton_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog d = new OpenFileDialog();
-            d.DefaultExt = "*.ini";
-            d.CheckFileExists = true;
-            DialogResult result = d.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                ICAServerINI.Text = d.FileName;
             }
         }
 
@@ -409,22 +331,6 @@ namespace Terminals
             this.terminalServerManager.HostName = !this.validator.IsServerNameEmpty() ? this.cmbServers.Text : "localhost";
             this.terminalServerManager.AssignPersistence(this.persistence);
             this.RdpSessionTabPage.Controls.Add(this.terminalServerManager);
-        }
-
-        private void LoadDialupConnections()
-        {
-            this.dialupList = new Dictionary<String, RASENTRY>();
-            var rasEntries = new ArrayList();
-            ras1.ListEntries(ref rasEntries);
-            foreach (String item in rasEntries)
-            {
-                RASENTRY details = new RASENTRY();
-                ras1.GetEntry(item, ref details);
-                this.dialupList.Add(item, details);
-
-                if (!cmbServers.Items.Contains(item))
-                    this.cmbServers.Items.Add(item);
-            }
         }
 
         private void LoadMRUs()
@@ -1106,49 +1012,6 @@ namespace Terminals
             }
         }
 
-        private void AddGroup()
-        {
-            string newGroupName = this.txtGroupName.Text;
-            if (!this.validator.ValidateGroupName(this.txtGroupName))
-                return;
-            // not unique name already handled by validation
-            IGroup candidate = this.persistence.Factory.CreateGroup(newGroupName);
-            this.AddGroupIfNotAlreadyThere(candidate);
-        }
-
-        private void AddGroupsToFavorite()
-        {
-            foreach (GroupListViewItem groupItem in this.AllTagsListView.SelectedItems)
-            {
-                this.AddGroupIfNotAlreadyThere(groupItem.FavoritesGroup);
-            }
-        }
-
-        private void AddGroupIfNotAlreadyThere(IGroup selectedGroup)
-        {
-            // this also prevents duplicities in newly created groups not stored in persistence yet
-            bool containsName = SelectedGroupsContainGroupName(selectedGroup);
-            if (!containsName)
-            {
-                var selectedGroupItem = new GroupListViewItem(selectedGroup);
-                this.lvConnectionTags.Items.Add(selectedGroupItem);
-            }
-        }
-
-        private bool SelectedGroupsContainGroupName(IGroup selectedGroup)
-        {
-            return this.lvConnectionTags.Items.Cast<ListViewItem>()
-                .Any(candidate => candidate.Text == selectedGroup.Name);
-        }
-
-        private void DeleteGroup()
-        {
-            foreach (ListViewItem groupItem in this.lvConnectionTags.SelectedItems)
-            {
-                this.lvConnectionTags.Items.Remove(groupItem);
-            }
-        }
-
         private void SetControlsForWeb()
         {
             this.lblServerName.Text = "Url:";
@@ -1161,7 +1024,7 @@ namespace Terminals
         private void SetControlsForRas()
         {
             this.cmbServers.Items.Clear();
-            this.LoadDialupConnections();
+            // this.LoadDialupConnections();
             this.RASGroupBox.Enabled = true;
             this.txtPort.Enabled = false;
             this.RASDetailsListBox.Items.Clear();

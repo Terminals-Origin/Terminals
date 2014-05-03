@@ -32,9 +32,9 @@ namespace Terminals
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewTerminalFormCopy));
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources1 = new Terminals.TerminalServices.GatewayCredentialsSources();
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources2 = new Terminals.TerminalServices.GatewayCredentialsSources();
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources3 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources4 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources5 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources6 = new Terminals.TerminalServices.GatewayCredentialsSources();
             this.btnCancel = new System.Windows.Forms.Button();
             this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -72,7 +72,6 @@ namespace Terminals
             this.lvConnectionTags = new System.Windows.Forms.ListView();
             this.btnRemoveTag = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.ras1 = new FalafelSoftware.TransPort.Ras();
             this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label43 = new System.Windows.Forms.Label();
@@ -667,7 +666,6 @@ namespace Terminals
             this.btnAddNewTag.TabIndex = 2;
             this.toolTip1.SetToolTip(this.btnAddNewTag, "Add new Group to Connection Groups list.\r\n");
             this.btnAddNewTag.UseVisualStyleBackColor = true;
-            this.btnAddNewTag.Click += new System.EventHandler(this.BtnAddNewTag_Click);
             // 
             // AllTagsAddButton
             // 
@@ -678,7 +676,6 @@ namespace Terminals
             this.AllTagsAddButton.TabIndex = 1;
             this.toolTip1.SetToolTip(this.AllTagsAddButton, "Add Group to Connection");
             this.AllTagsAddButton.UseVisualStyleBackColor = true;
-            this.AllTagsAddButton.Click += new System.EventHandler(this.AllTagsAddButton_Click);
             // 
             // lvConnectionTags
             // 
@@ -694,7 +691,6 @@ namespace Terminals
         "n shortcuts tree.");
             this.lvConnectionTags.UseCompatibleStateImageBehavior = false;
             this.lvConnectionTags.View = System.Windows.Forms.View.List;
-            this.lvConnectionTags.DoubleClick += new System.EventHandler(this.LvConnectionTags_DoubleClick);
             // 
             // btnRemoveTag
             // 
@@ -705,7 +701,6 @@ namespace Terminals
             this.btnRemoveTag.TabIndex = 1;
             this.toolTip1.SetToolTip(this.btnRemoveTag, "Remove Connection Group");
             this.btnRemoveTag.UseVisualStyleBackColor = true;
-            this.btnRemoveTag.Click += new System.EventHandler(this.BtnRemoveTag_Click);
             // 
             // pictureBox1
             // 
@@ -718,15 +713,6 @@ namespace Terminals
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
-            // 
-            // ras1
-            // 
-            this.ras1.CallBackNumber = null;
-            this.ras1.Domain = null;
-            this.ras1.EntryName = null;
-            this.ras1.Password = null;
-            this.ras1.PhoneNumber = null;
-            this.ras1.UserName = null;
             // 
             // NewWindowCheckbox
             // 
@@ -1009,7 +995,6 @@ namespace Terminals
             this.AllTagsListView.TabIndex = 0;
             this.AllTagsListView.UseCompatibleStateImageBehavior = false;
             this.AllTagsListView.View = System.Windows.Forms.View.List;
-            this.AllTagsListView.DoubleClick += new System.EventHandler(this.AllTagsListView_DoubleClick);
             // 
             // panel1
             // 
@@ -1135,7 +1120,6 @@ namespace Terminals
             this.ClientINIBrowseButton.TabIndex = 31;
             this.ClientINIBrowseButton.Text = "...";
             this.ClientINIBrowseButton.UseVisualStyleBackColor = true;
-            this.ClientINIBrowseButton.Click += new System.EventHandler(this.ClientINIBrowseButton_Click);
             // 
             // ServerINIBrowseButton
             // 
@@ -1145,7 +1129,6 @@ namespace Terminals
             this.ServerINIBrowseButton.TabIndex = 30;
             this.ServerINIBrowseButton.Text = "...";
             this.ServerINIBrowseButton.UseVisualStyleBackColor = true;
-            this.ServerINIBrowseButton.Click += new System.EventHandler(this.ServerINIBrowseButton_Click);
             // 
             // AppWorkingFolderBrowseButton
             // 
@@ -1155,7 +1138,6 @@ namespace Terminals
             this.AppWorkingFolderBrowseButton.TabIndex = 29;
             this.AppWorkingFolderBrowseButton.Text = "...";
             this.AppWorkingFolderBrowseButton.UseVisualStyleBackColor = true;
-            this.AppWorkingFolderBrowseButton.Click += new System.EventHandler(this.AppWorkingFolderBrowseButton_Click);
             // 
             // appPathBrowseButton
             // 
@@ -1165,7 +1147,6 @@ namespace Terminals
             this.appPathBrowseButton.TabIndex = 28;
             this.appPathBrowseButton.Text = "...";
             this.appPathBrowseButton.UseVisualStyleBackColor = true;
-            this.appPathBrowseButton.Click += new System.EventHandler(this.AppPathBrowseButton_Click);
             // 
             // ICAEncryptionLevelCombobox
             // 
@@ -1192,7 +1173,6 @@ namespace Terminals
             this.ICAEnableEncryptionCheckbox.TabIndex = 26;
             this.ICAEnableEncryptionCheckbox.Text = "Enable Encryption";
             this.ICAEnableEncryptionCheckbox.UseVisualStyleBackColor = true;
-            this.ICAEnableEncryptionCheckbox.CheckedChanged += new System.EventHandler(this.ICAEnableEncryptionCheckbox_CheckedChanged);
             // 
             // ICAClientINI
             // 
@@ -1373,7 +1353,7 @@ namespace Terminals
             // 
             // consolePreferences
             // 
-            this.consolePreferences.Location = new System.Drawing.Point(2, 10);
+            this.consolePreferences.Location = new System.Drawing.Point(1, 4);
             this.consolePreferences.Margin = new System.Windows.Forms.Padding(4);
             this.consolePreferences.Name = "consolePreferences";
             this.consolePreferences.Size = new System.Drawing.Size(475, 310);
@@ -2121,16 +2101,16 @@ namespace Terminals
             // 
             this.cmbTSGWLogonMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTSGWLogonMethod.FormattingEnabled = true;
-            gatewayCredentialsSources1.DisplayName = "Ask for Password (NTLM)";
-            gatewayCredentialsSources1.ID = 0;
-            gatewayCredentialsSources2.DisplayName = "Smart Card";
-            gatewayCredentialsSources2.ID = 1;
-            gatewayCredentialsSources3.DisplayName = "Allow user to select later";
-            gatewayCredentialsSources3.ID = 4;
+            gatewayCredentialsSources4.DisplayName = "Ask for Password (NTLM)";
+            gatewayCredentialsSources4.ID = 0;
+            gatewayCredentialsSources5.DisplayName = "Smart Card";
+            gatewayCredentialsSources5.ID = 1;
+            gatewayCredentialsSources6.DisplayName = "Allow user to select later";
+            gatewayCredentialsSources6.ID = 4;
             this.cmbTSGWLogonMethod.Items.AddRange(new object[] {
-            gatewayCredentialsSources1,
-            gatewayCredentialsSources2,
-            gatewayCredentialsSources3});
+            gatewayCredentialsSources4,
+            gatewayCredentialsSources5,
+            gatewayCredentialsSources6});
             this.cmbTSGWLogonMethod.Location = new System.Drawing.Point(128, 34);
             this.cmbTSGWLogonMethod.Name = "cmbTSGWLogonMethod";
             this.cmbTSGWLogonMethod.Size = new System.Drawing.Size(224, 21);
@@ -2486,8 +2466,6 @@ namespace Terminals
         private System.Windows.Forms.ToolTip toolTip1;
 
         //private System.Windows.Forms.GroupBox groupBox2;
-
-        private FalafelSoftware.TransPort.Ras ras1;
         private System.Windows.Forms.CheckBox NewWindowCheckbox;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label43;
