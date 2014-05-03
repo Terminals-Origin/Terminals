@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class RdpLocalResourcesUserControl : UserControl
+    public partial class RdpLocalResourcesControl : UserControl
     {
-        public RdpLocalResourcesUserControl()
+        public RdpLocalResourcesControl()
         {
             InitializeComponent();
         }

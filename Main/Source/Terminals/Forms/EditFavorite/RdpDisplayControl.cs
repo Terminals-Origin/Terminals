@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class RdpDisplayUserControl : UserControl
+    public partial class RdpDisplayControl : UserControl
     {
-        public RdpDisplayUserControl()
+        public RdpDisplayControl()
         {
             InitializeComponent();
         }

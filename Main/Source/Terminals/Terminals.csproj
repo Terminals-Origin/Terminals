@@ -261,17 +261,35 @@
     <Compile Include="Forms\EditFavorite\NewTerminalForm.Designer.cs">
       <DependentUpon>NewTerminalForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpDisplayUserControl.cs">
+    <Compile Include="Forms\EditFavorite\RdpDisplayControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpDisplayUserControl.Designer.cs">
-      <DependentUpon>RdpDisplayUserControl.cs</DependentUpon>
+    <Compile Include="Forms\EditFavorite\RdpDisplayControl.Designer.cs">
+      <DependentUpon>RdpDisplayControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpLocalResourcesUserControl.cs">
+    <Compile Include="Forms\EditFavorite\RdpExtendedSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpLocalResourcesUserControl.Designer.cs">
-      <DependentUpon>RdpLocalResourcesUserControl.cs</DependentUpon>
+    <Compile Include="Forms\EditFavorite\RdpExtendedSettingsControl.Designer.cs">
+      <DependentUpon>RdpExtendedSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\RdpLocalResourcesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\RdpLocalResourcesControl.Designer.cs">
+      <DependentUpon>RdpLocalResourcesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\RdpSecurityControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\RdpSecurityControl.Designer.cs">
+      <DependentUpon>RdpSecurityControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\RdpTsGatewayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\RdpTsGatewayControl.Designer.cs">
+      <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Data\Validation\GroupNameValidator.cs" />
@@ -1143,11 +1161,20 @@
       <DependentUpon>NewTerminalForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\RdpDisplayUserControl.resx">
-      <DependentUpon>RdpDisplayUserControl.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\EditFavorite\RdpDisplayControl.resx">
+      <DependentUpon>RdpDisplayControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\RdpLocalResourcesUserControl.resx">
-      <DependentUpon>RdpLocalResourcesUserControl.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\EditFavorite\RdpExtendedSettingsControl.resx">
+      <DependentUpon>RdpExtendedSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditFavorite\RdpLocalResourcesControl.resx">
+      <DependentUpon>RdpLocalResourcesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditFavorite\RdpSecurityControl.resx">
+      <DependentUpon>RdpSecurityControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditFavorite\RdpTsGatewayControl.resx">
+      <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\DefaultPasswordOptionPanel.resx">
       <DependentUpon>DefaultPasswordOptionPanel.cs</DependentUpon>
