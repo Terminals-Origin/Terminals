@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class RdpDisplayControl : UserControl
+    public partial class RdpDisplayControl : UserControl, IProtocolOptionsControl
     {
         public RdpDisplayControl()
         {
@@ -16,6 +16,11 @@ namespace Terminals.Forms.EditFavorite
                 this.customSizePanel.Visible = true;
             else
                 this.customSizePanel.Visible = false;
+        }
+
+        public void SetControls()
+        {
+            this.chkConnectToConsole.Enabled = true;
         }
     }
 }
