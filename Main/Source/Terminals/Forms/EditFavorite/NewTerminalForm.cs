@@ -26,7 +26,6 @@ namespace Terminals
     internal partial class NewTerminalFormCopy : Form
     {
         private NewTerminalFormValidator validator;
-        private readonly TerminalServerManager terminalServerManager = new TerminalServerManager();
         internal Guid EditedId { get; set; }
 
         internal bool EditingNew { get { return this.EditedId == Guid.Empty; } }
@@ -120,7 +119,6 @@ namespace Terminals
         private void NewTerminalForm_Load(Object sender, EventArgs e)
         {
             this.SuspendLayout();
-            this.LoadCustomControlsState();
             IOrderedEnumerable<IGroup> sortedGroups = PersistedGroups.OrderBy(group => group.Name);
             // BindGroupsToListView(this.AllTagsListView, sortedGroups);
             this.ResumeLayout(true);
@@ -166,16 +164,6 @@ namespace Terminals
         private void BtnSaveDefault_Click(object sender, EventArgs e)
         {
             this.contextMenuStripDefaults.Show(this.btnSaveDefault, 0, this.btnSaveDefault.Height);
-        }
-
-        private void RDPSubTabPage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.RDPSubTabPage.SelectedTab == this.RdpSessionTabPage && this.ProtocolComboBox.Text == ConnectionManager.RDP)
-            {
-                // Do not auto connect for sessions on tab select. This might take a moment and than the program hangs.
-                //this._terminalServerManager.Connect(this.cmbServers.Text, true);
-                //this._terminalServerManager.Invalidate();
-            }
         }
 
         private void RemoveSavedDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -230,14 +218,6 @@ namespace Terminals
             }
         }
 
-        private void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.tabControl1.SelectedTab == this.RDPTabPage)
-            {
-                this.RDPSubTabPage_SelectedIndexChanged(null, null);
-            }
-        }
-
         #endregion
 
         #region Private form methods
@@ -287,18 +267,6 @@ namespace Terminals
                 this.Text = "Edit Connection";
                 this.FillControls(favorite);
             }
-        }
-
-        private void LoadCustomControlsState()
-        {
-            this.terminalServerManager.Dock = DockStyle.Fill;
-            this.terminalServerManager.Location = new Point(0, 0);
-            this.terminalServerManager.Name = "terminalServerManager1";
-            this.terminalServerManager.Size = new Size(748, 309);
-            this.terminalServerManager.TabIndex = 0;
-            this.terminalServerManager.HostName = !this.validator.IsServerNameEmpty() ? this.cmbServers.Text : "localhost";
-            this.terminalServerManager.AssignPersistence(this.persistence);
-            this.RdpSessionTabPage.Controls.Add(this.terminalServerManager);
         }
 
         #endregion

@@ -32,9 +32,9 @@ namespace Terminals
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewTerminalFormCopy));
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources4 = new Terminals.TerminalServices.GatewayCredentialsSources();
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources5 = new Terminals.TerminalServices.GatewayCredentialsSources();
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources6 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources1 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources2 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources3 = new Terminals.TerminalServices.GatewayCredentialsSources();
             this.btnCancel = new System.Windows.Forms.Button();
             this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -188,7 +188,6 @@ namespace Terminals
             this.label24 = new System.Windows.Forms.Label();
             this.SecuriytStartProgramTextbox = new System.Windows.Forms.TextBox();
             this.SecuritySettingsEnabledCheckbox = new System.Windows.Forms.CheckBox();
-            this.RdpSessionTabPage = new System.Windows.Forms.TabPage();
             this.RdpTsgwTabPage = new System.Windows.Forms.TabPage();
             this.TerminalGwLoginSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.pnlTSGWlogon = new System.Windows.Forms.Panel();
@@ -1419,14 +1418,12 @@ namespace Terminals
             this.RDPSubTabPage.Controls.Add(this.RDPLocalResourcesTabPage);
             this.RDPSubTabPage.Controls.Add(this.tabPage8);
             this.RDPSubTabPage.Controls.Add(this.tabPage9);
-            this.RDPSubTabPage.Controls.Add(this.RdpSessionTabPage);
             this.RDPSubTabPage.Controls.Add(this.RdpTsgwTabPage);
             this.RDPSubTabPage.Location = new System.Drawing.Point(3, 3);
             this.RDPSubTabPage.Name = "RDPSubTabPage";
             this.RDPSubTabPage.SelectedIndex = 0;
             this.RDPSubTabPage.Size = new System.Drawing.Size(594, 364);
             this.RDPSubTabPage.TabIndex = 0;
-            this.RDPSubTabPage.SelectedIndexChanged += new System.EventHandler(this.RDPSubTabPage_SelectedIndexChanged);
             // 
             // RDPDisplayTabPage
             // 
@@ -1931,16 +1928,6 @@ namespace Terminals
             this.SecuritySettingsEnabledCheckbox.Text = "Enabled";
             this.SecuritySettingsEnabledCheckbox.UseVisualStyleBackColor = true;
             // 
-            // RdpSessionTabPage
-            // 
-            this.RdpSessionTabPage.Location = new System.Drawing.Point(4, 22);
-            this.RdpSessionTabPage.Name = "RdpSessionTabPage";
-            this.RdpSessionTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.RdpSessionTabPage.Size = new System.Drawing.Size(586, 338);
-            this.RdpSessionTabPage.TabIndex = 4;
-            this.RdpSessionTabPage.Text = "TS Sessions";
-            this.RdpSessionTabPage.UseVisualStyleBackColor = true;
-            // 
             // RdpTsgwTabPage
             // 
             this.RdpTsgwTabPage.Controls.Add(this.TerminalGwLoginSettingsGroupBox);
@@ -2101,16 +2088,16 @@ namespace Terminals
             // 
             this.cmbTSGWLogonMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTSGWLogonMethod.FormattingEnabled = true;
-            gatewayCredentialsSources4.DisplayName = "Ask for Password (NTLM)";
-            gatewayCredentialsSources4.ID = 0;
-            gatewayCredentialsSources5.DisplayName = "Smart Card";
-            gatewayCredentialsSources5.ID = 1;
-            gatewayCredentialsSources6.DisplayName = "Allow user to select later";
-            gatewayCredentialsSources6.ID = 4;
+            gatewayCredentialsSources1.DisplayName = "Ask for Password (NTLM)";
+            gatewayCredentialsSources1.ID = 0;
+            gatewayCredentialsSources2.DisplayName = "Smart Card";
+            gatewayCredentialsSources2.ID = 1;
+            gatewayCredentialsSources3.DisplayName = "Allow user to select later";
+            gatewayCredentialsSources3.ID = 4;
             this.cmbTSGWLogonMethod.Items.AddRange(new object[] {
-            gatewayCredentialsSources4,
-            gatewayCredentialsSources5,
-            gatewayCredentialsSources6});
+            gatewayCredentialsSources1,
+            gatewayCredentialsSources2,
+            gatewayCredentialsSources3});
             this.cmbTSGWLogonMethod.Location = new System.Drawing.Point(128, 34);
             this.cmbTSGWLogonMethod.Name = "cmbTSGWLogonMethod";
             this.cmbTSGWLogonMethod.Size = new System.Drawing.Size(224, 21);
@@ -2355,7 +2342,6 @@ namespace Terminals
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(605, 396);
             this.tabControl1.TabIndex = 0;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.TabControl1_SelectedIndexChanged);
             // 
             // errorProvider
             // 
@@ -2530,7 +2516,6 @@ namespace Terminals
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.TabPage tabPage9;
-        private System.Windows.Forms.TabPage RdpSessionTabPage;
         private System.Windows.Forms.TabPage RdpTsgwTabPage;
         private System.Windows.Forms.GroupBox TerminalGwLoginSettingsGroupBox;
         private System.Windows.Forms.Panel pnlTSGWlogon;
