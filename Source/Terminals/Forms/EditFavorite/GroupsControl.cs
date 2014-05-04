@@ -91,5 +91,26 @@ namespace Terminals.Forms.EditFavorite
                  .Select(candidate => candidate.FavoritesGroup)
                  .ToList();
         }
+
+        internal void AssingSelectedGroup(IGroup group)
+        {
+            if (group != null)
+                BindGroupsToListView(this.lvConnectionTags, new[] { group });
+        }
+
+        private void ReloadTagsListViewItems(IFavorite favorite)
+        {
+            this.lvConnectionTags.Items.Clear();
+            BindGroupsToListView(this.lvConnectionTags, favorite.Groups);
+        }
+
+        private static void BindGroupsToListView(ListView listViewToFill, IEnumerable<IGroup> groups)
+        {
+            foreach (IGroup group in groups)
+            {
+                var groupItem = new GroupListViewItem(group);
+                listViewToFill.Items.Add(groupItem);
+            }
+        }
     }
 }

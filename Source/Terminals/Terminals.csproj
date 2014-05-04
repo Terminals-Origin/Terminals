@@ -316,6 +316,12 @@
     <Compile Include="Forms\EditFavorite\RdpTsGatewayControl.Designer.cs">
       <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\EditFavorite\SshControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\SshControl.Designer.cs">
+      <DependentUpon>SshControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\EditFavorite\VmrcControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1224,6 +1230,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditFavorite\RdpTsGatewayControl.resx">
       <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditFavorite\SshControl.resx">
+      <DependentUpon>SshControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditFavorite\VmrcControl.resx">
       <DependentUpon>VmrcControl.cs</DependentUpon>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
@@ -61,5 +62,39 @@ namespace Terminals.Forms.EditFavorite
                 ICAClientINI.Text = d.FileName;
             }
         }
+
+        private void FillFavoriteICAOPtions(IFavorite favorite)
+        {
+            var icaOptions = favorite.ProtocolProperties as ICAOptions;
+            if (icaOptions == null)
+                return;
+
+            icaOptions.ClientINI = this.ICAClientINI.Text;
+            icaOptions.ServerINI = this.ICAServerINI.Text;
+            icaOptions.EncryptionLevel = this.ICAEncryptionLevelCombobox.Text;
+            icaOptions.EnableEncryption = this.ICAEnableEncryptionCheckbox.Checked;
+
+            icaOptions.ApplicationName = this.ICAApplicationNameTextBox.Text;
+            icaOptions.ApplicationPath = this.ICAApplicationPath.Text;
+            icaOptions.ApplicationWorkingFolder = this.ICAWorkingFolder.Text;
+        }
+
+        private void FillIcaControls(IFavorite favorite)
+        {
+            var icaOptions = favorite.ProtocolProperties as ICAOptions;
+            if (icaOptions == null)
+                return;
+
+            this.ICAClientINI.Text = icaOptions.ClientINI;
+            this.ICAServerINI.Text = icaOptions.ServerINI;
+            this.ICAEncryptionLevelCombobox.Text = icaOptions.EncryptionLevel;
+            this.ICAEnableEncryptionCheckbox.Checked = icaOptions.EnableEncryption;
+            this.ICAEncryptionLevelCombobox.Enabled = icaOptions.EnableEncryption;
+
+            this.ICAApplicationNameTextBox.Text = icaOptions.ApplicationName;
+            this.ICAApplicationPath.Text = icaOptions.ApplicationPath;
+            this.ICAWorkingFolder.Text = icaOptions.ApplicationWorkingFolder;
+        }
+
     }
 }

@@ -27,13 +27,9 @@ namespace Terminals
     {
         private NewTerminalFormValidator validator;
         private readonly TerminalServerManager terminalServerManager = new TerminalServerManager();
-        private String currentToolBarFileName;
         internal Guid EditedId { get; set; }
 
         internal bool EditingNew { get { return this.EditedId == Guid.Empty; } }
-
-        private String favoritePassword = string.Empty;
-        internal const String HIDDEN_PASSWORD = "****************";
 
         private readonly IPersistence persistence;
 
@@ -46,13 +42,7 @@ namespace Terminals
         {
             get { return this.persistence.Favorites; }
         }
-
-        internal string ServerNameText { get { return this.cmbServers.Text.Trim(); } }
-
-        internal string ProtocolText { get { return this.ProtocolComboBox.Text; } }
-
-        internal string PortText { get { return this.txtPort.Text; } }
-
+ 
         #region Constructors
 
         public NewTerminalFormCopy(IPersistence persistence, String serverName)
@@ -74,8 +64,6 @@ namespace Terminals
         private NewTerminalFormCopy()
         {
             this.InitializeComponent();
-            this.RedirectedDrives = new List<String>();
-            this.RedirectDevices = false;
             this.SetErrorProviderIconsAlignment();
         }
 
@@ -124,8 +112,6 @@ namespace Terminals
         private new TerminalFormDialogResult DialogResult { get; set; }
         internal IFavorite Favorite { get; private set; }
         private bool ShowOnToolbar { get; set; }
-        internal List<string> RedirectedDrives { get; set; }
-        internal bool RedirectDevices { get; set; }
 
         #endregion
 
@@ -136,7 +122,7 @@ namespace Terminals
             this.SuspendLayout();
             this.LoadCustomControlsState();
             IOrderedEnumerable<IGroup> sortedGroups = PersistedGroups.OrderBy(group => group.Name);
-            BindGroupsToListView(this.AllTagsListView, sortedGroups);
+            // BindGroupsToListView(this.AllTagsListView, sortedGroups);
             this.ResumeLayout(true);
         }
 
@@ -169,7 +155,7 @@ namespace Terminals
         /// </summary>
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            this.SaveMRUs();
+            // this.SaveMRUs();
             if (this.FillFavorite(false))
             {
                 this.DialogResult = TerminalFormDialogResult.SaveAndClose;
@@ -202,7 +188,7 @@ namespace Terminals
         /// </summary>
         private void SaveConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.SaveMRUs();
+            // this.SaveMRUs();
 
             if (this.FillFavorite(false))
                 this.DialogResult = TerminalFormDialogResult.SaveAndConnect;
@@ -215,7 +201,7 @@ namespace Terminals
         /// </summary>
         private void SaveCopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.SaveMRUs();
+            // this.SaveMRUs();
             if (this.FillFavorite(false))
             {
                 this.txtName.Text = this.Favorite.Name + "_(copy)";
@@ -235,7 +221,7 @@ namespace Terminals
         /// </summary>
         private void SaveNewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.SaveMRUs();
+            // this.SaveMRUs();
             if (this.FillFavorite(false))
             {
                 this.EditedId = Guid.Empty;
@@ -258,7 +244,7 @@ namespace Terminals
 
         private void Init(IFavorite favorite, String serverName)
         {
-            this.LoadMRUs();
+            // this.LoadMRUs();
             this.SetOkButtonState();
 
             try { this.SSHPreferences.Keys = Settings.SSHKeys; }
@@ -315,93 +301,26 @@ namespace Terminals
             this.RdpSessionTabPage.Controls.Add(this.terminalServerManager);
         }
 
-        private void LoadMRUs()
-        {
-            this.cmbServers.Items.AddRange(Settings.MRUServerNames);
-            this.cmbDomains.Items.AddRange(Settings.MRUDomainNames);
-            this.cmbUsers.Items.AddRange(Settings.MRUUserNames);
-            string[] groupNames = PersistedGroups.Select(group => group.Name).ToArray();
-            this.txtGroupName.AutoCompleteCustomSource.AddRange(groupNames);
-        }
+        #endregion
 
-        private void SaveMRUs()
-        {
-            Settings.AddServerMRUItem(cmbServers.Text);
-            Settings.AddDomainMRUItem(cmbDomains.Text);
-            Settings.AddUserMRUItem(cmbUsers.Text);
-        }
+        #region Refactoring finished
 
         private void FillControls(IFavorite favorite)
         {
-            FillGeneralPropertiesControls(favorite);
-            FillDescriptionPropertiesControls(favorite);
-            FillSecurityControls(favorite);
+            // FillGeneralPropertiesControls(favorite);
+            // FillDescriptionPropertiesControls(favorite);
+            // FillSecurityControls(favorite);
             // todo generals control this.FillCredentialsCombobox(favorite.Security.Credential);
-            FillDisplayControls(favorite);
-            FillExecuteBeforeControls(favorite);
-            this.consolePreferences.FillControls(favorite);
-            FillVmrcControls(favorite);
-            FillVNCControls(favorite);
-            FillIcaControls(favorite);
-            FillSshControls(favorite);
+            // FillDisplayControls(favorite);
+            // FillExecuteBeforeControls(favorite);
+            // this.consolePreferences.FillControls(favorite);
+            //FillVmrcControls(favorite);
+            //FillVNCControls(favorite);
+            //FillIcaControls(favorite);
+            //FillSshControls(favorite);
             FillRdpOptions(favorite);
 
-            ReloadTagsListViewItems(favorite);
-        }
-
-        private void FillSecurityControls(IFavorite favorite)
-        {
-            this.cmbDomains.Text = favorite.Security.Domain;
-            this.cmbUsers.Text = favorite.Security.UserName;
-            this.favoritePassword = favorite.Security.Password;
-
-            if (string.IsNullOrEmpty(this.favoritePassword) && !string.IsNullOrEmpty(favorite.Security.EncryptedPassword))
-            {
-                MessageBox.Show("There was an issue with decrypting your password.\n\nPlease provide a new password and save the favorite.");
-                this.txtPassword.Text = "";
-                this.favoritePassword = String.Empty;
-                this.txtPassword.Focus();
-                favorite.Security.Password = String.Empty;
-            }
-
-            if (!string.IsNullOrEmpty(this.favoritePassword))
-            {
-                this.txtPassword.Text = HIDDEN_PASSWORD;
-                this.chkSavePassword.Checked = true;
-            }
-            else
-            {
-                this.txtPassword.Text = String.Empty;
-                this.chkSavePassword.Checked = false;
-            }
-        }
-
-        private void FillDescriptionPropertiesControls(IFavorite favorite)
-        {
-            this.NewWindowCheckbox.Checked = favorite.NewWindow;
-            this.txtDesktopShare.Text = favorite.DesktopShare;
-            this.chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Id);
-            this.pictureBox2.Image = favorite.ToolBarIconImage;
-            // this.currentToolBarFileName = favorite.ToolBarIconFile;
-            this.NotesTextbox.Text = favorite.Notes;
-        }
-
-        private void FillGeneralPropertiesControls(IFavorite favorite)
-        {
-            this.txtName.Text = favorite.Name;
-            this.cmbServers.Text = favorite.ServerName;
-            this.ProtocolComboBox.SelectedItem = favorite.Protocol;
-            this.txtPort.Text = favorite.Port.ToString(CultureInfo.InvariantCulture);
-            this.httpUrlTextBox.Text = WebOptions.ExtractAbsoluteUrl(favorite);
-        }
-
-        private void FillExecuteBeforeControls(IFavorite favorite)
-        {
-            this.chkExecuteBeforeConnect.Checked = favorite.ExecuteBeforeConnect.Execute;
-            this.txtCommand.Text = favorite.ExecuteBeforeConnect.Command;
-            this.txtArguments.Text = favorite.ExecuteBeforeConnect.CommandArguments;
-            this.txtInitialDirectory.Text = favorite.ExecuteBeforeConnect.InitialDirectory;
-            this.chkWaitForExit.Checked = favorite.ExecuteBeforeConnect.WaitForExit;
+            // ReloadTagsListViewItems(favorite);
         }
 
         private void FillRdpOptions(IFavorite favorite)
@@ -410,181 +329,12 @@ namespace Terminals
             if (rdpOptions == null)
                 return;
 
-            FillRdpSecurityControls(rdpOptions);
-            FillRdpUserInterfaceControls(rdpOptions);
-            FillRdpDisplayControls(rdpOptions);
-            FillRdpRedirectControls(rdpOptions);
-            FillTsGatewayControls(rdpOptions);
-            FillRdpTimeOutControls(rdpOptions);
-        }
-
-        private void FillRdpDisplayControls(RdpOptions rdpOptions)
-        {
-            this.chkConnectToConsole.Checked = rdpOptions.ConnectToConsole;
-            this.chkDisableWallpaper.Checked = rdpOptions.UserInterface.DisableWallPaper;
-            this.chkDisableCursorBlinking.Checked = rdpOptions.UserInterface.DisableCursorBlinking;
-            this.chkDisableCursorShadow.Checked = rdpOptions.UserInterface.DisableCursorShadow;
-            this.chkDisableFullWindowDrag.Checked = rdpOptions.UserInterface.DisableFullWindowDrag;
-            this.chkDisableMenuAnimations.Checked = rdpOptions.UserInterface.DisableMenuAnimations;
-            this.chkDisableThemes.Checked = rdpOptions.UserInterface.DisableTheming;
-        }
-
-        private void FillRdpSecurityControls(RdpOptions rdpOptions)
-        {
-            this.EnableTLSAuthenticationCheckbox.Checked = rdpOptions.Security.EnableTLSAuthentication;
-            this.EnableNLAAuthenticationCheckbox.Checked = rdpOptions.Security.EnableNLAAuthentication;
-            this.EnableEncryptionCheckbox.Checked = rdpOptions.Security.EnableEncryption;
-            this.SecuritySettingsEnabledCheckbox.Checked = rdpOptions.Security.Enabled;
-            this.SecurityWorkingFolderTextBox.Text = rdpOptions.Security.WorkingFolder;
-            this.SecuriytStartProgramTextbox.Text = rdpOptions.Security.StartProgram;
-            this.SecurityStartFullScreenCheckbox.Checked = rdpOptions.FullScreen;
-        }
-
-        private void FillRdpRedirectControls(RdpOptions rdpOptions)
-        {
-            this.RedirectedDrives = rdpOptions.Redirect.Drives;
-            this.chkSerialPorts.Checked = rdpOptions.Redirect.Ports;
-            this.chkPrinters.Checked = rdpOptions.Redirect.Printers;
-            this.chkRedirectClipboard.Checked = rdpOptions.Redirect.Clipboard;
-            this.RedirectDevices = rdpOptions.Redirect.Devices;
-            this.chkRedirectSmartcards.Checked = rdpOptions.Redirect.SmartCards;
-            this.cmbSounds.SelectedIndex = (Int32)rdpOptions.Redirect.Sounds;
-        }
-
-        private void FillSshControls(IFavorite favorite)
-        {
-            var sshOptions = favorite.ProtocolProperties as SshOptions;
-            if (sshOptions == null)
-                return;
-
-            this.SSHPreferences.AuthMethod = sshOptions.AuthMethod;
-            this.SSHPreferences.KeyTag = sshOptions.CertificateKey;
-            this.SSHPreferences.SSH1 = sshOptions.SSH1;
-
-            this.SSHPreferences.SSHKeyFile = sshOptions.SSHKeyFile;
-        }
-
-        private void FillDisplayControls(IFavorite favorite)
-        {
-            this.cmbResolution.SelectedIndex = (Int32)favorite.Display.DesktopSize;
-            this.cmbColors.SelectedIndex = (Int32)favorite.Display.Colors;
-            this.widthUpDown.Value = favorite.Display.Width;
-            this.heightUpDown.Value = favorite.Display.Height;
-        }
-
-        private void FillIcaControls(IFavorite favorite)
-        {
-            var icaOptions = favorite.ProtocolProperties as ICAOptions;
-            if (icaOptions == null)
-                return;
-
-            this.ICAClientINI.Text = icaOptions.ClientINI;
-            this.ICAServerINI.Text = icaOptions.ServerINI;
-            this.ICAEncryptionLevelCombobox.Text = icaOptions.EncryptionLevel;
-            this.ICAEnableEncryptionCheckbox.Checked = icaOptions.EnableEncryption;
-            this.ICAEncryptionLevelCombobox.Enabled = icaOptions.EnableEncryption;
-
-            this.ICAApplicationNameTextBox.Text = icaOptions.ApplicationName;
-            this.ICAApplicationPath.Text = icaOptions.ApplicationPath;
-            this.ICAWorkingFolder.Text = icaOptions.ApplicationWorkingFolder;
-        }
-
-        private void FillRdpUserInterfaceControls(RdpOptions rdpOptions)
-        {
-            var userInterface = rdpOptions.UserInterface;
-            this.GrabFocusOnConnectCheckbox.Checked = rdpOptions.GrabFocusOnConnect;
-            this.DisableWindowsKeyCheckbox.Checked = userInterface.DisableWindowsKey;
-            this.DetectDoubleClicksCheckbox.Checked = userInterface.DoubleClickDetect;
-            this.DisplayConnectionBarCheckbox.Checked = userInterface.DisplayConnectionBar;
-            this.DisableControlAltDeleteCheckbox.Checked = userInterface.DisableControlAltDelete;
-            this.AcceleratorPassthroughCheckBox.Checked = userInterface.AcceleratorPassthrough;
-            this.EnableCompressionCheckbox.Checked = userInterface.EnableCompression;
-            this.EnableBitmapPersistenceCheckbox.Checked = userInterface.BitmapPeristence;
-            this.AllowBackgroundInputCheckBox.Checked = userInterface.AllowBackgroundInput;
-            this.AllowFontSmoothingCheckbox.Checked = userInterface.EnableFontSmoothing;
-            this.AllowDesktopCompositionCheckbox.Checked = userInterface.EnableDesktopComposition;
-            this.txtLoadBalanceInfo.Text = userInterface.LoadBalanceInfo;
-        }
-
-        private void FillRdpTimeOutControls(RdpOptions rdpOptions)
-        {
-            this.ShutdownTimeoutTextBox.Text = rdpOptions.TimeOuts.ShutdownTimeout.ToString(CultureInfo.InvariantCulture);
-            this.OverallTimeoutTextbox.Text = rdpOptions.TimeOuts.OverallTimeout.ToString(CultureInfo.InvariantCulture);
-            this.SingleTimeOutTextbox.Text = rdpOptions.TimeOuts.ConnectionTimeout.ToString(CultureInfo.InvariantCulture);
-            this.IdleTimeoutMinutesTextBox.Text = rdpOptions.TimeOuts.IdleTimeout.ToString(CultureInfo.InvariantCulture);
-        }
-
-        private void FillTsGatewayControls(RdpOptions rdpOptions)
-        {
-            var tsGateway = rdpOptions.TsGateway;
-            switch (tsGateway.UsageMethod)
-            {
-                case 0:
-                    this.radTSGWdisable.Checked = true;
-                    this.chkTSGWlocalBypass.Checked = false;
-                    break;
-                case 1:
-                    this.radTSGWenable.Checked = true;
-                    this.chkTSGWlocalBypass.Checked = false;
-                    break;
-                case 2:
-                    this.radTSGWenable.Checked = true;
-                    this.chkTSGWlocalBypass.Checked = true;
-                    break;
-                case 4:
-                    this.radTSGWdisable.Checked = true;
-                    this.chkTSGWlocalBypass.Checked = true;
-                    break;
-            }
-
-            this.txtTSGWServer.Text = tsGateway.HostName;
-            this.txtTSGWDomain.Text = tsGateway.Security.Domain;
-            this.txtTSGWUserName.Text = tsGateway.Security.UserName;
-            this.txtTSGWPassword.Text = tsGateway.Security.Password;
-            this.chkTSGWlogin.Checked = tsGateway.SeparateLogin;
-            if (tsGateway.CredentialSource == 4)
-            {
-                this.cmbTSGWLogonMethod.SelectedIndex = 2;
-            }
-            else
-            {
-                this.cmbTSGWLogonMethod.SelectedIndex = tsGateway.CredentialSource;
-
-            }
-        }
-
-        private void FillVmrcControls(IFavorite favorite)
-        {
-            VMRCOptions vncOptions = favorite.ProtocolProperties as VMRCOptions;
-            if (vncOptions == null)
-                return;
-            this.VMRCAdminModeCheckbox.Checked = vncOptions.AdministratorMode;
-            this.VMRCReducedColorsCheckbox.Checked = vncOptions.ReducedColorsMode;
-        }
-
-        private void FillVNCControls(IFavorite favorite)
-        {
-            VncOptions vncOptions = favorite.ProtocolProperties as VncOptions;
-            if (vncOptions == null)
-                return;
-            this.vncAutoScaleCheckbox.Checked = vncOptions.AutoScale;
-            this.vncDisplayNumberInput.Value = vncOptions.DisplayNumber;
-            this.VncViewOnlyCheckbox.Checked = vncOptions.ViewOnly;
-        }
-
-        private void ReloadTagsListViewItems(IFavorite favorite)
-        {
-            this.lvConnectionTags.Items.Clear();
-            BindGroupsToListView(this.lvConnectionTags, favorite.Groups);
-        }
-
-        private static void BindGroupsToListView(ListView listViewToFill, IEnumerable<IGroup> groups)
-        {
-            foreach (IGroup group in groups)
-            {
-                var groupItem = new GroupListViewItem(group);
-                listViewToFill.Items.Add(groupItem);
-            }
+            //FillRdpSecurityControls(rdpOptions);
+            //FillRdpUserInterfaceControls(rdpOptions);
+            //FillRdpDisplayControls(rdpOptions);
+            //FillRdpRedirectControls(rdpOptions);
+            //FillTsGatewayControls(rdpOptions);
+            //FillRdpTimeOutControls(rdpOptions);
         }
 
         private Boolean FillFavorite(Boolean defaultFav)
@@ -619,21 +369,6 @@ namespace Terminals
             }
         }
 
-        internal void FillFavoriteFromControls(IFavorite favorite)
-        {
-            this.FillGeneralProrperties(favorite);
-            this.FillDescriptionProperties(favorite);
-            this.FillFavoriteSecurity(favorite);
-            this.FillFavoriteDisplayOptions(favorite);
-            this.FillFavoriteExecuteBeforeOptions(favorite);
-            this.consolePreferences.FillFavorite(favorite);
-            this.FillFavoriteVmrcOptions(favorite);
-            this.FillFavoriteVncOptions(favorite);
-            this.FillFavoriteICAOPtions(favorite);
-            this.FillFavoriteSSHOptions(favorite);
-            this.FillFavoriteRdpOptions(favorite);
-        }
-        
         private static void EntityLogValidationErrors(DbEntityValidationException entityValidation)
         {
             Logging.Error("Entity exception", entityValidation);
@@ -661,241 +396,35 @@ namespace Terminals
             return favorite;
         }
 
-        private void FillDescriptionProperties(IFavorite favorite)
+        internal void FillFavoriteFromControls(IFavorite favorite)
         {
-            favorite.NewWindow = this.NewWindowCheckbox.Checked;
-            favorite.DesktopShare = this.txtDesktopShare.Text;
-            // favorite.ToolBarIconFile = this.currentToolBarFileName;
-            favorite.Notes = this.NotesTextbox.Text;
-            this.ShowOnToolbar = this.chkAddtoToolbar.Checked;
-        }
-
-        private void FillGeneralProrperties(IFavorite favorite)
-        {
-            favorite.Name = (String.IsNullOrEmpty(this.txtName.Text) ? this.cmbServers.Text : this.txtName.Text);
-            favorite.ServerName = this.cmbServers.Text;
-            favorite.Protocol = this.ProtocolComboBox.SelectedItem.ToString();
-            Int32 port;
-            Int32.TryParse(this.PortText, out port);
-            favorite.Port = port;
-            this.FillWebProperties(favorite);
-        }
-
-        private void FillWebProperties(IFavorite favorite)
-        {
-            WebOptions.UpdateFavoriteUrl(favorite, this.httpUrlTextBox.Text);
-        }
-
-        private void FillFavoriteDisplayOptions(IFavorite favorite)
-        {
-            IDisplayOptions display = favorite.Display;
-            if (this.cmbResolution.SelectedIndex >= 0)
-                display.DesktopSize = (DesktopSize)this.cmbResolution.SelectedIndex;
-
-            if (this.cmbColors.SelectedIndex >= 0)
-                display.Colors = (Colors)this.cmbColors.SelectedIndex;
-
-            display.Width = (Int32)this.widthUpDown.Value;
-            display.Height = (Int32)this.heightUpDown.Value;
-        }
-
-        private void FillFavoriteRdpSecurity(RdpOptions rdpOptions)
-        {
-            rdpOptions.Security.EnableTLSAuthentication = this.EnableTLSAuthenticationCheckbox.Checked;
-            rdpOptions.Security.EnableNLAAuthentication = this.EnableNLAAuthenticationCheckbox.Checked;
-            rdpOptions.Security.EnableEncryption = this.EnableEncryptionCheckbox.Checked;
-            rdpOptions.Security.Enabled = this.SecuritySettingsEnabledCheckbox.Checked;
-            if (this.SecuritySettingsEnabledCheckbox.Checked)
-            {
-                rdpOptions.Security.WorkingFolder = this.SecurityWorkingFolderTextBox.Text;
-                rdpOptions.Security.StartProgram = this.SecuriytStartProgramTextbox.Text;
-                rdpOptions.FullScreen = this.SecurityStartFullScreenCheckbox.Checked;
-            }
-        }
-
-        private void FillFavoriteRdpTimeOutOptions(RdpOptions rdpOptions)
-        {
-            rdpOptions.TimeOuts.ShutdownTimeout = ParseInteger(this.ShutdownTimeoutTextBox);
-            rdpOptions.TimeOuts.OverallTimeout = ParseInteger(this.OverallTimeoutTextbox);
-            rdpOptions.TimeOuts.ConnectionTimeout = ParseInteger(this.SingleTimeOutTextbox);
-            rdpOptions.TimeOuts.IdleTimeout = ParseInteger(this.IdleTimeoutMinutesTextBox);
-        }
-
-        private static int ParseInteger(TextBox textBox)
-        {
-            int parsed;
-            int.TryParse(textBox.Text, out parsed);
-            return parsed;
-        }
-
-        private void FillFavoriteRdpInterfaceOptions(RdpOptions rdpOptions)
-        {
-            RdpUserInterfaceOptions userInterface = rdpOptions.UserInterface;
-            rdpOptions.GrabFocusOnConnect = this.GrabFocusOnConnectCheckbox.Checked;
-            userInterface.DisableWindowsKey = this.DisableWindowsKeyCheckbox.Checked;
-            userInterface.DoubleClickDetect = this.DetectDoubleClicksCheckbox.Checked;
-            userInterface.DisplayConnectionBar = this.DisplayConnectionBarCheckbox.Checked;
-            userInterface.DisableControlAltDelete = this.DisableControlAltDeleteCheckbox.Checked;
-            userInterface.AcceleratorPassthrough = this.AcceleratorPassthroughCheckBox.Checked;
-            userInterface.EnableCompression = this.EnableCompressionCheckbox.Checked;
-            userInterface.BitmapPeristence = this.EnableBitmapPersistenceCheckbox.Checked;
-            userInterface.AllowBackgroundInput = this.AllowBackgroundInputCheckBox.Checked;
-            userInterface.EnableFontSmoothing = this.AllowFontSmoothingCheckbox.Checked;
-            userInterface.EnableDesktopComposition = this.AllowDesktopCompositionCheckbox.Checked;
-        }
-
-        private void FillFavoriteExecuteBeforeOptions(IFavorite favorite)
-        {
-            IBeforeConnectExecuteOptions exucutionOptions = favorite.ExecuteBeforeConnect;
-            exucutionOptions.Execute = this.chkExecuteBeforeConnect.Checked;
-            exucutionOptions.Command = this.txtCommand.Text;
-            exucutionOptions.CommandArguments = this.txtArguments.Text;
-            exucutionOptions.InitialDirectory = this.txtInitialDirectory.Text;
-            exucutionOptions.WaitForExit = this.chkWaitForExit.Checked;
-        }
-
-        private void FillFavoriteSSHOptions(IFavorite favorite)
-        {
-            var sshOptions = favorite.ProtocolProperties as SshOptions;
-            if (sshOptions == null)
-                return;
-
-            sshOptions.AuthMethod = this.SSHPreferences.AuthMethod;
-            sshOptions.CertificateKey = this.SSHPreferences.KeyTag;
-            sshOptions.SSH1 = this.SSHPreferences.SSH1;
-
-            sshOptions.SSHKeyFile = this.SSHPreferences.SSHKeyFile;
-        }
-
-        private void FillFavoriteICAOPtions(IFavorite favorite)
-        {
-            var icaOptions = favorite.ProtocolProperties as ICAOptions;
-            if (icaOptions == null)
-                return;
-
-            icaOptions.ClientINI = this.ICAClientINI.Text;
-            icaOptions.ServerINI = this.ICAServerINI.Text;
-            icaOptions.EncryptionLevel = this.ICAEncryptionLevelCombobox.Text;
-            icaOptions.EnableEncryption = this.ICAEnableEncryptionCheckbox.Checked;
-
-            icaOptions.ApplicationName = this.ICAApplicationNameTextBox.Text;
-            icaOptions.ApplicationPath = this.ICAApplicationPath.Text;
-            icaOptions.ApplicationWorkingFolder = this.ICAWorkingFolder.Text;
-        }
-
-        private void FillFavoriteTSgatewayOptions(RdpOptions rdpOptions)
-        {
-            TsGwOptions tsgwOptions = rdpOptions.TsGateway;
-            tsgwOptions.HostName = this.txtTSGWServer.Text;
-            tsgwOptions.Security.Domain = this.txtTSGWDomain.Text;
-            tsgwOptions.Security.UserName = this.txtTSGWUserName.Text;
-            tsgwOptions.Security.Password = this.txtTSGWPassword.Text;
-            tsgwOptions.SeparateLogin = this.chkTSGWlogin.Checked;
-            tsgwOptions.CredentialSource = this.cmbTSGWLogonMethod.SelectedIndex;
-            if (tsgwOptions.CredentialSource == 2)
-                tsgwOptions.CredentialSource = 4;
-
-            if (this.radTSGWenable.Checked)
-            {
-                if (this.chkTSGWlocalBypass.Checked)
-                    tsgwOptions.UsageMethod = 2;
-                else
-                    tsgwOptions.UsageMethod = 1;
-            }
-            else
-            {
-                if (this.chkTSGWlocalBypass.Checked)
-                    tsgwOptions.UsageMethod = 4;
-                else
-                    tsgwOptions.UsageMethod = 0;
-            }
+            // this.FillGeneralProrperties(favorite);
+            // this.FillDescriptionProperties(favorite);
+            // this.FillFavoriteSecurity(favorite);
+            // this.FillFavoriteDisplayOptions(favorite);
+            // this.FillFavoriteExecuteBeforeOptions(favorite);
+            // this.consolePreferences.FillFavorite(favorite);
+            // this.FillFavoriteVmrcOptions(favorite);
+            // this.FillFavoriteVncOptions(favorite);
+            // this.FillFavoriteICAOPtions(favorite);
+            // this.FillFavoriteSSHOptions(favorite);
+            this.FillFavoriteRdpOptions(favorite);
         }
 
         private void FillFavoriteRdpOptions(IFavorite favorite)
-        {
+        {  
+            // todo move to overall RdpControl
             var rdpOptions = favorite.ProtocolProperties as RdpOptions;
             if (rdpOptions == null)
                 return;
 
-            FillFavoriteRdpSecurity(rdpOptions);
-            FillFavoriteRdpInterfaceOptions(rdpOptions);
-            FillFavoriteRdpDisplayOptions(rdpOptions);
-            FillFavoriteRdpRedirectOptions(rdpOptions);
-            FillFavoriteTSgatewayOptions(rdpOptions);
-            FillFavoriteRdpTimeOutOptions(rdpOptions);
+            // FillFavoriteRdpSecurity(rdpOptions);
+            // FillFavoriteRdpInterfaceOptions(rdpOptions);
+            // FillFavoriteRdpDisplayOptions(rdpOptions);
+            // FillFavoriteRdpRedirectOptions(rdpOptions);
+            // FillFavoriteTSgatewayOptions(rdpOptions);
+            // FillFavoriteRdpTimeOutOptions(rdpOptions);
         }
-
-        private void FillFavoriteRdpDisplayOptions(RdpOptions rdpOptions)
-        {
-            rdpOptions.ConnectToConsole = this.chkConnectToConsole.Checked;
-            rdpOptions.UserInterface.DisableWallPaper = this.chkDisableWallpaper.Checked;
-            rdpOptions.UserInterface.DisableCursorBlinking = this.chkDisableCursorBlinking.Checked;
-            rdpOptions.UserInterface.DisableCursorShadow = this.chkDisableCursorShadow.Checked;
-            rdpOptions.UserInterface.DisableFullWindowDrag = this.chkDisableFullWindowDrag.Checked;
-            rdpOptions.UserInterface.DisableMenuAnimations = this.chkDisableMenuAnimations.Checked;
-            rdpOptions.UserInterface.DisableTheming = this.chkDisableThemes.Checked;
-            rdpOptions.UserInterface.LoadBalanceInfo = this.txtLoadBalanceInfo.Text;
-        }
-
-        private void FillFavoriteRdpRedirectOptions(RdpOptions rdpOptions)
-        {
-            rdpOptions.Redirect.Drives = this.RedirectedDrives;
-            rdpOptions.Redirect.Ports = this.chkSerialPorts.Checked;
-            rdpOptions.Redirect.Printers = this.chkPrinters.Checked;
-            rdpOptions.Redirect.Clipboard = this.chkRedirectClipboard.Checked;
-            rdpOptions.Redirect.Devices = this.RedirectDevices;
-            rdpOptions.Redirect.SmartCards = this.chkRedirectSmartcards.Checked;
-
-            // because of changing protocol the value of the combox doesnt have to be selected
-            if(this.cmbSounds.SelectedIndex >= 0)
-                rdpOptions.Redirect.Sounds = (RemoteSounds)this.cmbSounds.SelectedIndex;
-        }
-
-        private void FillFavoriteSecurity(IFavorite favorite)
-        {
-            ICredentialSet selectedCredential = this.CredentialDropdown.SelectedItem as ICredentialSet;
-            ISecurityOptions security = favorite.Security;
-            security.Credential = selectedCredential == null ? Guid.Empty : selectedCredential.Id;
-
-            security.Domain = this.cmbDomains.Text;
-            security.UserName = this.cmbUsers.Text;
-            if (this.chkSavePassword.Checked)
-            {
-                if (this.txtPassword.Text != HIDDEN_PASSWORD)
-                    security.Password = this.txtPassword.Text;
-                else
-                    security.Password = this.favoritePassword;
-            }
-            else
-            {
-                security.Password = String.Empty;
-            }
-        }
-
-        private void FillFavoriteVncOptions(IFavorite favorite)
-        {
-            var vncOptions = favorite.ProtocolProperties as VncOptions;
-            if (vncOptions == null)
-                return;
-
-            vncOptions.AutoScale = this.vncAutoScaleCheckbox.Checked;
-            vncOptions.DisplayNumber = (Int32)this.vncDisplayNumberInput.Value;
-            vncOptions.ViewOnly = this.VncViewOnlyCheckbox.Checked;
-        }
-
-        private void FillFavoriteVmrcOptions(IFavorite favorite)
-        {
-            var vmrcOptions = favorite.ProtocolProperties as VMRCOptions;
-            if (vmrcOptions == null)
-                return;
-
-            vmrcOptions.AdministratorMode = this.VMRCAdminModeCheckbox.Checked;
-            vmrcOptions.ReducedColorsMode = this.VMRCReducedColorsCheckbox.Checked;
-        }
-
-        #endregion
-
-        #region Refactoring finished
 
         private void SaveDefaultFavorite(IFavorite favorite)
         {
@@ -971,12 +500,6 @@ namespace Terminals
         {
             // todo call general properties control
             return new Uri("nothing");
-        }
-
-        internal void AssingSelectedGroup(IGroup group)
-        {
-            if (group != null)
-                BindGroupsToListView(this.lvConnectionTags, new[] { group });
         }
 
         #endregion
