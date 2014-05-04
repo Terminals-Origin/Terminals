@@ -13,6 +13,14 @@ namespace Terminals.Forms.EditFavorite
 {
     public partial class GeneralPropertiesUserControl : UserControl
     {
+        internal string ServerNameText { get { return this.cmbServers.Text.Trim(); } }
+
+        internal string ProtocolText { get { return this.ProtocolComboBox.Text; } }
+
+        internal string PortText { get { return this.txtPort.Text; } }
+        private bool ShowOnToolbar { get; set; }
+        private String favoritePassword = string.Empty;
+        internal const String HIDDEN_PASSWORD = "****************";
         private String currentToolBarFileName;
         // todo initialize validator, rasControl and Persistence
         private NewTerminalFormValidator validator;
@@ -259,6 +267,116 @@ namespace Terminals.Forms.EditFavorite
                 !newUrlText.StartsWith(ConnectionManager.HTTPS.ToLower()))
                 newUrlText = String.Format("{0}://{1}", protocolPrefix, newUrlText);
             return WebOptions.TryParseUrl(newUrlText);
-        }          
+        }
+
+        private void FillFavoriteSecurity(IFavorite favorite)
+        {
+            ICredentialSet selectedCredential = this.CredentialDropdown.SelectedItem as ICredentialSet;
+            ISecurityOptions security = favorite.Security;
+            security.Credential = selectedCredential == null ? Guid.Empty : selectedCredential.Id;
+
+            security.Domain = this.cmbDomains.Text;
+            security.UserName = this.cmbUsers.Text;
+            if (this.chkSavePassword.Checked)
+            {
+                if (this.txtPassword.Text != HIDDEN_PASSWORD)
+                    security.Password = this.txtPassword.Text;
+                else
+                    security.Password = this.favoritePassword;
+            }
+            else
+            {
+                security.Password = String.Empty;
+            }
+        }
+
+        private void FillDescriptionProperties(IFavorite favorite)
+        {
+            // todo move from newterminalform
+            //favorite.NewWindow = this.NewWindowCheckbox.Checked;
+            //favorite.DesktopShare = this.txtDesktopShare.Text;
+            //this.ShowOnToolbar = this.chkAddtoToolbar.Checked;
+            favorite.ToolBarIconFile = this.currentToolBarFileName;
+            favorite.Notes = this.NotesTextbox.Text;
+        }
+
+        private void FillGeneralProrperties(IFavorite favorite)
+        {
+            favorite.Name = (String.IsNullOrEmpty(this.txtName.Text) ? this.cmbServers.Text : this.txtName.Text);
+            favorite.ServerName = this.cmbServers.Text;
+            favorite.Protocol = this.ProtocolComboBox.SelectedItem.ToString();
+            Int32 port;
+            Int32.TryParse(this.PortText, out port);
+            favorite.Port = port;
+            this.FillWebProperties(favorite);
+        }
+
+        private void FillWebProperties(IFavorite favorite)
+        {
+            WebOptions.UpdateFavoriteUrl(favorite, this.httpUrlTextBox.Text);
+        }
+
+        private void FillGeneralPropertiesControls(IFavorite favorite)
+        {
+            this.txtName.Text = favorite.Name;
+            this.cmbServers.Text = favorite.ServerName;
+            this.ProtocolComboBox.SelectedItem = favorite.Protocol;
+            this.txtPort.Text = favorite.Port.ToString(CultureInfo.InvariantCulture);
+            this.httpUrlTextBox.Text = WebOptions.ExtractAbsoluteUrl(favorite);
+        }
+
+        private void FillDescriptionPropertiesControls(IFavorite favorite)
+        {
+            // todo move from newterminalform
+            //this.NewWindowCheckbox.Checked = favorite.NewWindow;
+            //this.txtDesktopShare.Text = favorite.DesktopShare;
+            //this.chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Id);
+            this.pictureBox2.Image = favorite.ToolBarIconImage;
+            this.currentToolBarFileName = favorite.ToolBarIconFile;
+            this.NotesTextbox.Text = favorite.Notes;
+        }
+
+        private void FillSecurityControls(IFavorite favorite)
+        {
+            this.cmbDomains.Text = favorite.Security.Domain;
+            this.cmbUsers.Text = favorite.Security.UserName;
+            this.favoritePassword = favorite.Security.Password;
+
+            if (string.IsNullOrEmpty(this.favoritePassword) && !string.IsNullOrEmpty(favorite.Security.EncryptedPassword))
+            {
+                MessageBox.Show("There was an issue with decrypting your password.\n\nPlease provide a new password and save the favorite.");
+                this.txtPassword.Text = "";
+                this.favoritePassword = String.Empty;
+                this.txtPassword.Focus();
+                favorite.Security.Password = String.Empty;
+            }
+
+            if (!string.IsNullOrEmpty(this.favoritePassword))
+            {
+                this.txtPassword.Text = HIDDEN_PASSWORD;
+                this.chkSavePassword.Checked = true;
+            }
+            else
+            {
+                this.txtPassword.Text = String.Empty;
+                this.chkSavePassword.Checked = false;
+            }
+        }
+
+        private void LoadMRUs()
+        {
+            this.cmbServers.Items.AddRange(Settings.MRUServerNames);
+            this.cmbDomains.Items.AddRange(Settings.MRUDomainNames);
+            this.cmbUsers.Items.AddRange(Settings.MRUUserNames);
+            //todo move to Groupsstring[] groupNames = PersistedGroups.Select(group => group.Name).ToArray();
+            //this.txtGroupName.AutoCompleteCustomSource.AddRange(groupNames);
+        }
+
+        private void SaveMRUs()
+        {
+            Settings.AddServerMRUItem(cmbServers.Text);
+            Settings.AddDomainMRUItem(cmbDomains.Text);
+            Settings.AddUserMRUItem(cmbUsers.Text);
+        }
     }
 }
