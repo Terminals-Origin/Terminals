@@ -18,18 +18,35 @@ namespace Terminals.Forms.EditFavorite
         internal string ProtocolText { get { return this.ProtocolComboBox.Text; } }
 
         internal string PortText { get { return this.txtPort.Text; } }
+
         private bool ShowOnToolbar { get; set; }
         private String favoritePassword = string.Empty;
         internal const String HIDDEN_PASSWORD = "****************";
         private String currentToolBarFileName;
-        // todo initialize validator, rasControl and Persistence
+        
         private NewTerminalFormValidator validator;
-        private RasControl rasControl;
         private IPersistence persistence;
+
+        // todo assign event SetOkButton
+        internal event EventHandler SetOkButtonRequested;
+
+        //todo register in RasControl
+        private RasControl rasControl;
 
         public GeneralPropertiesUserControl()
         {
             InitializeComponent();
+        }
+
+        // todo initialize validator, and Persistence
+        internal void AssignValitionComponents(NewTerminalFormValidator validator, ErrorProvider provider)
+        {
+            this.validator = validator;
+        }
+
+        internal void AssignPersistence(IPersistence persistence)
+        {
+            this.persistence = persistence;
         }
 
         private void TxtPassword_TextChanged(object sender, EventArgs e)
@@ -134,8 +151,8 @@ namespace Terminals.Forms.EditFavorite
 
         private void CmbServers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ProtocolComboBox.Text == ConnectionManager.RAS)
-                this.rasControl.FillRasControls(this.cmbServers.Text);
+            this.rasControl.OnServerNameChanged(this.cmbServers.Text);
+            this.cmbServers.DataSource = rasControl.ConnectionNames;
         }
 
         private void CmbServers_Leave(object sender, EventArgs e)
@@ -220,7 +237,6 @@ namespace Terminals.Forms.EditFavorite
 
         private void SetControlsForWeb()
         {
-            // todo how to extract WebControls from general properties
             this.lblServerName.Text = "Url:";
             this.cmbServers.Enabled = false;
             this.txtPort.Enabled = false;
@@ -235,7 +251,6 @@ namespace Terminals.Forms.EditFavorite
             this.txtPort.Enabled = true;
             this.httpUrlTextBox.Enabled = false;
             this.httpUrlTextBox.Visible = false;
-            this.txtPort.Enabled = true;
         }
 
         private void HttpUrlTextBox_TextChanged(object sender, EventArgs e)
@@ -255,7 +270,8 @@ namespace Terminals.Forms.EditFavorite
 
         private void SetOkButtonState()
         {
-            // todo replace SetOkButtonState with event handler
+            if (SetOkButtonRequested != null)
+                SetOkButtonRequested(this, EventArgs.Empty);
         }
 
         internal Uri GetFullUrlFromHttpTextBox()
@@ -292,10 +308,8 @@ namespace Terminals.Forms.EditFavorite
 
         private void FillDescriptionProperties(IFavorite favorite)
         {
-            // todo move from newterminalform
-            //favorite.NewWindow = this.NewWindowCheckbox.Checked;
-            //favorite.DesktopShare = this.txtDesktopShare.Text;
-            //this.ShowOnToolbar = this.chkAddtoToolbar.Checked;
+            favorite.NewWindow = this.NewWindowCheckbox.Checked;
+            this.ShowOnToolbar = this.chkAddtoToolbar.Checked;
             favorite.ToolBarIconFile = this.currentToolBarFileName;
             favorite.Notes = this.NotesTextbox.Text;
         }
@@ -327,10 +341,8 @@ namespace Terminals.Forms.EditFavorite
 
         private void FillDescriptionPropertiesControls(IFavorite favorite)
         {
-            // todo move from newterminalform
-            //this.NewWindowCheckbox.Checked = favorite.NewWindow;
-            //this.txtDesktopShare.Text = favorite.DesktopShare;
-            //this.chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Id);
+            this.NewWindowCheckbox.Checked = favorite.NewWindow;
+            this.chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Id);
             this.pictureBox2.Image = favorite.ToolBarIconImage;
             this.currentToolBarFileName = favorite.ToolBarIconFile;
             this.NotesTextbox.Text = favorite.Notes;
@@ -363,16 +375,14 @@ namespace Terminals.Forms.EditFavorite
             }
         }
 
-        private void LoadMRUs()
+        internal void LoadMRUs()
         {
             this.cmbServers.Items.AddRange(Settings.MRUServerNames);
             this.cmbDomains.Items.AddRange(Settings.MRUDomainNames);
             this.cmbUsers.Items.AddRange(Settings.MRUUserNames);
-            //todo move to Groupsstring[] groupNames = PersistedGroups.Select(group => group.Name).ToArray();
-            //this.txtGroupName.AutoCompleteCustomSource.AddRange(groupNames);
         }
 
-        private void SaveMRUs()
+        internal void SaveMRUs()
         {
             Settings.AddServerMRUItem(cmbServers.Text);
             Settings.AddDomainMRUItem(cmbDomains.Text);

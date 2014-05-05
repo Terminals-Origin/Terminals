@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using FalafelSoftware.TransPort;
+using Terminals.Connections;
 
 namespace Terminals.Forms.EditFavorite
 {
@@ -9,9 +11,19 @@ namespace Terminals.Forms.EditFavorite
     {
         private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
 
+        internal List<string> ConnectionNames { get; private set; }
+
         public RasControl()
         {
             InitializeComponent();
+
+            this.ConnectionNames = new List<string>();
+        }
+
+        internal void OnServerNameChanged(string serverName)
+        {
+            if (serverName == ConnectionManager.RAS)
+                this.FillRasControls(serverName);
         }
 
         internal void FillRasControls(string serverName)
@@ -38,18 +50,17 @@ namespace Terminals.Forms.EditFavorite
 
         private void LoadDialupConnections()
         {
-            //this.dialupList = new Dictionary<String, RASENTRY>();
-            //var rasEntries = new ArrayList();
-            //ras1.ListEntries(ref rasEntries);
-            //foreach (String item in rasEntries)
-            //{
-            //    RASENTRY details = new RASENTRY();
-            //    ras1.GetEntry(item, ref details);
-            //    this.dialupList.Add(item, details);
-
-            //    if (!cmbServers.Items.Contains(item))
-            //        this.cmbServers.Items.Add(item);
-            //}
+            this.dialupList = new Dictionary<String, RASENTRY>();
+            this.ConnectionNames.Clear();
+            var rasEntries = new ArrayList();
+            ras1.ListEntries(ref rasEntries);
+            foreach (String item in rasEntries)
+            {
+                RASENTRY details = new RASENTRY();
+                ras1.GetEntry(item, ref details);
+                this.dialupList.Add(item, details);
+                this.ConnectionNames.Add(item);
+            }
         }
     }
 }

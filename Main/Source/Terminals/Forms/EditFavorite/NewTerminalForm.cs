@@ -68,6 +68,7 @@ namespace Terminals
 
         private void InitializeValidations()
         {
+            // todo move the validator and error provider initializations
             // this.validator = new NewTerminalFormValidator(this.persistence, this);
             this.AssignValidatingEvents();
             this.RegisterValiationControls();
@@ -224,7 +225,7 @@ namespace Terminals
 
         private void Init(IFavorite favorite, String serverName)
         {
-            // this.LoadMRUs();
+            this.LoadMRUs();
             this.SetOkButtonState();
 
             try { this.SSHPreferences.Keys = Settings.SSHKeys; }
@@ -272,6 +273,17 @@ namespace Terminals
         #endregion
 
         #region Refactoring finished
+
+        internal void AssingSelectedGroup(IGroup group)
+        {
+            // todo this.groups.AssingSelectedGroup(group);
+        }
+
+        internal void LoadMRUs()
+        {
+            // todo this.generalProperties.LoadMRUs();
+            // this.groups.LoadMRUs();
+        }
 
         private void FillControls(IFavorite favorite)
         {

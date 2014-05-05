@@ -37,6 +37,7 @@ namespace Terminals.Forms.EditFavorite
 
         private void FillFavoriteRdpRedirectOptions(RdpOptions rdpOptions)
         {
+            // todo favorite.DesktopShare = this.txtDesktopShare.Text;
             rdpOptions.Redirect.Drives = this.RedirectedDrives;
             rdpOptions.Redirect.Ports = this.chkSerialPorts.Checked;
             rdpOptions.Redirect.Printers = this.chkPrinters.Checked;
@@ -51,6 +52,7 @@ namespace Terminals.Forms.EditFavorite
 
         private void FillRdpRedirectControls(RdpOptions rdpOptions)
         {
+            // todo this.txtDesktopShare.Text = favorite.DesktopShare;
             this.RedirectedDrives = rdpOptions.Redirect.Drives;
             this.chkSerialPorts.Checked = rdpOptions.Redirect.Ports;
             this.chkPrinters.Checked = rdpOptions.Redirect.Printers;
