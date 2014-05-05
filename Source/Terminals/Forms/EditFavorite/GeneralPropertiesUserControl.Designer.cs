@@ -52,6 +52,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.cmbServers = new System.Windows.Forms.ComboBox();
             this.lblServerName = new System.Windows.Forms.Label();
+            this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
+            this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
             this.GeneralGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
             this.CredentialsPanel.SuspendLayout();
@@ -60,6 +62,8 @@
             // 
             // GeneralGroupBox
             // 
+            this.GeneralGroupBox.Controls.Add(this.chkAddtoToolbar);
+            this.GeneralGroupBox.Controls.Add(this.NewWindowCheckbox);
             this.GeneralGroupBox.Controls.Add(this.httpUrlTextBox);
             this.GeneralGroupBox.Controls.Add(this.NotesTextbox);
             this.GeneralGroupBox.Controls.Add(this.txtPort);
@@ -98,7 +102,7 @@
             this.NotesTextbox.Location = new System.Drawing.Point(133, 256);
             this.NotesTextbox.Multiline = true;
             this.NotesTextbox.Name = "NotesTextbox";
-            this.NotesTextbox.Size = new System.Drawing.Size(356, 98);
+            this.NotesTextbox.Size = new System.Drawing.Size(356, 58);
             this.NotesTextbox.TabIndex = 33;
             // 
             // txtPort
@@ -313,6 +317,28 @@
             this.lblServerName.TabIndex = 23;
             this.lblServerName.Text = "&Computer:";
             // 
+            // chkAddtoToolbar
+            // 
+            this.chkAddtoToolbar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkAddtoToolbar.AutoSize = true;
+            this.chkAddtoToolbar.Location = new System.Drawing.Point(133, 343);
+            this.chkAddtoToolbar.Name = "chkAddtoToolbar";
+            this.chkAddtoToolbar.Size = new System.Drawing.Size(96, 17);
+            this.chkAddtoToolbar.TabIndex = 39;
+            this.chkAddtoToolbar.Text = "Add to &Toolbar";
+            this.chkAddtoToolbar.UseVisualStyleBackColor = true;
+            // 
+            // NewWindowCheckbox
+            // 
+            this.NewWindowCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.NewWindowCheckbox.AutoSize = true;
+            this.NewWindowCheckbox.Location = new System.Drawing.Point(133, 320);
+            this.NewWindowCheckbox.Name = "NewWindowCheckbox";
+            this.NewWindowCheckbox.Size = new System.Drawing.Size(130, 17);
+            this.NewWindowCheckbox.TabIndex = 40;
+            this.NewWindowCheckbox.Text = "&Open in New Window";
+            this.NewWindowCheckbox.UseVisualStyleBackColor = true;
+            // 
             // GeneralPropertiesUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -356,5 +382,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cmbServers;
         private System.Windows.Forms.Label lblServerName;
+        private System.Windows.Forms.CheckBox chkAddtoToolbar;
+        private System.Windows.Forms.CheckBox NewWindowCheckbox;
     }
 }

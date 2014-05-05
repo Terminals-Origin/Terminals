@@ -9,9 +9,23 @@ namespace Terminals.Forms.EditFavorite
 {
     public partial class GroupsControl : UserControl
     {
+        private IPersistence persistence;
+
+        private NewTerminalFormValidator validator;
+
         public GroupsControl()
         {
             InitializeComponent();
+        }
+
+        internal void AssignPersistence(IPersistence persistence)
+        {
+            this.persistence = persistence;
+        }
+
+        internal void AssignValidator(NewTerminalFormValidator validator)
+        {
+            this.validator = validator;
         }
 
         private void BtnAddNewTag_Click(object sender, EventArgs e)
@@ -41,12 +55,12 @@ namespace Terminals.Forms.EditFavorite
 
         private void AddGroup()
         {
-            //string newGroupName = this.txtGroupName.Text;
-            //if (!this.validator.ValidateGroupName(this.txtGroupName))
-            //    return;
-            //// not unique name already handled by validation
-            //IGroup candidate = this.persistence.Factory.CreateGroup(newGroupName);
-            //this.AddGroupIfNotAlreadyThere(candidate);
+            string newGroupName = this.txtGroupName.Text;
+            if (!this.validator.ValidateGroupName(this.txtGroupName))
+                return;
+            // not unique name already handled by validation
+            IGroup candidate = this.persistence.Factory.CreateGroup(newGroupName);
+            this.AddGroupIfNotAlreadyThere(candidate);
         }
 
         private void AddGroupsToFavorite()
@@ -98,7 +112,7 @@ namespace Terminals.Forms.EditFavorite
                 BindGroupsToListView(this.lvConnectionTags, new[] { group });
         }
 
-        private void ReloadTagsListViewItems(IFavorite favorite)
+        internal void ReloadTagsListViewItems(IFavorite favorite)
         {
             this.lvConnectionTags.Items.Clear();
             BindGroupsToListView(this.lvConnectionTags, favorite.Groups);
@@ -111,6 +125,12 @@ namespace Terminals.Forms.EditFavorite
                 var groupItem = new GroupListViewItem(group);
                 listViewToFill.Items.Add(groupItem);
             }
+        }
+
+        internal void LoadMRUs()
+        {
+            var groupNames = this.persistence.Groups.Select(group => group.Name).ToArray();
+            this.txtGroupName.AutoCompleteCustomSource.AddRange(groupNames);
         }
     }
 }
