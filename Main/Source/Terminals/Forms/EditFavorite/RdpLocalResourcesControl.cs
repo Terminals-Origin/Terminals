@@ -5,10 +5,13 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class RdpLocalResourcesControl : UserControl
+    internal partial class RdpLocalResourcesControl : UserControl, IRdpLocalResourcesControl
     {
-        internal List<string> RedirectedDrives { get; set; }
-        internal bool RedirectDevices { get; set; }
+        public List<string> RedirectedDrives { get; set; }
+
+        public bool RedirectDevices { get; set; }
+
+        internal string ServerName { get; set; }
 
         public RdpLocalResourcesControl()
         {
@@ -19,25 +22,25 @@ namespace Terminals.Forms.EditFavorite
 
         private void BtnBrowseShare_Click(object sender, EventArgs e)
         {
-            //using (FolderBrowserDialog dialog = new FolderBrowserDialog())
-            //{
-            //    dialog.Description = "Select Desktop Share:";
-            //    dialog.ShowNewFolderButton = false;
-            //    dialog.SelectedPath = @"\\" + this.cmbServers.Text;
-            //    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            //        this.txtDesktopShare.Text = dialog.SelectedPath;
-            //}
+            using (FolderBrowserDialog dialog = new FolderBrowserDialog())
+            {
+                dialog.Description = "Select Desktop Share:";
+                dialog.ShowNewFolderButton = false;
+                dialog.SelectedPath = @"\\" + this.ServerName;
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    this.txtDesktopShare.Text = dialog.SelectedPath;
+            }
         }
 
         private void BtnDrives_Click(object sender, EventArgs e)
         {
-            //DiskDrivesForm drivesForm = new DiskDrivesForm(this);
-            //drivesForm.ShowDialog(this);
+            using(var drivesForm = new DiskDrivesForm(this))
+                drivesForm.ShowDialog(this);
         }
 
-        private void FillFavoriteRdpRedirectOptions(RdpOptions rdpOptions)
+        private void FillFavoriteRdpRedirectOptions(IFavorite favorite, RdpOptions rdpOptions)
         {
-            // todo favorite.DesktopShare = this.txtDesktopShare.Text;
+            favorite.DesktopShare = this.txtDesktopShare.Text;
             rdpOptions.Redirect.Drives = this.RedirectedDrives;
             rdpOptions.Redirect.Ports = this.chkSerialPorts.Checked;
             rdpOptions.Redirect.Printers = this.chkPrinters.Checked;
@@ -50,9 +53,9 @@ namespace Terminals.Forms.EditFavorite
                 rdpOptions.Redirect.Sounds = (RemoteSounds)this.cmbSounds.SelectedIndex;
         }
 
-        private void FillRdpRedirectControls(RdpOptions rdpOptions)
+        private void FillRdpRedirectControls(IFavorite favorite, RdpOptions rdpOptions)
         {
-            // todo this.txtDesktopShare.Text = favorite.DesktopShare;
+            this.txtDesktopShare.Text = favorite.DesktopShare;
             this.RedirectedDrives = rdpOptions.Redirect.Drives;
             this.chkSerialPorts.Checked = rdpOptions.Redirect.Ports;
             this.chkPrinters.Checked = rdpOptions.Redirect.Printers;
@@ -61,6 +64,5 @@ namespace Terminals.Forms.EditFavorite
             this.chkRedirectSmartcards.Checked = rdpOptions.Redirect.SmartCards;
             this.cmbSounds.SelectedIndex = (Int32)rdpOptions.Redirect.Sounds;
         }
-
     }
 }

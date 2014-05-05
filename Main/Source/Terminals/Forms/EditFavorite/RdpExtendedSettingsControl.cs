@@ -23,8 +23,10 @@ namespace Terminals.Forms.EditFavorite
             userInterface.EnableCompression = this.EnableCompressionCheckbox.Checked;
             userInterface.BitmapPeristence = this.EnableBitmapPersistenceCheckbox.Checked;
             userInterface.AllowBackgroundInput = this.AllowBackgroundInputCheckBox.Checked;
-            //todo move to display control userInterface.EnableFontSmoothing = this.AllowFontSmoothingCheckbox.Checked;
-            //userInterface.EnableDesktopComposition = this.AllowDesktopCompositionCheckbox.Checked;
+            userInterface.LoadBalanceInfo = this.txtLoadBalanceInfo.Text;
+            rdpOptions.Security.EnableTLSAuthentication = this.EnableTLSAuthenticationCheckbox.Checked;
+            rdpOptions.Security.EnableNLAAuthentication = this.EnableNLAAuthenticationCheckbox.Checked;
+            rdpOptions.Security.EnableEncryption = this.EnableEncryptionCheckbox.Checked;
         }
 
         private void FillFavoriteRdpTimeOutOptions(RdpOptions rdpOptions)
@@ -62,10 +64,10 @@ namespace Terminals.Forms.EditFavorite
             this.EnableCompressionCheckbox.Checked = userInterface.EnableCompression;
             this.EnableBitmapPersistenceCheckbox.Checked = userInterface.BitmapPeristence;
             this.AllowBackgroundInputCheckBox.Checked = userInterface.AllowBackgroundInput;
-            //todo move to display control this.AllowFontSmoothingCheckbox.Checked = userInterface.EnableFontSmoothing;
-            //this.AllowDesktopCompositionCheckbox.Checked = userInterface.EnableDesktopComposition;
             this.txtLoadBalanceInfo.Text = userInterface.LoadBalanceInfo;
+            this.EnableTLSAuthenticationCheckbox.Checked = rdpOptions.Security.EnableTLSAuthentication;
+            this.EnableNLAAuthenticationCheckbox.Checked = rdpOptions.Security.EnableNLAAuthentication;
+            this.EnableEncryptionCheckbox.Checked = rdpOptions.Security.EnableEncryption;
         }
-
     }
 }

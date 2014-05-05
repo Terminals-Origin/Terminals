@@ -15,11 +15,12 @@ using Terminals.Data;
 using Terminals.Data.Validation;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
+using Terminals.Forms.EditFavorite;
 using Terminals.Network.Servers;
 
 namespace Terminals
 {
-    internal partial class NewTerminalForm : Form
+    internal partial class NewTerminalForm : Form, IRdpLocalResourcesControl
     {
         private NewTerminalFormValidator validator;
         private readonly TerminalServerManager terminalServerManager = new TerminalServerManager();
@@ -121,8 +122,8 @@ namespace Terminals
         private new TerminalFormDialogResult DialogResult { get; set; }
         internal IFavorite Favorite { get; private set; }
         private bool ShowOnToolbar { get; set; }
-        internal List<string> RedirectedDrives { get; set; }
-        internal bool RedirectDevices { get; set; }
+        public List<string> RedirectedDrives { get; set; }
+        public bool RedirectDevices { get; set; }
 
         #endregion
 
