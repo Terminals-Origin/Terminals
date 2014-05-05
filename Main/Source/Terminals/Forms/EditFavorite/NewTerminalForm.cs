@@ -1,22 +1,14 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data.Entity.Validation;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using FalafelSoftware.TransPort;
 using Terminals.Configuration;
-using Terminals.Connections;
-using Terminals.Credentials;
 using Terminals.Data;
 using Terminals.Data.Validation;
 using Terminals.Forms;
-using Terminals.Forms.Controls;
 using Terminals.Forms.EditFavorite;
-using Terminals.Network.Servers;
 
 namespace Terminals
 {
@@ -41,7 +33,11 @@ namespace Terminals
         {
             get { return this.persistence.Favorites; }
         }
- 
+
+        private GroupsControl groupsControl;
+
+        private GeneralPropertiesUserControl generalProperties;
+
         #region Constructors
 
         public NewTerminalFormCopy(IPersistence persistence, String serverName)
@@ -239,7 +235,7 @@ namespace Terminals
 
             if (favorite == null)
             {
-                // todo generalcontrol this.FillCredentialsCombobox(Guid.Empty);
+                this.generalProperties.FillCredentialsCombobox(Guid.Empty);
 
                 var defaultSavedFavorite = Settings.GetDefaultFavorite();
                 if (defaultSavedFavorite != null)
@@ -255,12 +251,7 @@ namespace Terminals
                     this.ProtocolComboBox.SelectedIndex = 0;
                 }
 
-                String server;
-                Int32 port;
-                // todo move to the general properties control
-                GeneralPropertiesUserControl.GetServerAndPort(serverName, out server, out port);
-                this.cmbServers.Text = server;
-                this.txtPort.Text = port.ToString(CultureInfo.InvariantCulture);
+                this.generalProperties.FillServerName(serverName);
             }
             else
             {
@@ -276,13 +267,13 @@ namespace Terminals
 
         internal void AssingSelectedGroup(IGroup group)
         {
-            // todo this.groups.AssingSelectedGroup(group);
+            this.groupsControl.AssingSelectedGroup(group);
         }
 
         internal void LoadMRUs()
         {
-            // todo this.generalProperties.LoadMRUs();
-            // this.groups.LoadMRUs();
+            this.generalProperties.LoadMRUs();
+            this.groupsControl.LoadMRUs();
         }
 
         private void FillControls(IFavorite favorite)
@@ -290,7 +281,7 @@ namespace Terminals
             // FillGeneralPropertiesControls(favorite);
             // FillDescriptionPropertiesControls(favorite);
             // FillSecurityControls(favorite);
-            // todo generals control this.FillCredentialsCombobox(favorite.Security.Credential);
+            this.generalProperties.FillCredentialsCombobox(favorite.Security.Credential);
             // FillDisplayControls(favorite);
             // FillExecuteBeforeControls(favorite);
             // this.consolePreferences.FillControls(favorite);
@@ -438,8 +429,8 @@ namespace Terminals
             else
                 Settings.EditFavoriteButton(this.EditedId, favorite.Id, this.ShowOnToolbar);
 
-            // todo moved to Groups control List<IGroup> updatedGroups = this.GetNewlySelectedGroups();
-            // PersistedFavorites.UpdateFavorite(favorite, updatedGroups);
+            List<IGroup> updatedGroups = this.groupsControl.GetNewlySelectedGroups();
+            PersistedFavorites.UpdateFavorite(favorite, updatedGroups);
             this.persistence.SaveAndFinishDelayedUpdate();
             Settings.SaveAndFinishDelayedUpdate();
         }
@@ -466,7 +457,7 @@ namespace Terminals
 
         private void SetOkButtonState()
         {
-            if (this.httpUrlTextBox.Visible) // todo replace with general properties control property
+            if (this.generalProperties.UrlVisible)
             {
                 this.btnSave.Enabled = this.validator.IsUrlValid();
             }
@@ -478,8 +469,7 @@ namespace Terminals
 
         internal Uri GetFullUrlFromHttpTextBox()
         {
-            // todo call general properties control
-            return new Uri("nothing");
+            return this.generalProperties.GetFullUrlFromHttpTextBox();
         }
 
         #endregion

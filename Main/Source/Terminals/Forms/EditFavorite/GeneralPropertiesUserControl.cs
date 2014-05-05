@@ -19,6 +19,8 @@ namespace Terminals.Forms.EditFavorite
 
         internal string PortText { get { return this.txtPort.Text; } }
 
+        internal bool UrlVisible { get { return this.httpUrlTextBox.Visible; } }
+
         private bool ShowOnToolbar { get; set; }
         private String favoritePassword = string.Empty;
         internal const String HIDDEN_PASSWORD = "****************";
@@ -84,7 +86,7 @@ namespace Terminals.Forms.EditFavorite
             this.FillCredentialsCombobox(selectedCredentialId);
         }
 
-        private void FillCredentialsCombobox(Guid credential)
+        internal void FillCredentialsCombobox(Guid credential)
         {
             this.CredentialDropdown.Items.Clear();
             this.CredentialDropdown.Items.Add("(custom)");
@@ -164,12 +166,7 @@ namespace Terminals.Forms.EditFavorite
             {
                 if (this.cmbServers.Text.Contains(":"))
                 {
-                    String server = String.Empty;
-                    int port;
-                    GetServerAndPort(this.cmbServers.Text, out server, out port);
-                    this.cmbServers.Text = server;
-                    this.txtPort.Text = port.ToString(CultureInfo.InvariantCulture);
-                    this.cmbServers.Text = server;
+                    this.FillServerName(this.cmbServers.Text);
                 }
 
                 this.txtName.Text = this.cmbServers.Text;
@@ -390,6 +387,15 @@ namespace Terminals.Forms.EditFavorite
             Settings.AddServerMRUItem(cmbServers.Text);
             Settings.AddDomainMRUItem(cmbDomains.Text);
             Settings.AddUserMRUItem(cmbUsers.Text);
+        }
+
+        public void FillServerName(string serverName)
+        {
+            String server;
+            Int32 port;
+            GetServerAndPort(serverName, out server, out port);
+            this.cmbServers.Text = server;
+            this.txtPort.Text = port.ToString(CultureInfo.InvariantCulture);
         }
     }
 }
