@@ -24,17 +24,18 @@ namespace Terminals.Forms.EditFavorite
             this.chkConnectToConsole.Enabled = true;
         }
 
-
         private void FillFavoriteRdpDisplayOptions(RdpOptions rdpOptions)
         {
             rdpOptions.ConnectToConsole = this.chkConnectToConsole.Checked;
-            rdpOptions.UserInterface.DisableWallPaper = this.chkDisableWallpaper.Checked;
-            rdpOptions.UserInterface.DisableCursorBlinking = this.chkDisableCursorBlinking.Checked;
-            rdpOptions.UserInterface.DisableCursorShadow = this.chkDisableCursorShadow.Checked;
-            rdpOptions.UserInterface.DisableFullWindowDrag = this.chkDisableFullWindowDrag.Checked;
-            rdpOptions.UserInterface.DisableMenuAnimations = this.chkDisableMenuAnimations.Checked;
-            rdpOptions.UserInterface.DisableTheming = this.chkDisableThemes.Checked;
-            // todo move to extended settings control rdpOptions.UserInterface.LoadBalanceInfo = this.txtLoadBalanceInfo.Text;
+            var userInterface = rdpOptions.UserInterface;
+            userInterface.DisableWallPaper = this.chkDisableWallpaper.Checked;
+            userInterface.DisableCursorBlinking = this.chkDisableCursorBlinking.Checked;
+            userInterface.DisableCursorShadow = this.chkDisableCursorShadow.Checked;
+            userInterface.DisableFullWindowDrag = this.chkDisableFullWindowDrag.Checked;
+            userInterface.DisableMenuAnimations = this.chkDisableMenuAnimations.Checked;
+            userInterface.DisableTheming = this.chkDisableThemes.Checked;
+            userInterface.EnableFontSmoothing = this.AllowFontSmoothingCheckbox.Checked;
+            userInterface.EnableDesktopComposition = this.AllowDesktopCompositionCheckbox.Checked;
         }
 
         private void FillFavoriteDisplayOptions(IFavorite favorite)
@@ -61,13 +62,15 @@ namespace Terminals.Forms.EditFavorite
         private void FillRdpDisplayControls(RdpOptions rdpOptions)
         {
             this.chkConnectToConsole.Checked = rdpOptions.ConnectToConsole;
-            this.chkDisableWallpaper.Checked = rdpOptions.UserInterface.DisableWallPaper;
-            this.chkDisableCursorBlinking.Checked = rdpOptions.UserInterface.DisableCursorBlinking;
-            this.chkDisableCursorShadow.Checked = rdpOptions.UserInterface.DisableCursorShadow;
-            this.chkDisableFullWindowDrag.Checked = rdpOptions.UserInterface.DisableFullWindowDrag;
-            this.chkDisableMenuAnimations.Checked = rdpOptions.UserInterface.DisableMenuAnimations;
-            this.chkDisableThemes.Checked = rdpOptions.UserInterface.DisableTheming;
+            var userInterface = rdpOptions.UserInterface;
+            this.chkDisableWallpaper.Checked = userInterface.DisableWallPaper;
+            this.chkDisableCursorBlinking.Checked = userInterface.DisableCursorBlinking;
+            this.chkDisableCursorShadow.Checked = userInterface.DisableCursorShadow;
+            this.chkDisableFullWindowDrag.Checked = userInterface.DisableFullWindowDrag;
+            this.chkDisableMenuAnimations.Checked = userInterface.DisableMenuAnimations;
+            this.chkDisableThemes.Checked = userInterface.DisableTheming;
+            this.AllowFontSmoothingCheckbox.Checked = userInterface.EnableFontSmoothing;
+            this.AllowDesktopCompositionCheckbox.Checked = userInterface.EnableDesktopComposition;
         }
-
     }
 }

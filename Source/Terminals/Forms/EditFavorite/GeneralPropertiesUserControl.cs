@@ -33,6 +33,8 @@ namespace Terminals.Forms.EditFavorite
         //todo register in RasControl
         private RasControl rasControl;
 
+        private RdpLocalResourcesControl rdpLocalResources;
+
         public GeneralPropertiesUserControl()
         {
             InitializeComponent();
@@ -147,6 +149,7 @@ namespace Terminals.Forms.EditFavorite
         private void CmbServers_TextChanged(object sender, EventArgs e)
         {
             this.SetOkButtonState();
+            this.rdpLocalResources.ServerName = this.cmbServers.Text;
         }
 
         private void CmbServers_SelectedIndexChanged(object sender, EventArgs e)

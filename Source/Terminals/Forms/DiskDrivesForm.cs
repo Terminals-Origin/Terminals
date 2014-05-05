@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.IO;
+using Terminals.Forms.EditFavorite;
 
 namespace Terminals
 {
     internal partial class DiskDrivesForm : Form
     {
-        private readonly NewTerminalForm parentForm;
+        private readonly IRdpLocalResourcesControl parentForm;
 
         private bool updatingState;
 
@@ -22,7 +23,7 @@ namespace Terminals
             get { return treeView1.Nodes["NodeDrives"]; }
         }
 
-        public DiskDrivesForm(NewTerminalForm parentForm)
+        public DiskDrivesForm(IRdpLocalResourcesControl parentForm)
         {
             InitializeComponent();
             this.parentForm = parentForm;
