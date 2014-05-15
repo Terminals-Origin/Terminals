@@ -11,6 +11,13 @@ namespace Terminals.Forms.EditFavorite
             InitializeComponent();
         }
 
+        internal void AssignValidatingEvents(NewTerminalFormValidator validator)
+        {
+            this.ShutdownTimeoutTextBox.Validating += validator.OnValidateInteger;
+            this.OverallTimeoutTextbox.Validating += validator.OnValidateInteger;
+            this.SingleTimeOutTextbox.Validating += validator.OnValidateInteger;
+            this.IdleTimeoutMinutesTextBox.Validating += validator.OnValidateInteger;
+        }
         private void FillFavoriteRdpInterfaceOptions(RdpOptions rdpOptions)
         {
             RdpUserInterfaceOptions userInterface = rdpOptions.UserInterface;

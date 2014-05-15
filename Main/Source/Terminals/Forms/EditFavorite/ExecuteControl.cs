@@ -10,6 +10,13 @@ namespace Terminals.Forms.EditFavorite
             InitializeComponent();
         }
 
+        internal void RegisterValiationControls(NewTerminalFormValidator validator)
+        {
+            validator.RegisterValidationControl("Command", this.txtCommand);
+            validator.RegisterValidationControl("CommandArguments", this.txtArguments);
+            validator.RegisterValidationControl("InitialDirectory", this.txtInitialDirectory);
+        }
+
         private void FillFavoriteExecuteBeforeOptions(IFavorite favorite)
         {
             IBeforeConnectExecuteOptions exucutionOptions = favorite.ExecuteBeforeConnect;
