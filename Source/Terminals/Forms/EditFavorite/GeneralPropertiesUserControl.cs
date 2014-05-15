@@ -8,6 +8,7 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Data;
+using Terminals.Data.Validation;
 
 namespace Terminals.Forms.EditFavorite
 {
@@ -29,10 +30,8 @@ namespace Terminals.Forms.EditFavorite
         private NewTerminalFormValidator validator;
         private IPersistence persistence;
 
-        // todo assign event SetOkButton
         internal event EventHandler SetOkButtonRequested;
 
-        //todo register in RasControl
         private RasControl rasControl;
 
         private RdpLocalResourcesControl rdpLocalResources;
@@ -42,15 +41,45 @@ namespace Terminals.Forms.EditFavorite
             InitializeComponent();
         }
 
-        // todo initialize validator, and Persistence
-        internal void AssignValitionComponents(NewTerminalFormValidator validator, ErrorProvider provider)
+        internal void AssignValidationComponents(NewTerminalFormValidator validator)
         {
             this.validator = validator;
+            this.RegisterValiationControls();
+            this.txtPort.Validating += this.validator.OnPortValidating;
+            this.cmbServers.Validating += this.validator.OnServerNameValidating;
+            this.httpUrlTextBox.Validating += this.validator.OnUrlValidating;
+        }
+
+        private void RegisterValiationControls()
+        {
+            this.validator.RegisterValidationControl("ServerName", this.cmbServers);
+            this.validator.RegisterValidationControl(Validations.NAME_PROPERTY, this.txtName);
+            this.validator.RegisterValidationControl("Port", this.txtPort);
+            this.validator.RegisterValidationControl("Protocol", this.ProtocolComboBox);
+            this.validator.RegisterValidationControl("Notes", this.NotesTextbox);
+        }
+
+        internal void SetErrorProviderIconsAlignment(ErrorProvider errorProvider)
+        {
+            errorProvider.SetIconAlignment(this.cmbServers, ErrorIconAlignment.MiddleLeft);
+            errorProvider.SetIconAlignment(this.httpUrlTextBox, ErrorIconAlignment.MiddleLeft);
+            errorProvider.SetIconAlignment(this.NotesTextbox, ErrorIconAlignment.TopLeft);
+            errorProvider.SetIconAlignment(this.txtName, ErrorIconAlignment.MiddleLeft);
         }
 
         internal void AssignPersistence(IPersistence persistence)
         {
             this.persistence = persistence;
+        }
+
+        internal void AssignRdpLocalResources(RdpLocalResourcesControl rdpLocalResources)
+        {
+            this.rdpLocalResources = rdpLocalResources;
+        }
+
+        internal void AssignRasControl(RasControl rasControl)
+        {
+            this.rasControl = rasControl;
         }
 
         private void TxtPassword_TextChanged(object sender, EventArgs e)
@@ -396,6 +425,13 @@ namespace Terminals.Forms.EditFavorite
             GetServerAndPort(serverName, out server, out port);
             this.cmbServers.Text = server;
             this.txtPort.Text = port.ToString(CultureInfo.InvariantCulture);
+        }
+
+        internal void ResetServerNameControls(string favoriteName)
+        {
+            this.txtName.Text = favoriteName + "_(copy)";
+            this.cmbServers.Text = String.Empty;
+            this.cmbServers.Focus();
         }
     }
 }

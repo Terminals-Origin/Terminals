@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
@@ -8,6 +9,19 @@ namespace Terminals.Forms.EditFavorite
         public SshControl()
         {
             InitializeComponent();
+        }
+
+        internal void ResetSshPreferences()
+        {
+            try
+            {
+                this.SSHPreferences.Keys = Settings.SSHKeys;
+            }
+            catch (System.Security.Cryptography.CryptographicException)
+            {
+                Logging.Error(
+                    "A CryptographicException occured on decrypting SSH keys. Favorite credentials possibly encrypted by another user. Ignore and continue.");
+            }
         }
 
         private void FillFavoriteSSHOptions(IFavorite favorite)

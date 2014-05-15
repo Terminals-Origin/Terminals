@@ -34,9 +34,20 @@ namespace Terminals
             get { return this.persistence.Favorites; }
         }
 
+
         private GroupsControl groupsControl;
 
         private GeneralPropertiesUserControl generalProperties;
+
+        private RdpLocalResourcesControl rdpLocalResources;
+
+        private RasControl rasControl;
+
+        private RdpExtendedSettingsControl rdpExtendedSettings;
+
+        private SshControl sshControl;
+
+        private ExecuteControl executeControl;
 
         #region Constructors
 
@@ -59,46 +70,38 @@ namespace Terminals
         private NewTerminalFormCopy()
         {
             this.InitializeComponent();
-            this.SetErrorProviderIconsAlignment();
+            this.InitializeContentControls();
+        }
+
+        private void InitializeContentControls()
+        {
+            this.generalProperties = new GeneralPropertiesUserControl();
+            this.generalProperties.SetOkButtonRequested += this.GeneralProperties_SetOkButtonRequested;
+            this.generalProperties.AssignPersistence(this.persistence);
+            this.generalProperties.AssignValidationComponents(this.validator);
+            this.generalProperties.SetErrorProviderIconsAlignment(this.errorProvider);
+            this.rdpLocalResources = new RdpLocalResourcesControl();
+            this.generalProperties.AssignRdpLocalResources(this.rdpLocalResources);
+
+            this.rasControl = new RasControl();
+            this.generalProperties.AssignRasControl(this.rasControl);
+
+            this.rdpExtendedSettings = new RdpExtendedSettingsControl();
+            this.sshControl = new SshControl();
+            this.executeControl = new ExecuteControl();
+        }
+
+        private void GeneralProperties_SetOkButtonRequested(object sender, EventArgs e)
+        {
+            this.SetOkButtonState();
         }
 
         private void InitializeValidations()
         {
             // todo move the validator and error provider initializations
             // this.validator = new NewTerminalFormValidator(this.persistence, this);
-            this.AssignValidatingEvents();
-            this.RegisterValiationControls();
-        }
-
-        private void AssignValidatingEvents()
-        {
-            this.txtPort.Validating += this.validator.OnPortValidating;
-            this.cmbServers.Validating += this.validator.OnServerNameValidating;
-            this.httpUrlTextBox.Validating += this.validator.OnUrlValidating;
-            this.ShutdownTimeoutTextBox.Validating += this.validator.OnValidateInteger;
-            this.OverallTimeoutTextbox.Validating += this.validator.OnValidateInteger;
-            this.SingleTimeOutTextbox.Validating += this.validator.OnValidateInteger;
-            this.IdleTimeoutMinutesTextBox.Validating += this.validator.OnValidateInteger;
-        }
-
-        private void SetErrorProviderIconsAlignment()
-        {
-            this.errorProvider.SetIconAlignment(this.cmbServers, ErrorIconAlignment.MiddleLeft);
-            this.errorProvider.SetIconAlignment(this.httpUrlTextBox, ErrorIconAlignment.MiddleLeft);
-            this.errorProvider.SetIconAlignment(this.NotesTextbox, ErrorIconAlignment.TopLeft);
-            this.errorProvider.SetIconAlignment(this.txtName, ErrorIconAlignment.MiddleLeft);
-        }
-
-        private void RegisterValiationControls()
-        {
-            this.validator.RegisterValidationControl("ServerName", this.cmbServers);
-            this.validator.RegisterValidationControl(Validations.NAME_PROPERTY, this.txtName);
-            this.validator.RegisterValidationControl("Port", this.txtPort);
-            this.validator.RegisterValidationControl("Protocol", this.ProtocolComboBox);
-            this.validator.RegisterValidationControl("Notes", this.NotesTextbox);
-            this.validator.RegisterValidationControl("Command", this.txtCommand);
-            this.validator.RegisterValidationControl("CommandArguments", this.txtArguments);
-            this.validator.RegisterValidationControl("InitialDirectory", this.txtInitialDirectory);
+            this.rdpExtendedSettings.AssignValidatingEvents(this.validator);
+            this.executeControl.RegisterValiationControls(this.validator);
         }
 
         #endregion
@@ -123,7 +126,8 @@ namespace Terminals
 
         private void NewTerminalForm_Shown(object sender, EventArgs e)
         {
-            this.cmbServers.Focus();
+            // todo activate the cmbServers
+            // this.cmbServers.Focus();
         }
 
         #endregion
@@ -189,10 +193,8 @@ namespace Terminals
             // this.SaveMRUs();
             if (this.FillFavorite(false))
             {
-                this.txtName.Text = this.Favorite.Name + "_(copy)";
                 this.EditedId = Guid.Empty;
-                this.cmbServers.Text = String.Empty;
-                this.cmbServers.Focus();
+                this.generalProperties.ResetServerNameControls(this.Favorite.Name);
             }
         }
 
@@ -211,7 +213,7 @@ namespace Terminals
             {
                 this.EditedId = Guid.Empty;
                 this.Init(null, String.Empty);
-                this.cmbServers.Focus();
+                // todo activate servers comboox this.cmbServers.Focus();
             }
         }
 
@@ -224,14 +226,10 @@ namespace Terminals
             this.LoadMRUs();
             this.SetOkButtonState();
 
-            try { this.SSHPreferences.Keys = Settings.SSHKeys; }
-            catch (System.Security.Cryptography.CryptographicException)
-            {
-                Logging.Error("A CryptographicException occured on decrypting SSH keys. Favorite credentials possibly encrypted by another user. Ignore and continue.");
-            }
+            this.sshControl.ResetSshPreferences();
 
             // move following line down to default value only once smart card access worked out.
-            this.cmbTSGWLogonMethod.SelectedIndex = 0;
+            // todo this.cmbTSGWLogonMethod.SelectedIndex = 0;
 
             if (favorite == null)
             {
@@ -245,10 +243,11 @@ namespace Terminals
                 }
                 else
                 {
-                    this.cmbResolution.SelectedIndex = 7;
-                    this.cmbColors.SelectedIndex = 1;
-                    this.cmbSounds.SelectedIndex = 2;
-                    this.ProtocolComboBox.SelectedIndex = 0;
+                    // todo move reset of combobox default values
+                    //this.cmbResolution.SelectedIndex = 7;
+                    //this.cmbColors.SelectedIndex = 1;
+                    //this.cmbSounds.SelectedIndex = 2;
+                    // this.ProtocolComboBox.SelectedIndex = 0;
                 }
 
                 this.generalProperties.FillServerName(serverName);
