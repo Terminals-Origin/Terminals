@@ -94,10 +94,10 @@ namespace Terminals
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.favoriteToolBar = new System.Windows.Forms.ToolStrip();
             this.tsRemoteToolbar = new System.Windows.Forms.ToolStrip();
             this.tsbCMD = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.favoriteToolBar = new System.Windows.Forms.ToolStrip();
             this.SpecialCommandsToolStrip = new System.Windows.Forms.ToolStrip();
             this.toolbarStd = new System.Windows.Forms.ToolStrip();
             this.tsbNewTerminal = new System.Windows.Forms.ToolStripButton();
@@ -106,6 +106,7 @@ namespace Terminals
             this.tscConnectTo = new System.Windows.Forms.ToolStripComboBox();
             this.tsbConnect = new System.Windows.Forms.ToolStripButton();
             this.tsbConnectToConsole = new System.Windows.Forms.ToolStripButton();
+            this.tsbConnectAs = new System.Windows.Forms.ToolStripButton();
             this.tsbDisconnect = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbManageConnections = new System.Windows.Forms.ToolStripButton();
@@ -230,8 +231,8 @@ namespace Terminals
             // toolStripContainer.TopToolStripPanel
             // 
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.menuStrip);
-            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.favoriteToolBar);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.tsRemoteToolbar);
+            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.favoriteToolBar);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.SpecialCommandsToolStrip);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.toolbarStd);
             // 
@@ -351,7 +352,7 @@ namespace Terminals
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(466, 24);
+            this.menuStrip.Size = new System.Drawing.Size(317, 24);
             this.menuStrip.Stretch = false;
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
@@ -777,6 +778,14 @@ namespace Terminals
             this.updateToolStripItem.Visible = false;
             this.updateToolStripItem.Click += new System.EventHandler(this.UpdateToolStripItem_Click);
             // 
+            // favoriteToolBar
+            // 
+            this.favoriteToolBar.Dock = System.Windows.Forms.DockStyle.None;
+            this.favoriteToolBar.Location = new System.Drawing.Point(3, 24);
+            this.favoriteToolBar.Name = "favoriteToolBar";
+            this.favoriteToolBar.Size = new System.Drawing.Size(111, 25);
+            this.favoriteToolBar.TabIndex = 4;
+            // 
             // tsRemoteToolbar
             // 
             this.tsRemoteToolbar.Dock = System.Windows.Forms.DockStyle.None;
@@ -809,14 +818,6 @@ namespace Terminals
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click);
             // 
-            // favoriteToolBar
-            // 
-            this.favoriteToolBar.Dock = System.Windows.Forms.DockStyle.None;
-            this.favoriteToolBar.Location = new System.Drawing.Point(3, 24);
-            this.favoriteToolBar.Name = "favoriteToolBar";
-            this.favoriteToolBar.Size = new System.Drawing.Size(111, 25);
-            this.favoriteToolBar.TabIndex = 4;
-            // 
             // SpecialCommandsToolStrip
             // 
             this.SpecialCommandsToolStrip.ContextMenuStrip = this.ShortcutsContextMenu;
@@ -838,6 +839,7 @@ namespace Terminals
             this.tscConnectTo,
             this.tsbConnect,
             this.tsbConnectToConsole,
+            this.tsbConnectAs,
             this.tsbDisconnect,
             this.toolStripSeparator3,
             this.tsbManageConnections,
@@ -860,7 +862,7 @@ namespace Terminals
             this.toolStripButton5});
             this.toolbarStd.Location = new System.Drawing.Point(114, 49);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(689, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(818, 25);
             this.toolbarStd.TabIndex = 2;
             // 
             // tsbNewTerminal
@@ -916,6 +918,17 @@ namespace Terminals
             this.tsbConnectToConsole.Size = new System.Drawing.Size(23, 22);
             this.tsbConnectToConsole.ToolTipText = "Connect To Console";
             this.tsbConnectToConsole.Click += new System.EventHandler(this.TsbConnectToConsole_Click);
+            // 
+            // tsbConnectAs
+            // 
+            this.tsbConnectAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbConnectAs.Enabled = false;
+            this.tsbConnectAs.Image = global::Terminals.Properties.Resources.application_user;
+            this.tsbConnectAs.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbConnectAs.Name = "tsbConnectAs";
+            this.tsbConnectAs.Size = new System.Drawing.Size(23, 22);
+            this.tsbConnectAs.ToolTipText = "Connect As...";
+            this.tsbConnectAs.Click += new System.EventHandler(this.TsbConnectAs_Click);
             // 
             // tsbDisconnect
             // 
@@ -1167,8 +1180,6 @@ namespace Terminals
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
-            this.Move += MainForm_Move;
-            this.Shown += MainForm_Shown;
             this.ShortcutsContextMenu.ResumeLayout(false);
             this.toolStripContainer.ContentPanel.ResumeLayout(false);
             this.toolStripContainer.TopToolStripPanel.ResumeLayout(false);
@@ -1298,5 +1309,6 @@ namespace Terminals
         private System.Windows.Forms.Panel pnlShowTagsFavorites;
         private System.Windows.Forms.PictureBox pbShowTagsFavorites;
         private System.Windows.Forms.ToolStripMenuItem clearHistoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton tsbConnectAs;
     }
 }

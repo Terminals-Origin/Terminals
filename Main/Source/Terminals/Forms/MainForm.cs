@@ -306,6 +306,7 @@ namespace Terminals
             grabInputToolStripMenuItem.Checked = tsbGrabInput.Checked;
             tsbConnect.Enabled = (tscConnectTo.Text != String.Empty);
             tsbConnectToConsole.Enabled = (tscConnectTo.Text != String.Empty);
+            tsbConnectAs.Enabled = (tscConnectTo.Text != String.Empty);
             saveTerminalsAsGroupToolStripMenuItem.Enabled = (tcTerminals.Items.Count > 0);
 
             this.TerminalServerMenuButton.Visible = false;
@@ -998,12 +999,23 @@ namespace Terminals
             this.ConnectFromQuickCombobox(true);
         }
 
-        private void ConnectFromQuickCombobox(bool forceConsole)
+        private void TsbConnectAs_Click(object sender, EventArgs e)
+        {
+            using (var usrForm = new ConnectExtraForm(this.persistence))
+            {
+                if (usrForm.ShowDialog() != DialogResult.OK)
+                    return;
+
+                this.ConnectFromQuickCombobox(usrForm.Console, usrForm.NewWindow, usrForm.Credentials);
+            }
+        }
+
+        private void ConnectFromQuickCombobox(bool forceConsole, bool forceNewWindow = false, ICredentialSet credentials = null)
         {
             string connectionName = this.tscConnectTo.Text;
             if (!string.IsNullOrEmpty(connectionName))
             {
-                this.connectionsUiFactory.ConnectByFavoriteNames(new List<string>(){connectionName}, forceConsole);
+                this.connectionsUiFactory.ConnectByFavoriteNames(new List<string>() { connectionName }, forceConsole, forceNewWindow, credentials);
             }
         }
 
