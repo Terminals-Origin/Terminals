@@ -67,11 +67,11 @@ namespace Terminals.Forms
             this.BringToFrontOnMainForm(conn);
         }
 
-        internal void ConnectByFavoriteNames(IEnumerable<string> favoriteNames, bool forceConsole = false)
+        internal void ConnectByFavoriteNames(IEnumerable<string> favoriteNames, bool forceConsole = false, bool forceNewWindow = false, ICredentialSet credentials = null)
         {
             var targets = this.persistence.Favorites
                 .Where(favorite => favoriteNames.Contains(favorite.Name, StringComparer.InvariantCultureIgnoreCase));
-            var definition = new ConnectionDefinition(targets, forceConsole, false);
+            var definition = new ConnectionDefinition(targets, forceConsole, forceNewWindow, credentials);
             this.Connect(definition);
         }
 
