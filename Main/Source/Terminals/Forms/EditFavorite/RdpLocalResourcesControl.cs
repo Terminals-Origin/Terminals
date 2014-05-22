@@ -18,6 +18,7 @@ namespace Terminals.Forms.EditFavorite
             InitializeComponent();
 
             this.RedirectedDrives = new List<String>();
+            this.cmbSounds.SelectedIndex = 2;
         }
 
         private void BtnBrowseShare_Click(object sender, EventArgs e)

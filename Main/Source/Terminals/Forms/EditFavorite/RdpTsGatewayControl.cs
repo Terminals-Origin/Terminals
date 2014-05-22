@@ -9,6 +9,9 @@ namespace Terminals.Forms.EditFavorite
         public RdpTsGatewayControl()
         {
             InitializeComponent();
+
+            // move following line down to default value only once smart card access worked out.
+            this.cmbTSGWLogonMethod.SelectedIndex = 0;
         }
 
         private void RadTsgWenable_CheckedChanged(object sender, EventArgs e)

@@ -9,6 +9,9 @@ namespace Terminals.Forms.EditFavorite
         public RdpDisplayControl()
         {
             InitializeComponent();
+
+            this.cmbResolution.SelectedIndex = 7;
+            this.cmbColors.SelectedIndex = 1;
         }
 
         private void CmbResolution_SelectedIndexChanged(object sender, EventArgs e)
