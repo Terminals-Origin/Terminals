@@ -132,5 +132,11 @@ namespace Terminals.Forms.EditFavorite
             var groupNames = this.persistence.Groups.Select(group => group.Name).ToArray();
             this.txtGroupName.AutoCompleteCustomSource.AddRange(groupNames);
         }
+
+        internal void BindGroups()
+        {
+            IOrderedEnumerable<IGroup> sortedGroups = this.persistence.Groups.OrderBy(group => group.Name);
+            BindGroupsToListView(this.AllTagsListView, sortedGroups);
+        }
     }
 }

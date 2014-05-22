@@ -39,6 +39,9 @@ namespace Terminals.Forms.EditFavorite
         public GeneralPropertiesUserControl()
         {
             InitializeComponent();
+
+            // for dynamicaly loaded plugins, this needs to be done later
+            this.ProtocolComboBox.SelectedIndex = 0;
         }
 
         internal void AssignValidationComponents(NewTerminalFormValidator validator)
@@ -431,6 +434,11 @@ namespace Terminals.Forms.EditFavorite
         {
             this.txtName.Text = favoriteName + "_(copy)";
             this.cmbServers.Text = String.Empty;
+            this.cmbServers.Focus();
+        }
+
+        internal void FocusServers()
+        {
             this.cmbServers.Focus();
         }
     }

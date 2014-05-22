@@ -119,15 +119,13 @@ namespace Terminals
         private void NewTerminalForm_Load(Object sender, EventArgs e)
         {
             this.SuspendLayout();
-            IOrderedEnumerable<IGroup> sortedGroups = PersistedGroups.OrderBy(group => group.Name);
-            // BindGroupsToListView(this.AllTagsListView, sortedGroups);
+            this.groupsControl.BindGroups();
             this.ResumeLayout(true);
         }
 
         private void NewTerminalForm_Shown(object sender, EventArgs e)
         {
-            // todo activate the cmbServers
-            // this.cmbServers.Focus();
+            this.generalProperties.FocusServers();
         }
 
         #endregion
@@ -213,7 +211,7 @@ namespace Terminals
             {
                 this.EditedId = Guid.Empty;
                 this.Init(null, String.Empty);
-                // todo activate servers comboox this.cmbServers.Focus();
+                this.generalProperties.FocusServers();
             }
         }
 
@@ -225,11 +223,7 @@ namespace Terminals
         {
             this.LoadMRUs();
             this.SetOkButtonState();
-
             this.sshControl.ResetSshPreferences();
-
-            // move following line down to default value only once smart card access worked out.
-            // todo this.cmbTSGWLogonMethod.SelectedIndex = 0;
 
             if (favorite == null)
             {
@@ -240,14 +234,6 @@ namespace Terminals
                 {
                     var defaultFavorite = ModelConverterV1ToV2.ConvertToFavorite(defaultSavedFavorite, this.persistence);
                     this.FillControls(defaultFavorite);
-                }
-                else
-                {
-                    // todo move reset of combobox default values
-                    //this.cmbResolution.SelectedIndex = 7;
-                    //this.cmbColors.SelectedIndex = 1;
-                    //this.cmbSounds.SelectedIndex = 2;
-                    // this.ProtocolComboBox.SelectedIndex = 0;
                 }
 
                 this.generalProperties.FillServerName(serverName);
