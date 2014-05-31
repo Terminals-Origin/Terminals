@@ -59,13 +59,13 @@ namespace Terminals.Forms
         /// <param name="forceNewWindow">If defined, will replace the favorite option to open connection in new window</param>
         /// <param name="credentials">If defined, replaces the favorite authentication informations</param>
         internal ConnectionDefinition(IEnumerable<IFavorite> favorites, bool? forceConsole = null,
-            bool? forceNewWindow = null, ICredentialSet credentials = null)
+            bool? forceNewWindow = null, ICredentialSet credentials = null, string newFavorite = "")
         {
             this.Favorites = favorites.ToList(); // evaluate imediately
             this.ForceConsole = forceConsole;
             this.ForceNewWindow = forceNewWindow;
             this.Credentials = credentials;
-            this.NewFavorite = string.Empty;
+            this.NewFavorite = newFavorite;
         }
 
         public override string ToString()
