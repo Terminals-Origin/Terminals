@@ -7,26 +7,26 @@ using Terminals.Connections;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class RasControl : UserControl, IProtocolOptionsControl
+    internal partial class RasControl : UserControl, IProtocolOptionsControl
     {
         private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
 
         internal List<string> ConnectionNames { get; private set; }
 
-        public RasControl()
+        internal RasControl()
         {
             InitializeComponent();
 
             this.ConnectionNames = new List<string>();
         }
 
-        internal void OnServerNameChanged(string serverName)
+        internal void OnServerNameChanged(string protocolName, string serverName)
         {
-            if (serverName == ConnectionManager.RAS)
+            if (protocolName == ConnectionManager.RAS)
                 this.FillRasControls(serverName);
         }
 
-        internal void FillRasControls(string serverName)
+        private void FillRasControls(string serverName)
         {
             this.LoadDialupConnections();
             this.RASDetailsListBox.Items.Clear();

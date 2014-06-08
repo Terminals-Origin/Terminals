@@ -29,12 +29,13 @@ namespace Terminals.Forms.EditFavorite
 
         public bool UrlVisible { get { return this.generalPanel1.UrlVisible; } }
 
+        public bool ShowOnToolbar { get { return this.generalPanel1.ShowOnToolbar; } }
+
         public FavoritePropertiesControl()
         {
             this.InitializeComponent();
 
-            // todo missing ras control this.generalPanel1.AssignRasControl(this.rasControl);
-            // todo missing rdp local resources this.generalPanel1.AssignRdpLocalResources(this.rdpLocalResources);
+            this.generalPanel1.AssignRasControl(this.rasControl1);
         }
 
         internal void LoadContent()
@@ -48,6 +49,8 @@ namespace Terminals.Forms.EditFavorite
             this.generalPanel1.ProtocolChanged += GenearalPanel1ProtocolChanged;
             var firstPlugin = availablePlugins[0];
             this.GenearalPanel1ProtocolChanged(firstPlugin);
+            this.groupsPanel1.BindGroups();
+            this.generalPanel1.ServerNameChanged += this.protocolOptionsPanel1.OnServerNameChanged;
         }
 
         private void DockAllPanels()
@@ -55,6 +58,7 @@ namespace Terminals.Forms.EditFavorite
             this.generalPanel1.Dock = DockStyle.Fill;
             this.groupsPanel1.Dock = DockStyle.Fill;
             this.executePanel1.Dock = DockStyle.Fill;
+            this.rasControl1.Dock = DockStyle.Fill;
         }
 
         private void GenearalPanel1ProtocolChanged(string newProtocol)
@@ -79,6 +83,7 @@ namespace Terminals.Forms.EditFavorite
             this.generalPanel1.Hide();
             this.groupsPanel1.Hide();
             this.executePanel1.Hide();
+            this.rasControl1.Hide();
             this.protocolOptionsPanel1.Hide();
         }
 
@@ -128,10 +133,12 @@ namespace Terminals.Forms.EditFavorite
             }
         }
 
-        internal void InitializeValidations(NewTerminalFormValidator validator)
+        internal void RegisterValidations(NewTerminalFormValidator validator)
         {
-            // todo this.rdpExtendedSettings.AssignValidatingEvents(validator);
-            this.executePanel1.RegisterValiationControls(validator);
+            this.generalPanel1.RegisterValidations(validator);
+            this.groupsPanel1.RegisterValidations(validator);
+            this.executePanel1.RegisterValidations(validator);
+            this.protocolOptionsPanel1.RegisterValidations(validator);
         }
 
         internal void AssignPersistence(IPersistence persistence)
@@ -140,20 +147,9 @@ namespace Terminals.Forms.EditFavorite
             this.groupsPanel1.AssignPersistence(persistence);
         }
 
-        internal void AssignValidationComponents(NewTerminalFormValidator validator)
-        {
-            this.generalPanel1.AssignValidationComponents(validator);
-            this.groupsPanel1.AssignValidator(validator);
-        }
-
         internal void SetErrorProviderIconsAlignment(ErrorProvider errorProvider)
         {
             this.generalPanel1.SetErrorProviderIconsAlignment(errorProvider);
-        }
-
-        internal void BindGroups()
-        {
-            this.groupsPanel1.BindGroups();
         }
 
         internal void FocusServers()

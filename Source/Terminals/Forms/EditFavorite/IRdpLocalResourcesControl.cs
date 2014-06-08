@@ -2,7 +2,10 @@
 
 namespace Terminals.Forms.EditFavorite
 {
-    public interface IRdpLocalResourcesControl
+    /// <summary>
+    /// Contract to isolate Rdp local resources control from external dialogs
+    /// </summary>
+    internal interface IRdpLocalResourcesControl
     {
         List<string> RedirectedDrives { get; set; }
 

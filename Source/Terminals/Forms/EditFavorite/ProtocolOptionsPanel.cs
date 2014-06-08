@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Forms;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class ProtocolOptionsPanel : UserControl
+    internal partial class ProtocolOptionsPanel : UserControl
     {
+        private NewTerminalFormValidator validator;
+
         // private readonly PluginManager pluginsManager = new PluginManager();
 
         public ProtocolOptionsPanel()
@@ -55,10 +56,10 @@ namespace Terminals.Forms.EditFavorite
 
         private void RemoveCurrentControls()
         {
-            List<Control> currentControls = this.Controls.OfType<Control>().ToList();
-            foreach (Control protocolControl in currentControls)
+            foreach (Control protocolControl in this.Controls)
             {
                 this.Controls.Remove(protocolControl);
+                UnRegisterIntegerValidation(protocolControl);
                 protocolControl.Dispose();
             }
         }
@@ -75,9 +76,23 @@ namespace Terminals.Forms.EditFavorite
         {
             this.Controls.Add(protocolControl);
             protocolControl.Dock = DockStyle.Fill;
+            this.RegisterIntegerValidation(protocolControl);
         }
 
-        // todo better resolution then by note title
+        private void RegisterIntegerValidation(Control protocolControl)
+        {
+            var validatedControl = protocolControl as IValidatedProtocolControl;
+            if (validatedControl != null)
+                validatedControl.IntegerValidationRequested += this.validator.OnValidateInteger;
+        }
+
+        private void UnRegisterIntegerValidation(Control protocolControl)
+        {
+            var validatedControl = protocolControl as IValidatedProtocolControl;
+            if (validatedControl != null)
+                validatedControl.IntegerValidationRequested -= this.validator.OnValidateInteger;
+        }
+
         internal void FocuControl(string controlName = "")
         {
             this.HideAllProtocolControls();
@@ -91,6 +106,19 @@ namespace Terminals.Forms.EditFavorite
             foreach (Control protocolControl in this.Controls)
             {
                 protocolControl.Hide();
+            }
+        }
+
+        internal void RegisterValidations(NewTerminalFormValidator validator)
+        {
+            this.validator = validator;
+        }
+
+        internal void OnServerNameChanged(string newServerName)
+        {
+            foreach (var protocolControl in this.Controls.OfType<IProtocolObserver>())
+            {
+                protocolControl.OnServerNameChanged(newServerName);
             }
         }
     }

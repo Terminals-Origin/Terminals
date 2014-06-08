@@ -23,7 +23,7 @@ namespace Terminals.Forms.EditFavorite
             this.persistence = persistence;
         }
 
-        internal void AssignValidator(NewTerminalFormValidator validator)
+        internal void RegisterValidations(NewTerminalFormValidator validator)
         {
             this.validator = validator;
         }

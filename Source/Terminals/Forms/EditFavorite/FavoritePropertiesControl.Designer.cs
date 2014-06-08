@@ -35,9 +35,10 @@
             this.treeView = new System.Windows.Forms.TreeView();
             this.titleLabel = new System.Windows.Forms.Label();
             this.executePanel1 = new Terminals.Forms.EditFavorite.ExecuteControl();
-            this.groupsPanel1 = new Terminals.Forms.EditFavorite.GroupsControl();
             this.generalPanel1 = new Terminals.Forms.EditFavorite.GeneralPropertiesUserControl();
             this.protocolOptionsPanel1 = new Terminals.Forms.EditFavorite.ProtocolOptionsPanel();
+            this.groupsPanel1 = new Terminals.Forms.EditFavorite.GroupsControl();
+            this.rasControl1 = new Terminals.Forms.EditFavorite.RasControl();
             this.SuspendLayout();
             // 
             // treeView
@@ -88,7 +89,7 @@
             this.groupsPanel1.Size = new System.Drawing.Size(237, 126);
             this.groupsPanel1.TabIndex = 14;
             // 
-            // genearalPanel1
+            // generalPanel1
             // 
             this.generalPanel1.Location = new System.Drawing.Point(173, 35);
             this.generalPanel1.Name = "generalPanel1";
@@ -102,6 +103,13 @@
             this.protocolOptionsPanel1.Size = new System.Drawing.Size(186, 141);
             this.protocolOptionsPanel1.TabIndex = 12;
             // 
+            // rasControl1
+            // 
+            this.rasControl1.Location = new System.Drawing.Point(290, 195);
+            this.rasControl1.Name = "rasControl1";
+            this.rasControl1.Size = new System.Drawing.Size(202, 202);
+            this.rasControl1.TabIndex = 16;
+            // 
             // FavoritePropertiesControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -112,6 +120,7 @@
             this.Controls.Add(this.protocolOptionsPanel1);
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.treeView);
+            this.Controls.Add(this.rasControl1);
             this.Name = "FavoritePropertiesControl";
             this.Size = new System.Drawing.Size(659, 407);
             this.ResumeLayout(false);
@@ -126,5 +135,6 @@
         private GeneralPropertiesUserControl generalPanel1;
         private GroupsControl groupsPanel1;
         private ExecuteControl executePanel1;
+        private RasControl rasControl1;
     }
 }

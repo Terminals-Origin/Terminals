@@ -19,7 +19,7 @@ namespace Terminals
     {
         private NewTerminalFormValidator validator;
 
-        public Guid EditedId { get; set; }
+        public Guid EditedId { get; private set; }
 
         public string ProtocolText { get { return this.favoritePropertiesControl1.ProtocolText;  } }
 
@@ -42,7 +42,7 @@ namespace Terminals
             : this()
         {
             this.persistence = persistence;
-            InitializeFavoriteProperties();
+            this.InitializeFavoritePropertiesControl();
             this.Init(null, serverName);
         }
 
@@ -50,7 +50,7 @@ namespace Terminals
             : this()
         {
             this.persistence = persistence;
-            InitializeFavoriteProperties();
+            this.InitializeFavoritePropertiesControl();
             this.Init(favorite, String.Empty);
         }
 
@@ -59,13 +59,12 @@ namespace Terminals
             this.InitializeComponent();
         }
 
-        private void InitializeFavoriteProperties()
+        private void InitializeFavoritePropertiesControl()
         {
             this.validator = new NewTerminalFormValidator(this.persistence, this);
-            this.favoritePropertiesControl1.InitializeValidations(this.validator);
             this.favoritePropertiesControl1.AssignPersistence(this.persistence);
             this.favoritePropertiesControl1.SetOkButtonRequested += this.GeneralProperties_SetOkButtonRequested;
-            this.favoritePropertiesControl1.AssignValidationComponents(this.validator);
+            this.favoritePropertiesControl1.RegisterValidations(this.validator);
             this.favoritePropertiesControl1.SetErrorProviderIconsAlignment(this.errorProvider);
         }
 
@@ -80,7 +79,6 @@ namespace Terminals
 
         private new TerminalFormDialogResult DialogResult { get; set; }
         internal IFavorite Favorite { get; private set; }
-        private bool ShowOnToolbar { get; set; }
 
         #endregion
 
@@ -89,7 +87,7 @@ namespace Terminals
         private void NewTerminalForm_Load(Object sender, EventArgs e)
         {
             this.SuspendLayout();
-            this.favoritePropertiesControl1.BindGroups();
+            this.favoritePropertiesControl1.LoadContent();
             this.ResumeLayout(true);
         }
 
@@ -374,7 +372,7 @@ namespace Terminals
             if (this.EditingNew)
                 this.AddToPersistence(favorite);
             else
-                Settings.EditFavoriteButton(this.EditedId, favorite.Id, this.ShowOnToolbar);
+                Settings.EditFavoriteButton(this.EditedId, favorite.Id, this.favoritePropertiesControl1.ShowOnToolbar);
 
             List<IGroup> updatedGroups = this.favoritePropertiesControl1.GetNewlySelectedGroups();
             PersistedFavorites.UpdateFavorite(favorite, updatedGroups);
@@ -385,7 +383,7 @@ namespace Terminals
         private void AddToPersistence(IFavorite favorite)
         {
             this.PersistedFavorites.Add(favorite);
-            if (this.ShowOnToolbar) // todo validate usage, looks like set was removed
+            if (this.favoritePropertiesControl1.ShowOnToolbar)
                 Settings.AddFavoriteButton(favorite.Id);
         }
 

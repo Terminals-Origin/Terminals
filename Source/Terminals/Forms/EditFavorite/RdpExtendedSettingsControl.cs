@@ -1,23 +1,35 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Forms;
 using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class RdpExtendedSettingsControl : UserControl
+    internal partial class RdpExtendedSettingsControl : UserControl, IValidatedProtocolControl
     {
+        public event CancelEventHandler IntegerValidationRequested;
+
         public RdpExtendedSettingsControl()
         {
             InitializeComponent();
+
+            RegisterIntegerValidations();
         }
 
-        internal void AssignValidatingEvents(NewTerminalFormValidator validator)
+        private void RegisterIntegerValidations()
         {
-            this.ShutdownTimeoutTextBox.Validating += validator.OnValidateInteger;
-            this.OverallTimeoutTextbox.Validating += validator.OnValidateInteger;
-            this.SingleTimeOutTextbox.Validating += validator.OnValidateInteger;
-            this.IdleTimeoutMinutesTextBox.Validating += validator.OnValidateInteger;
+            this.ShutdownTimeoutTextBox.Validating += this.FireIntegerValidationRequested;
+            this.OverallTimeoutTextbox.Validating += this.FireIntegerValidationRequested;
+            this.SingleTimeOutTextbox.Validating += this.FireIntegerValidationRequested;
+            this.IdleTimeoutMinutesTextBox.Validating += this.FireIntegerValidationRequested;
         }
+
+        private void FireIntegerValidationRequested(object sender, CancelEventArgs cancelEventArgs)
+        {
+            if (this.IntegerValidationRequested != null)
+                this.IntegerValidationRequested(sender, cancelEventArgs);
+        }
+
         private void FillFavoriteRdpInterfaceOptions(RdpOptions rdpOptions)
         {
             RdpUserInterfaceOptions userInterface = rdpOptions.UserInterface;
