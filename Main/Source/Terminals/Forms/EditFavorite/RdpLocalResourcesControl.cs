@@ -5,13 +5,13 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    internal partial class RdpLocalResourcesControl : UserControl, IRdpLocalResourcesControl
+    internal partial class RdpLocalResourcesControl : UserControl, IRdpLocalResourcesControl, IProtocolObserver
     {
         public List<string> RedirectedDrives { get; set; }
 
         public bool RedirectDevices { get; set; }
 
-        internal string ServerName { get; set; }
+        private string serverName;
 
         public RdpLocalResourcesControl()
         {
@@ -27,7 +27,7 @@ namespace Terminals.Forms.EditFavorite
             {
                 dialog.Description = "Select Desktop Share:";
                 dialog.ShowNewFolderButton = false;
-                dialog.SelectedPath = @"\\" + this.ServerName;
+                dialog.SelectedPath = @"\\" + this.serverName;
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     this.txtDesktopShare.Text = dialog.SelectedPath;
             }
@@ -64,6 +64,11 @@ namespace Terminals.Forms.EditFavorite
             this.RedirectDevices = rdpOptions.Redirect.Devices;
             this.chkRedirectSmartcards.Checked = rdpOptions.Redirect.SmartCards;
             this.cmbSounds.SelectedIndex = (Int32)rdpOptions.Redirect.Sounds;
+        }
+
+        public void OnServerNameChanged(string newServerName)
+        {
+            this.serverName = newServerName;
         }
     }
 }

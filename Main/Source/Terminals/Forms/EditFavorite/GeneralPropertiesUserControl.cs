@@ -12,7 +12,7 @@ using Terminals.Data.Validation;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class GeneralPropertiesUserControl : UserControl
+    internal partial class GeneralPropertiesUserControl : UserControl
     {
         internal string ServerNameText { get { return this.cmbServers.Text.Trim(); } }
 
@@ -22,7 +22,7 @@ namespace Terminals.Forms.EditFavorite
 
         internal bool UrlVisible { get { return this.httpUrlTextBox.Visible; } }
 
-        private bool ShowOnToolbar { get; set; }
+        internal bool ShowOnToolbar { get { return this.chkAddtoToolbar.Checked; } }
         private String favoritePassword = string.Empty;
         internal const String HIDDEN_PASSWORD = "****************";
         private String currentToolBarFileName;
@@ -34,16 +34,16 @@ namespace Terminals.Forms.EditFavorite
 
         private RasControl rasControl;
 
-        private RdpLocalResourcesControl rdpLocalResources;
-
         public event Action<string> ProtocolChanged;
+
+        public event Action<string> ServerNameChanged;
 
         public GeneralPropertiesUserControl()
         {
             InitializeComponent();
         }
 
-        internal void AssignValidationComponents(NewTerminalFormValidator validator)
+        internal void RegisterValidations(NewTerminalFormValidator validator)
         {
             this.validator = validator;
             this.RegisterValiationControls();
@@ -72,11 +72,6 @@ namespace Terminals.Forms.EditFavorite
         internal void AssignPersistence(IPersistence persistence)
         {
             this.persistence = persistence;
-        }
-
-        internal void AssignRdpLocalResources(RdpLocalResourcesControl rdpLocalResources)
-        {
-            this.rdpLocalResources = rdpLocalResources;
         }
 
         internal void AssignRasControl(RasControl rasControl)
@@ -182,12 +177,15 @@ namespace Terminals.Forms.EditFavorite
         private void CmbServers_TextChanged(object sender, EventArgs e)
         {
             this.SetOkButtonState();
-            // todo assign this.rdpLocalResources.ServerName = this.cmbServers.Text;
+
+            if (this.ServerNameChanged != null)
+                this.ServerNameChanged(this.ServerNameText);
         }
 
         private void CmbServers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.rasControl.OnServerNameChanged(this.cmbServers.Text);
+            // todo fix the rasControl SeverName observer
+            this.rasControl.OnServerNameChanged(this.ProtocolText, this.ServerNameText);
             this.cmbServers.DataSource = rasControl.ConnectionNames;
         }
 
@@ -349,7 +347,6 @@ namespace Terminals.Forms.EditFavorite
         private void FillDescriptionProperties(IFavorite favorite)
         {
             favorite.NewWindow = this.NewWindowCheckbox.Checked;
-            this.ShowOnToolbar = this.chkAddtoToolbar.Checked;
             favorite.ToolBarIconFile = this.currentToolBarFileName;
             favorite.Notes = this.NotesTextbox.Text;
         }

@@ -3,14 +3,14 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class ExecuteControl : UserControl
+    internal partial class ExecuteControl : UserControl
     {
-        public ExecuteControl()
+        internal ExecuteControl()
         {
             InitializeComponent();
         }
 
-        internal void RegisterValiationControls(NewTerminalFormValidator validator)
+        internal void RegisterValidations(NewTerminalFormValidator validator)
         {
             validator.RegisterValidationControl("Command", this.txtCommand);
             validator.RegisterValidationControl("CommandArguments", this.txtArguments);
