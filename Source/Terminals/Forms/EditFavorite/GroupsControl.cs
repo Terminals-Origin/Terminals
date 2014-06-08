@@ -7,13 +7,13 @@ using Terminals.Forms.Controls;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class GroupsControl : UserControl
+    internal partial class GroupsControl : UserControl
     {
         private IPersistence persistence;
 
         private NewTerminalFormValidator validator;
 
-        public GroupsControl()
+        internal GroupsControl()
         {
             InitializeComponent();
         }

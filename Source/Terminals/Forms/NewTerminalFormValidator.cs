@@ -14,7 +14,7 @@ namespace Terminals.Forms
     /// </summary>
     internal class NewTerminalFormValidator
     {
-        private readonly NewTerminalForm form;
+        private readonly INewTerminalForm form;
 
         private readonly IPersistence persistence;
 
@@ -22,7 +22,7 @@ namespace Terminals.Forms
 
         private readonly Dictionary<string, Control> validationBindings = new Dictionary<string, Control>();
 
-        public NewTerminalFormValidator(IPersistence persistence, NewTerminalForm form)
+        public NewTerminalFormValidator(IPersistence persistence, INewTerminalForm form)
         {
             this.persistence = persistence;
             this.nameValidator = new FavoriteNameValidator(persistence);

@@ -4,27 +4,14 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class SshControl : UserControl
+    internal partial class SshControl : UserControl
     {
         public SshControl()
         {
             InitializeComponent();
         }
 
-        internal void ResetSshPreferences()
-        {
-            try
-            {
-                this.SSHPreferences.Keys = Settings.SSHKeys;
-            }
-            catch (System.Security.Cryptography.CryptographicException)
-            {
-                Logging.Error(
-                    "A CryptographicException occured on decrypting SSH keys. Favorite credentials possibly encrypted by another user. Ignore and continue.");
-            }
-        }
-
-        private void FillFavoriteSSHOptions(IFavorite favorite)
+        internal void FillFavoriteSSHOptions(IFavorite favorite)
         {
             var sshOptions = favorite.ProtocolProperties as SshOptions;
             if (sshOptions == null)
@@ -37,8 +24,10 @@ namespace Terminals.Forms.EditFavorite
             sshOptions.SSHKeyFile = this.SSHPreferences.SSHKeyFile;
         }
 
-        private void FillSshControls(IFavorite favorite)
+        internal void FillSshControls(IFavorite favorite)
         {
+            this.TryLoadSshPreferences();
+
             var sshOptions = favorite.ProtocolProperties as SshOptions;
             if (sshOptions == null)
                 return;
@@ -50,5 +39,17 @@ namespace Terminals.Forms.EditFavorite
             this.SSHPreferences.SSHKeyFile = sshOptions.SSHKeyFile;
         }
 
+        private void TryLoadSshPreferences()
+        {
+            try
+            {
+                this.SSHPreferences.Keys = Settings.SSHKeys;
+            }
+            catch (System.Security.Cryptography.CryptographicException)
+            {
+                Logging.Error(
+                    "A CryptographicException occured on decrypting SSH keys. Favorite credentials possibly encrypted by another user. Ignore and continue.");
+            }
+        }
     }
 }

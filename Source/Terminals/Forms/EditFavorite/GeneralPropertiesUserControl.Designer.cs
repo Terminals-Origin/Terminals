@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.GeneralGroupBox = new System.Windows.Forms.GroupBox();
+            this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
+            this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
             this.httpUrlTextBox = new System.Windows.Forms.TextBox();
             this.NotesTextbox = new System.Windows.Forms.TextBox();
             this.txtPort = new System.Windows.Forms.TextBox();
@@ -52,8 +54,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.cmbServers = new System.Windows.Forms.ComboBox();
             this.lblServerName = new System.Windows.Forms.Label();
-            this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
-            this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
             this.GeneralGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
             this.CredentialsPanel.SuspendLayout();
@@ -86,6 +86,28 @@
             this.GeneralGroupBox.Size = new System.Drawing.Size(590, 365);
             this.GeneralGroupBox.TabIndex = 1;
             this.GeneralGroupBox.TabStop = false;
+            // 
+            // chkAddtoToolbar
+            // 
+            this.chkAddtoToolbar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkAddtoToolbar.AutoSize = true;
+            this.chkAddtoToolbar.Location = new System.Drawing.Point(133, 343);
+            this.chkAddtoToolbar.Name = "chkAddtoToolbar";
+            this.chkAddtoToolbar.Size = new System.Drawing.Size(96, 17);
+            this.chkAddtoToolbar.TabIndex = 39;
+            this.chkAddtoToolbar.Text = "Add to &Toolbar";
+            this.chkAddtoToolbar.UseVisualStyleBackColor = true;
+            // 
+            // NewWindowCheckbox
+            // 
+            this.NewWindowCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.NewWindowCheckbox.AutoSize = true;
+            this.NewWindowCheckbox.Location = new System.Drawing.Point(133, 320);
+            this.NewWindowCheckbox.Name = "NewWindowCheckbox";
+            this.NewWindowCheckbox.Size = new System.Drawing.Size(130, 17);
+            this.NewWindowCheckbox.TabIndex = 40;
+            this.NewWindowCheckbox.Text = "&Open in New Window";
+            this.NewWindowCheckbox.UseVisualStyleBackColor = true;
             // 
             // httpUrlTextBox
             // 
@@ -261,16 +283,6 @@
             // 
             this.ProtocolComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ProtocolComboBox.FormattingEnabled = true;
-            this.ProtocolComboBox.Items.AddRange(new object[] {
-            "RDP",
-            "VNC",
-            "VMRC",
-            "SSH",
-            "Telnet",
-            "RAS",
-            "ICA Citrix",
-            "HTTP",
-            "HTTPS"});
             this.ProtocolComboBox.Location = new System.Drawing.Point(133, 14);
             this.ProtocolComboBox.MaxDropDownItems = 10;
             this.ProtocolComboBox.Name = "ProtocolComboBox";
@@ -316,28 +328,6 @@
             this.lblServerName.Size = new System.Drawing.Size(55, 13);
             this.lblServerName.TabIndex = 23;
             this.lblServerName.Text = "&Computer:";
-            // 
-            // chkAddtoToolbar
-            // 
-            this.chkAddtoToolbar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.chkAddtoToolbar.AutoSize = true;
-            this.chkAddtoToolbar.Location = new System.Drawing.Point(133, 343);
-            this.chkAddtoToolbar.Name = "chkAddtoToolbar";
-            this.chkAddtoToolbar.Size = new System.Drawing.Size(96, 17);
-            this.chkAddtoToolbar.TabIndex = 39;
-            this.chkAddtoToolbar.Text = "Add to &Toolbar";
-            this.chkAddtoToolbar.UseVisualStyleBackColor = true;
-            // 
-            // NewWindowCheckbox
-            // 
-            this.NewWindowCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.NewWindowCheckbox.AutoSize = true;
-            this.NewWindowCheckbox.Location = new System.Drawing.Point(133, 320);
-            this.NewWindowCheckbox.Name = "NewWindowCheckbox";
-            this.NewWindowCheckbox.Size = new System.Drawing.Size(130, 17);
-            this.NewWindowCheckbox.TabIndex = 40;
-            this.NewWindowCheckbox.Text = "&Open in New Window";
-            this.NewWindowCheckbox.UseVisualStyleBackColor = true;
             // 
             // GeneralPropertiesUserControl
             // 
