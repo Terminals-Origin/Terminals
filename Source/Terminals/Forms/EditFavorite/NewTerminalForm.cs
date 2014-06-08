@@ -24,16 +24,10 @@ namespace Terminals
 
         private readonly IPersistence persistence;
 
-        private IGroups PersistedGroups
-        {
-            get { return this.persistence.Groups; }
-        }
-
         private IFavorites PersistedFavorites
         {
             get { return this.persistence.Favorites; }
         }
-
 
         private GroupsControl groupsControl;
 
@@ -152,7 +146,7 @@ namespace Terminals
         /// </summary>
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            // this.SaveMRUs();
+            this.generalProperties.SaveMRUs();
             if (this.FillFavorite(false))
             {
                 this.DialogResult = TerminalFormDialogResult.SaveAndClose;
@@ -175,7 +169,7 @@ namespace Terminals
         /// </summary>
         private void SaveConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // this.SaveMRUs();
+            this.generalProperties.SaveMRUs();
 
             if (this.FillFavorite(false))
                 this.DialogResult = TerminalFormDialogResult.SaveAndConnect;
@@ -188,7 +182,7 @@ namespace Terminals
         /// </summary>
         private void SaveCopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // this.SaveMRUs();
+            this.generalProperties.SaveMRUs();
             if (this.FillFavorite(false))
             {
                 this.EditedId = Guid.Empty;
@@ -206,7 +200,7 @@ namespace Terminals
         /// </summary>
         private void SaveNewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // this.SaveMRUs();
+            this.generalProperties.SaveMRUs();
             if (this.FillFavorite(false))
             {
                 this.EditedId = Guid.Empty;
