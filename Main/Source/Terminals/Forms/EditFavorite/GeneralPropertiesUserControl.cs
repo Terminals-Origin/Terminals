@@ -36,12 +36,11 @@ namespace Terminals.Forms.EditFavorite
 
         private RdpLocalResourcesControl rdpLocalResources;
 
+        public event Action<string> ProtocolChanged;
+
         public GeneralPropertiesUserControl()
         {
             InitializeComponent();
-
-            // for dynamicaly loaded plugins, this needs to be done later
-            this.ProtocolComboBox.SelectedIndex = 0;
         }
 
         internal void AssignValidationComponents(NewTerminalFormValidator validator)
@@ -183,7 +182,7 @@ namespace Terminals.Forms.EditFavorite
         private void CmbServers_TextChanged(object sender, EventArgs e)
         {
             this.SetOkButtonState();
-            this.rdpLocalResources.ServerName = this.cmbServers.Text;
+            // todo assign this.rdpLocalResources.ServerName = this.cmbServers.Text;
         }
 
         private void CmbServers_SelectedIndexChanged(object sender, EventArgs e)
@@ -229,9 +228,12 @@ namespace Terminals.Forms.EditFavorite
         private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.SetControlsProtocolIndependent();
-            this.validator.OnServerNameValidating(this.cmbServers, new CancelEventArgs());
+            if(validator != null)// designer support
+                 this.validator.OnServerNameValidating(this.cmbServers, new CancelEventArgs());
 
-            //todo switch (this.ProtocolComboBox.Text)
+            this.FireProtocolChanged(); // todo move switch to event handler
+
+            //switch (this.ProtocolComboBox.Text)
             //{
             //    case ConnectionManager.RDP:
             //        this.SetControlsForRdp();
@@ -265,6 +267,12 @@ namespace Terminals.Forms.EditFavorite
             int defaultPort = ConnectionManager.GetPort(this.ProtocolComboBox.Text);
             this.txtPort.Text = defaultPort.ToString(CultureInfo.InvariantCulture);
             this.SetOkButtonState();
+        }
+
+        private void FireProtocolChanged()
+        {
+            if (this.ProtocolChanged != null)
+                this.ProtocolChanged(this.ProtocolComboBox.Text);
         }
 
         private void SetControlsForWeb()
@@ -440,6 +448,13 @@ namespace Terminals.Forms.EditFavorite
         internal void FocusServers()
         {
             this.cmbServers.Focus();
+        }
+
+        internal void AssingAvailablePlugins(string[] protocols)
+        {
+            this.ProtocolComboBox.DataSource = protocols;
+            // for dynamicaly loaded plugins, this needs to be done later
+            this.ProtocolComboBox.SelectedIndex = 0;
         }
     }
 }

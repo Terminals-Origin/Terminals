@@ -20,15 +20,15 @@ using Terminals.Network.Servers;
 
 namespace Terminals
 {
-    internal partial class NewTerminalForm : Form, IRdpLocalResourcesControl
+    internal partial class NewTerminalForm : Form, IRdpLocalResourcesControl, INewTerminalForm
     {
         private NewTerminalFormValidator validator;
         private readonly TerminalServerManager terminalServerManager = new TerminalServerManager();
         private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
         private String currentToolBarFileName;
-        internal Guid EditedId { get; set; }
+        public Guid EditedId { get; set; }
 
-        internal bool EditingNew { get { return this.EditedId == Guid.Empty; } }
+        public bool EditingNew { get { return this.EditedId == Guid.Empty; } }
 
         private String favoritePassword = string.Empty;
         internal const String HIDDEN_PASSWORD = "****************";
@@ -45,11 +45,11 @@ namespace Terminals
             get { return this.persistence.Favorites; }
         }
 
-        internal string ServerNameText { get { return this.cmbServers.Text.Trim(); } }
+        public string ServerNameText { get { return this.cmbServers.Text.Trim(); } }
 
-        internal string ProtocolText { get { return this.ProtocolComboBox.Text; } }
+        public string ProtocolText { get { return this.ProtocolComboBox.Text; } }
 
-        internal string PortText { get { return this.txtPort.Text; } }
+        public string PortText { get { return this.txtPort.Text; } }
 
         #region Constructors
 
@@ -908,7 +908,7 @@ namespace Terminals
             }
         }
 
-        internal void FillFavoriteFromControls(IFavorite favorite)
+        public void FillFavoriteFromControls(IFavorite favorite)
         {
             this.FillGeneralProrperties(favorite);
             this.FillDescriptionProperties(favorite);
@@ -1242,7 +1242,7 @@ namespace Terminals
                  .ToList();
         }
 
-        internal void SetErrorInfo(Control target, string message)
+        public void SetErrorInfo(Control target, string message)
         {
             if (target == null)
                 return;
@@ -1413,7 +1413,7 @@ namespace Terminals
             return openFileDialog;
         }
 
-        internal Uri GetFullUrlFromHttpTextBox()
+        public Uri GetFullUrlFromHttpTextBox()
         {
             string newUrlText = this.httpUrlTextBox.Text.ToLower();
             string protocolPrefix = this.ProtocolComboBox.Text.ToLower();

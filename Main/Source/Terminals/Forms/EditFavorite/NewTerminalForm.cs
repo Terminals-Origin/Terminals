@@ -15,12 +15,19 @@ namespace Terminals
     /// <summary>
     /// Copy of related dialog, from which user controls will be extracted
     /// </summary>
-    internal partial class NewTerminalFormCopy : Form
+    internal partial class NewTerminalFormCopy : Form, INewTerminalForm
     {
         private NewTerminalFormValidator validator;
-        internal Guid EditedId { get; set; }
 
-        internal bool EditingNew { get { return this.EditedId == Guid.Empty; } }
+        public Guid EditedId { get; set; }
+
+        public string ProtocolText { get { return this.favoritePropertiesControl1.ProtocolText;  } }
+
+        public string ServerNameText { get { return this.favoritePropertiesControl1.ServerNameText; } }
+
+        public string PortText { get { return this.favoritePropertiesControl1.PortText; } }
+
+        public bool EditingNew { get { return this.EditedId == Guid.Empty; } }
 
         private readonly IPersistence persistence;
 
@@ -29,27 +36,13 @@ namespace Terminals
             get { return this.persistence.Favorites; }
         }
 
-        private GroupsControl groupsControl;
-
-        private GeneralPropertiesUserControl generalProperties;
-
-        private RdpLocalResourcesControl rdpLocalResources;
-
-        private RasControl rasControl;
-
-        private RdpExtendedSettingsControl rdpExtendedSettings;
-
-        private SshControl sshControl;
-
-        private ExecuteControl executeControl;
-
         #region Constructors
 
         public NewTerminalFormCopy(IPersistence persistence, String serverName)
             : this()
         {
             this.persistence = persistence;
-            this.InitializeValidations();
+            InitializeFavoriteProperties();
             this.Init(null, serverName);
         }
 
@@ -57,45 +50,28 @@ namespace Terminals
             : this()
         {
             this.persistence = persistence;
-            this.InitializeValidations();
+            InitializeFavoriteProperties();
             this.Init(favorite, String.Empty);
         }
 
         private NewTerminalFormCopy()
         {
             this.InitializeComponent();
-            this.InitializeContentControls();
         }
 
-        private void InitializeContentControls()
+        private void InitializeFavoriteProperties()
         {
-            this.generalProperties = new GeneralPropertiesUserControl();
-            this.generalProperties.SetOkButtonRequested += this.GeneralProperties_SetOkButtonRequested;
-            this.generalProperties.AssignPersistence(this.persistence);
-            this.generalProperties.AssignValidationComponents(this.validator);
-            this.generalProperties.SetErrorProviderIconsAlignment(this.errorProvider);
-            this.rdpLocalResources = new RdpLocalResourcesControl();
-            this.generalProperties.AssignRdpLocalResources(this.rdpLocalResources);
-
-            this.rasControl = new RasControl();
-            this.generalProperties.AssignRasControl(this.rasControl);
-
-            this.rdpExtendedSettings = new RdpExtendedSettingsControl();
-            this.sshControl = new SshControl();
-            this.executeControl = new ExecuteControl();
+            this.validator = new NewTerminalFormValidator(this.persistence, this);
+            this.favoritePropertiesControl1.InitializeValidations(this.validator);
+            this.favoritePropertiesControl1.AssignPersistence(this.persistence);
+            this.favoritePropertiesControl1.SetOkButtonRequested += this.GeneralProperties_SetOkButtonRequested;
+            this.favoritePropertiesControl1.AssignValidationComponents(this.validator);
+            this.favoritePropertiesControl1.SetErrorProviderIconsAlignment(this.errorProvider);
         }
 
         private void GeneralProperties_SetOkButtonRequested(object sender, EventArgs e)
         {
             this.SetOkButtonState();
-        }
-
-        private void InitializeValidations()
-        {
-            // todo move the validator and error provider initializations
-            // this.validator = new NewTerminalFormValidator(this.persistence, this);
-            this.rdpExtendedSettings.AssignValidatingEvents(this.validator);
-            this.executeControl.RegisterValiationControls(this.validator);
         }
 
         #endregion
@@ -113,13 +89,13 @@ namespace Terminals
         private void NewTerminalForm_Load(Object sender, EventArgs e)
         {
             this.SuspendLayout();
-            this.groupsControl.BindGroups();
+            this.favoritePropertiesControl1.BindGroups();
             this.ResumeLayout(true);
         }
 
         private void NewTerminalForm_Shown(object sender, EventArgs e)
         {
-            this.generalProperties.FocusServers();
+            this.favoritePropertiesControl1.FocusServers();
         }
 
         #endregion
@@ -146,7 +122,7 @@ namespace Terminals
         /// </summary>
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            this.generalProperties.SaveMRUs();
+            this.favoritePropertiesControl1.SaveMRUs();
             if (this.FillFavorite(false))
             {
                 this.DialogResult = TerminalFormDialogResult.SaveAndClose;
@@ -169,7 +145,7 @@ namespace Terminals
         /// </summary>
         private void SaveConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.generalProperties.SaveMRUs();
+            this.favoritePropertiesControl1.SaveMRUs();
 
             if (this.FillFavorite(false))
                 this.DialogResult = TerminalFormDialogResult.SaveAndConnect;
@@ -182,11 +158,11 @@ namespace Terminals
         /// </summary>
         private void SaveCopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.generalProperties.SaveMRUs();
+            this.favoritePropertiesControl1.SaveMRUs();
             if (this.FillFavorite(false))
             {
                 this.EditedId = Guid.Empty;
-                this.generalProperties.ResetServerNameControls(this.Favorite.Name);
+                this.favoritePropertiesControl1.ResetServerNameControls(this.Favorite.Name);
             }
         }
 
@@ -200,12 +176,12 @@ namespace Terminals
         /// </summary>
         private void SaveNewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.generalProperties.SaveMRUs();
+            this.favoritePropertiesControl1.SaveMRUs();
             if (this.FillFavorite(false))
             {
                 this.EditedId = Guid.Empty;
                 this.Init(null, String.Empty);
-                this.generalProperties.FocusServers();
+                this.favoritePropertiesControl1.FocusServers();
             }
         }
 
@@ -215,13 +191,12 @@ namespace Terminals
 
         private void Init(IFavorite favorite, String serverName)
         {
-            this.LoadMRUs();
+            this.favoritePropertiesControl1.LoadMRUs();
             this.SetOkButtonState();
-            this.sshControl.ResetSshPreferences();
 
             if (favorite == null)
             {
-                this.generalProperties.FillCredentialsCombobox(Guid.Empty);
+                this.favoritePropertiesControl1.FillCredentialsCombobox(Guid.Empty);
 
                 var defaultSavedFavorite = Settings.GetDefaultFavorite();
                 if (defaultSavedFavorite != null)
@@ -230,7 +205,7 @@ namespace Terminals
                     this.FillControls(defaultFavorite);
                 }
 
-                this.generalProperties.FillServerName(serverName);
+                this.favoritePropertiesControl1.FillServerName(serverName);
             }
             else
             {
@@ -246,13 +221,7 @@ namespace Terminals
 
         internal void AssingSelectedGroup(IGroup group)
         {
-            this.groupsControl.AssingSelectedGroup(group);
-        }
-
-        internal void LoadMRUs()
-        {
-            this.generalProperties.LoadMRUs();
-            this.groupsControl.LoadMRUs();
+            this.favoritePropertiesControl1.AssingSelectedGroup(group);
         }
 
         private void FillControls(IFavorite favorite)
@@ -260,7 +229,7 @@ namespace Terminals
             // FillGeneralPropertiesControls(favorite);
             // FillDescriptionPropertiesControls(favorite);
             // FillSecurityControls(favorite);
-            this.generalProperties.FillCredentialsCombobox(favorite.Security.Credential);
+            // this.generalProperties.FillCredentialsCombobox(favorite.Security.Credential);
             // FillDisplayControls(favorite);
             // FillExecuteBeforeControls(favorite);
             // this.consolePreferences.FillControls(favorite);
@@ -346,7 +315,7 @@ namespace Terminals
             return favorite;
         }
 
-        internal void FillFavoriteFromControls(IFavorite favorite)
+        public void FillFavoriteFromControls(IFavorite favorite)
         {
             // this.FillGeneralProrperties(favorite);
             // this.FillDescriptionProperties(favorite);
@@ -357,8 +326,7 @@ namespace Terminals
             // this.FillFavoriteVmrcOptions(favorite);
             // this.FillFavoriteVncOptions(favorite);
             // this.FillFavoriteICAOPtions(favorite);
-            // this.FillFavoriteSSHOptions(favorite);
-            this.FillFavoriteRdpOptions(favorite);
+            // this.FillFavoriteSSHOptions(favorite);his.FillFavoriteRdpOptions(favorite);
         }
 
         private void FillFavoriteRdpOptions(IFavorite favorite)
@@ -408,7 +376,7 @@ namespace Terminals
             else
                 Settings.EditFavoriteButton(this.EditedId, favorite.Id, this.ShowOnToolbar);
 
-            List<IGroup> updatedGroups = this.groupsControl.GetNewlySelectedGroups();
+            List<IGroup> updatedGroups = this.favoritePropertiesControl1.GetNewlySelectedGroups();
             PersistedFavorites.UpdateFavorite(favorite, updatedGroups);
             this.persistence.SaveAndFinishDelayedUpdate();
             Settings.SaveAndFinishDelayedUpdate();
@@ -417,7 +385,7 @@ namespace Terminals
         private void AddToPersistence(IFavorite favorite)
         {
             this.PersistedFavorites.Add(favorite);
-            if (this.ShowOnToolbar)
+            if (this.ShowOnToolbar) // todo validate usage, looks like set was removed
                 Settings.AddFavoriteButton(favorite.Id);
         }
 
@@ -426,7 +394,7 @@ namespace Terminals
             MessageBox.Show(this, message, Program.Info.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        internal void SetErrorInfo(Control target, string message)
+        public void SetErrorInfo(Control target, string message)
         {
             if (target == null)
                 return;
@@ -436,7 +404,7 @@ namespace Terminals
 
         private void SetOkButtonState()
         {
-            if (this.generalProperties.UrlVisible)
+            if (this.favoritePropertiesControl1.UrlVisible)
             {
                 this.btnSave.Enabled = this.validator.IsUrlValid();
             }
@@ -446,9 +414,9 @@ namespace Terminals
             }
         }
 
-        internal Uri GetFullUrlFromHttpTextBox()
+        public Uri GetFullUrlFromHttpTextBox()
         {
-            return this.generalProperties.GetFullUrlFromHttpTextBox();
+            return this.favoritePropertiesControl1.GetFullUrlFromHttpTextBox();
         }
 
         #endregion
