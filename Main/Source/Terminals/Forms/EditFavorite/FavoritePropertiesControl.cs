@@ -51,6 +51,7 @@ namespace Terminals.Forms.EditFavorite
             this.GenearalPanel1ProtocolChanged(firstPlugin);
             this.groupsPanel1.BindGroups();
             this.generalPanel1.ServerNameChanged += this.protocolOptionsPanel1.OnServerNameChanged;
+            this.treeView.SelectedNode = this.treeView.Nodes[0];
         }
 
         private void DockAllPanels()
