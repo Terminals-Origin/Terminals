@@ -33,9 +33,7 @@ namespace Terminals
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewTerminalFormCopy));
             this.btnCancel = new System.Windows.Forms.Button();
-            this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label43 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -47,9 +45,9 @@ namespace Terminals
             this.saveNewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveCopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.btnSaveDefault = new Terminals.Forms.Controls.SplitButton();
             this.btnSave = new Terminals.Forms.Controls.SplitButton();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.favoritePropertiesControl1 = new Terminals.Forms.EditFavorite.FavoritePropertiesControl();
             this.contextMenuStripDefaults.SuspendLayout();
             this.contextMenuStripSave.SuspendLayout();
@@ -61,34 +59,12 @@ namespace Terminals
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(605, 39);
+            this.btnCancel.Location = new System.Drawing.Point(620, 39);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(72, 27);
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            // 
-            // chkAddtoToolbar
-            // 
-            this.chkAddtoToolbar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.chkAddtoToolbar.AutoSize = true;
-            this.chkAddtoToolbar.Location = new System.Drawing.Point(21, 49);
-            this.chkAddtoToolbar.Name = "chkAddtoToolbar";
-            this.chkAddtoToolbar.Size = new System.Drawing.Size(97, 17);
-            this.chkAddtoToolbar.TabIndex = 3;
-            this.chkAddtoToolbar.Text = "Add to &Toolbar";
-            this.chkAddtoToolbar.UseVisualStyleBackColor = true;
-            // 
-            // NewWindowCheckbox
-            // 
-            this.NewWindowCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.NewWindowCheckbox.AutoSize = true;
-            this.NewWindowCheckbox.Location = new System.Drawing.Point(21, 22);
-            this.NewWindowCheckbox.Name = "NewWindowCheckbox";
-            this.NewWindowCheckbox.Size = new System.Drawing.Size(128, 17);
-            this.NewWindowCheckbox.TabIndex = 4;
-            this.NewWindowCheckbox.Text = "&Open in New Window";
-            this.NewWindowCheckbox.UseVisualStyleBackColor = true;
             // 
             // textBox3
             // 
@@ -180,25 +156,19 @@ namespace Terminals
             this.groupBox7.Controls.Add(this.btnSaveDefault);
             this.groupBox7.Controls.Add(this.btnSave);
             this.groupBox7.Controls.Add(this.btnCancel);
-            this.groupBox7.Controls.Add(this.chkAddtoToolbar);
-            this.groupBox7.Controls.Add(this.NewWindowCheckbox);
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupBox7.Location = new System.Drawing.Point(0, 396);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(689, 78);
+            this.groupBox7.Size = new System.Drawing.Size(704, 78);
             this.groupBox7.TabIndex = 10;
             this.groupBox7.TabStop = false;
-            // 
-            // errorProvider
-            // 
-            this.errorProvider.ContainerControl = this;
             // 
             // btnSaveDefault
             // 
             this.btnSaveDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveDefault.AutoSize = true;
             this.btnSaveDefault.ContextMenuStrip = this.contextMenuStripDefaults;
-            this.btnSaveDefault.Location = new System.Drawing.Point(385, 39);
+            this.btnSaveDefault.Location = new System.Drawing.Point(400, 39);
             this.btnSaveDefault.Name = "btnSaveDefault";
             this.btnSaveDefault.Size = new System.Drawing.Size(88, 27);
             this.btnSaveDefault.SplitMenuStrip = this.contextMenuStripDefaults;
@@ -212,7 +182,7 @@ namespace Terminals
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.AutoSize = true;
             this.btnSave.ContextMenuStrip = this.contextMenuStripSave;
-            this.btnSave.Location = new System.Drawing.Point(479, 39);
+            this.btnSave.Location = new System.Drawing.Point(494, 39);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(120, 27);
             this.btnSave.SplitMenuStrip = this.contextMenuStripSave;
@@ -222,12 +192,16 @@ namespace Terminals
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
+            // errorProvider
+            // 
+            this.errorProvider.ContainerControl = this;
+            // 
             // favoritePropertiesControl1
             // 
             this.favoritePropertiesControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.favoritePropertiesControl1.Location = new System.Drawing.Point(0, 0);
             this.favoritePropertiesControl1.Name = "favoritePropertiesControl1";
-            this.favoritePropertiesControl1.Size = new System.Drawing.Size(689, 396);
+            this.favoritePropertiesControl1.Size = new System.Drawing.Size(704, 396);
             this.favoritePropertiesControl1.TabIndex = 11;
             // 
             // NewTerminalFormCopy
@@ -236,7 +210,7 @@ namespace Terminals
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(689, 474);
+            this.ClientSize = new System.Drawing.Size(704, 474);
             this.Controls.Add(this.favoritePropertiesControl1);
             this.Controls.Add(this.groupBox7);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
@@ -263,11 +237,9 @@ namespace Terminals
         #endregion
 
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.CheckBox chkAddtoToolbar;
         private System.Windows.Forms.ToolTip toolTip1;
 
         //private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox NewWindowCheckbox;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.Button button1;

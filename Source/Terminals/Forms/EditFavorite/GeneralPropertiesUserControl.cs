@@ -231,36 +231,36 @@ namespace Terminals.Forms.EditFavorite
 
             this.FireProtocolChanged(); // todo move switch to event handler
 
-            //switch (this.ProtocolComboBox.Text)
-            //{
+            switch (this.ProtocolComboBox.Text)
+            {
             //    case ConnectionManager.RDP:
             //        this.SetControlsForRdp();
             //        break;
             //    case ConnectionManager.VMRC:
             //        this.VmrcGroupBox.Enabled = true;
             //        break;
-            //    case ConnectionManager.RAS:
+                case ConnectionManager.RAS:
                       this.cmbServers.Items.Clear();
                       this.txtPort.Enabled = false;
             //        this.SetControlsForRas();
-            //        break;
+                    break;
             //    case ConnectionManager.VNC:
             //        this.VncGroupBox.Enabled = true;
             //        break;
             //    case ConnectionManager.ICA_CITRIX:
             //        this.IcaGroupBox.Enabled = true;
             //        break;
-            //    case ConnectionManager.HTTP:
-            //    case ConnectionManager.HTTPS:
+                case ConnectionManager.HTTP:
+                case ConnectionManager.HTTPS:
                       this.SetControlsForWeb();
-            //        break;
+                    break;
             //    case ConnectionManager.SSH:
             //    case ConnectionManager.TELNET:
             //        this.ConsoleGroupBox.Enabled = true;
             //        if (this.ProtocolComboBox.Text == ConnectionManager.SSH)
             //            this.SshGroupBox.Enabled = true;
             //        break;
-            //}
+            }
 
             int defaultPort = ConnectionManager.GetPort(this.ProtocolComboBox.Text);
             this.txtPort.Text = defaultPort.ToString(CultureInfo.InvariantCulture);

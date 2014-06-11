@@ -43,8 +43,9 @@
             // 
             // treeView
             // 
-            this.treeView.BackColor = System.Drawing.SystemColors.Control;
+            this.treeView.BackColor = System.Drawing.SystemColors.Window;
             this.treeView.Dock = System.Windows.Forms.DockStyle.Left;
+            this.treeView.HideSelection = false;
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Name = "treeView";
             treeNode1.Name = "generalNode";
@@ -60,7 +61,7 @@
             treeNode2,
             treeNode3,
             treeNode4});
-            this.treeView.Size = new System.Drawing.Size(167, 407);
+            this.treeView.Size = new System.Drawing.Size(150, 407);
             this.treeView.TabIndex = 1;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewAfterSelect);
             // 
@@ -68,9 +69,9 @@
             // 
             this.titleLabel.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.titleLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.titleLabel.Location = new System.Drawing.Point(167, 0);
+            this.titleLabel.Location = new System.Drawing.Point(150, 0);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(492, 32);
+            this.titleLabel.Size = new System.Drawing.Size(600, 32);
             this.titleLabel.TabIndex = 7;
             this.titleLabel.Text = "titleLabel";
             this.titleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -81,13 +82,6 @@
             this.executePanel1.Name = "executePanel1";
             this.executePanel1.Size = new System.Drawing.Size(185, 168);
             this.executePanel1.TabIndex = 15;
-            // 
-            // groupsPanel1
-            // 
-            this.groupsPanel1.Location = new System.Drawing.Point(386, 35);
-            this.groupsPanel1.Name = "groupsPanel1";
-            this.groupsPanel1.Size = new System.Drawing.Size(237, 126);
-            this.groupsPanel1.TabIndex = 14;
             // 
             // generalPanel1
             // 
@@ -102,6 +96,13 @@
             this.protocolOptionsPanel1.Name = "protocolOptionsPanel1";
             this.protocolOptionsPanel1.Size = new System.Drawing.Size(186, 141);
             this.protocolOptionsPanel1.TabIndex = 12;
+            // 
+            // groupsPanel1
+            // 
+            this.groupsPanel1.Location = new System.Drawing.Point(386, 35);
+            this.groupsPanel1.Name = "groupsPanel1";
+            this.groupsPanel1.Size = new System.Drawing.Size(237, 126);
+            this.groupsPanel1.TabIndex = 14;
             // 
             // rasControl1
             // 
@@ -122,7 +123,7 @@
             this.Controls.Add(this.treeView);
             this.Controls.Add(this.rasControl1);
             this.Name = "FavoritePropertiesControl";
-            this.Size = new System.Drawing.Size(659, 407);
+            this.Size = new System.Drawing.Size(750, 407);
             this.ResumeLayout(false);
 
         }
