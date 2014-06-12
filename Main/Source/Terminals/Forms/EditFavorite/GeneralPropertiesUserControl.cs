@@ -229,40 +229,11 @@ namespace Terminals.Forms.EditFavorite
             if(validator != null)// designer support
                  this.validator.OnServerNameValidating(this.cmbServers, new CancelEventArgs());
 
-            this.FireProtocolChanged(); // todo move switch to event handler
+            if (ConnectionManager.IsProtocolWebBased(this.ProtocolText))
+                this.SetControlsForWeb();
 
-            switch (this.ProtocolComboBox.Text)
-            {
-            //    case ConnectionManager.RDP:
-            //        this.SetControlsForRdp();
-            //        break;
-            //    case ConnectionManager.VMRC:
-            //        this.VmrcGroupBox.Enabled = true;
-            //        break;
-                case ConnectionManager.RAS:
-                      this.cmbServers.Items.Clear();
-                      this.txtPort.Enabled = false;
-            //        this.SetControlsForRas();
-                    break;
-            //    case ConnectionManager.VNC:
-            //        this.VncGroupBox.Enabled = true;
-            //        break;
-            //    case ConnectionManager.ICA_CITRIX:
-            //        this.IcaGroupBox.Enabled = true;
-            //        break;
-                case ConnectionManager.HTTP:
-                case ConnectionManager.HTTPS:
-                      this.SetControlsForWeb();
-                    break;
-            //    case ConnectionManager.SSH:
-            //    case ConnectionManager.TELNET:
-            //        this.ConsoleGroupBox.Enabled = true;
-            //        if (this.ProtocolComboBox.Text == ConnectionManager.SSH)
-            //            this.SshGroupBox.Enabled = true;
-            //        break;
-            }
-
-            int defaultPort = ConnectionManager.GetPort(this.ProtocolComboBox.Text);
+            this.FireProtocolChanged();
+            int defaultPort = ConnectionManager.GetPort(this.ProtocolText);
             this.txtPort.Text = defaultPort.ToString(CultureInfo.InvariantCulture);
             this.SetOkButtonState();
         }
@@ -273,7 +244,7 @@ namespace Terminals.Forms.EditFavorite
                 this.ProtocolChanged(this.ProtocolComboBox.Text);
         }
 
-        private void SetControlsForWeb()
+        internal void SetControlsForWeb()
         {
             this.lblServerName.Text = "Url:";
             this.cmbServers.Enabled = false;

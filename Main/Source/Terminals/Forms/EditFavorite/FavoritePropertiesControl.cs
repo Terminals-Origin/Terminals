@@ -7,6 +7,10 @@ namespace Terminals.Forms.EditFavorite
 {
     internal partial class FavoritePropertiesControl : UserControl
     {
+        private const string GENERAL_NODE = "generalNode";
+        private const string GROUPS_NODE = "groupsNode";
+        private const string EXECUTE_NODE = "executeNode";
+
         public event EventHandler SetOkButtonRequested
         {
             add { this.generalPanel1.SetOkButtonRequested += value; }
@@ -43,7 +47,6 @@ namespace Terminals.Forms.EditFavorite
             this.DockAllPanels();
             this.HideAllPanels();
 
-            this.protocolOptionsPanel1.Load();
             string[] availablePlugins = this.protocolOptionsPanel1.Available;
             this.generalPanel1.AssingAvailablePlugins(availablePlugins);
             this.generalPanel1.ProtocolChanged += GenearalPanel1ProtocolChanged;
@@ -60,10 +63,12 @@ namespace Terminals.Forms.EditFavorite
             this.groupsPanel1.Dock = DockStyle.Fill;
             this.executePanel1.Dock = DockStyle.Fill;
             this.rasControl1.Dock = DockStyle.Fill;
+            this.protocolOptionsPanel1.Dock = DockStyle.Fill;
         }
 
         private void GenearalPanel1ProtocolChanged(string newProtocol)
         {
+            this.ProtocolOptionsNode.Text = string.Format("Protocol options ({0})", this.ProtocolText);
             this.protocolOptionsPanel1.ReloadControls(newProtocol);
             this.ReloadProtocolTreeNodes();
         }
@@ -72,6 +77,9 @@ namespace Terminals.Forms.EditFavorite
         {
             TreeNodeCollection optionsNodes = this.ProtocolOptionsNode.Nodes;
             optionsNodes.Clear();
+
+            if (this.protocolOptionsPanel1.Controls.Count <= 1)
+                return;
 
             foreach (Control pluginUserControl in this.protocolOptionsPanel1.Controls)
             {
@@ -91,47 +99,54 @@ namespace Terminals.Forms.EditFavorite
         private void TreeViewAfterSelect(object sender, TreeViewEventArgs e)
         {
             this.HideAllPanels();
-            TreeNode node = e.Node;
-            this.titleLabel.Text = this.ResolveTitle(node);
-
-            if (node.Level > 0)
-                this.FocusProtocolOptionControl(node);
-            else
-                this.ShowSelectedPanel(node);
+            PanelSwitch protocolSwitch = this.ResolveSwitch(e.Node);
+            this.titleLabel.Text = protocolSwitch.Title;
+            protocolSwitch.ShowPanel();
         }
 
-        private string ResolveTitle(TreeNode node)
+        private class PanelSwitch
         {
-            if (node.Level > 0)
-                return string.Format("{0} - {1}", this.ProtocolOptionsNode.Text, node.Text);
+            internal string Title { get; private set; }
 
-            return node.Text;
+            internal Action ShowPanel { get; private set; }
+
+            internal PanelSwitch(string title, Action showPanel)
+            {
+                this.Title = title;
+                this.ShowPanel = showPanel;
+            }
         }
 
-        private void FocusProtocolOptionControl(TreeNode node)
+        private string ResolveProtocolPanelTitle(TreeNode node)
         {
-            this.protocolOptionsPanel1.Show();
-            this.protocolOptionsPanel1.FocuControl(node.Text);
+            Control childControl = this.protocolOptionsPanel1.ResolveChildByNameOrFirst(node.Text);
+            if (childControl == null)
+                return this.ProtocolOptionsNode.Text;
+
+            return string.Format("{0} - {1}", this.ProtocolOptionsNode.Text, childControl.Name);
         }
 
-        private void ShowSelectedPanel(TreeNode newNode)
+        private PanelSwitch ResolveSwitch(TreeNode newNode)
         {
             switch (newNode.Name)
             {
-                case "generalNode":
-                    this.generalPanel1.Show();
-                    break;
-               case "groupsNode":
-                    this.groupsPanel1.Show();
-                    break;
-                case "executeNode":
-                    this.executePanel1.Show();
-                    break;
-                case "protocolOptionsNode":
-                    this.protocolOptionsPanel1.Show();
-                    this.protocolOptionsPanel1.FocuControl();
-                    break;
+               case GENERAL_NODE:
+                    return new PanelSwitch(newNode.Text, this.generalPanel1.Show);
+               case GROUPS_NODE:
+                    return new PanelSwitch(newNode.Text, this.groupsPanel1.Show);
+               case EXECUTE_NODE:
+                    return new PanelSwitch(newNode.Text, this.executePanel1.Show);
+                default:
+                    string title = this.ResolveProtocolPanelTitle(newNode);
+                    Action showAction = () => this.FocusProtocolOptionsChild(newNode);
+                    return new PanelSwitch(title, showAction);
             }
+        }
+
+        private void FocusProtocolOptionsChild(TreeNode newNode)
+        {
+            this.protocolOptionsPanel1.Show();
+            this.protocolOptionsPanel1.FocusControl(newNode.Text);
         }
 
         internal void RegisterValidations(NewTerminalFormValidator validator)
