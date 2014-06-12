@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
+using Terminals.Forms.EditFavorite;
 
 namespace Terminals.Connections
 {
@@ -27,6 +28,8 @@ namespace Terminals.Connections
 
         private const int MAX_WIDTH = 4096;
         private const int MAX_HEIGHT = 2048;
+
+        private const string CONSOLE = "Console";
 
         public static Size GetSize(Connection connection, IFavorite favorite)
         {
@@ -166,6 +169,67 @@ namespace Terminals.Connections
                 default:
                     return false;
             } 
+        }
+
+        internal static Control[] CreateControls(string newProtocol)
+        {
+            switch (newProtocol)
+            {
+                case RDP:
+                    return CreateRdpControls();
+                case VNC:
+                    return new Control[] { new VncControl() { Name = "VNC" } };
+                case VMRC:
+                    return new Control[] { new VmrcControl() { Name = "VMRC" } };
+                case TELNET:
+                    return new Control[] { new ConsolePreferences() { Name = CONSOLE } };
+                case SSH:
+                    return CreateSshControls();
+                case ICA_CITRIX:
+                    return new Control[] { new CitrixControl() { Name = "ICA Citrix" } };
+                case HTTP:
+                case HTTPS:
+                    return new Control[0];
+                default:
+                    return new Control[0];
+            }
+        }
+
+        private static Control[] CreateRdpControls()
+        {
+            return new Control[]
+            {
+                new RdpDisplayControl() { Name = "Display" },
+                new RdpExtendedSettingsControl() { Name = "Extended settings" },
+                new RdpLocalResourcesControl() { Name = "Local resources" },
+                new RdpSecurityControl() { Name = "Security" },
+                new RdpTsGatewayControl() { Name = "TS Gateway" }
+            };
+        }
+
+        private static Control[] CreateSshControls()
+        {
+            return new Control[]
+            {
+                new ConsolePreferences() { Name = CONSOLE },
+                new SshControl() { Name = "SSH" }
+            };
+        }
+
+        public static string[] GetAvailableProtocols()
+        {
+            return new string[]
+                {
+                    RDP,
+                    VNC,
+                    VMRC,
+                    SSH,
+                    TELNET,
+                    // RAS, // this protocol doesnt fit to the concept and seems to be broken 
+                    ICA_CITRIX,
+                    HTTP,
+                    HTTPS
+                };
         }
     }
 }

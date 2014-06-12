@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
+using Terminals.Connections;
 
 namespace Terminals.Forms.EditFavorite
 {
@@ -7,45 +8,23 @@ namespace Terminals.Forms.EditFavorite
     {
         private NewTerminalFormValidator validator;
 
-        // private readonly PluginManager pluginsManager = new PluginManager();
-
         public ProtocolOptionsPanel()
         {
             this.InitializeComponent();
         }
 
-        internal void Load()
-        {
-            // this.pluginsManager.Load();
-        }
-
         internal string[] Available
         {
             get
-            {  // todo load available protocols from connections manager
-                return new string[]
-                {
-                    "RDP",
-                    "VNC",
-                    "VMRC",
-                    "SSH",
-                    "Telnet",
-                    "RAS",
-                    "ICA Citrix",
-                    "HTTP",
-                    "HTTPS"
-                }; //this.pluginsManager.Available; 
+            {
+                return ConnectionManager.GetAvailableProtocols();
             }
         }
 
         internal void ReloadControls(string newProtocol)
         {
-            //var selectedPlugin = this.pluginsManager[newProtocol];
-            //if (selectedPlugin == null)
-            //    return;
-
-            //Control[] newControls = selectedPlugin.CreateControls();
-            //this.ReloadControls(newControls);
+            Control[] newControls = ConnectionManager.CreateControls(newProtocol);
+            this.ReloadControls(newControls);
         }
 
         private void ReloadControls(Control[] toAssign)
@@ -56,7 +35,7 @@ namespace Terminals.Forms.EditFavorite
 
         private void RemoveCurrentControls()
         {
-            foreach (Control protocolControl in this.Controls)
+            foreach (Control protocolControl in this.Controls.OfType<Control>().ToList())
             {
                 this.Controls.Remove(protocolControl);
                 UnRegisterIntegerValidation(protocolControl);
@@ -74,8 +53,8 @@ namespace Terminals.Forms.EditFavorite
 
         private void AddNewControl(Control protocolControl)
         {
-            this.Controls.Add(protocolControl);
             protocolControl.Dock = DockStyle.Fill;
+            this.Controls.Add(protocolControl);
             this.RegisterIntegerValidation(protocolControl);
         }
 
@@ -93,12 +72,24 @@ namespace Terminals.Forms.EditFavorite
                 validatedControl.IntegerValidationRequested -= this.validator.OnValidateInteger;
         }
 
-        internal void FocuControl(string controlName = "")
+        internal void FocusControl(string controlName)
         {
             this.HideAllProtocolControls();
-            var control = this.Controls[controlName];
+            Control control = this.ResolveChildByNameOrFirst(controlName);
             if (control != null)
                 control.Show();
+        }
+
+        internal Control ResolveChildByNameOrFirst(string controlName)
+        {
+            Control control = this.Controls[controlName];
+            if (control != null)
+                return control;
+
+            if (this.Controls.Count > 0)
+                return this.Controls[0];
+
+            return null;
         }
 
         private void HideAllProtocolControls()
