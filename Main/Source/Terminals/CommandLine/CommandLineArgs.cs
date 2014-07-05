@@ -73,14 +73,14 @@ namespace Terminals.CommandLine
             }
         }
 
-        internal bool HasFavorites
+        private bool HasFavorites
         {
             get { return !String.IsNullOrEmpty(this.favs); }
         }
 
         internal bool HasUrlDefined
         {
-            get { return !String.IsNullOrEmpty(this.url); }
+            get { return !String.IsNullOrEmpty(this.url) && !String.IsNullOrEmpty(this.UrlServer); }
         }
 
         internal string UrlServer
