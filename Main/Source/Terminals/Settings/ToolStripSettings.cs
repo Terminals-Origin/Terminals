@@ -21,6 +21,9 @@ namespace Terminals
             return null;
         }
 
+        /// <summary>
+        /// Doesnt handle file write exceptions.
+        /// </summary>
         internal void Save()
         {
             File.WriteAllText(FileLocations.ToolStripsFullFileName, this.ToXmlString());
