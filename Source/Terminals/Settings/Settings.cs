@@ -761,18 +761,6 @@ namespace Terminals.Configuration
             }
         }
 
-        public static ToolStripSettings ToolbarSettings
-        {
-            get
-            {
-                return ToolStripSettings.Load();
-            }
-            set
-            {
-                value.Save();
-            }
-        }
-
         public static bool ToolbarsLocked
         {
             get

@@ -38,12 +38,26 @@ namespace Terminals.Forms.Controls
 
         internal void SaveLayout()
         {
+            try
+            {
+                this.SaveAllPanels();
+            }
+            catch (Exception exception) // User doesnt have to be able save the file
+            {
+                Logging.Info("Unable to save toolstrip settings", exception);
+                MessageBox.Show("Terminals", "Terminals was unable to save your toolstrip settings.",
+                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void SaveAllPanels()
+        {
             var newSettings = new ToolStripSettings();
             SaveToolStripPanel(this.TopToolStripPanel, "Top", newSettings);
             SaveToolStripPanel(this.LeftToolStripPanel, "Left", newSettings);
             SaveToolStripPanel(this.RightToolStripPanel, "Right", newSettings);
             SaveToolStripPanel(this.BottomToolStripPanel, "Bottom", newSettings);
-            Settings.ToolbarSettings = newSettings;
+            newSettings.Save();
         }
 
         private static void SaveToolStripPanel(ToolStripPanel panel, String position, ToolStripSettings newSettings)
@@ -72,7 +86,7 @@ namespace Terminals.Forms.Controls
 
         internal void LoadToolStripsState()
         {
-            ToolStripSettings newSettings = Settings.ToolbarSettings;
+            ToolStripSettings newSettings = ToolStripSettings.Load();
             if (newSettings != null && newSettings.Count > 0)
             {
                 this.SuspendLayout();
