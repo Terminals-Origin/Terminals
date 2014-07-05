@@ -55,7 +55,8 @@ namespace Terminals
 
         public static void Parse(string url, out string server, out int port)
         {
-            server = url.Substring(("trm://").Length);
+            server = ParseServerNameByPrefix(url);
+
             if (server.EndsWith("/"))
                 server = server.TrimEnd('/');
             port = 0;
@@ -65,6 +66,16 @@ namespace Terminals
                 server = serverParams[0];
                 port = Int32.Parse(serverParams[1]);
             }
+        }
+
+        private static string ParseServerNameByPrefix(string url)
+        {
+            const string PREFIX = "trm://";
+
+            if (url.Length < (PREFIX).Length)
+                return string.Empty;
+
+            return url.Substring((PREFIX).Length);
         }
     }
 }

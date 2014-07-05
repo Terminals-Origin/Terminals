@@ -69,6 +69,9 @@ namespace Terminals.Forms
 
         internal void ConnectByFavoriteNames(IEnumerable<string> favoriteNames, bool forceConsole = false, bool forceNewWindow = false, ICredentialSet credentials = null)
         {
+            if (favoriteNames == null || favoriteNames.Count() < 1)
+                return;
+
             var targets = this.persistence.Favorites
                 .Where(favorite => favoriteNames.Contains(favorite.Name, StringComparer.InvariantCultureIgnoreCase));
             var definition = new ConnectionDefinition(targets, forceConsole, forceNewWindow, credentials, targets.Any<IFavorite>() ? string.Empty : favoriteNames.First());
