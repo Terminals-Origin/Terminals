@@ -124,8 +124,9 @@
     <Compile Include="FilePersisted\GroupsTestLab.cs" />
     <Compile Include="FilePersisted\TestFileWatch.cs" />
     <Compile Include="FilePersisted\TestImportUi.cs" />
-    <Compile Include="Imports\RdcManImporterTests.cs" />
-    <Compile Include="Imports\ExportRdpTest.cs" />
+    <Compile Include="Integrations\RdcManImporterTests.cs" />
+    <Compile Include="Integrations\ExportRdpTest.cs" />
+    <Compile Include="Integrations\ImportRdpTest.cs" />
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />
     <Compile Include="FilePersisted\SearchEngineTest.cs" />
     <Compile Include="SqlPersisted\ComparersTest.cs" />
@@ -133,7 +134,7 @@
     <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />
     <Compile Include="FilePersisted\FilesHistoryTest.cs" />
     <Compile Include="FilePersisted\InjectionDateTime.cs" />
-    <Compile Include="Imports\ImportsTest.cs" />
+    <Compile Include="Integrations\ImportsTest.cs" />
     <Compile Include="Passwords\PasswordTests.cs" />
     <Compile Include="SqlPersisted\ConcurentUpdatesTest.cs" />
     <Compile Include="SqlPersisted\ConnectionsHistoryTest.cs" />

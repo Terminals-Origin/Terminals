@@ -2,11 +2,10 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
-using Terminals.Integration.Import;
 using Terminals.Integration.Import.RdcMan;
 using Tests.FilePersisted;
 
-namespace Tests.Imports
+namespace Tests.Integrations
 {
     // we have to use FilePersisedTestLab, because import of passwords into FavoriteConfigurationElement
     // requires Persistence.Instance to resolve passwords

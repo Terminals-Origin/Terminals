@@ -10,10 +10,11 @@ namespace Tests.Imports
     [TestClass]
     public class ExportRdpTest
     {
-        private const int CUSTOM_PORT = 4444;
-        private const string FILE_NAME = "ExportRdp";
+        private const string FILE_NAME = "ExportRdp"; 
 
-        private const string EXPECTED_CONTENT = @"full address:s:ExportRdp
+        internal const int CUSTOM_PORT = 4444;
+
+        internal const string EXPECTED_CONTENT = @"full address:s:ExportRdp
 server port:i:4444
 username:s:
 domain:s:
