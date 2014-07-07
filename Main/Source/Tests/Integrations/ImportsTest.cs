@@ -7,12 +7,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
 using Terminals.Data;
 using Terminals.Forms.Controls;
-using Terminals.Integration;
 using Terminals.Integration.Export;
 using Terminals.Integration.Import;
 using Tests.FilePersisted;
 
-namespace Tests.Imports
+namespace Tests.Integrations
 {
     [TestClass]
     [DeploymentItem(@"..\Resources\TestData\" + DUPLICIT_ITEMS_FILE)]
@@ -103,7 +102,7 @@ namespace Tests.Imports
                     FileName = TEST_FILE,
                     IncludePasswords = true
                 };
-            Integrations.Exporters.Export(options);
+            Terminals.Integration.Integrations.Exporters.Export(options);
         }
 
         [TestMethod]
@@ -169,7 +168,7 @@ namespace Tests.Imports
             string fileName = DUPLICIT_ITEMS_FILE)
         {
             string fullFileName = Path.Combine(path, fileName);
-            var importers = Integrations.CreateImporters(persistence);
+            var importers = Terminals.Integration.Integrations.CreateImporters(persistence);
             return importers.ImportFavorites(fullFileName);
         }
     }

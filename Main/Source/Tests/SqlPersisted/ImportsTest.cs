@@ -32,7 +32,7 @@ namespace Tests.SqlPersisted
             Settings.DatabaseMasterPassword = VALIDATION_VALUE_B;
             ((SqlPersistenceSecurity)persistence.Security).UpdateDatabaseKey();
             string filePath = this.TestContext.DeploymentDirectory;
-            Imports.ImportsTest.ExportImportFavorite(persistence, filePath);
+            Integrations.ImportsTest.ExportImportFavorite(persistence, filePath);
         }
     }
 }
