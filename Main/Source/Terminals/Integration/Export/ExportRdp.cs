@@ -43,7 +43,9 @@ namespace Terminals.Integration.Export
         {
             string filePrefix = Path.GetFileNameWithoutExtension(fileName);
             favoriteName = favoriteName.Replace(" ", "_");
-            return String.Format("{0}_{1}{2}", filePrefix, favoriteName, ImportRDP.FILE_EXTENSION);
+            string directory = Path.GetDirectoryName(fileName);
+            string newFileName = String.Format("{0}_{1}{2}", filePrefix, favoriteName, ImportRDP.FILE_EXTENSION);
+            return Path.Combine(directory, newFileName);
         }
 
         private static void ExportFavorite(string fileName, FavoriteConfigurationElement favorite)
