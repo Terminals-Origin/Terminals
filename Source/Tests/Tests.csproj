@@ -125,6 +125,7 @@
     <Compile Include="FilePersisted\TestFileWatch.cs" />
     <Compile Include="FilePersisted\TestImportUi.cs" />
     <Compile Include="Imports\RdcManImporterTests.cs" />
+    <Compile Include="Imports\ExportRdpTest.cs" />
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />
     <Compile Include="FilePersisted\SearchEngineTest.cs" />
     <Compile Include="SqlPersisted\ComparersTest.cs" />
