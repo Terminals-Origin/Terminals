@@ -63,6 +63,7 @@ namespace Tests.FilePersisted
             return favorite;
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void SearchNotCaseSensitive()
         {
@@ -72,6 +73,7 @@ namespace Tests.FilePersisted
         /// <summary>
         /// Checks wether all words in search phrase apply OR operator, e.g. "port name" searches for favorties containing port OR name.
         /// </summary>
+        [TestCategory("NonSql")]
         [TestMethod]
         public void SearchPhraseUsesOr()
         {
@@ -82,6 +84,7 @@ namespace Tests.FilePersisted
             Assert.IsTrue(foundFavorites.Contains(this.favoritePort), "Search didnt found favorite with port number");
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void SearchFavoriteByProperties()
         {

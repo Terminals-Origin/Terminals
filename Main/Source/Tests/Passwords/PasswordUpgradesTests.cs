@@ -33,6 +33,7 @@ namespace Tests.Passwords
 
         private bool askedForPassword;
 
+        [TestCategory("NonSql")]
         [DeploymentItem(TESTDATA_DIRECTORY + EMPTY_CONFIG_FILE)]
         [DeploymentItem(TESTDATA_DIRECTORY + EMPTY_CREDENTIALS_FILE)]
         [TestMethod]
@@ -44,6 +45,7 @@ namespace Tests.Passwords
             Assert.IsFalse(askedForPassword, "Empty config file shouldn't ask for password");
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(TESTDATA_DIRECTORY + NOMASTER_CONFIG_FILE)]
         [DeploymentItem(TESTDATA_DIRECTORY + NOMASTER_CREDENTIALS_FILE)]
         [TestMethod]
@@ -58,6 +60,7 @@ namespace Tests.Passwords
             AssertUserAndCredential(persistence);
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(TESTDATA_DIRECTORY + SECURED_CONFIG_FILE)]
         [DeploymentItem(TESTDATA_DIRECTORY + SECURED_CREDENTIALS_FILE)]
         [TestMethod]

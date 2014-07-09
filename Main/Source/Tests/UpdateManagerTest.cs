@@ -34,6 +34,7 @@ namespace Tests
         /// <summary>
         /// in debug there is never a newer version, because it is checked by build date
         /// </summary>
+        [TestCategory("NonSql")]
         [TestMethod]
         public void CheckReleaseNotAvailableTest()
         {
@@ -43,6 +44,7 @@ namespace Tests
             AssertLastUpdateCheck();
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void CheckAvailableReleaseTest()
         {
@@ -53,6 +55,7 @@ namespace Tests
             AssertLastUpdateCheck();
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void AlreadyReportedReleaseTest()
         {

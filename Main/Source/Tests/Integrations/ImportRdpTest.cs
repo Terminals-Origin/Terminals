@@ -33,12 +33,14 @@ namespace Tests.Integrations
             return ((IImport)importer).ImportFavorites(fileName);
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void RdpFile_Imports_OnlyOneFavorite()
         {
             Assert.AreEqual(1, imported.Count, "Rdp file always contains only one favorite");
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void RdpFile_Imports_CorrectPort()
         {
@@ -46,6 +48,7 @@ namespace Tests.Integrations
             Assert.AreEqual(ExportRdpTest.CUSTOM_PORT, importedPort, "Content of the imported file wasnt parsed properly");
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void ServerNameWithPort_Imports_CorrectPort()
         {
