@@ -11,6 +11,7 @@ namespace Tests.SqlPersisted
     {
         private const string TEST_SERVER_NAME = "ServerA";
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void SearchAcceptsNull()
         {
@@ -20,6 +21,7 @@ namespace Tests.SqlPersisted
             assertTask.Wait();
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void SearchNeverReturnsNull()
         {
@@ -29,6 +31,7 @@ namespace Tests.SqlPersisted
             assertTask.Wait();
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void SearchFormatsFullNameProperly()
         {
@@ -44,6 +47,7 @@ namespace Tests.SqlPersisted
             Assert.IsNotNull("ServerA\\InstanceA", found, "Search engine dint parse full name properly");
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void SearchFormatsServerNameProperly()
         {

@@ -21,6 +21,7 @@ namespace Tests.FilePersisted
         /// <summary>
         /// Notes property can store special characters, so it is Base64 encoded.
         /// </summary>
+        [TestCategory("NonSql")]
         [TestMethod]
         public void SaveLoadNotesTest()
         {
@@ -38,6 +39,7 @@ namespace Tests.FilePersisted
         /// Checks, if we are still able to manipulate passwords after protocol update.
         /// This is a special case for RdpOptions, which need persistence to handle Gateway credentials
         /// </summary>
+        [TestCategory("NonSql")]
         [TestMethod]
         public void UpdateProtocolTest()
         {
@@ -62,6 +64,7 @@ namespace Tests.FilePersisted
         /// <summary>
         /// Focus on both favorites changes (add, remove, delete) and group memberschip changes.
         /// </summary>
+        [TestCategory("NonSql")]
         [TestMethod]
         public void FavoritesAndGroupsReloadTest()
         {

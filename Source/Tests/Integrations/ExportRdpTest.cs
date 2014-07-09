@@ -55,6 +55,7 @@ LoadBalanceInfo:s:
             FilePersisted.FilePersistedTestLab.SetDefaultFileLocations();
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void TwoFavorites_Exports_TwoFiles()
         {
@@ -80,6 +81,7 @@ LoadBalanceInfo:s:
             return new List<FavoriteConfigurationElement>() {favoriteA, favoriteB};
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void Favorite_Exports_ValidText()
         {

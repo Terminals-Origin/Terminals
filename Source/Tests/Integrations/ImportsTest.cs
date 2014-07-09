@@ -53,6 +53,7 @@ namespace Tests.Integrations
             }
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void ExportImportFavoriteTest()
         {
@@ -105,6 +106,7 @@ namespace Tests.Integrations
             Terminals.Integration.Integrations.Exporters.Export(options);
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void ImportingFromXmlFile_ImportsGroups()
         {
@@ -117,6 +119,7 @@ namespace Tests.Integrations
         /// <summary>
         /// Tries to import duplicate items into the file persistence renaming duplicate items
         ///</summary>
+        [TestCategory("NonSql")]
         [TestMethod]
         public void ImportRenamingDuplicitFavoritesTest()
         {
@@ -126,6 +129,7 @@ namespace Tests.Integrations
         /// <summary>
         /// Tries to import duplicate items into the file persistence overwriting duplicate items
         ///</summary>
+        [TestCategory("NonSql")]
         [TestMethod]
         public void ImportOverwritingDuplicitFavoritesTest()
         {

@@ -24,6 +24,7 @@ namespace Tests.Validation
             longText = longTextBuilder.ToString();
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void FavoriteValidationTest()
         {
@@ -34,6 +35,7 @@ namespace Tests.Validation
             Assert.AreEqual(3, results.Count(), "Some properties arent validated properly for Favorite");
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void DbFavoriteValidationTest()
         {
@@ -60,6 +62,7 @@ namespace Tests.Validation
             Assert.AreEqual(2, protocolErrors, "DbFavorite protocol wasnt validated properly");
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void DbGroupValidationTest()
         {
@@ -69,6 +72,7 @@ namespace Tests.Validation
             Assert.AreEqual(1, results.Count, "Group name validation failed");
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void DbCredentialsetValidationTest()
         {
@@ -78,6 +82,7 @@ namespace Tests.Validation
             Assert.AreEqual(2, results.Count(), "CredentailSet validation failed");
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void DbGroupNamePropertyValidationTest()
         {

@@ -12,6 +12,7 @@ namespace Tests.FilePersisted
     {
         private int historyClearReported;
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void HistoryDateTimeIsInUtcTest()
         {
@@ -36,7 +37,8 @@ namespace Tests.FilePersisted
             var foundItem = recordedItems.SelectMany(group => group.Value).First();
             return foundItem.Date.ToUniversalTime();
         }
-        
+
+        [TestCategory("NonSql")]
         [TestMethod]
         public void ClearHistoryTest()
         {

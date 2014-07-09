@@ -28,6 +28,7 @@ namespace Tests.Integrations
 
         public TestContext TestContext { get; set; }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void ImportInvalidFile_DoesntFail()
         {
@@ -36,6 +37,7 @@ namespace Tests.Integrations
             this.importer.ImportFavorites(file);
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(EMPTY_FILE)]
         [TestMethod]
         public void ImportEmptyFile_ReturnsNoFavorites()
@@ -45,6 +47,7 @@ namespace Tests.Integrations
             Assert.AreEqual(0, importedItems.Count, "The empty file doesnt contain any favorites");
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(FULL_FILE)]
         [TestMethod]
         public void ImportFullFile_ImportsFavorites()
@@ -54,6 +57,7 @@ namespace Tests.Integrations
             Assert.AreEqual(3, importedItems.Count, "The full file should import 3 favorites");
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(FULL_FILE)]
         [TestMethod]
         public void ImportFullFile_Server1_ImportsFullScreen()
@@ -62,6 +66,7 @@ namespace Tests.Integrations
             Assert.AreEqual(DesktopSize.FullScreen, server1.DesktopSize, "DesktopSize of server1 should be FullScreen");
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(FULL_FILE)]
         [TestMethod]
         public void ImportFullFile_Server1_ImportsScreenHeight()
@@ -70,6 +75,7 @@ namespace Tests.Integrations
             Assert.AreEqual(576, server1.DesktopSizeHeight, "Imported screen height of server1 should be 512");
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(FULL_FILE)]
         [TestMethod]
         public void ImportFullFile_Server2_ImportsUserName()
@@ -78,6 +84,7 @@ namespace Tests.Integrations
             Assert.AreEqual("UserA2", server2.UserName, "Imported user name of server2 should be UserA2");
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(FULL_FILE)]
         [TestMethod]
         public void ImportFullFile_Server2_ImportsEmptyPassword()
@@ -88,6 +95,7 @@ namespace Tests.Integrations
             Assert.AreEqual(string.Empty, server2.Password, MESSAGE);
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(FULL_FILE)]
         [TestMethod]
         public void ImportFullFile_Server3_ImportClearTextPassword()
@@ -103,6 +111,7 @@ namespace Tests.Integrations
             return importedItems[index];
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(FULL_FILE)]
         [TestMethod]
         public void ReadFullDocument_ResolvesVersion()
@@ -111,6 +120,7 @@ namespace Tests.Integrations
             Assert.IsTrue(document.IsVersion22, "Loaded document should contain version 2.2");
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(FULL_FILE)]
         [TestMethod]
         public void ReadFullDocument_ResolvesGroupA2()
@@ -121,6 +131,7 @@ namespace Tests.Integrations
             Assert.AreEqual("GroupA2", groupA2.Name, "First group in second level should contain GroupA2");
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(FULL_FILE)]
         [TestMethod]
         public void ReadFullDocument_ResolvesServerName2()
@@ -133,6 +144,7 @@ namespace Tests.Integrations
             Assert.AreEqual(SERVER_NAME2, server2.DisplayName, MESSAGE);
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(SERVERSONLY_FILE)]
         [TestMethod]
         public void ReadServersOnlyDocument_ResolvesServerName2()
@@ -144,6 +156,7 @@ namespace Tests.Integrations
             Assert.AreEqual(SERVER_NAME2, server2.DisplayName, MESSAGE);
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(INHERITED_FILE)]
         [TestMethod]
         public void ReadInheritedDocument_ResolvesInheritedConnectionSettings()
@@ -156,6 +169,7 @@ namespace Tests.Integrations
             Assert.AreEqual(9999, server2.ConnectionSettings.Port, MESSAGE);
         }
 
+        [TestCategory("NonSql")]
         [DeploymentItem(FULL_FILE)]
         [TestMethod]
         public void ReadFullDocument_ResolvesNotInheritedConnectionSettings()

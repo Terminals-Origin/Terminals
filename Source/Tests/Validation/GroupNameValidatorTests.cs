@@ -21,18 +21,21 @@ namespace Tests.Validation
             this.testLab = new NameValidatorTestLab<IGroup>(validator, originalGroup, GroupNameValidator.NOT_UNIQUE);
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void ValidateNotRenamed()
         {
             this.testLab.ValidateNotRenamed();
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void ValidateRenamed()
         {
             this.testLab.ValidateRenamed();
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void ValidateRenamedDuplicit()
         {
@@ -40,12 +43,14 @@ namespace Tests.Validation
             this.testLab.ValidateRenamedDuplicit();
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void ValidateNewUniqueName()
         {
             this.testLab.ValidateNewUniqueName();
         }
 
+        [TestCategory("NonSql")]
         [TestMethod]
         public void ValidateNotUniqueNewName()
         {
