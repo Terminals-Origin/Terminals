@@ -81,6 +81,7 @@ namespace Terminals.Forms
         private void FormResize(object sender, EventArgs e)
         {
             SaveSizeAndLocation();
+            SaveFormState();
         }
 
         #endregion
@@ -96,6 +97,7 @@ namespace Terminals.Forms
             FormStateConfigElement lastFormState = this.SavedState;
             if (this.Enabled && lastFormState != null)
             {
+                this.LoadFormState();
                 this.ReloadSize(lastFormState);
                 this.ReloadLocation(lastFormState);
             }
