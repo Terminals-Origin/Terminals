@@ -24,7 +24,7 @@ namespace Terminals.Forms.EditFavorite
 
         internal bool ShowOnToolbar { get { return this.chkAddtoToolbar.Checked; } }
         private String favoritePassword = string.Empty;
-        internal const String HIDDEN_PASSWORD = "****************";
+        private const String HIDDEN_PASSWORD = "****************";
         private String currentToolBarFileName;
         
         private NewTerminalFormValidator validator;
@@ -134,17 +134,16 @@ namespace Terminals.Forms.EditFavorite
 
         private void PictureBox2_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = CreateIconSelectionDialog();
-
-            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            using (OpenFileDialog openFileDialog = CreateIconSelectionDialog())
             {
-                this.TryToAssignNewToolbarIcon(openFileDialog.FileName);
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    this.TryToAssignNewToolbarIcon(openFileDialog.FileName);
             }
         }
 
         private static OpenFileDialog CreateIconSelectionDialog()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            var openFileDialog = new OpenFileDialog();
             openFileDialog.CheckFileExists = true;
             openFileDialog.InitialDirectory = FileLocations.ThumbsDirectoryFullPath;
             openFileDialog.Filter = "PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|All files (*.*)|*.*";
@@ -201,7 +200,7 @@ namespace Terminals.Forms.EditFavorite
             }
         }
 
-        internal static void GetServerAndPort(String connection, out String server, out Int32 port)
+        private static void GetServerAndPort(String connection, out String server, out Int32 port)
         {
             server = connection;
             port = ConnectionManager.RDPPort;
@@ -243,7 +242,7 @@ namespace Terminals.Forms.EditFavorite
                 this.ProtocolChanged(this.ProtocolComboBox.Text);
         }
 
-        internal void SetControlsForWeb()
+        private void SetControlsForWeb()
         {
             this.lblServerName.Text = "Url:";
             this.cmbServers.Enabled = false;
@@ -293,6 +292,14 @@ namespace Terminals.Forms.EditFavorite
             return WebOptions.TryParseUrl(newUrlText);
         }
 
+        public void LoadFrom(IFavorite favorite)
+        {
+            this.FillGeneralProrperties(favorite);
+            this.FillFavoriteSecurity(favorite);
+            this.FillDescriptionProperties(favorite);
+            this.FillCredentialsCombobox(favorite.Security.Credential);
+        }
+
         private void FillFavoriteSecurity(IFavorite favorite)
         {
             ICredentialSet selectedCredential = this.CredentialDropdown.SelectedItem as ICredentialSet;
@@ -329,12 +336,14 @@ namespace Terminals.Forms.EditFavorite
             Int32 port;
             Int32.TryParse(this.PortText, out port);
             favorite.Port = port;
-            this.FillWebProperties(favorite);
+            WebOptions.UpdateFavoriteUrl(favorite, this.httpUrlTextBox.Text);
         }
 
-        private void FillWebProperties(IFavorite favorite)
+        public void SaveTo(IFavorite favorite)
         {
-            WebOptions.UpdateFavoriteUrl(favorite, this.httpUrlTextBox.Text);
+            this.FillGeneralPropertiesControls(favorite);
+            this.FillSecurityControls(favorite);
+            this.FillDescriptionPropertiesControls(favorite);
         }
 
         private void FillGeneralPropertiesControls(IFavorite favorite)

@@ -179,7 +179,7 @@ namespace Terminals
                 if (defaultSavedFavorite != null)
                 {
                     var defaultFavorite = ModelConverterV1ToV2.ConvertToFavorite(defaultSavedFavorite, this.persistence);
-                    this.FillControls(defaultFavorite);
+                    this.favoritePropertiesControl1.LoadFrom(defaultFavorite);
                 }
 
                 this.favoritePropertiesControl1.FillServerName(serverName);
@@ -188,7 +188,7 @@ namespace Terminals
             {
                 this.EditedId = favorite.Id;
                 this.Text = "Edit Connection";
-                this.FillControls(favorite);
+                this.favoritePropertiesControl1.LoadFrom(favorite);
             }
         }
 
@@ -201,12 +201,7 @@ namespace Terminals
 
         private void FillControls(IFavorite favorite)
         {
-            // FillGeneralPropertiesControls(favorite);
-            // FillDescriptionPropertiesControls(favorite);
-            // FillSecurityControls(favorite);
-            // this.generalProperties.FillCredentialsCombobox(favorite.Security.Credential);
             // FillDisplayControls(favorite);
-            // FillExecuteBeforeControls(favorite);
             // this.consolePreferences.FillControls(favorite);
             //FillVmrcControls(favorite);
             //FillVNCControls(favorite);
@@ -292,9 +287,6 @@ namespace Terminals
 
         public void FillFavoriteFromControls(IFavorite favorite)
         {
-            // this.FillGeneralProrperties(favorite);
-            // this.FillDescriptionProperties(favorite);
-            // this.FillFavoriteSecurity(favorite);
             // this.FillFavoriteDisplayOptions(favorite);
             // this.FillFavoriteExecuteBeforeOptions(favorite);
             // this.consolePreferences.FillFavorite(favorite);

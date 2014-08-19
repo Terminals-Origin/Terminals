@@ -171,34 +171,50 @@ namespace Terminals.Forms.EditFavorite
             this.groupsPanel1.LoadMRUs();
         }
 
-        public void ResetServerNameControls(string name)
+        internal void ResetServerNameControls(string name)
         {
             this.generalPanel1.ResetServerNameControls(name);
         }
 
-        public void FillCredentialsCombobox(Guid credentialGuid)
+        internal void FillCredentialsCombobox(Guid credentialGuid)
         {
             this.generalPanel1.FillCredentialsCombobox(credentialGuid);
         }
 
-        public void FillServerName(string serverName)
+        internal void FillServerName(string serverName)
         {
             this.generalPanel1.FillServerName(serverName);
         }
 
-        public void AssingSelectedGroup(IGroup group)
+        internal void AssingSelectedGroup(IGroup group)
         {
             this.groupsPanel1.AssingSelectedGroup(group);
         }
 
-        public List<IGroup> GetNewlySelectedGroups()
+        internal List<IGroup> GetNewlySelectedGroups()
         {
             return this.groupsPanel1.GetNewlySelectedGroups();
         }
 
-        public Uri GetFullUrlFromHttpTextBox()
+        internal Uri GetFullUrlFromHttpTextBox()
         {
             return this.generalPanel1.GetFullUrlFromHttpTextBox();
+        }
+
+        internal void LoadFrom(IFavorite favorite)
+        {
+            this.generalPanel1.LoadFrom(favorite);
+            this.executePanel1.LoadFrom(favorite);
+            // this.protocolOptionsPanel1.LoadFrom(favorite);
+            // todo this.groupsPanel1.
+        }
+
+        internal void SaveTo(IFavorite favorite)
+        {
+            this.generalPanel1.SaveTo(favorite);
+            this.executePanel1.SaveTo(favorite);
+            // this.protocolOptionsPanel1.LoadFrom(favorite);
+            // todo this.groupsPanel1.
         }
     }
 }

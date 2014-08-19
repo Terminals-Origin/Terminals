@@ -4,7 +4,7 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class RdpDisplayControl : UserControl, IProtocolOptionsControl
+    internal partial class RdpDisplayControl : UserControl, IProtocolOptionsControl
     {
         public RdpDisplayControl()
         {
@@ -22,9 +22,26 @@ namespace Terminals.Forms.EditFavorite
                 this.customSizePanel.Visible = false;
         }
 
+        // todo where tomove the SetControls method, when protocol was changed
         public void SetControls()
         {
             this.chkConnectToConsole.Enabled = true;
+        }
+
+        public void LoadFrom(IFavorite favorite)
+        {
+            this.FillDisplayControls(favorite);
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions != null)
+                this.FillRdpDisplayControls(rdpOptions);
+        }
+
+        public void SaveTo(IFavorite favorite)
+        {
+            this.FillFavoriteDisplayOptions(favorite);
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions != null)
+                this.FillFavoriteRdpDisplayOptions(rdpOptions);
         }
 
         private void FillFavoriteRdpDisplayOptions(RdpOptions rdpOptions)

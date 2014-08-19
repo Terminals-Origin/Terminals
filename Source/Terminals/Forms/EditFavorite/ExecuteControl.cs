@@ -3,7 +3,7 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    internal partial class ExecuteControl : UserControl
+    internal partial class ExecuteControl : UserControl, IProtocolOptionsControl
     {
         internal ExecuteControl()
         {
@@ -17,7 +17,7 @@ namespace Terminals.Forms.EditFavorite
             validator.RegisterValidationControl("InitialDirectory", this.txtInitialDirectory);
         }
 
-        private void FillFavoriteExecuteBeforeOptions(IFavorite favorite)
+        public void SaveTo(IFavorite favorite)
         {
             IBeforeConnectExecuteOptions exucutionOptions = favorite.ExecuteBeforeConnect;
             exucutionOptions.Execute = this.chkExecuteBeforeConnect.Checked;
@@ -27,7 +27,7 @@ namespace Terminals.Forms.EditFavorite
             exucutionOptions.WaitForExit = this.chkWaitForExit.Checked;
         }
 
-        private void FillExecuteBeforeControls(IFavorite favorite)
+        public void LoadFrom(IFavorite favorite)
         {
             this.chkExecuteBeforeConnect.Checked = favorite.ExecuteBeforeConnect.Execute;
             this.txtCommand.Text = favorite.ExecuteBeforeConnect.Command;

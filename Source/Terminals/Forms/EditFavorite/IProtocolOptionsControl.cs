@@ -7,8 +7,10 @@ namespace Terminals.Forms.EditFavorite
     /// </summary>
     internal interface IProtocolOptionsControl
     {
-        void SetControls();
+        // void SetControls();
 
-        // void FillFavorite(IFavorite favorite);
+        void LoadFrom(IFavorite favorite);
+
+        void SaveTo(IFavorite favorite);
     }
 }
