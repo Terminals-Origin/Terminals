@@ -7,7 +7,7 @@ using Terminals.Connections;
 
 namespace Terminals.Forms.EditFavorite
 {
-    internal partial class RasControl : UserControl, IProtocolOptionsControl
+    internal partial class RasControl : UserControl
     {
         private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
 
