@@ -104,19 +104,6 @@ namespace Terminals.Forms.EditFavorite
             protocolSwitch.ShowPanel();
         }
 
-        private class PanelSwitch
-        {
-            internal string Title { get; private set; }
-
-            internal Action ShowPanel { get; private set; }
-
-            internal PanelSwitch(string title, Action showPanel)
-            {
-                this.Title = title;
-                this.ShowPanel = showPanel;
-            }
-        }
-
         private string ResolveProtocolPanelTitle(TreeNode node)
         {
             Control childControl = this.protocolOptionsPanel1.ResolveChildByNameOrFirst(node.Text);

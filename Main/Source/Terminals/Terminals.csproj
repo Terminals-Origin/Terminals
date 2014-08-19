@@ -290,6 +290,7 @@
     <Compile Include="Forms\EditFavorite\NewTerminalForm.Designer.cs">
       <DependentUpon>NewTerminalForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\EditFavorite\PanelSwitch.cs" />
     <Compile Include="Forms\EditFavorite\ProtocolOptionsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

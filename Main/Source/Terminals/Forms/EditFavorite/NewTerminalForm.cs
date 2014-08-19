@@ -36,7 +36,9 @@ namespace Terminals
             get { return this.persistence.Favorites; }
         }
 
-        #region Constructors
+        private new TerminalFormDialogResult DialogResult { get; set; }
+
+        internal IFavorite Favorite { get; private set; }
 
         public NewTerminalFormCopy(IPersistence persistence, String serverName)
             : this()
@@ -73,17 +75,6 @@ namespace Terminals
             this.SetOkButtonState();
         }
 
-        #endregion
-
-        #region Properties
-
-        private new TerminalFormDialogResult DialogResult { get; set; }
-        internal IFavorite Favorite { get; private set; }
-
-        #endregion
-
-        #region Private form event handlers
-
         private void NewTerminalForm_Load(Object sender, EventArgs e)
         {
             this.SuspendLayout();
@@ -96,10 +87,6 @@ namespace Terminals
             this.favoritePropertiesControl1.FocusServers();
         }
 
-        #endregion
-
-        #region Public form functions
-
         /// <summary>
         /// Overload ShowDialog and return custom result.
         /// </summary>
@@ -110,10 +97,6 @@ namespace Terminals
 
             return this.DialogResult;
         }
-
-        #endregion
-
-        #region Private form control event handler methods
 
         /// <summary>
         /// Save favorite and close form. If the form isnt valid the form control is focused.
@@ -183,10 +166,6 @@ namespace Terminals
             }
         }
 
-        #endregion
-
-        #region Private form methods
-
         private void Init(IFavorite favorite, String serverName)
         {
             this.favoritePropertiesControl1.LoadMRUs();
@@ -212,8 +191,6 @@ namespace Terminals
                 this.FillControls(favorite);
             }
         }
-
-        #endregion
 
         #region Refactoring finished
 

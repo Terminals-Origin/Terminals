@@ -184,9 +184,8 @@ namespace Terminals.Forms.EditFavorite
 
         private void CmbServers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // todo fix the rasControl SeverName observer
             this.rasControl.OnServerNameChanged(this.ProtocolText, this.ServerNameText);
-            this.cmbServers.DataSource = rasControl.ConnectionNames;
+            this.cmbServers.DataSource = this.rasControl.ConnectionNames;
         }
 
         private void CmbServers_Leave(object sender, EventArgs e)
