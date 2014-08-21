@@ -292,12 +292,11 @@ namespace Terminals.Forms.EditFavorite
             return WebOptions.TryParseUrl(newUrlText);
         }
 
-        public void LoadFrom(IFavorite favorite)
+        public void SaveTo(IFavorite favorite)
         {
             this.FillGeneralProrperties(favorite);
             this.FillFavoriteSecurity(favorite);
             this.FillDescriptionProperties(favorite);
-            this.FillCredentialsCombobox(favorite.Security.Credential);
         }
 
         private void FillFavoriteSecurity(IFavorite favorite)
@@ -339,11 +338,12 @@ namespace Terminals.Forms.EditFavorite
             WebOptions.UpdateFavoriteUrl(favorite, this.httpUrlTextBox.Text);
         }
 
-        public void SaveTo(IFavorite favorite)
+        public void LoadFrom(IFavorite favorite)
         {
             this.FillGeneralPropertiesControls(favorite);
             this.FillSecurityControls(favorite);
             this.FillDescriptionPropertiesControls(favorite);
+            this.FillCredentialsCombobox(favorite.Security.Credential);
         }
 
         private void FillGeneralPropertiesControls(IFavorite favorite)

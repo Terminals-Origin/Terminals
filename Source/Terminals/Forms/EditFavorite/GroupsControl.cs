@@ -112,7 +112,7 @@ namespace Terminals.Forms.EditFavorite
                 BindGroupsToListView(this.lvConnectionTags, new[] { group });
         }
 
-        internal void ReloadTagsListViewItems(IFavorite favorite)
+        internal void LoadFrom(IFavorite favorite)
         {
             this.lvConnectionTags.Items.Clear();
             BindGroupsToListView(this.lvConnectionTags, favorite.Groups);

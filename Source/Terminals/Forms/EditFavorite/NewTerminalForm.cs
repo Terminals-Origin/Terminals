@@ -199,33 +199,6 @@ namespace Terminals
             this.favoritePropertiesControl1.AssingSelectedGroup(group);
         }
 
-        private void FillControls(IFavorite favorite)
-        {
-            // FillDisplayControls(favorite);
-            // this.consolePreferences.FillControls(favorite);
-            //FillVmrcControls(favorite);
-            //FillVNCControls(favorite);
-            //FillIcaControls(favorite);
-            //FillSshControls(favorite);
-            FillRdpOptions(favorite);
-
-            // ReloadTagsListViewItems(favorite);
-        }
-
-        private void FillRdpOptions(IFavorite favorite)
-        {
-            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
-            if (rdpOptions == null)
-                return;
-
-            //FillRdpSecurityControls(rdpOptions);
-            //FillRdpUserInterfaceControls(rdpOptions);
-            //FillRdpDisplayControls(rdpOptions);
-            //FillRdpRedirectControls(rdpOptions);
-            //FillTsGatewayControls(rdpOptions);
-            //FillRdpTimeOutControls(rdpOptions);
-        }
-
         private Boolean FillFavorite(Boolean defaultFav)
         {
             try
@@ -287,28 +260,7 @@ namespace Terminals
 
         public void FillFavoriteFromControls(IFavorite favorite)
         {
-            // this.FillFavoriteDisplayOptions(favorite);
-            // this.FillFavoriteExecuteBeforeOptions(favorite);
-            // this.consolePreferences.FillFavorite(favorite);
-            // this.FillFavoriteVmrcOptions(favorite);
-            // this.FillFavoriteVncOptions(favorite);
-            // this.FillFavoriteICAOPtions(favorite);
-            // this.FillFavoriteSSHOptions(favorite);his.FillFavoriteRdpOptions(favorite);
-        }
-
-        private void FillFavoriteRdpOptions(IFavorite favorite)
-        {  
-            // todo move to overall RdpControl
-            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
-            if (rdpOptions == null)
-                return;
-
-            // FillFavoriteRdpSecurity(rdpOptions);
-            // FillFavoriteRdpInterfaceOptions(rdpOptions);
-            // FillFavoriteRdpDisplayOptions(rdpOptions);
-            // FillFavoriteRdpRedirectOptions(rdpOptions);
-            // FillFavoriteTSgatewayOptions(rdpOptions);
-            // FillFavoriteRdpTimeOutOptions(rdpOptions);
+            this.favoritePropertiesControl1.SaveTo(favorite);
         }
 
         private void SaveDefaultFavorite(IFavorite favorite)

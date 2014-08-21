@@ -205,16 +205,16 @@ namespace Terminals.Forms.EditFavorite
         {
             this.generalPanel1.LoadFrom(favorite);
             this.executePanel1.LoadFrom(favorite);
-            // this.protocolOptionsPanel1.LoadFrom(favorite);
-            // todo this.groupsPanel1.
+            this.groupsPanel1.LoadFrom(favorite);
+            this.protocolOptionsPanel1.LoadFrom(favorite);
         }
 
         internal void SaveTo(IFavorite favorite)
         {
             this.generalPanel1.SaveTo(favorite);
             this.executePanel1.SaveTo(favorite);
-            // this.protocolOptionsPanel1.LoadFrom(favorite);
-            // todo this.groupsPanel1.
+            this.protocolOptionsPanel1.SaveTo(favorite);
+            // save of groups is done in the form
         }
     }
 }
