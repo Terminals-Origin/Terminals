@@ -4,7 +4,7 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class CitrixControl : UserControl
+    internal partial class CitrixControl : UserControl, IProtocolOptionsControl
     {
         public CitrixControl()
         {
@@ -63,7 +63,7 @@ namespace Terminals.Forms.EditFavorite
             }
         }
 
-        private void FillFavoriteICAOPtions(IFavorite favorite)
+        public void SaveTo(IFavorite favorite)
         {
             var icaOptions = favorite.ProtocolProperties as ICAOptions;
             if (icaOptions == null)
@@ -79,7 +79,7 @@ namespace Terminals.Forms.EditFavorite
             icaOptions.ApplicationWorkingFolder = this.ICAWorkingFolder.Text;
         }
 
-        private void FillIcaControls(IFavorite favorite)
+        public void LoadFrom(IFavorite favorite)
         {
             var icaOptions = favorite.ProtocolProperties as ICAOptions;
             if (icaOptions == null)

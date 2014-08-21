@@ -4,14 +4,14 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    internal partial class VncControl : UserControl
+    internal partial class VncControl : UserControl, IProtocolOptionsControl
     {
         public VncControl()
         {
             InitializeComponent();
         }
 
-        public void FillFavoriteVncOptions(IFavorite favorite)
+        public void SaveTo(IFavorite favorite)
         {
             var vncOptions = favorite.ProtocolProperties as VncOptions;
             if (vncOptions == null)
@@ -22,7 +22,7 @@ namespace Terminals.Forms.EditFavorite
             vncOptions.ViewOnly = this.VncViewOnlyCheckbox.Checked;
         }
 
-        private void FillVNCControls(IFavorite favorite)
+        public void LoadFrom(IFavorite favorite)
         {
             VncOptions vncOptions = favorite.ProtocolProperties as VncOptions;
             if (vncOptions == null)

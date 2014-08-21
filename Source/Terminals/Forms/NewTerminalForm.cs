@@ -628,7 +628,7 @@ namespace Terminals
             this.FillCredentialsCombobox(favorite.Security.Credential);
             FillDisplayControls(favorite);
             FillExecuteBeforeControls(favorite);
-            this.consolePreferences.FillControls(favorite);
+            this.consolePreferences.LoadFrom(favorite);
             FillVmrcControls(favorite);
             FillVNCControls(favorite);
             FillIcaControls(favorite);
@@ -915,7 +915,7 @@ namespace Terminals
             this.FillFavoriteSecurity(favorite);
             this.FillFavoriteDisplayOptions(favorite);
             this.FillFavoriteExecuteBeforeOptions(favorite);
-            this.consolePreferences.FillFavorite(favorite);
+            this.consolePreferences.SaveTo(favorite);
             this.FillFavoriteVmrcOptions(favorite);
             this.FillFavoriteVncOptions(favorite);
             this.FillFavoriteICAOPtions(favorite);

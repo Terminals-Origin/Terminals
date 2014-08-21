@@ -4,7 +4,7 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class RdpSecurityControl : UserControl
+    internal partial class RdpSecurityControl : UserControl, IProtocolOptionsControl
     {
         public RdpSecurityControl()
         {
@@ -16,8 +16,12 @@ namespace Terminals.Forms.EditFavorite
             this.panel2.Enabled = this.SecuritySettingsEnabledCheckbox.Checked;
         }
 
-        private void FillFavoriteRdpSecurity(RdpOptions rdpOptions)
+        public void SaveTo(IFavorite favorite)
         {
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions == null)
+                return;
+
             rdpOptions.Security.Enabled = this.SecuritySettingsEnabledCheckbox.Checked;
             if (this.SecuritySettingsEnabledCheckbox.Checked)
             {
@@ -27,8 +31,12 @@ namespace Terminals.Forms.EditFavorite
             }
         }
 
-        private void FillRdpSecurityControls(RdpOptions rdpOptions)
+        public void LoadFrom(IFavorite favorite)
         {
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions == null)
+                return;
+
             this.SecuritySettingsEnabledCheckbox.Checked = rdpOptions.Security.Enabled;
             this.SecurityWorkingFolderTextBox.Text = rdpOptions.Security.WorkingFolder;
             this.SecuriytStartProgramTextbox.Text = rdpOptions.Security.StartProgram;

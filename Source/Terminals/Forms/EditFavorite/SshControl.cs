@@ -4,14 +4,14 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    internal partial class SshControl : UserControl
+    internal partial class SshControl : UserControl, IProtocolOptionsControl
     {
         public SshControl()
         {
             InitializeComponent();
         }
 
-        internal void FillFavoriteSSHOptions(IFavorite favorite)
+        public void SaveTo(IFavorite favorite)
         {
             var sshOptions = favorite.ProtocolProperties as SshOptions;
             if (sshOptions == null)
@@ -24,7 +24,7 @@ namespace Terminals.Forms.EditFavorite
             sshOptions.SSHKeyFile = this.SSHPreferences.SSHKeyFile;
         }
 
-        internal void FillSshControls(IFavorite favorite)
+        public void LoadFrom(IFavorite favorite)
         {
             this.TryLoadSshPreferences();
 

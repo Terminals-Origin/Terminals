@@ -6,7 +6,8 @@ using FalafelSoftware.TransPort;
 using Terminals.Connections;
 
 namespace Terminals.Forms.EditFavorite
-{
+{   
+    // todo feature disabled, because it is broken
     internal partial class RasControl : UserControl
     {
         private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
