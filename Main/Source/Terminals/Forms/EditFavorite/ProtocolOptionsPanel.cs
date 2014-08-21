@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
 using Terminals.Connections;
+using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
@@ -110,6 +111,22 @@ namespace Terminals.Forms.EditFavorite
             foreach (var protocolControl in this.Controls.OfType<IProtocolObserver>())
             {
                 protocolControl.OnServerNameChanged(newServerName);
+            }
+        }
+
+        internal void LoadFrom(IFavorite favorite)
+        {
+            foreach (var protocolControl in this.Controls.OfType<IProtocolOptionsControl>())
+            {
+                protocolControl.LoadFrom(favorite);
+            }
+        }
+
+        internal void SaveTo(IFavorite favorite)
+        {
+            foreach (var protocolControl in this.Controls.OfType<IProtocolOptionsControl>())
+            {
+                protocolControl.SaveTo(favorite);
             }
         }
     }
