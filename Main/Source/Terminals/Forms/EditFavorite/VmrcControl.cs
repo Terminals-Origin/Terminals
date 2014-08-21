@@ -3,14 +3,14 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    internal partial class VmrcControl : UserControl
+    internal partial class VmrcControl : UserControl, IProtocolOptionsControl
     {
         public VmrcControl()
         {
             InitializeComponent();
         }
 
-        public void FillFavoriteVmrcOptions(IFavorite favorite)
+        public void SaveTo(IFavorite favorite)
         {
             var vmrcOptions = favorite.ProtocolProperties as VMRCOptions;
             if (vmrcOptions == null)
@@ -20,14 +20,14 @@ namespace Terminals.Forms.EditFavorite
             vmrcOptions.ReducedColorsMode = this.VMRCReducedColorsCheckbox.Checked;
         }
 
-        private void FillVmrcControls(IFavorite favorite)
+        public void LoadFrom(IFavorite favorite)
         {
-            VMRCOptions vncOptions = favorite.ProtocolProperties as VMRCOptions;
+            var vncOptions = favorite.ProtocolProperties as VMRCOptions;
             if (vncOptions == null)
                 return;
+
             this.VMRCAdminModeCheckbox.Checked = vncOptions.AdministratorMode;
             this.VMRCReducedColorsCheckbox.Checked = vncOptions.ReducedColorsMode;
         }
-
     }
 }

@@ -3,17 +3,18 @@ using System.Windows.Forms;
 using Terminals.Connections;
 using Terminals.Converters;
 using Terminals.Data;
+using Terminals.Forms.EditFavorite;
 
 namespace Terminals
 {
-    internal partial class ConsolePreferences : UserControl
+    internal partial class ConsolePreferences : UserControl, IProtocolOptionsControl
     {
         public ConsolePreferences()
         {
             InitializeComponent();
         }
 
-        public void FillControls(IFavorite favorite)
+        public void LoadFrom(IFavorite favorite)
         {
             // replace with shared method
             var consoleOptions = TerminalConnection.GetConsoleOptions(favorite);
@@ -27,7 +28,7 @@ namespace Terminals
             RowsTextBox.Text = consoleOptions.Rows.ToString();
         }
 
-        public void FillFavorite(IFavorite favorite)
+        public void SaveTo(IFavorite favorite)
         {
             var consoleOptions = TerminalConnection.GetConsoleOptions(favorite);
             if (consoleOptions == null)

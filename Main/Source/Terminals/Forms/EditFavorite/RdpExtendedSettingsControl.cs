@@ -5,7 +5,7 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    internal partial class RdpExtendedSettingsControl : UserControl, IValidatedProtocolControl
+    internal partial class RdpExtendedSettingsControl : UserControl, IValidatedProtocolControl, IProtocolOptionsControl
     {
         public event CancelEventHandler IntegerValidationRequested;
 
@@ -28,6 +28,16 @@ namespace Terminals.Forms.EditFavorite
         {
             if (this.IntegerValidationRequested != null)
                 this.IntegerValidationRequested(sender, cancelEventArgs);
+        }
+
+        public void SaveTo(IFavorite favorite)
+        {
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions == null)
+                return;
+
+            this.FillFavoriteRdpInterfaceOptions(rdpOptions);
+            this.FillFavoriteRdpTimeOutOptions(rdpOptions);
         }
 
         private void FillFavoriteRdpInterfaceOptions(RdpOptions rdpOptions)
@@ -61,6 +71,16 @@ namespace Terminals.Forms.EditFavorite
             int parsed;
             int.TryParse(textBox.Text, out parsed);
             return parsed;
+        }
+
+        public void LoadFrom(IFavorite favorite)
+        {
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions == null)
+                return;
+
+            FillRdpTimeOutControls(rdpOptions);
+            FillRdpUserInterfaceControls(rdpOptions);
         }
 
         private void FillRdpTimeOutControls(RdpOptions rdpOptions)

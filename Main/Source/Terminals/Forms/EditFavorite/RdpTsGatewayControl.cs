@@ -4,7 +4,7 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    public partial class RdpTsGatewayControl : UserControl
+    internal partial class RdpTsGatewayControl : UserControl, IProtocolOptionsControl
     {
         public RdpTsGatewayControl()
         {
@@ -22,6 +22,15 @@ namespace Terminals.Forms.EditFavorite
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
             this.pnlTSGWlogon.Enabled = this.chkTSGWlogin.Checked;
+        }
+
+        public void SaveTo(IFavorite favorite)
+        {
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions == null)
+                return;
+
+            FillFavoriteTSgatewayOptions(rdpOptions);
         }
 
         private void FillFavoriteTSgatewayOptions(RdpOptions rdpOptions)
@@ -51,7 +60,16 @@ namespace Terminals.Forms.EditFavorite
                     tsgwOptions.UsageMethod = 0;
             }
         }
-        
+
+        public void LoadFrom(IFavorite favorite)
+        {
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions == null)
+                return;
+
+            FillTsGatewayControls(rdpOptions);
+        }
+
         private void FillTsGatewayControls(RdpOptions rdpOptions)
         {
             var tsGateway = rdpOptions.TsGateway;
@@ -90,6 +108,5 @@ namespace Terminals.Forms.EditFavorite
 
             }
         }
-
     }
 }

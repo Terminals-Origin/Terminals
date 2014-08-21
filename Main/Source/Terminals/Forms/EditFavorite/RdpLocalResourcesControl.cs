@@ -5,7 +5,8 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    internal partial class RdpLocalResourcesControl : UserControl, IRdpLocalResourcesControl, IProtocolObserver
+    internal partial class RdpLocalResourcesControl : UserControl,
+        IRdpLocalResourcesControl, IProtocolObserver, IProtocolOptionsControl
     {
         public List<string> RedirectedDrives { get; set; }
 
@@ -39,8 +40,12 @@ namespace Terminals.Forms.EditFavorite
                 drivesForm.ShowDialog(this);
         }
 
-        private void FillFavoriteRdpRedirectOptions(IFavorite favorite, RdpOptions rdpOptions)
+        public void SaveTo(IFavorite favorite)
         {
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions == null)
+                return;
+
             favorite.DesktopShare = this.txtDesktopShare.Text;
             rdpOptions.Redirect.Drives = this.RedirectedDrives;
             rdpOptions.Redirect.Ports = this.chkSerialPorts.Checked;
@@ -54,8 +59,12 @@ namespace Terminals.Forms.EditFavorite
                 rdpOptions.Redirect.Sounds = (RemoteSounds)this.cmbSounds.SelectedIndex;
         }
 
-        private void FillRdpRedirectControls(IFavorite favorite, RdpOptions rdpOptions)
+        public void LoadFrom(IFavorite favorite)
         {
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions == null)
+                return;
+
             this.txtDesktopShare.Text = favorite.DesktopShare;
             this.RedirectedDrives = rdpOptions.Redirect.Drives;
             this.chkSerialPorts.Checked = rdpOptions.Redirect.Ports;
