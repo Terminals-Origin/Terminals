@@ -67,6 +67,9 @@
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1408.0717\lib\net40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="MSTSCLib">
       <HintPath>..\Terminals\bin\Debug\MSTSCLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -148,6 +151,7 @@
     <Compile Include="SqlPersisted\CredentialsTest.cs" />
     <Compile Include="CustomSetupActionTest.cs" />
     <Compile Include="UserInterface\ToolStripSettingsTest.cs" />
+    <Compile Include="UserInterface\FavoritePropertiesControlTests.cs" />
     <Compile Include="Validation\FavoriteNameValidatorTests.cs" />
     <Compile Include="Validation\GroupNameValidatorTests.cs" />
     <Compile Include="UserInterface\FavoritesTreeLoadingTest.cs" />

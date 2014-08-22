@@ -30,4 +30,5 @@ using log4net;
 
 [assembly: log4net.Config.XmlConfigurator (
 ConfigFile = "Terminals.log4net.config", Watch = true)]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Tests")]
+[assembly: InternalsVisibleTo("Tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

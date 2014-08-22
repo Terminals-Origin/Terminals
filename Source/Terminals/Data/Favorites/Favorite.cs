@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 using Terminals.Configuration;
 using Terminals.Connections;
@@ -32,7 +31,7 @@ namespace Terminals.Data
         /// <summary>
         /// Gets or sets its associated groups container. Used to resolve associated groups membership.
         /// </summary>
-        private Groups groups;
+        private IFavoriteGroups groups;
 
         public string Name { get; set; }
 
@@ -381,7 +380,7 @@ namespace Terminals.Data
             return this.Id.GetHashCode();
         }
 
-        internal void AssignStores(PersistenceSecurity persistenceSecurity, Groups groups)
+        internal void AssignStores(PersistenceSecurity persistenceSecurity, IFavoriteGroups groups)
         {
             this.persistenceSecurity = persistenceSecurity;
             this.groups = groups;
