@@ -9,7 +9,7 @@ namespace Terminals.Data
     /// In previous versions Groups and Tags.
     /// Now both features are solved here.
     /// </summary>
-    internal class Groups : IGroups
+    internal class Groups : IGroups, IFavoriteGroups
     {
         private readonly DataDispatcher dispatcher;
         private readonly FilePersistence persistence;
@@ -208,7 +208,7 @@ namespace Terminals.Data
                 .ToList();
         }
 
-        internal List<IGroup> GetGroupsContainingFavorite(Guid favoriteId)
+        public List<IGroup> GetGroupsContainingFavorite(Guid favoriteId)
         {
             return this.cache.Values.Where(group => group.Favorites
                     .Select(favorite => favorite.Id).Contains(favoriteId))
