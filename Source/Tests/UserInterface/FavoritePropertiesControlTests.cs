@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Terminals.Connections;
@@ -42,9 +43,34 @@ namespace Tests.UserInterface
         }
 
         [TestMethod]
+        public void RdpGatewayNode_SelectNode_ChangesTitle()
+        {
+            this.LoadPropertiesControl();
+            this.SimulateGatewayNodeSelection();
+            var title = this.propertiesControl.Controls["titleLabel"];
+            const string CHANGED_TITLE_MESSAGE = "Changing selected node to protocol options control, has to update control title";
+            Assert.AreEqual("Protocol options (RDP) - TS Gateway", title.Text, CHANGED_TITLE_MESSAGE);
+        }
+
+        /// <summary>
+        /// Because the treeView.SelectedNode doesnt fire selection event from unit test.
+        /// </summary>
+        private void SimulateGatewayNodeSelection()
+        {
+            var treeView = this.propertiesControl.Controls["treeView"] as TreeView;
+            var optionsPanel = this.propertiesControl.Controls["protocolOptionsPanel1"];
+            optionsPanel.Show(); // otherwise the panel fires the selection it self.
+            TreeNode tsgwNode = treeView.Nodes[3].Nodes[4];
+            var wrapper = new PrivateObject(this.propertiesControl);
+            var selection = new TreeViewEventArgs(tsgwNode);
+            var privateFlags = BindingFlags.NonPublic | BindingFlags.Instance;
+            wrapper.Invoke("TreeViewAfterSelect", privateFlags, new object[] { treeView, selection });
+        }
+
+        [TestMethod]
         public void ServerName_LoadSave_KeepsValue()
         {
-            Favorite source = CreateFavorite();
+            Favorite source = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
             source.ServerName = EXPECTED_TEXT;
             Favorite result = this.LoadAndSaveToResult(source);
             Assert.AreEqual(EXPECTED_TEXT, result.ServerName, MESSAGE);
@@ -53,7 +79,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void BeforeExecuteCommand_LoadSave_KeepsValue()
         {
-            Favorite source = CreateFavorite();
+            Favorite source = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
             source.ExecuteBeforeConnect.Command = EXPECTED_TEXT;
             Favorite result = this.LoadAndSaveToResult(source);
             Assert.AreEqual(EXPECTED_TEXT, result.ExecuteBeforeConnect.Command, MESSAGE);
@@ -63,7 +89,7 @@ namespace Tests.UserInterface
         public void VncProcol_LoadSave_KeepsProtocolPropertiesType()
         {
             this.LoadPropertiesControl();
-            Favorite source = CreateFavorite();
+            Favorite source = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
             source.Protocol = ConnectionManager.VNC;
             Favorite result = this.LoadAndSaveToResult(source);
             const string PROTOCOL_MESSAGE = "Roundtrip has to preserve the protocol properties";
@@ -83,7 +109,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void FavoriteGroup_LoadFrom_IsLoadedAsSelected()
         {
-            Favorite source = CreateFavorite();
+            Favorite source = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
             this.propertiesControl.LoadFrom(source);
             List<IGroup> newlySelected = this.propertiesControl.GetNewlySelectedGroups();
             Assert.AreEqual(1, newlySelected.Count, "Not changed selection, has to return identical groups");
@@ -92,18 +118,9 @@ namespace Tests.UserInterface
         private Favorite LoadAndSaveToResult(Favorite source)
         {
             this.propertiesControl.LoadFrom(source);
-            Favorite result = CreateFavorite();
+            Favorite result = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
             this.propertiesControl.SaveTo(result);
             return result;
-        }
-
-        private Favorite CreateFavorite()
-        {
-            var favoriteGroupsStub = new Mock<IFavoriteGroups>();
-            favoriteGroupsStub.Setup(fg => fg.GetGroupsContainingFavorite(It.IsAny<Guid>())).Returns(groups);
-            var favorite = new Favorite();
-            favorite.AssignStores(new PersistenceSecurity(), favoriteGroupsStub.Object);
-            return favorite;
         }
     }
 }
