@@ -28,7 +28,9 @@ namespace Tests.UserInterface
         [TestInitialize]
         public void SetUp()
         {
-            var validator = new NewTerminalFormValidator(null, null);
+            var irelevantPersistence = new Mock<IPersistence>().Object;
+            var irelevantForm = new Mock<INewTerminalForm>().Object;
+            var validator = new NewTerminalFormValidator(irelevantPersistence, irelevantForm);
             protocolPanel.RegisterValidations(validator);
         }
 
@@ -64,9 +66,16 @@ namespace Tests.UserInterface
         public void Rdp_LoadSave_KeepsWorkingFolder()
         {
             this.AssertExpectedPropertyValue<RdpOptions, string>(ConnectionManager.RDP,
-                  (options, newValue) => options.Security.WorkingFolder = newValue,
+                  SetWorkingFolder,
                   options => options.Security.WorkingFolder,
                   "WorkingFolder");
+        }
+
+        private static void SetWorkingFolder(RdpOptions options, string newValue)
+        {
+            // we have to enable the security, otherwise the save method skips the nested properties
+            options.Security.Enabled = true;
+            options.Security.WorkingFolder = newValue;
         }
 
         [TestMethod]

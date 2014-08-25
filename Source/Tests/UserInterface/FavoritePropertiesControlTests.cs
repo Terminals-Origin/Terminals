@@ -49,7 +49,7 @@ namespace Tests.UserInterface
             this.SimulateGatewayNodeSelection();
             var title = this.propertiesControl.Controls["titleLabel"];
             const string CHANGED_TITLE_MESSAGE = "Changing selected node to protocol options control, has to update control title";
-            Assert.AreEqual("Protocol options (RDP) - TS Gateway", title.Text, CHANGED_TITLE_MESSAGE);
+            Assert.AreEqual("RDP Options - TS Gateway", title.Text, CHANGED_TITLE_MESSAGE);
         }
 
         /// <summary>

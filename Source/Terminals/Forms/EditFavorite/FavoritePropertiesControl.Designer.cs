@@ -28,11 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("General");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Groups");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Execute before connect");
             System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Protocol Options");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FavoritePropertiesControl));
             this.treeView = new System.Windows.Forms.TreeView();
+            this.treeIcons = new System.Windows.Forms.ImageList(this.components);
             this.titleLabel = new System.Windows.Forms.Label();
             this.executePanel1 = new Terminals.Forms.EditFavorite.ExecuteControl();
             this.generalPanel1 = new Terminals.Forms.EditFavorite.GeneralPropertiesUserControl();
@@ -46,24 +49,49 @@
             this.treeView.BackColor = System.Drawing.SystemColors.Window;
             this.treeView.Dock = System.Windows.Forms.DockStyle.Left;
             this.treeView.HideSelection = false;
+            this.treeView.ImageIndex = 0;
+            this.treeView.ImageList = this.treeIcons;
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Name = "treeView";
+            treeNode1.ImageKey = "computer_link.png";
             treeNode1.Name = "generalNode";
+            treeNode1.SelectedImageKey = "computer_link.png";
             treeNode1.Text = "General";
+            treeNode2.ImageKey = "tag_blue_add.png";
             treeNode2.Name = "groupsNode";
+            treeNode2.SelectedImageKey = "tag_blue_add.png";
             treeNode2.Text = "Groups";
+            treeNode3.ImageKey = "application_xp_terminal.png";
             treeNode3.Name = "executeNode";
+            treeNode3.SelectedImageKey = "application_xp_terminal.png";
             treeNode3.Text = "Execute before connect";
+            treeNode4.ImageKey = "terminalsicon.png";
             treeNode4.Name = "protocolOptionsNode";
+            treeNode4.SelectedImageKey = "terminalsicon.png";
             treeNode4.Text = "Protocol Options";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
             treeNode3,
             treeNode4});
+            this.treeView.SelectedImageIndex = 0;
             this.treeView.Size = new System.Drawing.Size(150, 407);
             this.treeView.TabIndex = 1;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewAfterSelect);
+            // 
+            // treeIcons
+            // 
+            this.treeIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("treeIcons.ImageStream")));
+            this.treeIcons.TransparentColor = System.Drawing.Color.Magenta;
+            this.treeIcons.Images.SetKeyName(0, "computer_link.png");
+            this.treeIcons.Images.SetKeyName(1, "tag_blue_add.png");
+            this.treeIcons.Images.SetKeyName(2, "application_xp_terminal.png");
+            this.treeIcons.Images.SetKeyName(3, "terminalsicon.png");
+            this.treeIcons.Images.SetKeyName(4, "treeIcon_rdp.png");
+            this.treeIcons.Images.SetKeyName(5, "treeIcon_vnc.png");
+            this.treeIcons.Images.SetKeyName(6, "treeIcon_ssh.png");
+            this.treeIcons.Images.SetKeyName(7, "treeIcon_telnet.png");
+            this.treeIcons.Images.SetKeyName(8, "treeIcon_http.png");
             // 
             // titleLabel
             // 
@@ -137,5 +165,6 @@
         private GroupsControl groupsPanel1;
         private ExecuteControl executePanel1;
         private RasControl rasControl1;
+        private System.Windows.Forms.ImageList treeIcons;
     }
 }
