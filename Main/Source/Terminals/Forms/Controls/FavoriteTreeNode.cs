@@ -40,7 +40,7 @@ namespace Terminals.Forms.Controls
             this.Favorite = favorite;
             this.Tag = favorite; // temporary solution, for backward compatibility only
 
-            this.ImageKey = FavoriteIcons.GetTreeviewImageListKey(favorite);
+            this.ImageKey = FavoriteIcons.GetTreeviewImageListKey(favorite.Protocol);
             this.SelectedImageKey = this.ImageKey;
             // possible performance hit on SQL persistence, when loading details for each created favorite and also in menu loader
             this.ToolTipText = favorite.GetToolTipText();

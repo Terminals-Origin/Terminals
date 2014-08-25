@@ -68,9 +68,16 @@ namespace Terminals.Forms.EditFavorite
 
         private void GenearalPanel1ProtocolChanged(string newProtocol)
         {
-            this.ProtocolOptionsNode.Text = string.Format("Protocol options ({0})", this.ProtocolText);
+            this.ProtocolOptionsNode.Text = string.Format("{0} Options", this.ProtocolText);
             this.protocolOptionsPanel1.ReloadControls(newProtocol);
+            this.UpdateProtocolOptionsNodeIcons(newProtocol);
             this.ReloadProtocolTreeNodes();
+        }
+
+        private void UpdateProtocolOptionsNodeIcons(string newProtocol)
+        {
+            string imageKey = FavoriteIcons.GetTreeviewImageListKey(newProtocol);
+            UpdateNodeIcon(this.ProtocolOptionsNode, imageKey);
         }
 
         private void ReloadProtocolTreeNodes()
@@ -81,10 +88,29 @@ namespace Terminals.Forms.EditFavorite
             if (this.protocolOptionsPanel1.Controls.Count <= 1)
                 return;
 
+            this.CreateChildProtocolNodes(optionsNodes);
+        }
+
+        private void CreateChildProtocolNodes(TreeNodeCollection optionsNodes)
+        {
             foreach (Control pluginUserControl in this.protocolOptionsPanel1.Controls)
             {
-                optionsNodes.Add(pluginUserControl.Name);
+                TreeNode newNode = this.CreateChildNode(pluginUserControl);
+                optionsNodes.Add(newNode);
             }
+        }
+
+        private TreeNode CreateChildNode(Control pluginUserControl)
+        {
+            var newNode = new TreeNode(pluginUserControl.Name);
+            UpdateNodeIcon(newNode, this.ProtocolOptionsNode.ImageKey);
+            return newNode;
+        }
+
+        private static void UpdateNodeIcon(TreeNode newNode, string protocolImageKey)
+        {
+            newNode.ImageKey = protocolImageKey;
+            newNode.SelectedImageKey = protocolImageKey;
         }
 
         private void HideAllPanels()

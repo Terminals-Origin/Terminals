@@ -33,9 +33,9 @@ namespace Terminals.Data
         /// <summary>
         /// Gets the icon file name by icons defined in FavoritesTreeView imageListIcons
         /// </summary>
-        internal static string GetTreeviewImageListKey(IFavorite favorite)
+        internal static string GetTreeviewImageListKey(string protocol)
         {
-            switch (favorite.Protocol)
+            switch (protocol)
             {
                 case ConnectionManager.RDP:
                     return "treeIcon_rdp.png";

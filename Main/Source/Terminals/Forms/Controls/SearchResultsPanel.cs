@@ -101,7 +101,7 @@ namespace Terminals.Forms.Controls
             item.Tag = favorite;
             item.Text = favorite.Name;
             item.ToolTipText = favorite.GetToolTipText();
-            item.ImageKey = FavoriteIcons.GetTreeviewImageListKey(favorite);
+            item.ImageKey = FavoriteIcons.GetTreeviewImageListKey(favorite.Protocol);
             return item;
         }
 
