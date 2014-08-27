@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.chkConnectToConsole = new System.Windows.Forms.CheckBox();
-            this.DisplaySettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.AllowDesktopCompositionCheckbox = new System.Windows.Forms.CheckBox();
             this.AllowFontSmoothingCheckbox = new System.Windows.Forms.CheckBox();
             this.customSizePanel = new System.Windows.Forms.Panel();
@@ -47,7 +46,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.cmbResolution = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.DisplaySettingsGroupBox.SuspendLayout();
             this.customSizePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightUpDown)).BeginInit();
@@ -62,29 +60,6 @@
             this.chkConnectToConsole.TabIndex = 20;
             this.chkConnectToConsole.Text = "Co&nnect to Console";
             this.chkConnectToConsole.UseVisualStyleBackColor = true;
-            // 
-            // DisplaySettingsGroupBox
-            // 
-            this.DisplaySettingsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DisplaySettingsGroupBox.Controls.Add(this.AllowDesktopCompositionCheckbox);
-            this.DisplaySettingsGroupBox.Controls.Add(this.AllowFontSmoothingCheckbox);
-            this.DisplaySettingsGroupBox.Controls.Add(this.customSizePanel);
-            this.DisplaySettingsGroupBox.Controls.Add(this.chkDisableWallpaper);
-            this.DisplaySettingsGroupBox.Controls.Add(this.chkDisableThemes);
-            this.DisplaySettingsGroupBox.Controls.Add(this.chkDisableMenuAnimations);
-            this.DisplaySettingsGroupBox.Controls.Add(this.chkDisableFullWindowDrag);
-            this.DisplaySettingsGroupBox.Controls.Add(this.chkDisableCursorBlinking);
-            this.DisplaySettingsGroupBox.Controls.Add(this.chkDisableCursorShadow);
-            this.DisplaySettingsGroupBox.Controls.Add(this.cmbColors);
-            this.DisplaySettingsGroupBox.Controls.Add(this.label7);
-            this.DisplaySettingsGroupBox.Controls.Add(this.cmbResolution);
-            this.DisplaySettingsGroupBox.Controls.Add(this.label6);
-            this.DisplaySettingsGroupBox.Location = new System.Drawing.Point(3, 3);
-            this.DisplaySettingsGroupBox.Name = "DisplaySettingsGroupBox";
-            this.DisplaySettingsGroupBox.Size = new System.Drawing.Size(570, 206);
-            this.DisplaySettingsGroupBox.TabIndex = 19;
-            this.DisplaySettingsGroupBox.TabStop = false;
             // 
             // AllowDesktopCompositionCheckbox
             // 
@@ -287,11 +262,21 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.chkConnectToConsole);
-            this.Controls.Add(this.DisplaySettingsGroupBox);
+            this.Controls.Add(this.AllowDesktopCompositionCheckbox);
+            this.Controls.Add(this.AllowFontSmoothingCheckbox);
+            this.Controls.Add(this.customSizePanel);
+            this.Controls.Add(this.chkDisableWallpaper);
+            this.Controls.Add(this.chkDisableThemes);
+            this.Controls.Add(this.chkDisableMenuAnimations);
+            this.Controls.Add(this.chkDisableFullWindowDrag);
+            this.Controls.Add(this.chkDisableCursorBlinking);
+            this.Controls.Add(this.chkDisableCursorShadow);
+            this.Controls.Add(this.cmbColors);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.cmbResolution);
+            this.Controls.Add(this.label6);
             this.Name = "RdpDisplayUserControl";
             this.Size = new System.Drawing.Size(590, 365);
-            this.DisplaySettingsGroupBox.ResumeLayout(false);
-            this.DisplaySettingsGroupBox.PerformLayout();
             this.customSizePanel.ResumeLayout(false);
             this.customSizePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).EndInit();
@@ -304,7 +289,6 @@
         #endregion
 
         private System.Windows.Forms.CheckBox chkConnectToConsole;
-        private System.Windows.Forms.GroupBox DisplaySettingsGroupBox;
         private System.Windows.Forms.CheckBox AllowDesktopCompositionCheckbox;
         private System.Windows.Forms.CheckBox AllowFontSmoothingCheckbox;
         private System.Windows.Forms.Panel customSizePanel;

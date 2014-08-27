@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ExtendedSettingsGgroupBox = new System.Windows.Forms.GroupBox();
             this.lblLoadBalanceInfo = new System.Windows.Forms.Label();
             this.txtLoadBalanceInfo = new System.Windows.Forms.TextBox();
             this.EnableNLAAuthenticationCheckbox = new System.Windows.Forms.CheckBox();
@@ -52,40 +51,7 @@
             this.EnableBitmapPersistenceCheckbox = new System.Windows.Forms.CheckBox();
             this.AllowBackgroundInputCheckBox = new System.Windows.Forms.CheckBox();
             this.label30 = new System.Windows.Forms.Label();
-            this.ExtendedSettingsGgroupBox.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // ExtendedSettingsGgroupBox
-            // 
-            this.ExtendedSettingsGgroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.lblLoadBalanceInfo);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.txtLoadBalanceInfo);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.EnableNLAAuthenticationCheckbox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.EnableTLSAuthenticationCheckbox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.label29);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.ShutdownTimeoutTextBox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.label28);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.OverallTimeoutTextbox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.label27);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.SingleTimeOutTextbox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.label26);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.IdleTimeoutMinutesTextBox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.GrabFocusOnConnectCheckbox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.EnableEncryptionCheckbox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.DisableWindowsKeyCheckbox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.DetectDoubleClicksCheckbox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.DisplayConnectionBarCheckbox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.DisableControlAltDeleteCheckbox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.AcceleratorPassthroughCheckBox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.EnableCompressionCheckbox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.EnableBitmapPersistenceCheckbox);
-            this.ExtendedSettingsGgroupBox.Controls.Add(this.AllowBackgroundInputCheckBox);
-            this.ExtendedSettingsGgroupBox.Location = new System.Drawing.Point(3, 3);
-            this.ExtendedSettingsGgroupBox.Name = "ExtendedSettingsGgroupBox";
-            this.ExtendedSettingsGgroupBox.Size = new System.Drawing.Size(565, 287);
-            this.ExtendedSettingsGgroupBox.TabIndex = 23;
-            this.ExtendedSettingsGgroupBox.TabStop = false;
             // 
             // lblLoadBalanceInfo
             // 
@@ -308,12 +274,31 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.ExtendedSettingsGgroupBox);
+            this.Controls.Add(this.lblLoadBalanceInfo);
+            this.Controls.Add(this.txtLoadBalanceInfo);
+            this.Controls.Add(this.EnableNLAAuthenticationCheckbox);
+            this.Controls.Add(this.EnableTLSAuthenticationCheckbox);
+            this.Controls.Add(this.label29);
+            this.Controls.Add(this.ShutdownTimeoutTextBox);
+            this.Controls.Add(this.label28);
+            this.Controls.Add(this.OverallTimeoutTextbox);
+            this.Controls.Add(this.label27);
+            this.Controls.Add(this.SingleTimeOutTextbox);
+            this.Controls.Add(this.label26);
+            this.Controls.Add(this.IdleTimeoutMinutesTextBox);
+            this.Controls.Add(this.GrabFocusOnConnectCheckbox);
+            this.Controls.Add(this.EnableEncryptionCheckbox);
+            this.Controls.Add(this.DisableWindowsKeyCheckbox);
+            this.Controls.Add(this.DetectDoubleClicksCheckbox);
+            this.Controls.Add(this.DisplayConnectionBarCheckbox);
+            this.Controls.Add(this.DisableControlAltDeleteCheckbox);
+            this.Controls.Add(this.AcceleratorPassthroughCheckBox);
+            this.Controls.Add(this.EnableCompressionCheckbox);
+            this.Controls.Add(this.EnableBitmapPersistenceCheckbox);
+            this.Controls.Add(this.AllowBackgroundInputCheckBox);
             this.Controls.Add(this.label30);
             this.Name = "RdpExtendedSettingsControl";
             this.Size = new System.Drawing.Size(590, 365);
-            this.ExtendedSettingsGgroupBox.ResumeLayout(false);
-            this.ExtendedSettingsGgroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -321,7 +306,6 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox ExtendedSettingsGgroupBox;
         private System.Windows.Forms.Label lblLoadBalanceInfo;
         private System.Windows.Forms.TextBox txtLoadBalanceInfo;
         private System.Windows.Forms.CheckBox EnableNLAAuthenticationCheckbox;

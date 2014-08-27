@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.GeneralGroupBox = new System.Windows.Forms.GroupBox();
             this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
             this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
             this.httpUrlTextBox = new System.Windows.Forms.TextBox();
@@ -54,38 +53,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.cmbServers = new System.Windows.Forms.ComboBox();
             this.lblServerName = new System.Windows.Forms.Label();
-            this.GeneralGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
             this.CredentialsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
-            // 
-            // GeneralGroupBox
-            // 
-            this.GeneralGroupBox.Controls.Add(this.chkAddtoToolbar);
-            this.GeneralGroupBox.Controls.Add(this.NewWindowCheckbox);
-            this.GeneralGroupBox.Controls.Add(this.httpUrlTextBox);
-            this.GeneralGroupBox.Controls.Add(this.NotesTextbox);
-            this.GeneralGroupBox.Controls.Add(this.txtPort);
-            this.GeneralGroupBox.Controls.Add(this.txtName);
-            this.GeneralGroupBox.Controls.Add(this.label15);
-            this.GeneralGroupBox.Controls.Add(this.CredentialDropdown);
-            this.GeneralGroupBox.Controls.Add(this.CredentialManagerPicturebox);
-            this.GeneralGroupBox.Controls.Add(this.CredentialsPanel);
-            this.GeneralGroupBox.Controls.Add(this.label36);
-            this.GeneralGroupBox.Controls.Add(this.pictureBox2);
-            this.GeneralGroupBox.Controls.Add(this.lblPort);
-            this.GeneralGroupBox.Controls.Add(this.ProtocolComboBox);
-            this.GeneralGroupBox.Controls.Add(this.ProtocolLabel);
-            this.GeneralGroupBox.Controls.Add(this.label5);
-            this.GeneralGroupBox.Controls.Add(this.cmbServers);
-            this.GeneralGroupBox.Controls.Add(this.lblServerName);
-            this.GeneralGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.GeneralGroupBox.Location = new System.Drawing.Point(0, 0);
-            this.GeneralGroupBox.Name = "GeneralGroupBox";
-            this.GeneralGroupBox.Size = new System.Drawing.Size(590, 365);
-            this.GeneralGroupBox.TabIndex = 1;
-            this.GeneralGroupBox.TabStop = false;
             // 
             // chkAddtoToolbar
             // 
@@ -333,11 +304,26 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.GeneralGroupBox);
+            this.Controls.Add(this.chkAddtoToolbar);
+            this.Controls.Add(this.NewWindowCheckbox);
+            this.Controls.Add(this.httpUrlTextBox);
+            this.Controls.Add(this.NotesTextbox);
+            this.Controls.Add(this.txtPort);
+            this.Controls.Add(this.txtName);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.CredentialDropdown);
+            this.Controls.Add(this.CredentialManagerPicturebox);
+            this.Controls.Add(this.CredentialsPanel);
+            this.Controls.Add(this.label36);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.lblPort);
+            this.Controls.Add(this.ProtocolComboBox);
+            this.Controls.Add(this.ProtocolLabel);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.cmbServers);
+            this.Controls.Add(this.lblServerName);
             this.Name = "GeneralPropertiesUserControl";
             this.Size = new System.Drawing.Size(590, 365);
-            this.GeneralGroupBox.ResumeLayout(false);
-            this.GeneralGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).EndInit();
             this.CredentialsPanel.ResumeLayout(false);
             this.CredentialsPanel.PerformLayout();
@@ -348,7 +334,6 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox GeneralGroupBox;
         private System.Windows.Forms.TextBox httpUrlTextBox;
         private System.Windows.Forms.TextBox NotesTextbox;
         private System.Windows.Forms.TextBox txtPort;

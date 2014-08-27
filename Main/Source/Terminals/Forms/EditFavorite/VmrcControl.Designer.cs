@@ -28,22 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.VmrcGroupBox = new System.Windows.Forms.GroupBox();
             this.VMRCReducedColorsCheckbox = new System.Windows.Forms.CheckBox();
             this.VMRCAdminModeCheckbox = new System.Windows.Forms.CheckBox();
-            this.VmrcGroupBox.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // VmrcGroupBox
-            // 
-            this.VmrcGroupBox.Controls.Add(this.VMRCReducedColorsCheckbox);
-            this.VmrcGroupBox.Controls.Add(this.VMRCAdminModeCheckbox);
-            this.VmrcGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.VmrcGroupBox.Location = new System.Drawing.Point(0, 0);
-            this.VmrcGroupBox.Name = "VmrcGroupBox";
-            this.VmrcGroupBox.Size = new System.Drawing.Size(590, 365);
-            this.VmrcGroupBox.TabIndex = 1;
-            this.VmrcGroupBox.TabStop = false;
             // 
             // VMRCReducedColorsCheckbox
             // 
@@ -69,18 +56,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.VmrcGroupBox);
+            this.Controls.Add(this.VMRCReducedColorsCheckbox);
+            this.Controls.Add(this.VMRCAdminModeCheckbox);
             this.Name = "VmrcControl";
             this.Size = new System.Drawing.Size(590, 365);
-            this.VmrcGroupBox.ResumeLayout(false);
-            this.VmrcGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox VmrcGroupBox;
         private System.Windows.Forms.CheckBox VMRCReducedColorsCheckbox;
         private System.Windows.Forms.CheckBox VMRCAdminModeCheckbox;
     }

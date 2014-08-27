@@ -28,27 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.VncGroupBox = new System.Windows.Forms.GroupBox();
             this.VncViewOnlyCheckbox = new System.Windows.Forms.CheckBox();
             this.vncDisplayNumberInput = new System.Windows.Forms.NumericUpDown();
             this.label37 = new System.Windows.Forms.Label();
             this.vncAutoScaleCheckbox = new System.Windows.Forms.CheckBox();
-            this.VncGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.vncDisplayNumberInput)).BeginInit();
             this.SuspendLayout();
-            // 
-            // VncGroupBox
-            // 
-            this.VncGroupBox.Controls.Add(this.VncViewOnlyCheckbox);
-            this.VncGroupBox.Controls.Add(this.vncDisplayNumberInput);
-            this.VncGroupBox.Controls.Add(this.label37);
-            this.VncGroupBox.Controls.Add(this.vncAutoScaleCheckbox);
-            this.VncGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.VncGroupBox.Location = new System.Drawing.Point(0, 0);
-            this.VncGroupBox.Name = "VncGroupBox";
-            this.VncGroupBox.Size = new System.Drawing.Size(590, 365);
-            this.VncGroupBox.TabIndex = 1;
-            this.VncGroupBox.TabStop = false;
             // 
             // VncViewOnlyCheckbox
             // 
@@ -90,11 +75,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.VncGroupBox);
+            this.Controls.Add(this.VncViewOnlyCheckbox);
+            this.Controls.Add(this.vncDisplayNumberInput);
+            this.Controls.Add(this.label37);
+            this.Controls.Add(this.vncAutoScaleCheckbox);
             this.Name = "VncControl";
             this.Size = new System.Drawing.Size(590, 365);
-            this.VncGroupBox.ResumeLayout(false);
-            this.VncGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.vncDisplayNumberInput)).EndInit();
             this.ResumeLayout(false);
 
@@ -102,7 +88,6 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox VncGroupBox;
         private System.Windows.Forms.CheckBox VncViewOnlyCheckbox;
         private System.Windows.Forms.NumericUpDown vncDisplayNumberInput;
         private System.Windows.Forms.Label label37;

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SecuritySettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.SecurityStartFullScreenCheckbox = new System.Windows.Forms.CheckBox();
             this.label25 = new System.Windows.Forms.Label();
@@ -36,21 +35,8 @@
             this.label24 = new System.Windows.Forms.Label();
             this.SecuriytStartProgramTextbox = new System.Windows.Forms.TextBox();
             this.SecuritySettingsEnabledCheckbox = new System.Windows.Forms.CheckBox();
-            this.SecuritySettingsGroupBox.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // SecuritySettingsGroupBox
-            // 
-            this.SecuritySettingsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.SecuritySettingsGroupBox.Controls.Add(this.panel2);
-            this.SecuritySettingsGroupBox.Controls.Add(this.SecuritySettingsEnabledCheckbox);
-            this.SecuritySettingsGroupBox.Location = new System.Drawing.Point(3, 3);
-            this.SecuritySettingsGroupBox.Name = "SecuritySettingsGroupBox";
-            this.SecuritySettingsGroupBox.Size = new System.Drawing.Size(570, 151);
-            this.SecuritySettingsGroupBox.TabIndex = 3;
-            this.SecuritySettingsGroupBox.TabStop = false;
             // 
             // panel2
             // 
@@ -122,11 +108,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.SecuritySettingsGroupBox);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.SecuritySettingsEnabledCheckbox);
             this.Name = "RdpSecurityControl";
             this.Size = new System.Drawing.Size(590, 365);
-            this.SecuritySettingsGroupBox.ResumeLayout(false);
-            this.SecuritySettingsGroupBox.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
@@ -135,7 +120,6 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox SecuritySettingsGroupBox;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.CheckBox SecurityStartFullScreenCheckbox;
         private System.Windows.Forms.Label label25;
