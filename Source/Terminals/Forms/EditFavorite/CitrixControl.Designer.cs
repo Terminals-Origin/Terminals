@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.IcaGroupBox = new System.Windows.Forms.GroupBox();
             this.ClientINIBrowseButton = new System.Windows.Forms.Button();
             this.ServerINIBrowseButton = new System.Windows.Forms.Button();
             this.AppWorkingFolderBrowseButton = new System.Windows.Forms.Button();
@@ -45,33 +44,7 @@
             this.label23 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
-            this.IcaGroupBox.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // IcaGroupBox
-            // 
-            this.IcaGroupBox.Controls.Add(this.ClientINIBrowseButton);
-            this.IcaGroupBox.Controls.Add(this.ServerINIBrowseButton);
-            this.IcaGroupBox.Controls.Add(this.AppWorkingFolderBrowseButton);
-            this.IcaGroupBox.Controls.Add(this.appPathBrowseButton);
-            this.IcaGroupBox.Controls.Add(this.ICAEncryptionLevelCombobox);
-            this.IcaGroupBox.Controls.Add(this.ICAEnableEncryptionCheckbox);
-            this.IcaGroupBox.Controls.Add(this.ICAClientINI);
-            this.IcaGroupBox.Controls.Add(this.ICAServerINI);
-            this.IcaGroupBox.Controls.Add(this.ICAWorkingFolder);
-            this.IcaGroupBox.Controls.Add(this.ICAApplicationPath);
-            this.IcaGroupBox.Controls.Add(this.ICAApplicationNameTextBox);
-            this.IcaGroupBox.Controls.Add(this.label35);
-            this.IcaGroupBox.Controls.Add(this.label34);
-            this.IcaGroupBox.Controls.Add(this.label23);
-            this.IcaGroupBox.Controls.Add(this.label22);
-            this.IcaGroupBox.Controls.Add(this.label21);
-            this.IcaGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.IcaGroupBox.Location = new System.Drawing.Point(0, 0);
-            this.IcaGroupBox.Name = "IcaGroupBox";
-            this.IcaGroupBox.Size = new System.Drawing.Size(590, 365);
-            this.IcaGroupBox.TabIndex = 1;
-            this.IcaGroupBox.TabStop = false;
             // 
             // ClientINIBrowseButton
             // 
@@ -225,18 +198,30 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.IcaGroupBox);
+            this.Controls.Add(this.ClientINIBrowseButton);
+            this.Controls.Add(this.ServerINIBrowseButton);
+            this.Controls.Add(this.AppWorkingFolderBrowseButton);
+            this.Controls.Add(this.appPathBrowseButton);
+            this.Controls.Add(this.ICAEncryptionLevelCombobox);
+            this.Controls.Add(this.ICAEnableEncryptionCheckbox);
+            this.Controls.Add(this.ICAClientINI);
+            this.Controls.Add(this.ICAServerINI);
+            this.Controls.Add(this.ICAWorkingFolder);
+            this.Controls.Add(this.ICAApplicationPath);
+            this.Controls.Add(this.ICAApplicationNameTextBox);
+            this.Controls.Add(this.label35);
+            this.Controls.Add(this.label34);
+            this.Controls.Add(this.label23);
+            this.Controls.Add(this.label22);
+            this.Controls.Add(this.label21);
             this.Name = "CitrixControl";
             this.Size = new System.Drawing.Size(590, 365);
-            this.IcaGroupBox.ResumeLayout(false);
-            this.IcaGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox IcaGroupBox;
         private System.Windows.Forms.Button ClientINIBrowseButton;
         private System.Windows.Forms.Button ServerINIBrowseButton;
         private System.Windows.Forms.Button AppWorkingFolderBrowseButton;

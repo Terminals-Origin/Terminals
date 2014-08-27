@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ExecuteGroupBox = new System.Windows.Forms.GroupBox();
             this.txtInitialDirectory = new System.Windows.Forms.TextBox();
             this.txtArguments = new System.Windows.Forms.TextBox();
             this.txtCommand = new System.Windows.Forms.TextBox();
@@ -37,25 +36,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.chkWaitForExit = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.ExecuteGroupBox.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // ExecuteGroupBox
-            // 
-            this.ExecuteGroupBox.Controls.Add(this.txtInitialDirectory);
-            this.ExecuteGroupBox.Controls.Add(this.txtArguments);
-            this.ExecuteGroupBox.Controls.Add(this.txtCommand);
-            this.ExecuteGroupBox.Controls.Add(this.label13);
-            this.ExecuteGroupBox.Controls.Add(this.chkExecuteBeforeConnect);
-            this.ExecuteGroupBox.Controls.Add(this.label12);
-            this.ExecuteGroupBox.Controls.Add(this.chkWaitForExit);
-            this.ExecuteGroupBox.Controls.Add(this.label11);
-            this.ExecuteGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ExecuteGroupBox.Location = new System.Drawing.Point(0, 0);
-            this.ExecuteGroupBox.Name = "ExecuteGroupBox";
-            this.ExecuteGroupBox.Size = new System.Drawing.Size(590, 365);
-            this.ExecuteGroupBox.TabIndex = 1;
-            this.ExecuteGroupBox.TabStop = false;
             // 
             // txtInitialDirectory
             // 
@@ -129,18 +110,23 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.ExecuteGroupBox);
+            this.Controls.Add(this.txtInitialDirectory);
+            this.Controls.Add(this.txtArguments);
+            this.Controls.Add(this.txtCommand);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.chkExecuteBeforeConnect);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.chkWaitForExit);
+            this.Controls.Add(this.label11);
+
             this.Name = "ExecuteControl";
             this.Size = new System.Drawing.Size(590, 365);
-            this.ExecuteGroupBox.ResumeLayout(false);
-            this.ExecuteGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox ExecuteGroupBox;
         private System.Windows.Forms.TextBox txtInitialDirectory;
         private System.Windows.Forms.TextBox txtArguments;
         private System.Windows.Forms.TextBox txtCommand;

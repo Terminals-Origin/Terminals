@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.LocalResourceGroupBox = new System.Windows.Forms.GroupBox();
             this.btnDrives = new System.Windows.Forms.Button();
             this.cmbSounds = new System.Windows.Forms.ComboBox();
             this.chkRedirectSmartcards = new System.Windows.Forms.CheckBox();
@@ -40,29 +39,7 @@
             this.txtDesktopShare = new System.Windows.Forms.TextBox();
             this.chkSerialPorts = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.LocalResourceGroupBox.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // LocalResourceGroupBox
-            // 
-            this.LocalResourceGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.LocalResourceGroupBox.Controls.Add(this.btnDrives);
-            this.LocalResourceGroupBox.Controls.Add(this.cmbSounds);
-            this.LocalResourceGroupBox.Controls.Add(this.chkRedirectSmartcards);
-            this.LocalResourceGroupBox.Controls.Add(this.label8);
-            this.LocalResourceGroupBox.Controls.Add(this.chkRedirectClipboard);
-            this.LocalResourceGroupBox.Controls.Add(this.label9);
-            this.LocalResourceGroupBox.Controls.Add(this.btnBrowseShare);
-            this.LocalResourceGroupBox.Controls.Add(this.chkPrinters);
-            this.LocalResourceGroupBox.Controls.Add(this.txtDesktopShare);
-            this.LocalResourceGroupBox.Controls.Add(this.chkSerialPorts);
-            this.LocalResourceGroupBox.Controls.Add(this.label10);
-            this.LocalResourceGroupBox.Location = new System.Drawing.Point(3, 3);
-            this.LocalResourceGroupBox.Name = "LocalResourceGroupBox";
-            this.LocalResourceGroupBox.Size = new System.Drawing.Size(570, 200);
-            this.LocalResourceGroupBox.TabIndex = 13;
-            this.LocalResourceGroupBox.TabStop = false;
             // 
             // btnDrives
             // 
@@ -177,18 +154,26 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.LocalResourceGroupBox);
+            this.Controls.Add(this.btnDrives);
+            this.Controls.Add(this.cmbSounds);
+            this.Controls.Add(this.chkRedirectSmartcards);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.chkRedirectClipboard);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.btnBrowseShare);
+            this.Controls.Add(this.chkPrinters);
+            this.Controls.Add(this.txtDesktopShare);
+            this.Controls.Add(this.chkSerialPorts);
+            this.Controls.Add(this.label10);
+            
             this.Name = "RdpLocalResourcesUserControl";
             this.Size = new System.Drawing.Size(590, 365);
-            this.LocalResourceGroupBox.ResumeLayout(false);
-            this.LocalResourceGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox LocalResourceGroupBox;
         private System.Windows.Forms.Button btnDrives;
         private System.Windows.Forms.ComboBox cmbSounds;
         private System.Windows.Forms.CheckBox chkRedirectSmartcards;
