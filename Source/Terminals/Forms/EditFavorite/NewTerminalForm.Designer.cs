@@ -223,7 +223,6 @@ namespace Terminals
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "New Connection";
-            this.Load += new System.EventHandler(this.NewTerminalForm_Load);
             this.Shown += new System.EventHandler(this.NewTerminalForm_Shown);
             this.contextMenuStripDefaults.ResumeLayout(false);
             this.contextMenuStripSave.ResumeLayout(false);

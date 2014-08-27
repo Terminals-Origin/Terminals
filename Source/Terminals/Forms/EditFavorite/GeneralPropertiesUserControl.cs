@@ -184,7 +184,8 @@ namespace Terminals.Forms.EditFavorite
         private void CmbServers_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.rasControl.OnServerNameChanged(this.ProtocolText, this.ServerNameText);
-            this.cmbServers.DataSource = this.rasControl.ConnectionNames;
+            // Setting the data source resets the already load text, additionaly the RAS control doesnt work
+            // this.cmbServers.DataSource = this.rasControl.ConnectionNames;
         }
 
         private void CmbServers_Leave(object sender, EventArgs e)

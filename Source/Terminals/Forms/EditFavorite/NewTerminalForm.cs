@@ -68,18 +68,12 @@ namespace Terminals
             this.favoritePropertiesControl1.SetOkButtonRequested += this.GeneralProperties_SetOkButtonRequested;
             this.favoritePropertiesControl1.RegisterValidations(this.validator);
             this.favoritePropertiesControl1.SetErrorProviderIconsAlignment(this.errorProvider);
+            this.favoritePropertiesControl1.LoadContent();
         }
 
         private void GeneralProperties_SetOkButtonRequested(object sender, EventArgs e)
         {
             this.SetOkButtonState();
-        }
-
-        private void NewTerminalForm_Load(Object sender, EventArgs e)
-        {
-            this.SuspendLayout();
-            this.favoritePropertiesControl1.LoadContent();
-            this.ResumeLayout(true);
         }
 
         private void NewTerminalForm_Shown(object sender, EventArgs e)
