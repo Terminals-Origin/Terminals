@@ -22,12 +22,6 @@ namespace Terminals.Forms.EditFavorite
                 this.customSizePanel.Visible = false;
         }
 
-        // todo where tomove the SetControls method, when protocol was changed
-        public void SetControls()
-        {
-            this.chkConnectToConsole.Enabled = true;
-        }
-
         public void LoadFrom(IFavorite favorite)
         {
             this.FillDisplayControls(favorite);
@@ -46,7 +40,6 @@ namespace Terminals.Forms.EditFavorite
 
         private void FillFavoriteRdpDisplayOptions(RdpOptions rdpOptions)
         {
-            rdpOptions.ConnectToConsole = this.chkConnectToConsole.Checked;
             var userInterface = rdpOptions.UserInterface;
             userInterface.DisableWallPaper = this.chkDisableWallpaper.Checked;
             userInterface.DisableCursorBlinking = this.chkDisableCursorBlinking.Checked;
@@ -81,7 +74,6 @@ namespace Terminals.Forms.EditFavorite
 
         private void FillRdpDisplayControls(RdpOptions rdpOptions)
         {
-            this.chkConnectToConsole.Checked = rdpOptions.ConnectToConsole;
             var userInterface = rdpOptions.UserInterface;
             this.chkDisableWallpaper.Checked = userInterface.DisableWallPaper;
             this.chkDisableCursorBlinking.Checked = userInterface.DisableCursorBlinking;

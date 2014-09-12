@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.chkConnectToConsole = new System.Windows.Forms.CheckBox();
             this.AllowDesktopCompositionCheckbox = new System.Windows.Forms.CheckBox();
             this.AllowFontSmoothingCheckbox = new System.Windows.Forms.CheckBox();
             this.customSizePanel = new System.Windows.Forms.Panel();
@@ -50,16 +49,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightUpDown)).BeginInit();
             this.SuspendLayout();
-            // 
-            // chkConnectToConsole
-            // 
-            this.chkConnectToConsole.AutoSize = true;
-            this.chkConnectToConsole.Location = new System.Drawing.Point(3, 211);
-            this.chkConnectToConsole.Name = "chkConnectToConsole";
-            this.chkConnectToConsole.Size = new System.Drawing.Size(119, 17);
-            this.chkConnectToConsole.TabIndex = 20;
-            this.chkConnectToConsole.Text = "Co&nnect to Console";
-            this.chkConnectToConsole.UseVisualStyleBackColor = true;
             // 
             // AllowDesktopCompositionCheckbox
             // 
@@ -257,11 +246,10 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "&Desktop size:";
             // 
-            // RdpDisplayUserControl
+            // RdpDisplayControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.chkConnectToConsole);
             this.Controls.Add(this.AllowDesktopCompositionCheckbox);
             this.Controls.Add(this.AllowFontSmoothingCheckbox);
             this.Controls.Add(this.customSizePanel);
@@ -275,7 +263,7 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.cmbResolution);
             this.Controls.Add(this.label6);
-            this.Name = "RdpDisplayUserControl";
+            this.Name = "RdpDisplayControl";
             this.Size = new System.Drawing.Size(590, 365);
             this.customSizePanel.ResumeLayout(false);
             this.customSizePanel.PerformLayout();
@@ -288,7 +276,6 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox chkConnectToConsole;
         private System.Windows.Forms.CheckBox AllowDesktopCompositionCheckbox;
         private System.Windows.Forms.CheckBox AllowFontSmoothingCheckbox;
         private System.Windows.Forms.Panel customSizePanel;
