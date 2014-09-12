@@ -30,8 +30,6 @@
         {
             this.lblLoadBalanceInfo = new System.Windows.Forms.Label();
             this.txtLoadBalanceInfo = new System.Windows.Forms.TextBox();
-            this.EnableNLAAuthenticationCheckbox = new System.Windows.Forms.CheckBox();
-            this.EnableTLSAuthenticationCheckbox = new System.Windows.Forms.CheckBox();
             this.label29 = new System.Windows.Forms.Label();
             this.ShutdownTimeoutTextBox = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
@@ -41,7 +39,6 @@
             this.label26 = new System.Windows.Forms.Label();
             this.IdleTimeoutMinutesTextBox = new System.Windows.Forms.TextBox();
             this.GrabFocusOnConnectCheckbox = new System.Windows.Forms.CheckBox();
-            this.EnableEncryptionCheckbox = new System.Windows.Forms.CheckBox();
             this.DisableWindowsKeyCheckbox = new System.Windows.Forms.CheckBox();
             this.DetectDoubleClicksCheckbox = new System.Windows.Forms.CheckBox();
             this.DisplayConnectionBarCheckbox = new System.Windows.Forms.CheckBox();
@@ -68,30 +65,6 @@
             this.txtLoadBalanceInfo.Name = "txtLoadBalanceInfo";
             this.txtLoadBalanceInfo.Size = new System.Drawing.Size(218, 20);
             this.txtLoadBalanceInfo.TabIndex = 41;
-            // 
-            // EnableNLAAuthenticationCheckbox
-            // 
-            this.EnableNLAAuthenticationCheckbox.AutoSize = true;
-            this.EnableNLAAuthenticationCheckbox.Checked = true;
-            this.EnableNLAAuthenticationCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.EnableNLAAuthenticationCheckbox.Location = new System.Drawing.Point(242, 123);
-            this.EnableNLAAuthenticationCheckbox.Name = "EnableNLAAuthenticationCheckbox";
-            this.EnableNLAAuthenticationCheckbox.Size = new System.Drawing.Size(154, 17);
-            this.EnableNLAAuthenticationCheckbox.TabIndex = 32;
-            this.EnableNLAAuthenticationCheckbox.Text = "Enable NLA Authentication";
-            this.EnableNLAAuthenticationCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // EnableTLSAuthenticationCheckbox
-            // 
-            this.EnableTLSAuthenticationCheckbox.AutoSize = true;
-            this.EnableTLSAuthenticationCheckbox.Checked = true;
-            this.EnableTLSAuthenticationCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.EnableTLSAuthenticationCheckbox.Location = new System.Drawing.Point(242, 103);
-            this.EnableTLSAuthenticationCheckbox.Name = "EnableTLSAuthenticationCheckbox";
-            this.EnableTLSAuthenticationCheckbox.Size = new System.Drawing.Size(153, 17);
-            this.EnableTLSAuthenticationCheckbox.TabIndex = 31;
-            this.EnableTLSAuthenticationCheckbox.Text = "Enable TLS Authentication";
-            this.EnableTLSAuthenticationCheckbox.UseVisualStyleBackColor = true;
             // 
             // label29
             // 
@@ -171,16 +144,6 @@
             this.GrabFocusOnConnectCheckbox.Text = "Grab Focus on Connect";
             this.GrabFocusOnConnectCheckbox.UseVisualStyleBackColor = true;
             // 
-            // EnableEncryptionCheckbox
-            // 
-            this.EnableEncryptionCheckbox.AutoSize = true;
-            this.EnableEncryptionCheckbox.Location = new System.Drawing.Point(242, 43);
-            this.EnableEncryptionCheckbox.Name = "EnableEncryptionCheckbox";
-            this.EnableEncryptionCheckbox.Size = new System.Drawing.Size(112, 17);
-            this.EnableEncryptionCheckbox.TabIndex = 29;
-            this.EnableEncryptionCheckbox.Text = "Enable Encryption";
-            this.EnableEncryptionCheckbox.UseVisualStyleBackColor = true;
-            // 
             // DisableWindowsKeyCheckbox
             // 
             this.DisableWindowsKeyCheckbox.AutoSize = true;
@@ -244,7 +207,7 @@
             // EnableBitmapPersistenceCheckbox
             // 
             this.EnableBitmapPersistenceCheckbox.AutoSize = true;
-            this.EnableBitmapPersistenceCheckbox.Location = new System.Drawing.Point(242, 83);
+            this.EnableBitmapPersistenceCheckbox.Location = new System.Drawing.Point(242, 43);
             this.EnableBitmapPersistenceCheckbox.Name = "EnableBitmapPersistenceCheckbox";
             this.EnableBitmapPersistenceCheckbox.Size = new System.Drawing.Size(152, 17);
             this.EnableBitmapPersistenceCheckbox.TabIndex = 30;
@@ -276,8 +239,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.lblLoadBalanceInfo);
             this.Controls.Add(this.txtLoadBalanceInfo);
-            this.Controls.Add(this.EnableNLAAuthenticationCheckbox);
-            this.Controls.Add(this.EnableTLSAuthenticationCheckbox);
             this.Controls.Add(this.label29);
             this.Controls.Add(this.ShutdownTimeoutTextBox);
             this.Controls.Add(this.label28);
@@ -287,7 +248,6 @@
             this.Controls.Add(this.label26);
             this.Controls.Add(this.IdleTimeoutMinutesTextBox);
             this.Controls.Add(this.GrabFocusOnConnectCheckbox);
-            this.Controls.Add(this.EnableEncryptionCheckbox);
             this.Controls.Add(this.DisableWindowsKeyCheckbox);
             this.Controls.Add(this.DetectDoubleClicksCheckbox);
             this.Controls.Add(this.DisplayConnectionBarCheckbox);
@@ -308,8 +268,6 @@
 
         private System.Windows.Forms.Label lblLoadBalanceInfo;
         private System.Windows.Forms.TextBox txtLoadBalanceInfo;
-        private System.Windows.Forms.CheckBox EnableNLAAuthenticationCheckbox;
-        private System.Windows.Forms.CheckBox EnableTLSAuthenticationCheckbox;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.TextBox ShutdownTimeoutTextBox;
         private System.Windows.Forms.Label label28;
@@ -319,7 +277,6 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.TextBox IdleTimeoutMinutesTextBox;
         private System.Windows.Forms.CheckBox GrabFocusOnConnectCheckbox;
-        private System.Windows.Forms.CheckBox EnableEncryptionCheckbox;
         private System.Windows.Forms.CheckBox DisableWindowsKeyCheckbox;
         private System.Windows.Forms.CheckBox DetectDoubleClicksCheckbox;
         private System.Windows.Forms.CheckBox DisplayConnectionBarCheckbox;

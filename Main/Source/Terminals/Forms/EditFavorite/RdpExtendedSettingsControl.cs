@@ -53,9 +53,6 @@ namespace Terminals.Forms.EditFavorite
             userInterface.BitmapPeristence = this.EnableBitmapPersistenceCheckbox.Checked;
             userInterface.AllowBackgroundInput = this.AllowBackgroundInputCheckBox.Checked;
             userInterface.LoadBalanceInfo = this.txtLoadBalanceInfo.Text;
-            rdpOptions.Security.EnableTLSAuthentication = this.EnableTLSAuthenticationCheckbox.Checked;
-            rdpOptions.Security.EnableNLAAuthentication = this.EnableNLAAuthenticationCheckbox.Checked;
-            rdpOptions.Security.EnableEncryption = this.EnableEncryptionCheckbox.Checked;
         }
 
         private void FillFavoriteRdpTimeOutOptions(RdpOptions rdpOptions)
@@ -104,9 +101,6 @@ namespace Terminals.Forms.EditFavorite
             this.EnableBitmapPersistenceCheckbox.Checked = userInterface.BitmapPeristence;
             this.AllowBackgroundInputCheckBox.Checked = userInterface.AllowBackgroundInput;
             this.txtLoadBalanceInfo.Text = userInterface.LoadBalanceInfo;
-            this.EnableTLSAuthenticationCheckbox.Checked = rdpOptions.Security.EnableTLSAuthentication;
-            this.EnableNLAAuthenticationCheckbox.Checked = rdpOptions.Security.EnableNLAAuthentication;
-            this.EnableEncryptionCheckbox.Checked = rdpOptions.Security.EnableEncryption;
         }
     }
 }
