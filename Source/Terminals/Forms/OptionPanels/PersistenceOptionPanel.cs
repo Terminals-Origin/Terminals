@@ -7,6 +7,7 @@ using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.DB;
 using System.Collections.Generic;
+using Terminals.Forms.EditFavorite;
 
 namespace Terminals.Forms
 {
@@ -77,7 +78,7 @@ namespace Terminals.Forms
                 this.ConnectionString = Settings.ConnectionString;
 
             if (!string.IsNullOrEmpty(Settings.DatabaseMasterPassword))
-                this.txtDbPassword.Text = NewTerminalForm.HIDDEN_PASSWORD;
+                this.txtDbPassword.Text = GeneralPropertiesUserControl.HIDDEN_PASSWORD;
         }
 
         public void SaveSettings()
@@ -86,7 +87,7 @@ namespace Terminals.Forms
             {
                 Settings.PersistenceType = SqlPersistence.TYPE_ID;
                 Settings.ConnectionString = this.ConnectionString;
-                if (this.txtDbPassword.Text != NewTerminalForm.HIDDEN_PASSWORD)
+                if (this.txtDbPassword.Text != GeneralPropertiesUserControl.HIDDEN_PASSWORD)
                     Settings.DatabaseMasterPassword = this.txtDbPassword.Text;
             }
             else
@@ -116,7 +117,7 @@ namespace Terminals.Forms
 
         private string GetFilledDatabasePassword()
         {
-            if (this.txtDbPassword.Text != NewTerminalForm.HIDDEN_PASSWORD)
+            if (this.txtDbPassword.Text != GeneralPropertiesUserControl.HIDDEN_PASSWORD)
                 return this.txtDbPassword.Text;
 
             return Settings.DatabaseMasterPassword;

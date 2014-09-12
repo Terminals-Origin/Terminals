@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Data.Validation;
+using Terminals.Forms.EditFavorite;
 
 namespace Terminals.Credentials
 {
@@ -35,7 +36,7 @@ namespace Terminals.Credentials
                 this.DomainTextbox.Text = editedCredential.Domain;
                 this.UsernameTextbox.Text = editedCredential.UserName;
                 if(!string.IsNullOrEmpty(editedCredential.EncryptedPassword))
-                    this.PasswordTextbox.Text = NewTerminalForm.HIDDEN_PASSWORD;
+                    this.PasswordTextbox.Text = GeneralPropertiesUserControl.HIDDEN_PASSWORD;
                 this.editedCredentialName = editedCredential.Name;
             }
         }
@@ -119,7 +120,7 @@ namespace Terminals.Credentials
             toUpdate.Domain = this.DomainTextbox.Text;
             toUpdate.Name = this.NameTextbox.Text;
             toUpdate.UserName = this.UsernameTextbox.Text;
-            if(this.PasswordTextbox.Text != NewTerminalForm.HIDDEN_PASSWORD)
+            if (this.PasswordTextbox.Text != GeneralPropertiesUserControl.HIDDEN_PASSWORD)
                 toUpdate.Password = this.PasswordTextbox.Text;
         }
 
