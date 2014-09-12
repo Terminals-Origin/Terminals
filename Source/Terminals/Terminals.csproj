@@ -201,6 +201,12 @@
     <Compile Include="Data\Validation\ValidationStates.cs" />
     <Compile Include="Forms\ConnectionDefinition.cs" />
     <Compile Include="Forms\ConnectionsUiFactory.cs" />
+    <Compile Include="Forms\Controls\CredentialsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\CredentialsPanel.Designer.cs">
+      <DependentUpon>CredentialsPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Controls\FavoritesFoundEventArgs.cs" />
     <Compile Include="Forms\Controls\FavoritesSearchBox.cs">
       <SubType>UserControl</SubType>
@@ -1193,6 +1199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ChangePassword.resx">
       <DependentUpon>ChangePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Controls\CredentialsPanel.resx">
+      <DependentUpon>CredentialsPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Controls\FavoritesSearchBox.resx">
       <DependentUpon>FavoritesSearchBox.cs</DependentUpon>
