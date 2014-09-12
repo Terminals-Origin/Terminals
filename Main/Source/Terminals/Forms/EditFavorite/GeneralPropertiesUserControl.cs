@@ -92,6 +92,7 @@ namespace Terminals.Forms.EditFavorite
             if (set != null)
             {
                 this.CredentialsPanel.Enabled = false;
+                // TODO LoadDirectly
                 this.cmbDomains.Text = set.Domain;
                 this.cmbUsers.Text = set.UserName;
                 this.txtPassword.Text = set.Password;
@@ -306,10 +307,12 @@ namespace Terminals.Forms.EditFavorite
             ISecurityOptions security = favorite.Security;
             security.Credential = selectedCredential == null ? Guid.Empty : selectedCredential.Id;
 
+            // TODO SaveUserAndDomain
             security.Domain = this.cmbDomains.Text;
             security.UserName = this.cmbUsers.Text;
             if (this.chkSavePassword.Checked)
             {
+                // TODO SavePassword
                 if (this.txtPassword.Text != HIDDEN_PASSWORD)
                     security.Password = this.txtPassword.Text;
                 else
@@ -365,6 +368,7 @@ namespace Terminals.Forms.EditFavorite
             this.NotesTextbox.Text = favorite.Notes;
         }
 
+        // TODO LoadFrom
         private void FillSecurityControls(IFavorite favorite)
         {
             this.cmbDomains.Text = favorite.Security.Domain;

@@ -156,6 +156,7 @@
     <Compile Include="UserInterface\ToolStripSettingsTest.cs" />
     <Compile Include="UserInterface\FavoritePropertiesControlTests.cs" />
     <Compile Include="UserInterface\ProtocolOptionsPanelTests.cs" />
+    <Compile Include="UserInterface\CredentialPanelTests.cs" />
     <Compile Include="Validation\FavoriteNameValidatorTests.cs" />
     <Compile Include="Validation\GroupNameValidatorTests.cs" />
     <Compile Include="UserInterface\FavoritesTreeLoadingTest.cs" />
