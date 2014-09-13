@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Connections;
-using Terminals.Credentials;
 using Terminals.Data;
 using Terminals.Data.Validation;
 
@@ -23,12 +21,12 @@ namespace Terminals.Forms.EditFavorite
         internal bool UrlVisible { get { return this.httpUrlTextBox.Visible; } }
 
         internal bool ShowOnToolbar { get { return this.chkAddtoToolbar.Checked; } }
-        private String favoritePassword = string.Empty;
+        
         internal const String HIDDEN_PASSWORD = "****************";
+        
         private String currentToolBarFileName;
         
         private NewTerminalFormValidator validator;
-        private IPersistence persistence;
 
         internal event EventHandler SetOkButtonRequested;
 
@@ -41,6 +39,14 @@ namespace Terminals.Forms.EditFavorite
         public GeneralPropertiesUserControl()
         {
             InitializeComponent();
+
+            this.securityPanel1.PasswordChanged += TxtPassword_TextChanged;
+            this.securityPanel1.SelectedCredentailChanged += this.SecurityPanel1_SelectedCredentailChanged;
+        }
+
+        private void SecurityPanel1_SelectedCredentailChanged(bool hasSelectedCredential)
+        {
+            this.chkSavePassword.Enabled = !hasSelectedCredential;
         }
 
         internal void RegisterValidations(NewTerminalFormValidator validator)
@@ -71,7 +77,7 @@ namespace Terminals.Forms.EditFavorite
 
         internal void AssignPersistence(IPersistence persistence)
         {
-            this.persistence = persistence;
+            this.securityPanel1.AssignPersistence(persistence);
         }
 
         internal void AssignRasControl(RasControl rasControl)
@@ -82,55 +88,6 @@ namespace Terminals.Forms.EditFavorite
         private void TxtPassword_TextChanged(object sender, EventArgs e)
         {
             this.SetOkButtonState();
-        }
-
-        private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.CredentialsPanel.Enabled = true;
-            ICredentialSet set = this.CredentialDropdown.SelectedItem as ICredentialSet;
-
-            if (set != null)
-            {
-                this.CredentialsPanel.Enabled = false;
-                // TODO LoadDirectly
-                this.cmbDomains.Text = set.Domain;
-                this.cmbUsers.Text = set.UserName;
-                this.txtPassword.Text = set.Password;
-                this.chkSavePassword.Checked = true;
-            }
-        }
-
-        private void CredentialManagerPicturebox_Click(object sender, EventArgs e)
-        {
-            Guid selectedCredentialId = Guid.Empty;
-            var selectedCredential = this.CredentialDropdown.SelectedItem as ICredentialSet;
-            if (selectedCredential != null)
-                selectedCredentialId = selectedCredential.Id;
-
-            using (var mgr = new CredentialManager(this.persistence))
-                mgr.ShowDialog();
-
-            this.FillCredentialsCombobox(selectedCredentialId);
-        }
-
-        internal void FillCredentialsCombobox(Guid credential)
-        {
-            this.CredentialDropdown.Items.Clear();
-            this.CredentialDropdown.Items.Add("(custom)");
-            this.FillCredentialsComboboxWithStoredCredentials();
-            this.CredentialDropdown.SelectedItem = this.persistence.Credentials[credential];
-        }
-
-        private void FillCredentialsComboboxWithStoredCredentials()
-        {
-            IEnumerable<ICredentialSet> credentials = this.persistence.Credentials;
-            if (credentials != null)
-            {
-                foreach (ICredentialSet item in credentials)
-                {
-                    this.CredentialDropdown.Items.Add(item);
-                }
-            }
         }
 
         private void PictureBox2_Click(object sender, EventArgs e)
@@ -297,31 +254,8 @@ namespace Terminals.Forms.EditFavorite
         public void SaveTo(IFavorite favorite)
         {
             this.FillGeneralProrperties(favorite);
-            this.FillFavoriteSecurity(favorite);
+            this.securityPanel1.SaveTo(favorite.Security, this.chkSavePassword.Checked);
             this.FillDescriptionProperties(favorite);
-        }
-
-        private void FillFavoriteSecurity(IFavorite favorite)
-        {
-            ICredentialSet selectedCredential = this.CredentialDropdown.SelectedItem as ICredentialSet;
-            ISecurityOptions security = favorite.Security;
-            security.Credential = selectedCredential == null ? Guid.Empty : selectedCredential.Id;
-
-            // TODO SaveUserAndDomain
-            security.Domain = this.cmbDomains.Text;
-            security.UserName = this.cmbUsers.Text;
-            if (this.chkSavePassword.Checked)
-            {
-                // TODO SavePassword
-                if (this.txtPassword.Text != HIDDEN_PASSWORD)
-                    security.Password = this.txtPassword.Text;
-                else
-                    security.Password = this.favoritePassword;
-            }
-            else
-            {
-                security.Password = String.Empty;
-            }
         }
 
         private void FillDescriptionProperties(IFavorite favorite)
@@ -342,12 +276,18 @@ namespace Terminals.Forms.EditFavorite
             WebOptions.UpdateFavoriteUrl(favorite, this.httpUrlTextBox.Text);
         }
 
+        internal void FillCredentialsCombobox(Guid credentialGuid)
+        {
+            this.securityPanel1.FillCredentialsCombobox(credentialGuid);
+        }
+
         public void LoadFrom(IFavorite favorite)
         {
             this.FillGeneralPropertiesControls(favorite);
-            this.FillSecurityControls(favorite);
+            this.securityPanel1.LoadFrom(favorite.Security);
+            this.chkSavePassword.Checked = this.securityPanel1.PasswordLoaded;
             this.FillDescriptionPropertiesControls(favorite);
-            this.FillCredentialsCombobox(favorite.Security.Credential);
+            this.securityPanel1.FillCredentialsCombobox(favorite.Security.Credential);
         }
 
         private void FillGeneralPropertiesControls(IFavorite favorite)
@@ -368,46 +308,16 @@ namespace Terminals.Forms.EditFavorite
             this.NotesTextbox.Text = favorite.Notes;
         }
 
-        // TODO LoadFrom
-        private void FillSecurityControls(IFavorite favorite)
-        {
-            this.cmbDomains.Text = favorite.Security.Domain;
-            this.cmbUsers.Text = favorite.Security.UserName;
-            this.favoritePassword = favorite.Security.Password;
-
-            if (string.IsNullOrEmpty(this.favoritePassword) && !string.IsNullOrEmpty(favorite.Security.EncryptedPassword))
-            {
-                MessageBox.Show("There was an issue with decrypting your password.\n\nPlease provide a new password and save the favorite.");
-                this.txtPassword.Text = "";
-                this.favoritePassword = String.Empty;
-                this.txtPassword.Focus();
-                favorite.Security.Password = String.Empty;
-            }
-
-            if (!string.IsNullOrEmpty(this.favoritePassword))
-            {
-                this.txtPassword.Text = HIDDEN_PASSWORD;
-                this.chkSavePassword.Checked = true;
-            }
-            else
-            {
-                this.txtPassword.Text = String.Empty;
-                this.chkSavePassword.Checked = false;
-            }
-        }
-
         internal void LoadMRUs()
         {
             this.cmbServers.Items.AddRange(Settings.MRUServerNames);
-            this.cmbDomains.Items.AddRange(Settings.MRUDomainNames);
-            this.cmbUsers.Items.AddRange(Settings.MRUUserNames);
+            this.securityPanel1.LoadMRUs();
         }
 
         internal void SaveMRUs()
         {
             Settings.AddServerMRUItem(cmbServers.Text);
-            Settings.AddDomainMRUItem(cmbDomains.Text);
-            Settings.AddUserMRUItem(cmbUsers.Text);
+            this.securityPanel1.SaveMRUs();
         }
 
         public void FillServerName(string serverName)

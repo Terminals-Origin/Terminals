@@ -34,16 +34,6 @@
             this.NotesTextbox = new System.Windows.Forms.TextBox();
             this.txtPort = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.CredentialDropdown = new System.Windows.Forms.ComboBox();
-            this.CredentialManagerPicturebox = new System.Windows.Forms.PictureBox();
-            this.CredentialsPanel = new System.Windows.Forms.Panel();
-            this.cmbUsers = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cmbDomains = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
             this.chkSavePassword = new System.Windows.Forms.CheckBox();
             this.label36 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
@@ -53,8 +43,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.cmbServers = new System.Windows.Forms.ComboBox();
             this.lblServerName = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
-            this.CredentialsPanel.SuspendLayout();
+            this.securityPanel1 = new Terminals.Forms.Controls.SecurityPanel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,111 +98,13 @@
             // 
             this.txtName.Location = new System.Drawing.Point(133, 75);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(334, 20);
+            this.txtName.Size = new System.Drawing.Size(325, 20);
             this.txtName.TabIndex = 28;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 108);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(57, 13);
-            this.label15.TabIndex = 29;
-            this.label15.Text = "Credential:";
-            // 
-            // CredentialDropdown
-            // 
-            this.CredentialDropdown.DisplayMember = "Name";
-            this.CredentialDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CredentialDropdown.FormattingEnabled = true;
-            this.CredentialDropdown.Location = new System.Drawing.Point(133, 105);
-            this.CredentialDropdown.Name = "CredentialDropdown";
-            this.CredentialDropdown.Size = new System.Drawing.Size(334, 21);
-            this.CredentialDropdown.TabIndex = 30;
-            this.CredentialDropdown.SelectedIndexChanged += new System.EventHandler(this.CredentialDropdown_SelectedIndexChanged);
-            // 
-            // CredentialManagerPicturebox
-            // 
-            this.CredentialManagerPicturebox.Image = global::Terminals.Properties.Resources.computer_security;
-            this.CredentialManagerPicturebox.Location = new System.Drawing.Point(473, 109);
-            this.CredentialManagerPicturebox.Name = "CredentialManagerPicturebox";
-            this.CredentialManagerPicturebox.Size = new System.Drawing.Size(16, 16);
-            this.CredentialManagerPicturebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.CredentialManagerPicturebox.TabIndex = 37;
-            this.CredentialManagerPicturebox.TabStop = false;
-            this.CredentialManagerPicturebox.Click += new System.EventHandler(this.CredentialManagerPicturebox_Click);
-            // 
-            // CredentialsPanel
-            // 
-            this.CredentialsPanel.Controls.Add(this.cmbUsers);
-            this.CredentialsPanel.Controls.Add(this.label1);
-            this.CredentialsPanel.Controls.Add(this.cmbDomains);
-            this.CredentialsPanel.Controls.Add(this.label3);
-            this.CredentialsPanel.Controls.Add(this.label4);
-            this.CredentialsPanel.Controls.Add(this.txtPassword);
-            this.CredentialsPanel.Controls.Add(this.chkSavePassword);
-            this.CredentialsPanel.Location = new System.Drawing.Point(0, 130);
-            this.CredentialsPanel.Name = "CredentialsPanel";
-            this.CredentialsPanel.Size = new System.Drawing.Size(489, 123);
-            this.CredentialsPanel.TabIndex = 31;
-            // 
-            // cmbUsers
-            // 
-            this.cmbUsers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbUsers.Location = new System.Drawing.Point(133, 37);
-            this.cmbUsers.Name = "cmbUsers";
-            this.cmbUsers.Size = new System.Drawing.Size(334, 21);
-            this.cmbUsers.TabIndex = 3;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(46, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "&Domain:";
-            // 
-            // cmbDomains
-            // 
-            this.cmbDomains.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.cmbDomains.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbDomains.Location = new System.Drawing.Point(133, 6);
-            this.cmbDomains.Name = "cmbDomains";
-            this.cmbDomains.Size = new System.Drawing.Size(334, 21);
-            this.cmbDomains.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 40);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(61, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "&User name:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 72);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(56, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "&Password:";
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Location = new System.Drawing.Point(133, 69);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(334, 20);
-            this.txtPassword.TabIndex = 5;
-            this.txtPassword.TextChanged += new System.EventHandler(this.TxtPassword_TextChanged);
             // 
             // chkSavePassword
             // 
             this.chkSavePassword.AutoSize = true;
-            this.chkSavePassword.Location = new System.Drawing.Point(133, 99);
+            this.chkSavePassword.Location = new System.Drawing.Point(136, 232);
             this.chkSavePassword.Name = "chkSavePassword";
             this.chkSavePassword.Size = new System.Drawing.Size(99, 17);
             this.chkSavePassword.TabIndex = 6;
@@ -233,7 +124,7 @@
             // 
             this.pictureBox2.Image = global::Terminals.Properties.Resources.terminalsicon;
             this.pictureBox2.InitialImage = global::Terminals.Properties.Resources.smallterm;
-            this.pictureBox2.Location = new System.Drawing.Point(473, 79);
+            this.pictureBox2.Location = new System.Drawing.Point(465, 79);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(16, 16);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -300,20 +191,25 @@
             this.lblServerName.TabIndex = 23;
             this.lblServerName.Text = "&Computer:";
             // 
+            // securityPanel1
+            // 
+            this.securityPanel1.Location = new System.Drawing.Point(6, 101);
+            this.securityPanel1.Name = "securityPanel1";
+            this.securityPanel1.Size = new System.Drawing.Size(483, 128);
+            this.securityPanel1.TabIndex = 41;
+            // 
             // GeneralPropertiesUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.securityPanel1);
+            this.Controls.Add(this.chkSavePassword);
             this.Controls.Add(this.chkAddtoToolbar);
             this.Controls.Add(this.NewWindowCheckbox);
             this.Controls.Add(this.httpUrlTextBox);
             this.Controls.Add(this.NotesTextbox);
             this.Controls.Add(this.txtPort);
             this.Controls.Add(this.txtName);
-            this.Controls.Add(this.label15);
-            this.Controls.Add(this.CredentialDropdown);
-            this.Controls.Add(this.CredentialManagerPicturebox);
-            this.Controls.Add(this.CredentialsPanel);
             this.Controls.Add(this.label36);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.lblPort);
@@ -324,11 +220,9 @@
             this.Controls.Add(this.lblServerName);
             this.Name = "GeneralPropertiesUserControl";
             this.Size = new System.Drawing.Size(590, 365);
-            ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).EndInit();
-            this.CredentialsPanel.ResumeLayout(false);
-            this.CredentialsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -338,16 +232,6 @@
         private System.Windows.Forms.TextBox NotesTextbox;
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.TextBox txtName;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.ComboBox CredentialDropdown;
-        private System.Windows.Forms.PictureBox CredentialManagerPicturebox;
-        private System.Windows.Forms.Panel CredentialsPanel;
-        private System.Windows.Forms.ComboBox cmbUsers;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cmbDomains;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.CheckBox chkSavePassword;
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.PictureBox pictureBox2;
@@ -359,5 +243,6 @@
         private System.Windows.Forms.Label lblServerName;
         private System.Windows.Forms.CheckBox chkAddtoToolbar;
         private System.Windows.Forms.CheckBox NewWindowCheckbox;
+        private Controls.SecurityPanel securityPanel1;
     }
 }
