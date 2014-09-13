@@ -10,7 +10,9 @@ namespace Terminals.Forms.Controls
         private String favoritePassword = string.Empty;
         internal const String HIDDEN_PASSWORD = "****************";
 
-        public event EventHandler PasswordChanged
+        internal bool PasswordLoaded { get; private set; }
+
+        internal event EventHandler PasswordChanged
         {
             add { this.txtPassword.TextChanged += value; }
             remove { this.txtPassword.TextChanged -= value; }
@@ -33,7 +35,7 @@ namespace Terminals.Forms.Controls
             Settings.AddUserMRUItem(cmbUsers.Text);
         }
 
-        internal void LoadDirectlyFrom(ISecurityOptions security)
+        internal void LoadDirectlyFrom(ICredentialBase security)
         {
             this.LoadDomainAndUser(security);
             // here dont affect stored password
@@ -48,7 +50,7 @@ namespace Terminals.Forms.Controls
             this.LoadPassword();
         }
 
-        private void LoadDomainAndUser(ISecurityOptions security)
+        private void LoadDomainAndUser(ICredentialBase security)
         {
             this.cmbDomains.Text = security.Domain;
             this.cmbUsers.Text = security.UserName;
@@ -68,7 +70,8 @@ namespace Terminals.Forms.Controls
 
         private void LoadPassword()
         {
-            if (!string.IsNullOrEmpty(this.favoritePassword))
+            this.PasswordLoaded = !string.IsNullOrEmpty(this.favoritePassword);
+            if (this.PasswordLoaded)
                 this.txtPassword.Text = HIDDEN_PASSWORD;
             else
                 this.txtPassword.Text = string.Empty;

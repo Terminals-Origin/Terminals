@@ -247,6 +247,12 @@
     <Compile Include="Forms\Controls\SearchTextBox.Designer.cs">
       <DependentUpon>SearchTextBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Controls\SecurityPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\SecurityPanel.Designer.cs">
+      <DependentUpon>SecurityPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Controls\TreeListNodes.cs" />
     <Compile Include="Forms\Controls\TreeNodesLevelUpdate.cs" />
     <Compile Include="Forms\Controls\TreeView.cs">
@@ -1217,6 +1223,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Controls\SearchTextBox.resx">
       <DependentUpon>SearchTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Controls\SecurityPanel.resx">
+      <DependentUpon>SecurityPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditFavorite\CitrixControl.resx">
       <DependentUpon>CitrixControl.cs</DependentUpon>

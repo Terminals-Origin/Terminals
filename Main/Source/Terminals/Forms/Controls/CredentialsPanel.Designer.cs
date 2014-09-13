@@ -41,15 +41,15 @@
             this.cmbUsers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbUsers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbUsers.Location = new System.Drawing.Point(137, 43);
+            this.cmbUsers.Location = new System.Drawing.Point(132, 37);
             this.cmbUsers.Name = "cmbUsers";
-            this.cmbUsers.Size = new System.Drawing.Size(334, 21);
+            this.cmbUsers.Size = new System.Drawing.Size(351, 21);
             this.cmbUsers.TabIndex = 9;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 15);
+            this.label1.Location = new System.Drawing.Point(5, 14);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(46, 13);
             this.label1.TabIndex = 6;
@@ -61,15 +61,15 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbDomains.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.cmbDomains.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbDomains.Location = new System.Drawing.Point(137, 12);
+            this.cmbDomains.Location = new System.Drawing.Point(132, 6);
             this.cmbDomains.Name = "cmbDomains";
-            this.cmbDomains.Size = new System.Drawing.Size(334, 21);
+            this.cmbDomains.Size = new System.Drawing.Size(351, 21);
             this.cmbDomains.TabIndex = 7;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 46);
+            this.label3.Location = new System.Drawing.Point(5, 40);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(61, 13);
             this.label3.TabIndex = 8;
@@ -78,7 +78,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 78);
+            this.label4.Location = new System.Drawing.Point(5, 72);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 10;
@@ -88,10 +88,10 @@
             // 
             this.txtPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPassword.Location = new System.Drawing.Point(137, 75);
+            this.txtPassword.Location = new System.Drawing.Point(132, 69);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(334, 20);
+            this.txtPassword.Size = new System.Drawing.Size(351, 20);
             this.txtPassword.TabIndex = 11;
             // 
             // CredentialsPanel
@@ -105,7 +105,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtPassword);
             this.Name = "CredentialsPanel";
-            this.Size = new System.Drawing.Size(483, 104);
+            this.Size = new System.Drawing.Size(483, 94);
             this.ResumeLayout(false);
             this.PerformLayout();
 
