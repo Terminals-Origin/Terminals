@@ -22,8 +22,6 @@ namespace Terminals.Forms.EditFavorite
 
         internal bool ShowOnToolbar { get { return this.chkAddtoToolbar.Checked; } }
         
-        internal const String HIDDEN_PASSWORD = "****************";
-        
         private String currentToolBarFileName;
         
         private NewTerminalFormValidator validator;

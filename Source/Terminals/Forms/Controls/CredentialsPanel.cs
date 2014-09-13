@@ -18,9 +18,33 @@ namespace Terminals.Forms.Controls
             remove { this.txtPassword.TextChanged -= value; }
         }
 
+        public int TextEditsLeft
+        {
+            get
+            {
+                return this.cmbUsers.Left;
+            }
+            set
+            {
+                int newWidth = this.cmbUsers.Left + this.cmbUsers.Width - value; 
+                this.cmbUsers.Left = value;
+                this.cmbDomains.Left = value;
+                this.txtPassword.Left = value;
+                this.cmbUsers.Width = newWidth;
+                this.cmbDomains.Width = newWidth;
+                this.txtPassword.Width = newWidth;
+            }
+        }
+
         internal CredentialsPanel()
         {
             InitializeComponent();
+        }
+
+        internal void SetUserNameError(ErrorProvider errorProvider, string errroMessage)
+        {
+            errorProvider.SetIconAlignment(this.cmbUsers, ErrorIconAlignment.MiddleRight);
+            errorProvider.SetError(this.cmbUsers, errroMessage);
         }
 
         internal void LoadMRUs()
@@ -42,7 +66,7 @@ namespace Terminals.Forms.Controls
             this.txtPassword.Text = security.Password;
         }
 
-        internal void LoadFrom(ISecurityOptions security)
+        internal void LoadFrom(ICredentialBase security)
         {
             this.LoadDomainAndUser(security);
             this.favoritePassword = security.Password;
@@ -56,7 +80,7 @@ namespace Terminals.Forms.Controls
             this.cmbUsers.Text = security.UserName;
         }
 
-        private void CheckEncryptedPassword(ISecurityOptions security)
+        private void CheckEncryptedPassword(ICredentialBase security)
         {
             if (!string.IsNullOrEmpty(this.favoritePassword) || string.IsNullOrEmpty(security.EncryptedPassword))
                 return;
@@ -77,13 +101,13 @@ namespace Terminals.Forms.Controls
                 this.txtPassword.Text = string.Empty;
         }
 
-        internal void SaveUserAndDomain(ISecurityOptions security)
+        internal void SaveUserAndDomain(ICredentialBase security)
         {
             security.Domain = this.cmbDomains.Text;
             security.UserName = this.cmbUsers.Text;
         }
 
-        internal void SavePassword(ISecurityOptions security)
+        internal void SavePassword(ICredentialBase security)
         {
             if (this.txtPassword.Text != HIDDEN_PASSWORD)
                 security.Password = this.txtPassword.Text;
