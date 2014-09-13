@@ -2,7 +2,6 @@
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Data.Validation;
-using Terminals.Forms.EditFavorite;
 
 namespace Terminals.Credentials
 {
@@ -32,11 +31,8 @@ namespace Terminals.Credentials
         {
             if (this.editedCredential != null)
             {
+                this.credentialsPanel1.LoadFrom(this.editedCredential);
                 this.NameTextbox.Text = editedCredential.Name;
-                this.DomainTextbox.Text = editedCredential.Domain;
-                this.UsernameTextbox.Text = editedCredential.UserName;
-                if(!string.IsNullOrEmpty(editedCredential.EncryptedPassword))
-                    this.PasswordTextbox.Text = GeneralPropertiesUserControl.HIDDEN_PASSWORD;
                 this.editedCredentialName = editedCredential.Name;
             }
         }
@@ -60,7 +56,7 @@ namespace Terminals.Credentials
             string nameErrorMessage = results["Name"];
             this.errorProvider.SetError(this.NameTextbox, nameErrorMessage);
             string userNameErrorMessage = results["UserName"];
-            this.errorProvider.SetError(this.UsernameTextbox, userNameErrorMessage);
+            this.credentialsPanel1.SetUserNameError(this.errorProvider, userNameErrorMessage);
             return results.Empty;
         }
 
@@ -117,11 +113,9 @@ namespace Terminals.Credentials
 
         private void UpdateFromControls(ICredentialSet toUpdate)
         {
-            toUpdate.Domain = this.DomainTextbox.Text;
             toUpdate.Name = this.NameTextbox.Text;
-            toUpdate.UserName = this.UsernameTextbox.Text;
-            if (this.PasswordTextbox.Text != GeneralPropertiesUserControl.HIDDEN_PASSWORD)
-                toUpdate.Password = this.PasswordTextbox.Text;
+            this.credentialsPanel1.SaveUserAndDomain(toUpdate);
+            this.credentialsPanel1.SavePassword(toUpdate);
         }
 
         private ICredentialSet CreateNewCredential()

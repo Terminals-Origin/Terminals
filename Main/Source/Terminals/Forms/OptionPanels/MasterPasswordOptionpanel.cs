@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
-using Terminals.Forms.EditFavorite;
+using Terminals.Forms.Controls;
 
 namespace Terminals.Forms
 {
@@ -45,7 +45,7 @@ namespace Terminals.Forms
         {
             if (isMasterPasswordDefined)
             {
-                this.PasswordTextbox.Text = GeneralPropertiesUserControl.HIDDEN_PASSWORD;
+                this.PasswordTextbox.Text = CredentialsPanel.HIDDEN_PASSWORD;
                 this.ConfirmPasswordTextBox.Text = this.PasswordTextbox.Text;
             }
             else
@@ -65,7 +65,7 @@ namespace Terminals.Forms
             {
                 if (this.PasswordsMatch &&
                     !string.IsNullOrEmpty(this.PasswordTextbox.Text) &&
-                    this.PasswordTextbox.Text != GeneralPropertiesUserControl.HIDDEN_PASSWORD)
+                    this.PasswordTextbox.Text != CredentialsPanel.HIDDEN_PASSWORD)
                 {
                     this.Security.UpdateMasterPassword(this.PasswordTextbox.Text);
                 }
