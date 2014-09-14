@@ -21,7 +21,7 @@ namespace Terminals.Forms.EditFavorite
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
-            this.pnlTSGWlogon.Enabled = this.chkTSGWlogin.Checked;
+            this.credentialsPanel1.Enabled = this.chkTSGWlogin.Checked;
         }
 
         public void SaveTo(IFavorite favorite)
@@ -37,9 +37,8 @@ namespace Terminals.Forms.EditFavorite
         {
             TsGwOptions tsgwOptions = rdpOptions.TsGateway;
             tsgwOptions.HostName = this.txtTSGWServer.Text;
-            tsgwOptions.Security.Domain = this.txtTSGWDomain.Text;
-            tsgwOptions.Security.UserName = this.txtTSGWUserName.Text;
-            tsgwOptions.Security.Password = this.txtTSGWPassword.Text;
+            this.credentialsPanel1.SaveUserAndDomain(tsgwOptions.Security);
+            this.credentialsPanel1.SavePassword(tsgwOptions.Security);
             tsgwOptions.SeparateLogin = this.chkTSGWlogin.Checked;
             tsgwOptions.CredentialSource = this.cmbTSGWLogonMethod.SelectedIndex;
             if (tsgwOptions.CredentialSource == 2)
@@ -94,19 +93,16 @@ namespace Terminals.Forms.EditFavorite
             }
 
             this.txtTSGWServer.Text = tsGateway.HostName;
-            this.txtTSGWDomain.Text = tsGateway.Security.Domain;
-            this.txtTSGWUserName.Text = tsGateway.Security.UserName;
-            this.txtTSGWPassword.Text = tsGateway.Security.Password;
             this.chkTSGWlogin.Checked = tsGateway.SeparateLogin;
-            if (tsGateway.CredentialSource == 4)
-            {
-                this.cmbTSGWLogonMethod.SelectedIndex = 2;
-            }
-            else
-            {
-                this.cmbTSGWLogonMethod.SelectedIndex = tsGateway.CredentialSource;
+            this.credentialsPanel1.Enabled = tsGateway.SeparateLogin;
 
-            }
+            if (tsGateway.SeparateLogin)
+                this.credentialsPanel1.LoadFrom(tsGateway.Security);
+            
+            if (tsGateway.CredentialSource == 4)
+                this.cmbTSGWLogonMethod.SelectedIndex = 2;
+            else
+                this.cmbTSGWLogonMethod.SelectedIndex = tsGateway.CredentialSource;
         }
     }
 }

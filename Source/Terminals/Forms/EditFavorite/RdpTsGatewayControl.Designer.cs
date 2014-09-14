@@ -1,4 +1,6 @@
-﻿namespace Terminals.Forms.EditFavorite
+﻿using Terminals.Forms.Controls;
+
+namespace Terminals.Forms.EditFavorite
 {
     partial class RdpTsGatewayControl
     {
@@ -28,17 +30,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources7 = new Terminals.TerminalServices.GatewayCredentialsSources();
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources8 = new Terminals.TerminalServices.GatewayCredentialsSources();
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources9 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources1 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources2 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources3 = new Terminals.TerminalServices.GatewayCredentialsSources();
             this.TerminalGwLoginSettingsGroupBox = new System.Windows.Forms.GroupBox();
-            this.pnlTSGWlogon = new System.Windows.Forms.Panel();
-            this.txtTSGWDomain = new System.Windows.Forms.TextBox();
-            this.txtTSGWPassword = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.txtTSGWUserName = new System.Windows.Forms.TextBox();
             this.chkTSGWlogin = new System.Windows.Forms.CheckBox();
             this.TerminalGwSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.radTSGWenable = new System.Windows.Forms.RadioButton();
@@ -49,8 +44,8 @@
             this.chkTSGWlocalBypass = new System.Windows.Forms.CheckBox();
             this.label17 = new System.Windows.Forms.Label();
             this.txtTSGWServer = new System.Windows.Forms.TextBox();
+            this.credentialsPanel1 = new CredentialsPanel();
             this.TerminalGwLoginSettingsGroupBox.SuspendLayout();
-            this.pnlTSGWlogon.SuspendLayout();
             this.TerminalGwSettingsGroupBox.SuspendLayout();
             this.pnlTSGWsettings.SuspendLayout();
             this.SuspendLayout();
@@ -59,7 +54,7 @@
             // 
             this.TerminalGwLoginSettingsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TerminalGwLoginSettingsGroupBox.Controls.Add(this.pnlTSGWlogon);
+            this.TerminalGwLoginSettingsGroupBox.Controls.Add(this.credentialsPanel1);
             this.TerminalGwLoginSettingsGroupBox.Controls.Add(this.chkTSGWlogin);
             this.TerminalGwLoginSettingsGroupBox.Location = new System.Drawing.Point(4, 180);
             this.TerminalGwLoginSettingsGroupBox.Name = "TerminalGwLoginSettingsGroupBox";
@@ -67,69 +62,6 @@
             this.TerminalGwLoginSettingsGroupBox.TabIndex = 3;
             this.TerminalGwLoginSettingsGroupBox.TabStop = false;
             this.TerminalGwLoginSettingsGroupBox.Text = "Login Settings";
-            // 
-            // pnlTSGWlogon
-            // 
-            this.pnlTSGWlogon.Controls.Add(this.txtTSGWDomain);
-            this.pnlTSGWlogon.Controls.Add(this.txtTSGWPassword);
-            this.pnlTSGWlogon.Controls.Add(this.label18);
-            this.pnlTSGWlogon.Controls.Add(this.label19);
-            this.pnlTSGWlogon.Controls.Add(this.label16);
-            this.pnlTSGWlogon.Controls.Add(this.txtTSGWUserName);
-            this.pnlTSGWlogon.Enabled = false;
-            this.pnlTSGWlogon.Location = new System.Drawing.Point(3, 43);
-            this.pnlTSGWlogon.Name = "pnlTSGWlogon";
-            this.pnlTSGWlogon.Size = new System.Drawing.Size(442, 92);
-            this.pnlTSGWlogon.TabIndex = 1;
-            // 
-            // txtTSGWDomain
-            // 
-            this.txtTSGWDomain.Location = new System.Drawing.Point(102, 63);
-            this.txtTSGWDomain.Name = "txtTSGWDomain";
-            this.txtTSGWDomain.Size = new System.Drawing.Size(224, 20);
-            this.txtTSGWDomain.TabIndex = 5;
-            // 
-            // txtTSGWPassword
-            // 
-            this.txtTSGWPassword.Location = new System.Drawing.Point(102, 33);
-            this.txtTSGWPassword.Name = "txtTSGWPassword";
-            this.txtTSGWPassword.PasswordChar = '*';
-            this.txtTSGWPassword.Size = new System.Drawing.Size(224, 20);
-            this.txtTSGWPassword.TabIndex = 4;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(22, 66);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(46, 13);
-            this.label18.TabIndex = 3;
-            this.label18.Text = "Domain:";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(22, 36);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(56, 13);
-            this.label19.TabIndex = 2;
-            this.label19.Text = "Password:";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(22, 6);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(58, 13);
-            this.label16.TabIndex = 1;
-            this.label16.Text = "Username:";
-            // 
-            // txtTSGWUserName
-            // 
-            this.txtTSGWUserName.Location = new System.Drawing.Point(102, 3);
-            this.txtTSGWUserName.Name = "txtTSGWUserName";
-            this.txtTSGWUserName.Size = new System.Drawing.Size(224, 20);
-            this.txtTSGWUserName.TabIndex = 0;
             // 
             // chkTSGWlogin
             // 
@@ -205,16 +137,16 @@
             // 
             this.cmbTSGWLogonMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTSGWLogonMethod.FormattingEnabled = true;
-            gatewayCredentialsSources7.DisplayName = "Ask for Password (NTLM)";
-            gatewayCredentialsSources7.ID = 0;
-            gatewayCredentialsSources8.DisplayName = "Smart Card";
-            gatewayCredentialsSources8.ID = 1;
-            gatewayCredentialsSources9.DisplayName = "Allow user to select later";
-            gatewayCredentialsSources9.ID = 4;
+            gatewayCredentialsSources1.DisplayName = "Ask for Password (NTLM)";
+            gatewayCredentialsSources1.ID = 0;
+            gatewayCredentialsSources2.DisplayName = "Smart Card";
+            gatewayCredentialsSources2.ID = 1;
+            gatewayCredentialsSources3.DisplayName = "Allow user to select later";
+            gatewayCredentialsSources3.ID = 4;
             this.cmbTSGWLogonMethod.Items.AddRange(new object[] {
-            gatewayCredentialsSources7,
-            gatewayCredentialsSources8,
-            gatewayCredentialsSources9});
+            gatewayCredentialsSources1,
+            gatewayCredentialsSources2,
+            gatewayCredentialsSources3});
             this.cmbTSGWLogonMethod.Location = new System.Drawing.Point(128, 34);
             this.cmbTSGWLogonMethod.Name = "cmbTSGWLogonMethod";
             this.cmbTSGWLogonMethod.Size = new System.Drawing.Size(224, 21);
@@ -246,6 +178,14 @@
             this.txtTSGWServer.Size = new System.Drawing.Size(224, 20);
             this.txtTSGWServer.TabIndex = 3;
             // 
+            // credentialsPanel1
+            // 
+            this.credentialsPanel1.Location = new System.Drawing.Point(6, 46);
+            this.credentialsPanel1.Name = "credentialsPanel1";
+            this.credentialsPanel1.Size = new System.Drawing.Size(351, 94);
+            this.credentialsPanel1.TabIndex = 1;
+            this.credentialsPanel1.TextEditsLeft = 120;
+            // 
             // RdpTsGatewayControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -256,8 +196,6 @@
             this.Size = new System.Drawing.Size(590, 365);
             this.TerminalGwLoginSettingsGroupBox.ResumeLayout(false);
             this.TerminalGwLoginSettingsGroupBox.PerformLayout();
-            this.pnlTSGWlogon.ResumeLayout(false);
-            this.pnlTSGWlogon.PerformLayout();
             this.TerminalGwSettingsGroupBox.ResumeLayout(false);
             this.TerminalGwSettingsGroupBox.PerformLayout();
             this.pnlTSGWsettings.ResumeLayout(false);
@@ -269,13 +207,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox TerminalGwLoginSettingsGroupBox;
-        private System.Windows.Forms.Panel pnlTSGWlogon;
-        private System.Windows.Forms.TextBox txtTSGWDomain;
-        private System.Windows.Forms.TextBox txtTSGWPassword;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox txtTSGWUserName;
         private System.Windows.Forms.CheckBox chkTSGWlogin;
         private System.Windows.Forms.GroupBox TerminalGwSettingsGroupBox;
         private System.Windows.Forms.RadioButton radTSGWenable;
@@ -286,5 +217,6 @@
         private System.Windows.Forms.CheckBox chkTSGWlocalBypass;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox txtTSGWServer;
+        private Controls.CredentialsPanel credentialsPanel1;
     }
 }
