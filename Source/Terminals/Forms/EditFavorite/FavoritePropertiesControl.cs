@@ -10,6 +10,7 @@ namespace Terminals.Forms.EditFavorite
         private const string GENERAL_NODE = "generalNode";
         private const string GROUPS_NODE = "groupsNode";
         private const string EXECUTE_NODE = "executeNode";
+        private const string NOTES_NODE = "notesNode";
 
         public event EventHandler SetOkButtonRequested
         {
@@ -64,6 +65,7 @@ namespace Terminals.Forms.EditFavorite
             this.executePanel1.Dock = DockStyle.Fill;
             this.rasControl1.Dock = DockStyle.Fill;
             this.protocolOptionsPanel1.Dock = DockStyle.Fill;
+            this.notesControl1.Dock = DockStyle.Fill;
         }
 
         private void GenearalPanel1ProtocolChanged(string newProtocol)
@@ -119,6 +121,7 @@ namespace Terminals.Forms.EditFavorite
             this.groupsPanel1.Hide();
             this.executePanel1.Hide();
             this.rasControl1.Hide();
+            this.notesControl1.Hide();
             this.protocolOptionsPanel1.Hide();
         }
 
@@ -149,6 +152,8 @@ namespace Terminals.Forms.EditFavorite
                     return new PanelSwitch(newNode.Text, this.groupsPanel1.Show);
                case EXECUTE_NODE:
                     return new PanelSwitch(newNode.Text, this.executePanel1.Show);
+               case NOTES_NODE:
+                    return new PanelSwitch(newNode.Text, this.notesControl1.Show);
                 default:
                     string title = this.ResolveProtocolPanelTitle(newNode);
                     Action showAction = () => this.FocusProtocolOptionsChild(newNode);
@@ -168,6 +173,7 @@ namespace Terminals.Forms.EditFavorite
             this.groupsPanel1.RegisterValidations(validator);
             this.executePanel1.RegisterValidations(validator);
             this.protocolOptionsPanel1.RegisterValidations(validator);
+            this.notesControl1.RegisterValidations(validator);
         }
 
         internal void AssignPersistence(IPersistence persistence)
@@ -179,6 +185,7 @@ namespace Terminals.Forms.EditFavorite
         internal void SetErrorProviderIconsAlignment(ErrorProvider errorProvider)
         {
             this.generalPanel1.SetErrorProviderIconsAlignment(errorProvider);
+            this.notesControl1.SettErrorProviderIconsAlignment(errorProvider);
         }
 
         internal void FocusServers()
@@ -232,6 +239,7 @@ namespace Terminals.Forms.EditFavorite
             this.generalPanel1.LoadFrom(favorite);
             this.executePanel1.LoadFrom(favorite);
             this.groupsPanel1.LoadFrom(favorite);
+            this.notesControl1.LoadFrom(favorite);
             this.protocolOptionsPanel1.LoadFrom(favorite);
         }
 
@@ -240,6 +248,7 @@ namespace Terminals.Forms.EditFavorite
             this.generalPanel1.SaveTo(favorite);
             this.executePanel1.SaveTo(favorite);
             this.protocolOptionsPanel1.SaveTo(favorite);
+            this.notesControl1.SaveTo(favorite);
             // save of groups is done in the form
         }
     }

@@ -32,16 +32,18 @@
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("General");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Groups");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Execute before connect");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Protocol Options");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Notes");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Protocol Options");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FavoritePropertiesControl));
             this.treeView = new System.Windows.Forms.TreeView();
             this.treeIcons = new System.Windows.Forms.ImageList(this.components);
             this.titleLabel = new System.Windows.Forms.Label();
-            this.executePanel1 = new Terminals.Forms.EditFavorite.ExecuteControl();
             this.generalPanel1 = new Terminals.Forms.EditFavorite.GeneralPropertiesUserControl();
             this.protocolOptionsPanel1 = new Terminals.Forms.EditFavorite.ProtocolOptionsPanel();
-            this.groupsPanel1 = new Terminals.Forms.EditFavorite.GroupsControl();
-            this.rasControl1 = new Terminals.Forms.EditFavorite.RasControl();
+            this.notesControl1 = new Terminals.Forms.EditFavorite.NotesControl();
+            this.groupsPanel1 =new GroupsControl();
+            this.executePanel1 = new ExecuteControl();
+            this.rasControl1 = new RasControl();
             this.SuspendLayout();
             // 
             // treeView
@@ -65,15 +67,18 @@
             treeNode3.Name = "executeNode";
             treeNode3.SelectedImageKey = "application_xp_terminal.png";
             treeNode3.Text = "Execute before connect";
-            treeNode4.ImageKey = "terminalsicon.png";
-            treeNode4.Name = "protocolOptionsNode";
-            treeNode4.SelectedImageKey = "terminalsicon.png";
-            treeNode4.Text = "Protocol Options";
+            treeNode4.Name = "notesNode";
+            treeNode4.Text = "Notes";
+            treeNode5.ImageKey = "terminalsicon.png";
+            treeNode5.Name = "protocolOptionsNode";
+            treeNode5.SelectedImageKey = "terminalsicon.png";
+            treeNode5.Text = "Protocol Options";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
             treeNode3,
-            treeNode4});
+            treeNode4,
+            treeNode5});
             this.treeView.SelectedImageIndex = 0;
             this.treeView.Size = new System.Drawing.Size(150, 407);
             this.treeView.TabIndex = 1;
@@ -104,13 +109,6 @@
             this.titleLabel.Text = "titleLabel";
             this.titleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // executePanel1
-            // 
-            this.executePanel1.Location = new System.Drawing.Point(173, 211);
-            this.executePanel1.Name = "executePanel1";
-            this.executePanel1.Size = new System.Drawing.Size(185, 168);
-            this.executePanel1.TabIndex = 15;
-            // 
             // generalPanel1
             // 
             this.generalPanel1.Location = new System.Drawing.Point(173, 35);
@@ -125,12 +123,26 @@
             this.protocolOptionsPanel1.Size = new System.Drawing.Size(186, 141);
             this.protocolOptionsPanel1.TabIndex = 12;
             // 
+            // notesControl1
+            // 
+            this.notesControl1.Location = new System.Drawing.Point(528, 86);
+            this.notesControl1.Name = "notesControl1";
+            this.notesControl1.Size = new System.Drawing.Size(294, 250);
+            this.notesControl1.TabIndex = 17;
+            // 
             // groupsPanel1
             // 
             this.groupsPanel1.Location = new System.Drawing.Point(386, 35);
             this.groupsPanel1.Name = "groupsPanel1";
             this.groupsPanel1.Size = new System.Drawing.Size(237, 126);
             this.groupsPanel1.TabIndex = 14;
+            // 
+            // executePanel1
+            // 
+            this.executePanel1.Location = new System.Drawing.Point(173, 211);
+            this.executePanel1.Name = "executePanel1";
+            this.executePanel1.Size = new System.Drawing.Size(185, 168);
+            this.executePanel1.TabIndex = 15;
             // 
             // rasControl1
             // 
@@ -143,6 +155,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.notesControl1);
             this.Controls.Add(this.executePanel1);
             this.Controls.Add(this.groupsPanel1);
             this.Controls.Add(this.generalPanel1);
@@ -166,5 +179,6 @@
         private ExecuteControl executePanel1;
         private RasControl rasControl1;
         private System.Windows.Forms.ImageList treeIcons;
+        private NotesControl notesControl1;
     }
 }

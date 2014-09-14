@@ -62,14 +62,12 @@ namespace Terminals.Forms.EditFavorite
             this.validator.RegisterValidationControl(Validations.NAME_PROPERTY, this.txtName);
             this.validator.RegisterValidationControl("Port", this.txtPort);
             this.validator.RegisterValidationControl("Protocol", this.ProtocolComboBox);
-            this.validator.RegisterValidationControl("Notes", this.NotesTextbox);
         }
 
         internal void SetErrorProviderIconsAlignment(ErrorProvider errorProvider)
         {
             errorProvider.SetIconAlignment(this.cmbServers, ErrorIconAlignment.MiddleLeft);
             errorProvider.SetIconAlignment(this.httpUrlTextBox, ErrorIconAlignment.MiddleLeft);
-            errorProvider.SetIconAlignment(this.NotesTextbox, ErrorIconAlignment.TopLeft);
             errorProvider.SetIconAlignment(this.txtName, ErrorIconAlignment.MiddleLeft);
         }
 
@@ -260,7 +258,6 @@ namespace Terminals.Forms.EditFavorite
         {
             favorite.NewWindow = this.NewWindowCheckbox.Checked;
             favorite.ToolBarIconFile = this.currentToolBarFileName;
-            favorite.Notes = this.NotesTextbox.Text;
         }
 
         private void FillGeneralProrperties(IFavorite favorite)
@@ -303,7 +300,6 @@ namespace Terminals.Forms.EditFavorite
             this.chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Id);
             this.pictureBox2.Image = favorite.ToolBarIconImage;
             this.currentToolBarFileName = favorite.ToolBarIconFile;
-            this.NotesTextbox.Text = favorite.Notes;
         }
 
         internal void LoadMRUs()

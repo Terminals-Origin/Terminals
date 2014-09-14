@@ -1,4 +1,6 @@
-﻿namespace Terminals.Forms.EditFavorite
+﻿using Terminals.Forms.Controls;
+
+namespace Terminals.Forms.EditFavorite
 {
     partial class GeneralPropertiesUserControl
     {
@@ -31,11 +33,9 @@
             this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
             this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
             this.httpUrlTextBox = new System.Windows.Forms.TextBox();
-            this.NotesTextbox = new System.Windows.Forms.TextBox();
             this.txtPort = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.chkSavePassword = new System.Windows.Forms.CheckBox();
-            this.label36 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lblPort = new System.Windows.Forms.Label();
             this.ProtocolComboBox = new System.Windows.Forms.ComboBox();
@@ -43,7 +43,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.cmbServers = new System.Windows.Forms.ComboBox();
             this.lblServerName = new System.Windows.Forms.Label();
-            this.securityPanel1 = new Terminals.Forms.Controls.SecurityPanel();
+            this.securityPanel1 = new SecurityPanel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,7 +51,7 @@
             // 
             this.chkAddtoToolbar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkAddtoToolbar.AutoSize = true;
-            this.chkAddtoToolbar.Location = new System.Drawing.Point(133, 343);
+            this.chkAddtoToolbar.Location = new System.Drawing.Point(136, 278);
             this.chkAddtoToolbar.Name = "chkAddtoToolbar";
             this.chkAddtoToolbar.Size = new System.Drawing.Size(96, 17);
             this.chkAddtoToolbar.TabIndex = 39;
@@ -62,7 +62,7 @@
             // 
             this.NewWindowCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.NewWindowCheckbox.AutoSize = true;
-            this.NewWindowCheckbox.Location = new System.Drawing.Point(133, 320);
+            this.NewWindowCheckbox.Location = new System.Drawing.Point(136, 255);
             this.NewWindowCheckbox.Name = "NewWindowCheckbox";
             this.NewWindowCheckbox.Size = new System.Drawing.Size(130, 17);
             this.NewWindowCheckbox.TabIndex = 40;
@@ -78,14 +78,6 @@
             this.httpUrlTextBox.Text = "http://terminals.codeplex.com";
             this.httpUrlTextBox.Visible = false;
             this.httpUrlTextBox.TextChanged += new System.EventHandler(this.HttpUrlTextBox_TextChanged);
-            // 
-            // NotesTextbox
-            // 
-            this.NotesTextbox.Location = new System.Drawing.Point(133, 256);
-            this.NotesTextbox.Multiline = true;
-            this.NotesTextbox.Name = "NotesTextbox";
-            this.NotesTextbox.Size = new System.Drawing.Size(356, 58);
-            this.NotesTextbox.TabIndex = 33;
             // 
             // txtPort
             // 
@@ -110,15 +102,6 @@
             this.chkSavePassword.TabIndex = 6;
             this.chkSavePassword.Text = "S&ave password";
             this.chkSavePassword.UseVisualStyleBackColor = true;
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(6, 259);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(38, 13);
-            this.label36.TabIndex = 32;
-            this.label36.Text = "Notes:";
             // 
             // pictureBox2
             // 
@@ -207,10 +190,8 @@
             this.Controls.Add(this.chkAddtoToolbar);
             this.Controls.Add(this.NewWindowCheckbox);
             this.Controls.Add(this.httpUrlTextBox);
-            this.Controls.Add(this.NotesTextbox);
             this.Controls.Add(this.txtPort);
             this.Controls.Add(this.txtName);
-            this.Controls.Add(this.label36);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.lblPort);
             this.Controls.Add(this.ProtocolComboBox);
@@ -229,11 +210,9 @@
         #endregion
 
         private System.Windows.Forms.TextBox httpUrlTextBox;
-        private System.Windows.Forms.TextBox NotesTextbox;
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.CheckBox chkSavePassword;
-        private System.Windows.Forms.Label label36;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label lblPort;
         private System.Windows.Forms.ComboBox ProtocolComboBox;
