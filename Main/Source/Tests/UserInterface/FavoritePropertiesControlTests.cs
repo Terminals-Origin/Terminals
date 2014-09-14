@@ -60,7 +60,7 @@ namespace Tests.UserInterface
             var treeView = this.propertiesControl.Controls["treeView"] as TreeView;
             var optionsPanel = this.propertiesControl.Controls["protocolOptionsPanel1"];
             optionsPanel.Show(); // otherwise the panel fires the selection it self.
-            TreeNode tsgwNode = treeView.Nodes[3].Nodes[4];
+            TreeNode tsgwNode = treeView.Nodes[4].Nodes[4];
             var wrapper = new PrivateObject(this.propertiesControl);
             var selection = new TreeViewEventArgs(tsgwNode);
             var privateFlags = BindingFlags.NonPublic | BindingFlags.Instance;
@@ -74,6 +74,16 @@ namespace Tests.UserInterface
             source.ServerName = EXPECTED_TEXT;
             Favorite result = this.LoadAndSaveToResult(source);
             Assert.AreEqual(EXPECTED_TEXT, result.ServerName, MESSAGE);
+        }
+
+        [TestMethod]
+        public void Notes_LoadSave_KeepsValue()
+        {
+            Favorite source = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
+            source.Notes = EXPECTED_TEXT;
+            // because of internal encoding of Notes, we need to cast to IFavorite here
+            IFavorite result = this.LoadAndSaveToResult(source);
+            Assert.AreEqual(EXPECTED_TEXT, result.Notes, MESSAGE);
         }
 
         [TestMethod]

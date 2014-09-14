@@ -82,9 +82,15 @@ namespace Tests.UserInterface
         public void Rdp_LoadSave_KeepsGatewayDomain()
         {
             this.AssertExpectedPropertyValue<RdpOptions, string>(ConnectionManager.RDP,
-                  (options, newValue) => options.TsGateway.Security.Domain = newValue,
+                  ConfigureTsGateway,
                   options => options.TsGateway.Security.Domain,
                   "TsGwDomain");
+        }
+
+        private void ConfigureTsGateway(RdpOptions options, string newValue)
+        {
+            options.TsGateway.SeparateLogin = true;
+            options.TsGateway.Security.Domain = newValue;
         }
 
         [TestMethod]

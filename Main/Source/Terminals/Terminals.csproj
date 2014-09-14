@@ -297,6 +297,12 @@
     <Compile Include="Forms\EditFavorite\IProtocolOptionsControl.cs" />
     <Compile Include="Forms\EditFavorite\IRdpLocalResourcesControl.cs" />
     <Compile Include="Forms\EditFavorite\IValidatedProtocolControl.cs" />
+    <Compile Include="Forms\EditFavorite\NotesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\NotesControl.Designer.cs">
+      <DependentUpon>NotesControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\EditFavorite\PanelSwitch.cs" />
     <Compile Include="Forms\EditFavorite\ProtocolOptionsPanel.cs">
       <SubType>UserControl</SubType>
@@ -1241,6 +1247,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditFavorite\GroupsControl.resx">
       <DependentUpon>GroupsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EditFavorite\NotesControl.resx">
+      <DependentUpon>NotesControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditFavorite\ProtocolOptionsPanel.resx">
       <DependentUpon>ProtocolOptionsPanel.cs</DependentUpon>
