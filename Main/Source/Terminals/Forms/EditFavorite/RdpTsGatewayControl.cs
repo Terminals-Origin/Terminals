@@ -37,8 +37,7 @@ namespace Terminals.Forms.EditFavorite
         {
             TsGwOptions tsgwOptions = rdpOptions.TsGateway;
             tsgwOptions.HostName = this.txtTSGWServer.Text;
-            this.credentialsPanel1.SaveUserAndDomain(tsgwOptions.Security);
-            this.credentialsPanel1.SavePassword(tsgwOptions.Security);
+            this.credentialsPanel1.SaveTo(tsgwOptions.Security);
             tsgwOptions.SeparateLogin = this.chkTSGWlogin.Checked;
             tsgwOptions.CredentialSource = this.cmbTSGWLogonMethod.SelectedIndex;
             if (tsgwOptions.CredentialSource == 2)

@@ -7,7 +7,7 @@ namespace Terminals.Credentials
 {
     internal partial class ManageCredentialForm : Form
     {
-        private string editedCredentialName = "";
+        private string editedCredentialName = string.Empty;
 
         private readonly IPersistence persistence;
 
@@ -114,8 +114,7 @@ namespace Terminals.Credentials
         private void UpdateFromControls(ICredentialSet toUpdate)
         {
             toUpdate.Name = this.NameTextbox.Text;
-            this.credentialsPanel1.SaveUserAndDomain(toUpdate);
-            this.credentialsPanel1.SavePassword(toUpdate);
+            this.credentialsPanel1.SaveTo(toUpdate);
         }
 
         private ICredentialSet CreateNewCredential()
