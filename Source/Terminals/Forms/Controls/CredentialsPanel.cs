@@ -101,6 +101,12 @@ namespace Terminals.Forms.Controls
                 this.txtPassword.Text = string.Empty;
         }
 
+        internal void SaveTo(ICredentialBase security)
+        {
+            this.SaveUserAndDomain(security);
+            this.SavePassword(security);
+        }
+
         internal void SaveUserAndDomain(ICredentialBase security)
         {
             security.Domain = this.cmbDomains.Text;
