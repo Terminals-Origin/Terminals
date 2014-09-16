@@ -44,12 +44,27 @@ namespace Terminals.Configuration
             }
         }
 
-        private static DataFileWatcher fileWatcher;
+        /// <summary>
+        /// Gets or sets the service for monitoring the configuration file
+        /// </summary>
+        internal static IDataFileWatcher FileWatch
+        {
+            get
+            {
+                return fileWatcher;
+            }
+            set
+            {
+                AssignNewFileWatch(value);
+            }
+        }
+
+        private static IDataFileWatcher fileWatcher;
 
         /// <summary>
         /// Prevent concurent updates on config file by another program
         /// </summary>
-        private static Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.Settings");
+        private static readonly Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.Settings");
 
         /// <summary>
         /// Flag informing, that configuration shouldnt be saved imediately, but after explicit call
@@ -78,7 +93,13 @@ namespace Terminals.Configuration
             if (fileWatcher != null)
                 return;
 
-            fileWatcher = new DataFileWatcher(fileLocations.Configuration);
+            var newWatcher = new DataFileWatcher(fileLocations.Configuration);
+            AssignNewFileWatch(newWatcher);
+        }
+
+        private static void AssignNewFileWatch(IDataFileWatcher newWatcher)
+        {
+            fileWatcher = newWatcher;
             fileWatcher.FileChanged += new EventHandler(ConfigFileChanged);
         }
 
