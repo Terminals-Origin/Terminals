@@ -223,7 +223,7 @@ namespace Terminals.Configuration
             return FileLocations.GetFullPath(backupFile);
         }
 
-        private static void SaveDefaultConfigFile()
+        internal static void SaveDefaultConfigFile()
         {
             string templateConfigFile = Resources.Terminals;
             File.WriteAllText(fileLocations.Configuration, templateConfigFile);
