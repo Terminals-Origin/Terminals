@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Terminals;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
 using Tests.FilePersisted;
 
@@ -12,17 +14,49 @@ namespace Tests
     /// <summary>
     /// Till the Settings is static class we have not chance to isolate the other unit test.
     /// So we have to reset all settings possibly conflicting with other unit tests.
+    /// Update passwords, are tested as part of Update config file.
+    /// Tags (Groups) and Favorites are obsolete and will be removed, so we dont test them here.
     /// </summary>
     [TestClass]
     public class ConfigurationSettingsTests
     {
-        private static readonly Guid FavoriteA = new Guid("eb45aefd-138f-49ca-9c9e-ce5d5877ca62");
-        private static readonly Guid FavoriteB = new Guid("8dda2ccb-cfb9-4487-bab5-0da5319e1485");
+        private static readonly Guid favoriteA = new Guid("eb45aefd-138f-49ca-9c9e-ce5d5877ca62");
+        private static readonly Guid favoriteB = new Guid("8dda2ccb-cfb9-4487-bab5-0da5319e1485");
 
         [ClassInitialize]
         public static void ClassSetUp(TestContext context)
         {
             FilePersistedTestLab.SetDefaultFileLocations();
+        }
+
+        [TestInitialize]
+        public void Setup()
+        {
+            // Reset previous test run changes in config fie
+            Settings.SaveDefaultConfigFile();
+            Settings.ForceReload();
+        }
+
+        [TestMethod]
+        public void Ssh_SaveDefaultFavorite_IsSaved()
+        {
+            var favorite = new FavoriteConfigurationElement();
+            favorite.Protocol = ConnectionManager.SSH; // avoid all default values
+            Settings.SaveDefaultFavorite(favorite);
+            Settings.ForceReload();
+            var loaded = Settings.GetDefaultFavorite();
+            const string MESSAGE = "Newly saved default favorite has return last saved value.";
+            Assert.AreEqual(ConnectionManager.SSH, loaded.Protocol, MESSAGE);
+        }
+
+        [TestMethod]
+        public void NewMRU_AddUserMRu_IsSaved()
+        {
+            const string EXPECTED_USER_MRU = "ExpectedUserMRu";
+            Settings.AddUserMRUItem(EXPECTED_USER_MRU);
+            Settings.ForceReload();
+            var firstUserMru = Settings.MRUUserNames[0];
+            Assert.AreEqual(EXPECTED_USER_MRU, firstUserMru, "Adding user name to MRU, has to return last saved value.");
         }
 
         [TestMethod]
@@ -78,7 +112,7 @@ namespace Tests
         [TestMethod]
         public void Vesion2_SetGet_IsSaved()
         {
-            Version expectedVersion = new Version(2, 0);
+            var expectedVersion = new Version(2, 0);
             Settings.ConfigVersion = expectedVersion;
             Assert.AreEqual(expectedVersion, Settings.ConfigVersion, "Get config file version has to return last saved value");
         }
@@ -97,15 +131,15 @@ namespace Tests
         public void FavoriteB_EditFavoriteButton_IsSaved()
         {
             Settings.UpdateFavoritesToolbarButtons(new List<Guid>());
-            Settings.EditFavoriteButton(FavoriteA, FavoriteB, true);
+            Settings.EditFavoriteButton(favoriteA, favoriteB, true);
             var savedButtons = Settings.FavoritesToolbarButtons;
-            Assert.AreEqual(FavoriteB, savedButtons[0], "Loaded buttons should contain last saved buttons.");
+            Assert.AreEqual(favoriteB, savedButtons[0], "Loaded buttons should contain last saved buttons.");
         }
 
         [TestMethod]
         public void TwoFavorites_UpdateButtons_FiresSettingsChanged()
         {
-            var favorites = new List<Guid>() { FavoriteA, FavoriteB };
+            var favorites = new List<Guid>() { favoriteA, favoriteB };
             bool changeReported = false;
             Settings.ConfigurationChanged += args => changeReported = true;
             Settings.UpdateFavoritesToolbarButtons(favorites);
