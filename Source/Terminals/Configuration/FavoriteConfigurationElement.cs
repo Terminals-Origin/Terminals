@@ -48,7 +48,7 @@ namespace Terminals
         /// <returns>result of String CompareTo method</returns>
         internal int CompareByDefaultSorting(FavoriteConfigurationElement target)
         {
-            switch (Settings.DefaultSortProperty)
+            switch (Settings.Instance.DefaultSortProperty)
             {
                 case SortProperties.ServerName:
                     return this.ServerName.CompareTo(target.ServerName);
@@ -63,7 +63,7 @@ namespace Terminals
 
         internal static string GetDefaultSortPropertyName()
         {
-            switch (Settings.DefaultSortProperty)
+            switch (Settings.Instance.DefaultSortProperty)
             {
                 case SortProperties.ServerName:
                     return "ServerName";
@@ -123,7 +123,7 @@ namespace Terminals
             String toolTip = String.Format("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
                 Environment.NewLine, serverName, this.Port, HelperFunctions.UserDisplayName(this.DomainName, this.UserName));
 
-            if (Settings.ShowFullInformationToolTips)
+            if (Settings.Instance.ShowFullInformationToolTips)
             {
                 toolTip += String.Format("Tag: {1}{0}Connect to Console: {2}{0}Notes: {3}{0}",
                     Environment.NewLine, this.Tags, this.ConnectToConsole, this.Notes);
@@ -1676,7 +1676,7 @@ namespace Terminals
             }
             set
             {
-                if (Settings.AutoCaseTags)
+                if (Settings.Instance.AutoCaseTags)
                 {
                     this["tags"] = Settings.ToTitleCase(value);
                 }

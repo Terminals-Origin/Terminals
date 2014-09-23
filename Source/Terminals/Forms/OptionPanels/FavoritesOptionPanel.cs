@@ -6,6 +6,8 @@ namespace Terminals.Forms
 {
     internal partial class FavoritesOptionPanel : UserControl, IOptionPanel
     {
+        private readonly Settings settings = Settings.Instance;
+
         public FavoritesOptionPanel()
         {
             InitializeComponent();
@@ -13,11 +15,11 @@ namespace Terminals.Forms
 
         public void LoadSettings()
         {
-            this.chkAutoCaseTags.Checked = Settings.AutoCaseTags;
-            this.chkAutoExapandTagsPanel.Checked = Settings.AutoExapandTagsPanel;
-            this.chkEnableFavoritesPanel.Checked = Settings.EnableFavoritesPanel;
+            this.chkAutoCaseTags.Checked = settings.AutoCaseTags;
+            this.chkAutoExapandTagsPanel.Checked = settings.AutoExapandTagsPanel;
+            this.chkEnableFavoritesPanel.Checked = settings.EnableFavoritesPanel;
 
-            switch (Settings.DefaultSortProperty)
+            switch (settings.DefaultSortProperty)
             {
                 case SortProperties.ServerName:
                     this.ServerNameRadio.Checked = true;
@@ -36,18 +38,18 @@ namespace Terminals.Forms
 
         public void SaveSettings()
         {
-            Settings.AutoCaseTags = this.chkAutoCaseTags.Checked;
-            Settings.AutoExapandTagsPanel = this.chkAutoExapandTagsPanel.Checked;
-            Settings.EnableFavoritesPanel = this.chkEnableFavoritesPanel.Checked;
+            settings.AutoCaseTags = this.chkAutoCaseTags.Checked;
+            settings.AutoExapandTagsPanel = this.chkAutoExapandTagsPanel.Checked;
+            settings.EnableFavoritesPanel = this.chkEnableFavoritesPanel.Checked;
 
             if (this.ServerNameRadio.Checked)
-                Settings.DefaultSortProperty = SortProperties.ServerName;
+                settings.DefaultSortProperty = SortProperties.ServerName;
             else if (this.NoneRadioButton.Checked)
-                Settings.DefaultSortProperty = SortProperties.None;
+                settings.DefaultSortProperty = SortProperties.None;
             else if (this.ConnectionNameRadioButton.Checked)
-                Settings.DefaultSortProperty = SortProperties.ConnectionName;
+                settings.DefaultSortProperty = SortProperties.ConnectionName;
             else
-                Settings.DefaultSortProperty = SortProperties.Protocol;
+                settings.DefaultSortProperty = SortProperties.Protocol;
         }
     }
 }

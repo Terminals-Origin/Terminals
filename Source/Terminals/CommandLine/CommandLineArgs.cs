@@ -153,7 +153,7 @@ namespace Terminals.CommandLine
         {
             get
             {
-                return Settings.SingleInstance || this.reuse;
+                return Settings.Instance.SingleInstance || this.reuse;
             }
         }
     }

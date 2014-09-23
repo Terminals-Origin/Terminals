@@ -9,11 +9,13 @@ namespace Terminals.CaptureManager
 {
     internal static class CaptureManager
     {
+        private static readonly Settings settings = Settings.Instance;
+
         public static string CaptureRoot
         {
             get
             {
-                return Settings.CaptureRoot;
+                return settings.CaptureRoot;
             }
         }
 
@@ -56,7 +58,7 @@ namespace Terminals.CaptureManager
             ScreenCapture sc = new ScreenCapture();
             Bitmap bmp = sc.CaptureControl(tab, tempFile, ImageFormatTypes.imgPNG);
 
-            if (Settings.EnableCaptureToClipboard)
+            if (settings.EnableCaptureToClipboard)
                 Clipboard.SetImage(bmp);
         }
 

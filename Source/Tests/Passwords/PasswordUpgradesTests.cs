@@ -24,6 +24,7 @@ namespace Tests.Passwords
         private const string SECURED_CONFIG_FILE = "SecuredTerminals.config";
         private const string SECURED_CREDENTIALS_FILE = "SecuredCredentials.xml";
 
+        private readonly Settings settings = Settings.Instance;
         /// <summary>
         /// User name and password encrypted in test credential file
         /// </summary>
@@ -55,7 +56,7 @@ namespace Tests.Passwords
             // simply nothing to upgrade, procedure shouldn't fail.
             IPersistence persistence = this.RunUpgrade();
             Assert.IsFalse(askedForPassword, "Config file shouldn't ask for password");
-            bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(string.Empty, Settings.MasterPasswordHash);
+            bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(string.Empty, settings.MasterPasswordHash);
             Assert.IsTrue(masterStillValid, "Master password upgrade failed.");
             AssertUserAndCredential(persistence);
         }
@@ -69,7 +70,7 @@ namespace Tests.Passwords
             this.UpgradePasswordsTestInitialize(SECURED_CONFIG_FILE, SECURED_CREDENTIALS_FILE, "favoritesSecured.xml");
             IPersistence persistence = this.RunUpgrade();
 
-            bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(PasswordTests.MASTERPASSWORD, Settings.MasterPasswordHash);
+            bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(PasswordTests.MASTERPASSWORD, settings.MasterPasswordHash);
             Assert.IsTrue(masterStillValid, "Master password upgrade failed.");
             AssertUserAndCredential(persistence);
             AssertFavoriteCredentialSet(persistence);
@@ -100,7 +101,7 @@ namespace Tests.Passwords
             var persistence = new FilePersistence();
             var contentUpgrade = new FilesV2ContentUpgrade(persistence, GetMasterPassword);
             contentUpgrade.Run();
-            Settings.ForceReload(); // because we changed its file, while upgrading
+            settings.ForceReload(); // because we changed its file, while upgrading
             return persistence;
         }
 
@@ -128,9 +129,9 @@ namespace Tests.Passwords
 
             // we have to force all values to test deployment directory,
             // because upgrade works with fully configured files structure
-            Settings.FileLocations.AssignCustomFileLocations(configFileName, favoritesFileName, credentialsFileName);
+            settings.FileLocations.AssignCustomFileLocations(configFileName, favoritesFileName, credentialsFileName);
             // when running multiple tests, there is may be already old configuration
-            Settings.ForceReload();
+            settings.ForceReload();
         }
 
         private string CreateFullTestFileName(string fileName)

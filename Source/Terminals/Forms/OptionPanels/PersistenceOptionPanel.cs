@@ -8,7 +8,6 @@ using Terminals.Data;
 using Terminals.Data.DB;
 using System.Collections.Generic;
 using Terminals.Forms.Controls;
-using Terminals.Forms.EditFavorite;
 
 namespace Terminals.Forms
 {
@@ -20,6 +19,8 @@ namespace Terminals.Forms
         /// because some of them are edited only in "advanced properties" window.
         /// </summary>
         private SqlConnectionStringBuilder connectionStringBuilder;
+
+        private readonly Settings settings = Settings.Instance;
 
         private string ConnectionString
         {
@@ -66,19 +67,19 @@ namespace Terminals.Forms
         private void ActivateCheckBoxes()
         {
             // we have to check both, because when false, the user control only uncheck
-            bool filePersistence = Settings.PersistenceType == FilePersistence.TYPE_ID;
+            bool filePersistence = settings.PersistenceType == FilePersistence.TYPE_ID;
             this.rbtnSqlPersistence.Checked = !filePersistence;
             this.rbtnFilePersistence.Checked = filePersistence;
         }
 
         private void FillSqlUserControls()
         {
-            if (String.IsNullOrEmpty(Settings.ConnectionString))
+            if (String.IsNullOrEmpty(settings.ConnectionString))
                 this.ConnectionString = DatabaseConnections.DEFAULT_CONNECTION_STRING;
             else
-                this.ConnectionString = Settings.ConnectionString;
+                this.ConnectionString = settings.ConnectionString;
 
-            if (!string.IsNullOrEmpty(Settings.DatabaseMasterPassword))
+            if (!string.IsNullOrEmpty(settings.DatabaseMasterPassword))
                 this.txtDbPassword.Text = CredentialsPanel.HIDDEN_PASSWORD;
         }
 
@@ -86,16 +87,16 @@ namespace Terminals.Forms
         {
             if (this.rbtnSqlPersistence.Checked)
             {
-                Settings.PersistenceType = SqlPersistence.TYPE_ID;
-                Settings.ConnectionString = this.ConnectionString;
+                settings.PersistenceType = SqlPersistence.TYPE_ID;
+                settings.ConnectionString = this.ConnectionString;
                 if (this.txtDbPassword.Text != CredentialsPanel.HIDDEN_PASSWORD)
-                    Settings.DatabaseMasterPassword = this.txtDbPassword.Text;
+                    settings.DatabaseMasterPassword = this.txtDbPassword.Text;
             }
             else
             {
-                Settings.PersistenceType = FilePersistence.TYPE_ID;
-                Settings.ConnectionString = string.Empty;
-                Settings.DatabaseMasterPassword = string.Empty;
+                settings.PersistenceType = FilePersistence.TYPE_ID;
+                settings.ConnectionString = string.Empty;
+                settings.DatabaseMasterPassword = string.Empty;
             }
         }
 
@@ -121,7 +122,7 @@ namespace Terminals.Forms
             if (this.txtDbPassword.Text != CredentialsPanel.HIDDEN_PASSWORD)
                 return this.txtDbPassword.Text;
 
-            return Settings.DatabaseMasterPassword;
+            return settings.DatabaseMasterPassword;
         }
 
         private static DatabaseValidationResult TryTestDatabaseConnection(object objectState)

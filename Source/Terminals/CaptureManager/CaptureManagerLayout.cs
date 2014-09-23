@@ -419,7 +419,7 @@ namespace Terminals.CaptureManager
 
         private void thumbsContextMenu_Opening(object sender, CancelEventArgs e)
         {
-            if (Settings.FlickrToken != string.Empty && (this.listViewFiles.SelectedItems != null && this.listViewFiles.SelectedItems.Count > 0))
+            if (Settings.Instance.FlickrToken != string.Empty && (this.listViewFiles.SelectedItems != null && this.listViewFiles.SelectedItems.Count > 0))
             {
                 this.thumbsContextMenu.Items.Add(this.flickrMenuItem);
             }

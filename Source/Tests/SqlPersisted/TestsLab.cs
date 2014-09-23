@@ -34,6 +34,7 @@ namespace Tests.SqlPersisted
         /// </summary>
         protected const string VALIDATION_VALUE_B = "BBB";
 
+        private readonly Settings settings = Settings.Instance;
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -77,7 +78,7 @@ namespace Tests.SqlPersisted
         {
             this.RemoveDatabaseFileReadOnly();
             FilePersistedTestLab.SetDefaultFileLocations();
-            Settings.PersistenceSecurity = new SqlPersistenceSecurity();
+            settings.PersistenceSecurity = new SqlPersistenceSecurity();
             this.SetDeploymentDirConnectionString();
 
             // first reset the database password, then continue with other initializations
@@ -94,7 +95,7 @@ namespace Tests.SqlPersisted
 
         protected void SetDeploymentDirConnectionString()
         {
-            Settings.ConnectionString = String.Format(CONNECTION_STRING, this.TestContext.DeploymentDirectory);
+            settings.ConnectionString = String.Format(CONNECTION_STRING, this.TestContext.DeploymentDirectory);
         }
 
         private void RemoveDatabaseFileReadOnly()

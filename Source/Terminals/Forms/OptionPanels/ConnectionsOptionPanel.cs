@@ -7,6 +7,7 @@ namespace Terminals.Forms
 {
     internal partial class ConnectionsOptionPanel : UserControl, IOptionPanel
     {
+        private readonly Settings settings = Settings.Instance;
         internal AxMsRdpClient6NotSafeForScripting CurrentTerminal { get; set; }
 
         public ConnectionsOptionPanel()
@@ -17,22 +18,22 @@ namespace Terminals.Forms
 
         public void LoadSettings()
         {
-            this.validateServerNamesCheckbox.Checked = Settings.ForceComputerNamesAsURI;
-            this.warnDisconnectCheckBox.Checked = Settings.WarnOnConnectionClose;
-            this.tryReconnectCheckBox.Checked = Settings.AskToReconnect;
-            this.txtDefaultDesktopShare.Text = Settings.DefaultDesktopShare;
-            this.PortscanTimeoutTextBox.Text = Settings.PortScanTimeoutSeconds.ToString();
-            this.restoreWindowCheckbox.Checked = Settings.RestoreWindowOnLastTerminalDisconnect;
+            this.validateServerNamesCheckbox.Checked = settings.ForceComputerNamesAsURI;
+            this.warnDisconnectCheckBox.Checked = settings.WarnOnConnectionClose;
+            this.tryReconnectCheckBox.Checked = settings.AskToReconnect;
+            this.txtDefaultDesktopShare.Text = settings.DefaultDesktopShare;
+            this.PortscanTimeoutTextBox.Text = settings.PortScanTimeoutSeconds.ToString();
+            this.restoreWindowCheckbox.Checked = settings.RestoreWindowOnLastTerminalDisconnect;
         }
 
         public void SaveSettings()
         {
-            Settings.ForceComputerNamesAsURI = this.validateServerNamesCheckbox.Checked;
-            Settings.WarnOnConnectionClose = this.warnDisconnectCheckBox.Checked;
-            Settings.AskToReconnect = this.tryReconnectCheckBox.Checked;
-            Settings.DefaultDesktopShare = this.txtDefaultDesktopShare.Text;
-            Settings.RestoreWindowOnLastTerminalDisconnect = this.restoreWindowCheckbox.Checked;
-            Settings.PortScanTimeoutSeconds = this.ResolveTimeOut();
+            settings.ForceComputerNamesAsURI = this.validateServerNamesCheckbox.Checked;
+            settings.WarnOnConnectionClose = this.warnDisconnectCheckBox.Checked;
+            settings.AskToReconnect = this.tryReconnectCheckBox.Checked;
+            settings.DefaultDesktopShare = this.txtDefaultDesktopShare.Text;
+            settings.RestoreWindowOnLastTerminalDisconnect = this.restoreWindowCheckbox.Checked;
+            settings.PortScanTimeoutSeconds = this.ResolveTimeOut();
         }
 
         private int ResolveTimeOut()

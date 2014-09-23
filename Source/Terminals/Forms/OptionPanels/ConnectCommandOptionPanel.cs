@@ -6,6 +6,8 @@ namespace Terminals.Forms
 {
     internal partial class ConnectCommandOptionPanel : UserControl, IOptionPanel
     {
+        private readonly Settings settings = Settings.Instance;
+
         public ConnectCommandOptionPanel()
         {
             InitializeComponent();
@@ -13,11 +15,11 @@ namespace Terminals.Forms
 
         public void LoadSettings()
         {
-            this.chkExecuteBeforeConnect.Checked = Settings.ExecuteBeforeConnect;
-            this.txtCommand.Text = Settings.ExecuteBeforeConnectCommand;
-            this.txtArguments.Text = Settings.ExecuteBeforeConnectArgs;
-            this.txtInitialDirectory.Text = Settings.ExecuteBeforeConnectInitialDirectory;
-            this.chkWaitForExit.Checked = Settings.ExecuteBeforeConnectWaitForExit;
+            this.chkExecuteBeforeConnect.Checked = settings.ExecuteBeforeConnect;
+            this.txtCommand.Text = settings.ExecuteBeforeConnectCommand;
+            this.txtArguments.Text = settings.ExecuteBeforeConnectArgs;
+            this.txtInitialDirectory.Text = settings.ExecuteBeforeConnectInitialDirectory;
+            this.chkWaitForExit.Checked = settings.ExecuteBeforeConnectWaitForExit;
 
             this.txtCommand.Enabled = this.chkExecuteBeforeConnect.Checked;
             this.txtArguments.Enabled = this.chkExecuteBeforeConnect.Checked;
@@ -27,11 +29,11 @@ namespace Terminals.Forms
 
         public void SaveSettings()
         {
-            Settings.ExecuteBeforeConnect = this.chkExecuteBeforeConnect.Checked;
-            Settings.ExecuteBeforeConnectCommand = this.txtCommand.Text;
-            Settings.ExecuteBeforeConnectArgs = this.txtArguments.Text;
-            Settings.ExecuteBeforeConnectInitialDirectory = this.txtInitialDirectory.Text;
-            Settings.ExecuteBeforeConnectWaitForExit = this.chkWaitForExit.Checked;
+            settings.ExecuteBeforeConnect = this.chkExecuteBeforeConnect.Checked;
+            settings.ExecuteBeforeConnectCommand = this.txtCommand.Text;
+            settings.ExecuteBeforeConnectArgs = this.txtArguments.Text;
+            settings.ExecuteBeforeConnectInitialDirectory = this.txtInitialDirectory.Text;
+            settings.ExecuteBeforeConnectWaitForExit = this.chkWaitForExit.Checked;
         }
 
         private void chkExecuteBeforeConnect_CheckedChanged(object sender, EventArgs e)

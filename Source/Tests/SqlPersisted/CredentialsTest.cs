@@ -95,7 +95,7 @@ namespace Tests.SqlPersisted
         public void UpdateCredentialsPasswordsByNewKeyMaterialTest()
         {
             // this is the only one test, which plays with different master passwords
-            Settings.PersistenceSecurity = this.PrimaryPersistence.Security;
+            Settings.Instance.PersistenceSecurity = this.PrimaryPersistence.Security;
             this.AddTestCredentialsToDatabase();
             this.PrimaryPersistence.Security.UpdateMasterPassword(VALIDATION_VALUE_B);
 

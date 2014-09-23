@@ -10,6 +10,8 @@ namespace Tests.SqlPersisted
     [TestClass]
     public class SecurityTests : TestsLab
     {
+        private readonly Settings settings = Settings.Instance;
+
         [TestInitialize]
         public void TestInitialize()
         {
@@ -19,7 +21,7 @@ namespace Tests.SqlPersisted
         [TestCleanup]
         public void TestClose()
         {
-            Settings.DatabaseMasterPassword = string.Empty;
+            settings.DatabaseMasterPassword = string.Empty;
             this.CheckDatabase.UpdateMasterPassword(string.Empty);
         }
         
@@ -94,8 +96,8 @@ namespace Tests.SqlPersisted
             var rdpOptions = newFavorite.ProtocolProperties as RdpOptions;
             rdpOptions.TsGateway.Security.Password = VALIDATION_VALUE;
             this.PrimaryFavorites.Update(newFavorite);
-            DatabasePasswordUpdate.UpdateMastrerPassord(Settings.ConnectionString, string.Empty, VALIDATION_VALUE_B);
-            Settings.DatabaseMasterPassword = VALIDATION_VALUE_B;
+            DatabasePasswordUpdate.UpdateMastrerPassord(settings.ConnectionString, string.Empty, VALIDATION_VALUE_B);
+            settings.DatabaseMasterPassword = VALIDATION_VALUE_B;
             bool result = DatabaseConnections.TestConnection();
             Assert.IsTrue(result, "Couldn't update database master password");
             

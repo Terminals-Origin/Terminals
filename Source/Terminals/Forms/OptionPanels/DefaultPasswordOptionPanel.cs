@@ -6,6 +6,8 @@ namespace Terminals.Forms
 {
     internal partial class DefaultPasswordOptionPanel : UserControl, IOptionPanel
     {
+        private readonly Settings settings = Settings.Instance;
+
         public DefaultPasswordOptionPanel()
         {
             InitializeComponent();
@@ -13,16 +15,16 @@ namespace Terminals.Forms
 
         public void LoadSettings()
         {
-            this.domainTextbox.Text = Settings.DefaultDomain;
-            this.usernameTextbox.Text = Settings.DefaultUsername;
-            this.passwordTextBox.Text = Settings.DefaultPassword;
+            this.domainTextbox.Text = settings.DefaultDomain;
+            this.usernameTextbox.Text = settings.DefaultUsername;
+            this.passwordTextBox.Text = settings.DefaultPassword;
         }
 
         public void SaveSettings()
         {
-            Settings.DefaultDomain = this.domainTextbox.Text;
-            Settings.DefaultUsername = this.usernameTextbox.Text;
-            Settings.DefaultPassword = this.passwordTextBox.Text;
+            settings.DefaultDomain = this.domainTextbox.Text;
+            settings.DefaultUsername = this.usernameTextbox.Text;
+            settings.DefaultPassword = this.passwordTextBox.Text;
         }
     }
 }

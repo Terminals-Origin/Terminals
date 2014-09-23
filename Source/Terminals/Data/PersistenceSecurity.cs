@@ -10,6 +10,7 @@ namespace Terminals.Data
     /// </summary>
     internal class PersistenceSecurity
     {
+        private readonly Settings settings = Settings.Instance;
         private bool isAuthenticated;
 
         private IPersistedSecurity persistence;
@@ -61,7 +62,7 @@ namespace Terminals.Data
 
         private Boolean IsMasterPasswordValid(string passwordToCheck)
         {
-            string storedMasterPassword = Settings.MasterPasswordHash;
+            string storedMasterPassword = settings.MasterPasswordHash;
             bool isValid = PasswordFunctions2.MasterPasswordIsValid(passwordToCheck, storedMasterPassword);
             if (isValid)
             {
@@ -80,7 +81,7 @@ namespace Terminals.Data
             // start of not secured transaction. Old key is still present,
             // but passwords are already encrypted by new Key
             this.persistence.UpdatePasswordsByNewMasterPassword(newMasterKey);
-            Settings.UpdateConfigurationPasswords(newMasterKey, storedMasterPassword);
+            settings.UpdateConfigurationPasswords(newMasterKey, storedMasterPassword);
             // finish transaction, the passwords now reflect the new key
             this.KeyMaterial = newMasterKey;
         }

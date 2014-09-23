@@ -54,7 +54,7 @@ namespace Terminals.Data
             get { return name; }
             set
             {
-                if (Settings.AutoCaseTags)
+                if (Settings.Instance.AutoCaseTags)
                     name = Settings.ToTitleCase(value);
                 name = value;
             }

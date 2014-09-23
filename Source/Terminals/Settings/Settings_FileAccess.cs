@@ -15,22 +15,22 @@ namespace Terminals.Configuration
 {
     internal delegate void ConfigurationChangedHandler(ConfigurationChangedEventArgs args);
 
-    internal static partial class Settings
+    internal partial class Settings
     {
         /// <summary>
         /// Informs lisseners, that configuration file was changed by another application
         /// or another Terminals instance. In this case all cached not saved data are lost.
         /// </summary>
-        internal static event ConfigurationChangedHandler ConfigurationChanged;
+        internal event ConfigurationChangedHandler ConfigurationChanged;
 
-        private static FileLocations fileLocations = new FileLocations();
-        internal static FileLocations FileLocations
+        private readonly FileLocations fileLocations;
+        internal FileLocations FileLocations
         {
             get { return fileLocations; }
         }
 
-        private static System.Configuration.Configuration _config = null;
-        private static System.Configuration.Configuration Config
+        private System.Configuration.Configuration _config = null;
+        private System.Configuration.Configuration Config
         {
             get
             {
@@ -47,7 +47,7 @@ namespace Terminals.Configuration
         /// <summary>
         /// Gets or sets the service for monitoring the configuration file
         /// </summary>
-        internal static IDataFileWatcher FileWatch
+        internal IDataFileWatcher FileWatch
         {
             get
             {
@@ -59,7 +59,7 @@ namespace Terminals.Configuration
             }
         }
 
-        private static IDataFileWatcher fileWatcher;
+        private IDataFileWatcher fileWatcher;
 
         /// <summary>
         /// Prevent concurent updates on config file by another program
@@ -70,9 +70,14 @@ namespace Terminals.Configuration
         /// Flag informing, that configuration shouldnt be saved imediately, but after explicit call
         /// This increases performance for 
         /// </summary>
-        private static bool delayConfigurationSave;
+        private bool delayConfigurationSave;
 
-        private static void ConfigFileChanged(object sender, EventArgs e)
+        internal Settings()
+        {
+            this.fileLocations = new FileLocations(this); 
+        }
+
+        private void ConfigFileChanged(object sender, EventArgs e)
         {
             TerminalsConfigurationSection old = GetSection();
             ForceReload();
@@ -80,7 +85,7 @@ namespace Terminals.Configuration
             FireConfigurationChanged(args);
         }
 
-        private static void FireConfigurationChanged(ConfigurationChangedEventArgs args)
+        private void FireConfigurationChanged(ConfigurationChangedEventArgs args)
         {
             if (ConfigurationChanged != null)
             {
@@ -88,7 +93,7 @@ namespace Terminals.Configuration
             }
         }
 
-        private static void InitializeFileWatcher()
+        private void InitializeFileWatcher()
         {
             if (fileWatcher != null)
                 return;
@@ -97,7 +102,7 @@ namespace Terminals.Configuration
             AssignNewFileWatch(newWatcher);
         }
 
-        private static void AssignNewFileWatch(IDataFileWatcher newWatcher)
+        private void AssignNewFileWatch(IDataFileWatcher newWatcher)
         {
             fileWatcher = newWatcher;
             fileWatcher.FileChanged += new EventHandler(ConfigFileChanged);
@@ -107,12 +112,12 @@ namespace Terminals.Configuration
         /// Because filewatcher is created before the main form in GUI thread.
         /// This lets to fire the file system watcher events in GUI thread. 
         /// </summary>
-        internal static void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
+        internal void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
         {
             fileWatcher.AssignSynchronizer(synchronizer);
         }
 
-        internal static void ForceReload()
+        internal void ForceReload()
         {
             _config = GetConfiguration();
         }
@@ -122,7 +127,7 @@ namespace Terminals.Configuration
         /// into config file, until you call SaveAndFinishDelayedUpdate.
         /// This dramatically increases performance. Use this method for batch updates.
         /// </summary>
-        internal static void StartDelayedUpdate()
+        internal void StartDelayedUpdate()
         {
             delayConfigurationSave = true;
         }
@@ -131,13 +136,13 @@ namespace Terminals.Configuration
         /// Stops prevent write changes into config file and immediately writes last state.
         /// Usually the changes are saved immediately
         /// </summary>
-        internal static void SaveAndFinishDelayedUpdate()
+        internal void SaveAndFinishDelayedUpdate()
         {
             delayConfigurationSave = false;
             SaveImmediatelyIfRequested();
         }
 
-        private static void SaveImmediatelyIfRequested()
+        private void SaveImmediatelyIfRequested()
         {
             if (!delayConfigurationSave)
             {
@@ -157,7 +162,7 @@ namespace Terminals.Configuration
             }
         }
 
-        private static void Save()
+        private void Save()
         {
             fileWatcher.StopObservation();
             Config.Save();
@@ -165,7 +170,7 @@ namespace Terminals.Configuration
             Debug.WriteLine(String.Format("Terminals.config file saved."));
         }
 
-        private static System.Configuration.Configuration GetConfiguration()
+        private System.Configuration.Configuration GetConfiguration()
         {
             try
             {
@@ -181,20 +186,20 @@ namespace Terminals.Configuration
             }
         }
 
-        private static void CreateConfigFileIfNotExist()
+        private void CreateConfigFileIfNotExist()
         {
             if (!File.Exists(fileLocations.Configuration))
                 SaveDefaultConfigFile();
         }
 
-        private static ExeConfigurationFileMap CreateConfigFileMap()
+        private ExeConfigurationFileMap CreateConfigFileMap()
         {
             ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
             configFileMap.ExeConfigFilename = fileLocations.Configuration;
             return configFileMap;
         }
 
-        private static System.Configuration.Configuration OpenConfiguration()
+        private System.Configuration.Configuration OpenConfiguration()
         {
             ExeConfigurationFileMap configFileMap = CreateConfigFileMap();
             fileLock.WaitOne();
@@ -203,7 +208,7 @@ namespace Terminals.Configuration
             return config;
         }
 
-        private static void BackUpConfigFile()
+        private void BackUpConfigFile()
         {
             if (File.Exists(fileLocations.Configuration))
             {
@@ -223,7 +228,7 @@ namespace Terminals.Configuration
             return FileLocations.GetFullPath(backupFile);
         }
 
-        internal static void SaveDefaultConfigFile()
+        internal void SaveDefaultConfigFile()
         {
             string templateConfigFile = Resources.Terminals;
             File.WriteAllText(fileLocations.Configuration, templateConfigFile);
@@ -243,7 +248,7 @@ namespace Terminals.Configuration
                 File.Delete(fileName);
         }
 
-        private static System.Configuration.Configuration ImportConfiguration()
+        private System.Configuration.Configuration ImportConfiguration()
         {
             // get a temp filename to hold the current settings which are failing
             string tempFile = Path.GetTempFileName();
@@ -360,7 +365,7 @@ namespace Terminals.Configuration
             return c;
         }
 
-        private static TerminalsConfigurationSection GetSection()
+        private TerminalsConfigurationSection GetSection()
         {
             try
             {

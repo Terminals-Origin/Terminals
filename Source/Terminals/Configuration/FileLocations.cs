@@ -8,6 +8,8 @@ namespace Terminals.Configuration
     /// </summary>
     internal sealed class FileLocations
     {
+        private readonly Settings settings;
+
         private static readonly string PROFILE_DATA_DIRECTORY = 
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
@@ -112,6 +114,11 @@ namespace Terminals.Configuration
 
         internal string Credentials { get; private set; }
 
+        internal FileLocations(Settings settings)
+        {
+            this.settings = settings;
+        }
+
         /// <summary>
         /// Sets custom file locations for general data files.
         /// All paths have to be set to absolute file path,  otherwise are ignored.
@@ -140,7 +147,7 @@ namespace Terminals.Configuration
         {
             if (String.IsNullOrEmpty(favoritesFullPath))
             {
-                this.Favorites = Settings.SavedFavoritesFileLocation;
+                this.Favorites = this.settings.SavedFavoritesFileLocation;
                 if (String.IsNullOrEmpty(this.Favorites))
                     this.Favorites = GetFullPath(FAVORITES_FILENAME);
             }
@@ -160,7 +167,7 @@ namespace Terminals.Configuration
 
         private void AssignDefaultCredentialsFile()
         {
-            this.Credentials = Settings.SavedCredentialsLocation;
+            this.Credentials = this.settings.SavedCredentialsLocation;
             if (String.IsNullOrEmpty(this.Credentials) || this.Credentials == CREDENTIALS_FILENAME)
                 this.Credentials = GetFullPath(CREDENTIALS_FILENAME);
         }

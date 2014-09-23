@@ -13,6 +13,7 @@ namespace Terminals.Data.DB
     {
         private const string PROVIDER = "System.Data.SqlClient";
 
+        private static readonly Settings settings = Settings.Instance;
         /// <summary>
         /// Load all the EF metadata from current assembly
         /// </summary>
@@ -22,7 +23,7 @@ namespace Terminals.Data.DB
 
         internal static Database CreateInstance()
         {
-            EntityConnection connection = BuildConnection(Settings.ConnectionString);
+            EntityConnection connection = BuildConnection(settings.ConnectionString);
             return new Database(connection);
         }
 
@@ -52,7 +53,7 @@ namespace Terminals.Data.DB
 
         internal static bool TestConnection()
         {
-            TestConnectionResult result = TestConnection(Settings.ConnectionString, Settings.DatabaseMasterPassword);
+            TestConnectionResult result = TestConnection(settings.ConnectionString, settings.DatabaseMasterPassword);
             return result.Successful;
         }
 
@@ -122,8 +123,8 @@ namespace Terminals.Data.DB
 
         internal static void UpgradeDatabaseVersion()
         {
-            string connectionString = Settings.ConnectionString;
-            string databaseMasterPassword = Settings.DatabaseMasterPassword;
+            string connectionString = settings.ConnectionString;
+            string databaseMasterPassword = settings.DatabaseMasterPassword;
             DatabaseValidationResult dbResult = ValidateDatabaseConnection(connectionString, databaseMasterPassword);
 
             string migrationsRoot = FileLocations.SqlMigrations;

@@ -13,6 +13,8 @@ namespace Terminals.Forms
     {
         private const String AMAZON_MESSAGETITLE = "Amazon S3 Backup";
 
+        private readonly Settings settings = Settings.Instance;
+
         /// <summary>
         /// Gets or sets the bucket name into/from the text box (it is a proxy).
         /// Returns text filled into associated text box.
@@ -36,20 +38,20 @@ namespace Terminals.Forms
 
         public void LoadSettings()
         {
-            this.AmazonBackupCheckbox.Checked = Settings.UseAmazon;
-            this.AccessKeyTextbox.Text = Settings.AmazonAccessKey;
-            this.SecretKeyTextbox.Text = Settings.AmazonSecretKey;
-            this.BucketName = Settings.AmazonBucketName;
+            this.AmazonBackupCheckbox.Checked = settings.UseAmazon;
+            this.AccessKeyTextbox.Text = settings.AmazonAccessKey;
+            this.SecretKeyTextbox.Text = settings.AmazonSecretKey;
+            this.BucketName = settings.AmazonBucketName;
 
             UpdateAmazonControlsEnabledState();
         }
 
         public void SaveSettings()
         {
-            Settings.UseAmazon = this.AmazonBackupCheckbox.Checked;
-            Settings.AmazonAccessKey = this.AccessKeyTextbox.Text;
-            Settings.AmazonSecretKey = this.SecretKeyTextbox.Text;
-            Settings.AmazonBucketName = this.BucketName;
+            settings.UseAmazon = this.AmazonBackupCheckbox.Checked;
+            settings.AmazonAccessKey = this.AccessKeyTextbox.Text;
+            settings.AmazonSecretKey = this.SecretKeyTextbox.Text;
+            settings.AmazonBucketName = this.BucketName;
         }
 
         private void AmazonBackupCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -169,7 +171,7 @@ namespace Terminals.Forms
             {
                 PutObjectRequest request = new PutObjectRequest();
                 request.WithBucketName(this.BucketName).WithKey(FileLocations.CONFIG_FILENAME)
-                    .WithFilePath(Settings.FileLocations.Configuration);
+                    .WithFilePath(settings.FileLocations.Configuration);
 
                 client.PutObject(request);
 
@@ -193,8 +195,8 @@ namespace Terminals.Forms
 
                 using (GetObjectResponse response = client.GetObject(request))
                 {
-                    response.WriteResponseStreamToFile(Settings.FileLocations.Configuration);
-                    Settings.ForceReload();
+                    response.WriteResponseStreamToFile(settings.FileLocations.Configuration);
+                    settings.ForceReload();
                 }
 
                 this.ErrorLabel.ForeColor = Color.Black;

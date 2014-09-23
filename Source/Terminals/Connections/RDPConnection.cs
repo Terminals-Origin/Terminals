@@ -21,6 +21,7 @@ namespace Terminals.Connections
 {
     internal class RDPConnection : Connection
     {
+        private readonly Settings settings = Settings.Instance;
         private readonly ReconnectingControl reconecting = new ReconnectingControl();
         private readonly ConnectionStateDetector connectionStateDetector = new ConnectionStateDetector();
 
@@ -185,7 +186,7 @@ namespace Terminals.Connections
             this.connectionStateDetector.Stop();
             this.reconecting.Hide();
             if (this.reconecting.Disable)
-                Settings.AskToReconnect = false;
+                settings.AskToReconnect = false;
         }
 
         public override void ChangeDesktopSize(DesktopSize desktopSize)
@@ -563,7 +564,7 @@ namespace Terminals.Connections
             }
         }
 
-        private static bool DecideToReconnect(IMsTscAxEvents_OnDisconnectedEvent e)
+        private bool DecideToReconnect(IMsTscAxEvents_OnDisconnectedEvent e)
         {
             // 516 reason in case of reconnect expired
             // 2308 connection lost
@@ -571,7 +572,7 @@ namespace Terminals.Connections
             if (e.discReason != 2308 && e.discReason != 2)
                 return false;
 
-            return Settings.AskToReconnect;
+            return settings.AskToReconnect;
         }
 
         private void TryReconnect()

@@ -28,6 +28,8 @@ namespace Terminals.Forms.Controls
 
         private IPersistence persistence;
 
+        private readonly Settings settings = Settings.Instance;
+
         public FavoritesSearchBox()
         {
             InitializeComponent();
@@ -36,13 +38,13 @@ namespace Terminals.Forms.Controls
         internal void LoadEvents(IPersistence persistence)
         {
             this.persistence = persistence;
-            this.searchTextBox.SearchedTexts = Settings.SavedSearches;
+            this.searchTextBox.SearchedTexts = settings.SavedSearches;
             this.persistence.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
         }
 
         internal void UnloadEvents()
         {
-            Settings.SavedSearches = this.searchTextBox.SearchedTexts;
+            settings.SavedSearches = this.searchTextBox.SearchedTexts;
             // if the panel is not visible, the loading never happens, and the persistence
             // doesnt have to be assigned
             if (this.persistence != null)

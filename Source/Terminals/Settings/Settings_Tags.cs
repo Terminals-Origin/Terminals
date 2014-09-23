@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace Terminals.Configuration
 {
-    internal static partial class Settings
+    internal partial class Settings
     {
         /// <summary>
         /// Gets alphabeticaly sorted array of tags resolved from Tags store.
         /// Since version 2. only for updates. Use new persistence instead.
         /// </summary>
-        internal static string[] Tags
+        internal string[] Tags
         {
             get
             {
@@ -21,7 +21,7 @@ namespace Terminals.Configuration
             }
         }
 
-        private static void AddTagsToSettings(List<string> tags)
+        private void AddTagsToSettings(List<string> tags)
         {
             foreach (String tag in tags)
             {
@@ -36,7 +36,7 @@ namespace Terminals.Configuration
         /// Adds tag to the tags collection if it already isnt there.
         /// If the tag is in database, than it returns empty string, otherwise the commited tag.
         /// </summary>
-        private static void AddTagToSettings(String tag)
+        private void AddTagToSettings(String tag)
         {
             if (AutoCaseTags)
                 tag = ToTitleCase(tag);
@@ -47,13 +47,13 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested();
         }
 
-        private static void DeleteTags()
+        private void DeleteTags()
         {
             List<string> tagsToDelete = Tags.ToList();
             DeleteTagsFromSettings(tagsToDelete);
         }
 
-        private static List<string> DeleteTagsFromSettings(List<string> tagsToDelete)
+        private List<string> DeleteTagsFromSettings(List<string> tagsToDelete)
         {
             List<string> deletedTags = new List<string>();
             foreach (String tagTodelete in tagsToDelete)
@@ -69,7 +69,7 @@ namespace Terminals.Configuration
         /// <summary>
         /// Removes the tag from settings, but doesnt send the Tag removed event
         /// </summary>
-        private static String DeleteTagFromSettings(String tagToDelete)
+        private String DeleteTagFromSettings(String tagToDelete)
         {
             if (AutoCaseTags)
                 tagToDelete = ToTitleCase(tagToDelete);
@@ -78,7 +78,7 @@ namespace Terminals.Configuration
             return tagToDelete;
         }
 
-        private static Int32 GetNumberOfFavoritesUsingTag(String tagToRemove)
+        private Int32 GetNumberOfFavoritesUsingTag(String tagToRemove)
         {
             var favorites = GetFavorites().ToList();
             return favorites.Where(favorite => favorite.TagList.Contains(tagToRemove))

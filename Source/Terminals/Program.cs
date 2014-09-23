@@ -109,7 +109,7 @@ namespace Terminals
 
         private static void ShowFirstRunWizard()
         {
-            if (Settings.ShowWizard)
+            if (Settings.Instance.ShowWizard)
             {
                 //settings file doesn't exist
                 using (var wzrd = new FirstRunWizard(Persistence.Instance))
@@ -162,7 +162,7 @@ namespace Terminals
             var commandline = new CommandLineArgs();
             String[] cmdLineArgs = Environment.GetCommandLineArgs();
             Parser.ParseArguments(cmdLineArgs, commandline);
-            Settings.FileLocations.AssignCustomFileLocations(commandline.configFile,
+            Settings.Instance.FileLocations.AssignCustomFileLocations(commandline.configFile,
                 commandline.favoritesFile, commandline.credentialsFile);
             return commandline;
         }

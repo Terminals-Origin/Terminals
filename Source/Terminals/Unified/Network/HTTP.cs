@@ -26,10 +26,12 @@ namespace Unified.Network.HTTP
 
         public static WebResponse HTTPAsWebResponse(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST)
         {
-            if (Settings.UseProxy)
+            var settings = Settings.Instance;
+
+            if (settings.UseProxy)
             {
-                ProxyAddress = Settings.ProxyAddress;
-                ProxyPort = Settings.ProxyPort;
+                ProxyAddress = settings.ProxyAddress;
+                ProxyPort = settings.ProxyPort;
             }
 
             if (!DoPOST && Data != null && Data.Length > 0)

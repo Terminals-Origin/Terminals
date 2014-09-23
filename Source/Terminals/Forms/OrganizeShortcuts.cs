@@ -8,10 +8,13 @@ namespace Terminals
 {
     internal partial class OrganizeShortcuts : Form
     {
+        private readonly Settings settings = Settings.Instance;
+
+        private SpecialCommandConfigurationElementCollection shortucts = Settings.Instance.SpecialCommands;
+
         public OrganizeShortcuts()
         {
             InitializeComponent();
-            
         }
 
         private void shortcutCombobox_SelectedIndexChanged(object sender, EventArgs e)
@@ -81,12 +84,10 @@ namespace Terminals
                 shortucts.Remove(shortcut);
                 shortucts.Add(shortcut);
                 
-                Settings.SpecialCommands = shortucts;
-                shortucts = Settings.SpecialCommands;
+                settings.SpecialCommands = shortucts;
+                shortucts = settings.SpecialCommands;
             }
         }
-
-        SpecialCommandConfigurationElementCollection shortucts = Settings.SpecialCommands;
 
         private void OrganizeShortcuts_Load(object sender, EventArgs e)
         {
@@ -112,8 +113,8 @@ namespace Terminals
                 if (shortcut != null)
                 {
                     shortucts.Remove(shortcut);
-                    Settings.SpecialCommands = shortucts;
-                    shortucts = Settings.SpecialCommands;
+                    settings.SpecialCommands = shortucts;
+                    shortucts = settings.SpecialCommands;
                 }
             }
             LoadShortcuts();
@@ -161,7 +162,6 @@ namespace Terminals
                 LoadIconsFromExe();
             }
         }
-
 
         private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {

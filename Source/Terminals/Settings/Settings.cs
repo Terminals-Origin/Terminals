@@ -4,15 +4,12 @@ using System.Threading;
 using SSHClient;
 using Terminals.Data;
 using Terminals.Security;
-using System.IO;
 
 namespace Terminals.Configuration
 {
-    internal static partial class Settings
+    internal partial class Settings
     {
-        #region Terminals Version
-
-        public static Version ConfigVersion
+        public Version ConfigVersion
         {
             get
             {
@@ -30,11 +27,9 @@ namespace Terminals.Configuration
             }
         }
 
-        #endregion
-
         #region General tab settings
 
-        public static bool NeverShowTerminalsWindow
+        public bool NeverShowTerminalsWindow
         {
             get
             {
@@ -48,7 +43,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool ShowUserNameInTitle
+        public bool ShowUserNameInTitle
         {
             get
             {
@@ -62,7 +57,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool ShowInformationToolTips
+        public bool ShowInformationToolTips
         {
             get
             {
@@ -76,7 +71,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool ShowFullInformationToolTips
+        public bool ShowFullInformationToolTips
         {
             get
             {
@@ -90,7 +85,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool SingleInstance
+        public bool SingleInstance
         {
             get
             {
@@ -104,7 +99,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool ShowConfirmDialog
+        public bool ShowConfirmDialog
         {
             get
             {
@@ -118,7 +113,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool SaveConnectionsOnClose
+        public bool SaveConnectionsOnClose
         {
             get
             {
@@ -132,7 +127,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool MinimizeToTray
+        public bool MinimizeToTray
         {
             get
             {
@@ -147,7 +142,7 @@ namespace Terminals.Configuration
         }
 
         // Validate server names
-        public static bool ForceComputerNamesAsURI
+        public bool ForceComputerNamesAsURI
         {
             get
             {
@@ -161,7 +156,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool WarnOnConnectionClose
+        public bool WarnOnConnectionClose
         {
             get
             {
@@ -175,7 +170,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool AutoCaseTags
+        public bool AutoCaseTags
         {
             get
             {
@@ -189,7 +184,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string DefaultDesktopShare
+        public string DefaultDesktopShare
         {
             get
             {
@@ -203,7 +198,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static int PortScanTimeoutSeconds
+        public int PortScanTimeoutSeconds
         {
             get
             {
@@ -221,7 +216,7 @@ namespace Terminals.Configuration
 
         #region Execute Before Connect tab settings
 
-        public static bool ExecuteBeforeConnect
+        public bool ExecuteBeforeConnect
         {
             get
             {
@@ -235,7 +230,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string ExecuteBeforeConnectCommand
+        public string ExecuteBeforeConnectCommand
         {
             get
             {
@@ -249,7 +244,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string ExecuteBeforeConnectArgs
+        public string ExecuteBeforeConnectArgs
         {
             get
             {
@@ -263,7 +258,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string ExecuteBeforeConnectInitialDirectory
+        public string ExecuteBeforeConnectInitialDirectory
         {
             get
             {
@@ -277,7 +272,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool ExecuteBeforeConnectWaitForExit
+        public bool ExecuteBeforeConnectWaitForExit
         {
             get
             {
@@ -298,7 +293,7 @@ namespace Terminals.Configuration
         /// <summary>
         /// Gets or sets the stored master password key, getter and setter don't make any encryption.
         /// </summary>
-        internal static string MasterPasswordHash
+        internal string MasterPasswordHash
         {
             get
             {
@@ -313,14 +308,14 @@ namespace Terminals.Configuration
         /// <summary>
         /// This updates all stored passwords and assigns new key material in config section.
         /// </summary>
-        internal static void UpdateConfigurationPasswords(string newMasterKey, string newStoredMasterKey)
+        internal void UpdateConfigurationPasswords(string newMasterKey, string newStoredMasterKey)
         {
             MasterPasswordHash = newStoredMasterKey;
             UpdateStoredPasswords(newMasterKey);
             SaveImmediatelyIfRequested();
         }
 
-        private static void UpdateStoredPasswords(string newKeyMaterial)
+        private void UpdateStoredPasswords(string newKeyMaterial)
         {
             TerminalsConfigurationSection configSection = GetSection();
             configSection.EncryptedDefaultPassword = PasswordFunctions2.EncryptPassword(DefaultPassword, newKeyMaterial);
@@ -334,7 +329,7 @@ namespace Terminals.Configuration
 
         #region Security tab settings
 
-        public static string DefaultDomain
+        public string DefaultDomain
         {
             get
             {
@@ -348,7 +343,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string DefaultUsername
+        public string DefaultUsername
         {
             get
             {
@@ -362,7 +357,7 @@ namespace Terminals.Configuration
             }
         }
 
-        internal static string DefaultPassword
+        internal string DefaultPassword
         {
             get
             {
@@ -380,9 +375,9 @@ namespace Terminals.Configuration
         /// Gets or sets authentication instance used to encrypt and decrypt secured settings.
         /// Set only initialized and authenticated instance before access to any data. 
         /// </summary>
-        internal static PersistenceSecurity PersistenceSecurity { get; set; }
+        internal PersistenceSecurity PersistenceSecurity { get; set; }
 
-        public static bool UseAmazon
+        internal bool UseAmazon
         {
             get
             {
@@ -396,7 +391,7 @@ namespace Terminals.Configuration
             }
         }
 
-        internal static string AmazonAccessKey
+        internal string AmazonAccessKey
         {
             get
             {
@@ -411,7 +406,7 @@ namespace Terminals.Configuration
             }
         }
 
-        internal static string AmazonSecretKey
+        internal string AmazonSecretKey
         {
             get
             {
@@ -426,7 +421,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string AmazonBucketName
+        internal string AmazonBucketName
         {
             get
             {
@@ -444,7 +439,7 @@ namespace Terminals.Configuration
 
         #region Flickr tab settings
 
-        public static string FlickrToken
+        public string FlickrToken
         {
             get
             {
@@ -462,7 +457,7 @@ namespace Terminals.Configuration
 
         #region Proxy tab settings
 
-        public static bool UseProxy
+        public bool UseProxy
         {
             get
             {
@@ -476,7 +471,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string ProxyAddress
+        public string ProxyAddress
         {
             get
             {
@@ -490,7 +485,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static int ProxyPort
+        public int ProxyPort
         {
             get
             {
@@ -508,7 +503,7 @@ namespace Terminals.Configuration
 
         #region Screen capture tab settings
 
-        public static bool EnableCaptureToClipboard
+        public bool EnableCaptureToClipboard
         {
             get
             {
@@ -522,7 +517,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool EnableCaptureToFolder
+        public bool EnableCaptureToFolder
         {
             get
             {
@@ -536,12 +531,12 @@ namespace Terminals.Configuration
             }
         }
 
-        internal static bool EnabledCaptureToFolderAndClipBoard
+        internal bool EnabledCaptureToFolderAndClipBoard
         {
             get { return EnableCaptureToClipboard || EnableCaptureToFolder; }
         }
 
-        public static bool AutoSwitchOnCapture
+        public bool AutoSwitchOnCapture
         {
             get
             {
@@ -555,7 +550,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string CaptureRoot
+        public string CaptureRoot
         {
             get
             {
@@ -577,7 +572,7 @@ namespace Terminals.Configuration
 
         #region More tab settings
 
-        public static bool RestoreWindowOnLastTerminalDisconnect
+        public bool RestoreWindowOnLastTerminalDisconnect
         {
             get
             {
@@ -591,7 +586,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool EnableFavoritesPanel
+        public bool EnableFavoritesPanel
         {
             get
             {
@@ -605,7 +600,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool EnableGroupsMenu
+        public bool EnableGroupsMenu
         {
             get
             {
@@ -619,7 +614,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool AutoExapandTagsPanel
+        public bool AutoExapandTagsPanel
         {
             get
             {
@@ -633,7 +628,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static SortProperties DefaultSortProperty
+        public SortProperties DefaultSortProperty
         {
             get
             {
@@ -655,7 +650,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool Office2007BlackFeel
+        public bool Office2007BlackFeel
         {
             get
             {
@@ -669,7 +664,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool Office2007BlueFeel
+        public bool Office2007BlueFeel
         {
             get
             {
@@ -687,7 +682,7 @@ namespace Terminals.Configuration
 
         #region Vnc settings
 
-        public static bool VncAutoScale
+        public bool VncAutoScale
         {
             get
             {
@@ -701,7 +696,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool VncViewOnly
+        public bool VncViewOnly
         {
             get
             {
@@ -715,7 +710,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static int VncDisplayNumber
+        public int VncDisplayNumber
         {
             get
             {
@@ -733,7 +728,7 @@ namespace Terminals.Configuration
 
         #region Mainform control settings
 
-        public static int FavoritePanelWidth
+        public int FavoritePanelWidth
         {
             get
             {
@@ -747,7 +742,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool ShowFavoritePanel
+        public bool ShowFavoritePanel
         {
             get
             {
@@ -761,7 +756,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool ToolbarsLocked
+        public bool ToolbarsLocked
         {
             get
             {
@@ -779,7 +774,7 @@ namespace Terminals.Configuration
 
         #region Startup settings
 
-        public static string UpdateSource
+        public string UpdateSource
         {
             get
             {
@@ -793,7 +788,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static bool ShowWizard
+        public bool ShowWizard
         {
             get
             {
@@ -807,7 +802,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string PsexecLocation
+        public string PsexecLocation
         {
             get
             {
@@ -821,7 +816,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string SavedCredentialsLocation
+        public string SavedCredentialsLocation
         {
             get
             {
@@ -835,7 +830,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string SavedFavoritesFileLocation
+        public string SavedFavoritesFileLocation
         {
             get
             {
@@ -853,7 +848,7 @@ namespace Terminals.Configuration
 
         #region MRU lists
 
-        public static string[] MRUServerNames
+        public string[] MRUServerNames
         {
             get
             {
@@ -861,7 +856,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string[] MRUDomainNames
+        public string[] MRUDomainNames
         {
             get
             {
@@ -869,7 +864,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string[] MRUUserNames
+        public string[] MRUUserNames
         {
             get
             {
@@ -877,7 +872,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string[] SavedSearches
+        public string[] SavedSearches
         {
             get
             {
@@ -894,7 +889,7 @@ namespace Terminals.Configuration
 
         #region Tags/Favorite lists Settings
 
-        public static string ExpandedFavoriteNodes
+        public string ExpandedFavoriteNodes
         {
             get
             {
@@ -907,7 +902,8 @@ namespace Terminals.Configuration
                 SaveImmediatelyIfRequested();
             }
         }
-        public static string ExpandedHistoryNodes
+
+        public string ExpandedHistoryNodes
         {
             get
             {
@@ -920,6 +916,7 @@ namespace Terminals.Configuration
                 SaveImmediatelyIfRequested();
             }
         }
+        
         #endregion
 
         #region Persistence File/Sql database
@@ -927,17 +924,17 @@ namespace Terminals.Configuration
         /// <summary>
         /// Gets or sets encrypted entity framework connection string
         /// </summary>
-        internal static string ConnectionString
+        internal string ConnectionString
         {
             get
             {
                 string encryptedConnectionString = GetSection().EncryptedConnectionString;
-                return PersistenceSecurity.DecryptPassword(encryptedConnectionString);
+                return this.PersistenceSecurity.DecryptPassword(encryptedConnectionString);
             }
 
             set
             {
-                GetSection().EncryptedConnectionString = PersistenceSecurity.EncryptPassword(value);
+                GetSection().EncryptedConnectionString = this.PersistenceSecurity.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }
@@ -946,16 +943,16 @@ namespace Terminals.Configuration
         /// Gets or sets bidirectional encrypted database password. We need it in unencrypted form 
         /// to be able authenticate against the database and don't prompt user for it.
         /// </summary>
-        internal static string DatabaseMasterPassword
+        internal string DatabaseMasterPassword
         {
             get
             {
                 string databaseMasterPasswordHash = GetSection().DatabaseMasterPasswordHash;
-                return PersistenceSecurity.DecryptPassword(databaseMasterPasswordHash);
+                return this.PersistenceSecurity.DecryptPassword(databaseMasterPasswordHash);
             }
             set
             {
-                GetSection().DatabaseMasterPasswordHash = PersistenceSecurity.EncryptPassword(value);
+                GetSection().DatabaseMasterPasswordHash = this.PersistenceSecurity.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }
@@ -964,7 +961,7 @@ namespace Terminals.Configuration
         /// Gets or sets the value identifying the persistence.
         /// 0 by default - file persisted data, 1 - SQL database
         /// </summary>
-        internal static byte PersistenceType
+        internal byte PersistenceType
         {
             get
             {
@@ -987,31 +984,31 @@ namespace Terminals.Configuration
             return Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
         }
 
-        public static void AddServerMRUItem(string name)
+        public void AddServerMRUItem(string name)
         {
             GetSection().ServersMRU.AddByName(name);
             SaveImmediatelyIfRequested();
         }
 
-        public static void AddDomainMRUItem(string name)
+        public void AddDomainMRUItem(string name)
         {
             GetSection().DomainsMRU.AddByName(name);
             SaveImmediatelyIfRequested();
         }
 
-        public static void AddUserMRUItem(string name)
+        public void AddUserMRUItem(string name)
         {
             GetSection().UsersMRU.AddByName(name);
             SaveImmediatelyIfRequested();
         }
 
-        public static void AddConnection(string name)
+        public void AddConnection(string name)
         {
             GetSection().SavedConnections.AddByName(name);
             SaveImmediatelyIfRequested();
         }
 
-        public static SpecialCommandConfigurationElementCollection SpecialCommands
+        public SpecialCommandConfigurationElementCollection SpecialCommands
         {
             get
             {
@@ -1025,7 +1022,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static void CreateSavedConnectionsList(string[] names)
+        public void CreateSavedConnectionsList(string[] names)
         {
             GetSection().SavedConnections.Clear();
             SaveImmediatelyIfRequested();
@@ -1035,13 +1032,13 @@ namespace Terminals.Configuration
             }
         }
 
-        public static void ClearSavedConnectionsList()
+        public void ClearSavedConnectionsList()
         {
             GetSection().SavedConnections.Clear();
             SaveImmediatelyIfRequested();
         }
 
-        public static string[] SavedConnections
+        public string[] SavedConnections
         {
             get
             {
@@ -1049,7 +1046,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public static KeysSection SSHKeys
+        public KeysSection SSHKeys
         {
             get
             {
@@ -1072,7 +1069,7 @@ namespace Terminals.Configuration
             ////}
         }
 
-        internal static FormsSection Forms
+        internal FormsSection Forms
         {
             get
             {
@@ -1090,7 +1087,7 @@ namespace Terminals.Configuration
 
         #endregion
 
-        internal static bool AskToReconnect
+        internal bool AskToReconnect
         {
             get
             {

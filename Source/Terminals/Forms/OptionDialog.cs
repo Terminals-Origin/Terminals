@@ -11,6 +11,7 @@ namespace Terminals.Forms
 {
     internal partial class OptionDialog : Form
     {
+        private readonly Settings settings = Settings.Instance;
         private UserControl currentPanel;
 
         public OptionDialog(AxMsRdpClient6NotSafeForScripting terminal, IPersistence persistence)
@@ -21,7 +22,7 @@ namespace Terminals.Forms
 
             this.panelMasterPassword.Security = persistence.Security;
             MovePanelsFromTabsIntoControls();
-            Settings.ConfigurationChanged += new ConfigurationChangedHandler(this.SettingsConfigFileReloaded);
+            settings.ConfigurationChanged += new ConfigurationChangedHandler(this.SettingsConfigFileReloaded);
             LoadSettings();
             
             this.SetFormSize();
@@ -157,7 +158,7 @@ namespace Terminals.Forms
         {
             try
             {
-                Settings.StartDelayedUpdate();
+                settings.StartDelayedUpdate();
                 SaveAllPanels();
             }
             catch (Exception exception)
@@ -167,7 +168,7 @@ namespace Terminals.Forms
             }
             finally
             {
-                Settings.SaveAndFinishDelayedUpdate();
+                settings.SaveAndFinishDelayedUpdate();
             }
         }
 
@@ -197,7 +198,7 @@ namespace Terminals.Forms
 
         private void OptionDialog_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Settings.ConfigurationChanged -= SettingsConfigFileReloaded;
+            settings.ConfigurationChanged -= SettingsConfigFileReloaded;
         }
     }
 }

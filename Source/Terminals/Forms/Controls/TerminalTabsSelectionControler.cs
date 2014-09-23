@@ -14,6 +14,7 @@ namespace Terminals
     /// </summary>
     internal class TerminalTabsSelectionControler
     {
+        private readonly Settings settings = Settings.Instance;
         private readonly List<PopupTerminal> detachedWindows = new List<PopupTerminal>();
         private readonly TabControl.TabControl mainTabControl;
         private ConnectionsUiFactory connectionsUiFactory;
@@ -161,7 +162,7 @@ namespace Terminals
 
             if (createNew) // capture manager wasnt found
             {
-                if (!openManagerTab && (!Settings.EnableCaptureToFolder || !Settings.AutoSwitchOnCapture))
+                if (!openManagerTab && (!settings.EnableCaptureToFolder || !settings.AutoSwitchOnCapture))
                     createNew = false;
             }
 
@@ -184,7 +185,7 @@ namespace Terminals
                 {
                     CaptureManagerConnection conn = (tab.Connection as CaptureManagerConnection);
                     conn.RefreshView();
-                    if (setFocus && Settings.EnableCaptureToFolder && Settings.AutoSwitchOnCapture)
+                    if (setFocus && settings.EnableCaptureToFolder && settings.AutoSwitchOnCapture)
                     {
                         conn.BringToFront();
                         conn.Update();
@@ -200,7 +201,7 @@ namespace Terminals
 
         internal void UpdateCaptureButtonOnDetachedPopUps()
         {
-            bool newEnable = Settings.EnabledCaptureToFolderAndClipBoard;
+            bool newEnable = settings.EnabledCaptureToFolderAndClipBoard;
             foreach (PopupTerminal detachedWindow in this.detachedWindows)
             {
                 detachedWindow.UpdateCaptureButtonEnabled(newEnable);

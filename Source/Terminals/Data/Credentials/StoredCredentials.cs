@@ -21,7 +21,7 @@ namespace Terminals.Data
 
         private string FileFullName
         {
-            get { return Settings.FileLocations.Credentials; }
+            get { return Settings.Instance.FileLocations.Credentials; }
         }
 
         internal StoredCredentials(PersistenceSecurity persistenceSecurity)

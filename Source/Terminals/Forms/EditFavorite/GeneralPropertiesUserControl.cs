@@ -12,6 +12,8 @@ namespace Terminals.Forms.EditFavorite
 {
     internal partial class GeneralPropertiesUserControl : UserControl
     {
+        private readonly Settings settings = Settings.Instance;
+
         internal string ServerNameText { get { return this.cmbServers.Text.Trim(); } }
 
         internal string ProtocolText { get { return this.ProtocolComboBox.Text; } }
@@ -297,20 +299,20 @@ namespace Terminals.Forms.EditFavorite
         private void FillDescriptionPropertiesControls(IFavorite favorite)
         {
             this.NewWindowCheckbox.Checked = favorite.NewWindow;
-            this.chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Id);
+            this.chkAddtoToolbar.Checked = settings.HasToolbarButton(favorite.Id);
             this.pictureBox2.Image = favorite.ToolBarIconImage;
             this.currentToolBarFileName = favorite.ToolBarIconFile;
         }
 
         internal void LoadMRUs()
         {
-            this.cmbServers.Items.AddRange(Settings.MRUServerNames);
+            this.cmbServers.Items.AddRange(settings.MRUServerNames);
             this.securityPanel1.LoadMRUs();
         }
 
         internal void SaveMRUs()
         {
-            Settings.AddServerMRUItem(cmbServers.Text);
+            settings.AddServerMRUItem(cmbServers.Text);
             this.securityPanel1.SaveMRUs();
         }
 

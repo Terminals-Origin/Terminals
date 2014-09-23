@@ -216,9 +216,9 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        private static void ChangeToolStripLock(ToolStrip strip)
+        private void ChangeToolStripLock(ToolStrip strip)
         {
-            if (Settings.ToolbarsLocked)
+            if (Settings.Instance.ToolbarsLocked)
                 strip.GripStyle = ToolStripGripStyle.Hidden;
             else
                 strip.GripStyle = ToolStripGripStyle.Visible;
@@ -235,7 +235,7 @@ namespace Terminals.Forms.Controls
             ChangeToolStripPanelLockState(this.BottomToolStripPanel);
         }
 
-        private static void ChangeToolStripPanelLockState(ToolStripPanel toolStripPanel)
+        private void ChangeToolStripPanelLockState(ToolStripPanel toolStripPanel)
         {
             foreach (ToolStripPanelRow row in toolStripPanel.Rows)
             {

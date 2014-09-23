@@ -263,7 +263,7 @@ namespace Terminals.Data
             String toolTip = String.Format("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
                 Environment.NewLine, selected.ServerName, selected.Port, userDisplayName);
 
-            if (Settings.ShowFullInformationToolTips)
+            if (Settings.Instance.ShowFullInformationToolTips)
             {
                 var extendedToolTip = CreateExtendedToolTip(selected);
                 toolTip += extendedToolTip;
@@ -333,7 +333,7 @@ namespace Terminals.Data
 
         internal static int CompareByDefaultSorting(IFavorite source, IFavorite target)
         {
-            switch (Settings.DefaultSortProperty)
+            switch (Settings.Instance.DefaultSortProperty)
             {
                 case SortProperties.ServerName:
                     return source.ServerName.CompareTo(target.ServerName);

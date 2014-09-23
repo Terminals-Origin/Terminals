@@ -129,7 +129,7 @@ namespace Terminals.Connections
 
             String key = String.Empty;
             var options = this.Favorite.ProtocolProperties as SshOptions;
-            SSHClient.KeyConfigElement keyConfigElement = Settings.SSHKeys.Keys[options.CertificateKey];
+            SSHClient.KeyConfigElement keyConfigElement = Settings.Instance.SSHKeys.Keys[options.CertificateKey];
 
             if (keyConfigElement != null)
                 key = keyConfigElement.Key;

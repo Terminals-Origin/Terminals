@@ -23,6 +23,8 @@ namespace Tests
         private static readonly Guid favoriteA = new Guid("eb45aefd-138f-49ca-9c9e-ce5d5877ca62");
         private static readonly Guid favoriteB = new Guid("8dda2ccb-cfb9-4487-bab5-0da5319e1485");
 
+        private readonly Settings settings = Settings.Instance;
+
         [ClassInitialize]
         public static void ClassSetUp(TestContext context)
         {
@@ -33,8 +35,8 @@ namespace Tests
         public void Setup()
         {
             // Reset previous test run changes in config fie
-            Settings.SaveDefaultConfigFile();
-            Settings.ForceReload();
+            settings.SaveDefaultConfigFile();
+            settings.ForceReload();
         }
 
         [TestMethod]
@@ -42,9 +44,9 @@ namespace Tests
         {
             var favorite = new FavoriteConfigurationElement();
             favorite.Protocol = ConnectionManager.SSH; // avoid all default values
-            Settings.SaveDefaultFavorite(favorite);
-            Settings.ForceReload();
-            var loaded = Settings.GetDefaultFavorite();
+            settings.SaveDefaultFavorite(favorite);
+            settings.ForceReload();
+            var loaded = settings.GetDefaultFavorite();
             const string MESSAGE = "Newly saved default favorite has return last saved value.";
             Assert.AreEqual(ConnectionManager.SSH, loaded.Protocol, MESSAGE);
         }
@@ -53,68 +55,68 @@ namespace Tests
         public void NewMRU_AddUserMRu_IsSaved()
         {
             const string EXPECTED_USER_MRU = "ExpectedUserMRu";
-            Settings.AddUserMRUItem(EXPECTED_USER_MRU);
-            Settings.ForceReload();
-            var firstUserMru = Settings.MRUUserNames[0];
+            settings.AddUserMRUItem(EXPECTED_USER_MRU);
+            settings.ForceReload();
+            var firstUserMru = settings.MRUUserNames[0];
             Assert.AreEqual(EXPECTED_USER_MRU, firstUserMru, "Adding user name to MRU, has to return last saved value.");
         }
 
         [TestMethod]
         public void FileWatch_FileChanged_FiresConfigurationChanged()
         {
-            var originalWatch = Settings.FileWatch;
+            var originalWatch = settings.FileWatch;
             var mockFileWatch = new Mock<IDataFileWatcher>(MockBehavior.Strict);
-            Settings.FileWatch = mockFileWatch.Object;
+            settings.FileWatch = mockFileWatch.Object;
             bool eventReceived = false;
-            Settings.ConfigurationChanged += args => eventReceived = true;
+            settings.ConfigurationChanged += args => eventReceived = true;
             mockFileWatch.Raise(watch => watch.FileChanged += null, EventArgs.Empty);
             Assert.IsTrue(eventReceived, "When receiving file changed event, Settings have to fire configuration changed");
-            Settings.FileWatch = originalWatch;
+            settings.FileWatch = originalWatch;
         }
 
         [TestMethod]
         public void DumyControl_AssignSynchronizer_AssignesToFileWatch()
         {
-            var originalWatch = Settings.FileWatch;
+            var originalWatch = settings.FileWatch;
             var expectedSynchronizer = new Control();
             var mockFileWatch = new Mock<IDataFileWatcher>(MockBehavior.Strict);
             mockFileWatch.Setup(watch => watch.AssignSynchronizer(expectedSynchronizer))
                          .Verifiable("The assigned synchronized wasnt delivered to the file watching service");
-            Settings.FileWatch = mockFileWatch.Object;
-            Settings.AssignSynchronizationObject(expectedSynchronizer);
+            settings.FileWatch = mockFileWatch.Object;
+            settings.AssignSynchronizationObject(expectedSynchronizer);
             mockFileWatch.VerifyAll();
-            Settings.FileWatch = originalWatch;
+            settings.FileWatch = originalWatch;
         }
 
         [TestMethod]
         public void DefaultSettings_Forms_DoesntReturnNull()
         {
-            Assert.IsNotNull(Settings.Forms, "The forms configuration always has to be accessible");
+            Assert.IsNotNull(settings.Forms, "The forms configuration always has to be accessible");
         }
 
         [TestMethod]
         public void EmptyCaptureRoot_SetGet_ReturnsDefaultRoot()
         {
-            Settings.CaptureRoot = string.Empty;
+            settings.CaptureRoot = string.Empty;
             const string MESSAGE = "Undefined capture root has to return default location";
-            Assert.AreEqual(FileLocations.DefaultCaptureRootDirectory, Settings.CaptureRoot, MESSAGE);
+            Assert.AreEqual(FileLocations.DefaultCaptureRootDirectory, settings.CaptureRoot, MESSAGE);
         }
 
         [TestMethod]
         public void ProtocolDefaultSortProperty_SetGet_IsSaved()
         {
-            Settings.DefaultSortProperty = SortProperties.Protocol;
+            settings.DefaultSortProperty = SortProperties.Protocol;
             const string MESSAGE = "Get DefaultSortProperty has to return last saved value";
-            Assert.AreEqual(SortProperties.Protocol, Settings.DefaultSortProperty, MESSAGE);
-            Settings.DefaultSortProperty = SortProperties.ConnectionName;
+            Assert.AreEqual(SortProperties.Protocol, settings.DefaultSortProperty, MESSAGE);
+            settings.DefaultSortProperty = SortProperties.ConnectionName;
         }
 
         [TestMethod]
         public void Vesion2_SetGet_IsSaved()
         {
             var expectedVersion = new Version(2, 0);
-            Settings.ConfigVersion = expectedVersion;
-            Assert.AreEqual(expectedVersion, Settings.ConfigVersion, "Get config file version has to return last saved value");
+            settings.ConfigVersion = expectedVersion;
+            Assert.AreEqual(expectedVersion, settings.ConfigVersion, "Get config file version has to return last saved value");
         }
 
         [TestMethod]
@@ -122,17 +124,17 @@ namespace Tests
         {
             const string CONNECTION_B = "CONNECTION_B";
             var connecitonNames = new string[] {"FavoriteA", CONNECTION_B};
-            Settings.CreateSavedConnectionsList(connecitonNames);
-            var saved = Settings.SavedConnections;
+            settings.CreateSavedConnectionsList(connecitonNames);
+            var saved = settings.SavedConnections;
             Assert.AreEqual(CONNECTION_B, saved[1], "Saved connections should correspond with last saved connections list.");
         }
 
         [TestMethod]
         public void FavoriteB_EditFavoriteButton_IsSaved()
         {
-            Settings.UpdateFavoritesToolbarButtons(new List<Guid>());
-            Settings.EditFavoriteButton(favoriteA, favoriteB, true);
-            var savedButtons = Settings.FavoritesToolbarButtons;
+            settings.UpdateFavoritesToolbarButtons(new List<Guid>());
+            settings.EditFavoriteButton(favoriteA, favoriteB, true);
+            var savedButtons = settings.FavoritesToolbarButtons;
             Assert.AreEqual(favoriteB, savedButtons[0], "Loaded buttons should contain last saved buttons.");
         }
 
@@ -141,8 +143,8 @@ namespace Tests
         {
             var favorites = new List<Guid>() { favoriteA, favoriteB };
             bool changeReported = false;
-            Settings.ConfigurationChanged += args => changeReported = true;
-            Settings.UpdateFavoritesToolbarButtons(favorites);
+            settings.ConfigurationChanged += args => changeReported = true;
+            settings.UpdateFavoritesToolbarButtons(favorites);
             Assert.IsTrue(changeReported, "Changing buttons has to fire event to report the imediate change");
         }
 
@@ -155,18 +157,18 @@ namespace Tests
         [TestMethod]
         public void DelayedSave_ForceReload_LosesValue()
         {
-            Settings.StartDelayedUpdate();
+            settings.StartDelayedUpdate();
             const string MESSAGE = "When delayed save was called, directly changing settings doesnt force save.";
             this.AssertAskToReconnectReloaded(true, MESSAGE);
-            Settings.SaveAndFinishDelayedUpdate();
+            settings.SaveAndFinishDelayedUpdate();
         }
 
         private void AssertAskToReconnectReloaded(bool expectedValue, string message)
         {
-            Settings.AskToReconnect = false; // because default is true
-            Settings.ForceReload();
-            Assert.AreEqual(expectedValue, Settings.AskToReconnect, message);
-            Settings.AskToReconnect = true;
+            settings.AskToReconnect = false; // because default is true
+            settings.ForceReload();
+            Assert.AreEqual(expectedValue, settings.AskToReconnect, message);
+            settings.AskToReconnect = true;
         }
     }
 }

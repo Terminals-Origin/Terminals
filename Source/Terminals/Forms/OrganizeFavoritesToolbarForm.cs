@@ -9,6 +9,8 @@ namespace Terminals
 {
     internal partial class OrganizeFavoritesToolbarForm : Form
     {
+        private readonly Settings settings = Settings.Instance;
+
         private ListViewItem SelectedItem
         {
             get
@@ -22,7 +24,7 @@ namespace Terminals
             InitializeComponent();
 
             IFavorites persistedFavorites = persistence.Favorites;
-            ListViewItem[] listViewItems = Settings.FavoritesToolbarButtons
+            ListViewItem[] listViewItems = settings.FavoritesToolbarButtons
                 .Select(id => persistedFavorites[id])
                 .Where(candidate => candidate != null)
                 .Select(favorite => new ListViewItem(favorite.Name) { Tag = favorite.Id })
@@ -86,7 +88,7 @@ namespace Terminals
                 .Select(item => item.Tag)
                 .OfType<Guid>()
                 .ToList();
-            Settings.UpdateFavoritesToolbarButtons(favoriteIds);
+            settings.UpdateFavoritesToolbarButtons(favoriteIds);
         }
     }
 }

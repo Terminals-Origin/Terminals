@@ -117,7 +117,7 @@ namespace Terminals.Updates
         {
             try
             {
-                String url = Settings.UpdateSource;
+                String url = Settings.Instance.UpdateSource;
                 String contents = Web.HTTPAsString(url);
 
                 if (!String.IsNullOrEmpty(contents))

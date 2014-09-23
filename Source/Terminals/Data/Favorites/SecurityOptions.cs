@@ -83,14 +83,16 @@ namespace Terminals.Data
 
         private static void UpdateFromDefaultValues(ICredentialBase target)
         {
+            Settings settings = Settings.Instance;
+
             if (string.IsNullOrEmpty(target.Domain))
-                target.Domain = Settings.DefaultDomain;
+                target.Domain = settings.DefaultDomain;
 
             if (string.IsNullOrEmpty(target.UserName))
-                target.UserName = Settings.DefaultUsername;
+                target.UserName = settings.DefaultUsername;
 
             if (string.IsNullOrEmpty(target.Password))
-                target.Password = Settings.DefaultPassword;
+                target.Password = settings.DefaultPassword;
         }
 
         public override string ToString()

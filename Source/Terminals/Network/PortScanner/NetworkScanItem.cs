@@ -116,7 +116,7 @@ namespace Terminals.Scanner
         private void WaitUntilTimeOut(ConnectionState connectionState)
         {
             Int32 timeout = 0;
-            Int32 maxTimeOut = Settings.PortScanTimeoutSeconds * 1000 / 50; // in seconds not in miliseconds
+            Int32 maxTimeOut = Settings.Instance.PortScanTimeoutSeconds * 1000 / 50; // in seconds not in miliseconds
             while (timeout <= maxTimeOut && !this.CancelationPending && !connectionState.Done)
             {
                 Thread.Sleep(50);

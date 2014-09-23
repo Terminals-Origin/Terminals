@@ -6,6 +6,8 @@ namespace Terminals.Forms
 {
     internal partial class InterfaceOptionPanel : UserControl, IOptionPanel
     {
+        private readonly Settings settings = Settings.Instance;
+
         public InterfaceOptionPanel()
         {
             InitializeComponent();
@@ -13,15 +15,15 @@ namespace Terminals.Forms
 
         public void LoadSettings()
         {
-            this.chkEnableGroupsMenu.Checked = Settings.EnableGroupsMenu;
-            this.chkMinimizeToTrayCheckbox.Checked = Settings.MinimizeToTray;
-            this.chkShowUserNameInTitle.Checked = Settings.ShowUserNameInTitle;
-            this.chkShowInformationToolTips.Checked = Settings.ShowInformationToolTips;
-            this.chkShowFullInfo.Checked = Settings.ShowFullInformationToolTips;
+            this.chkEnableGroupsMenu.Checked = settings.EnableGroupsMenu;
+            this.chkMinimizeToTrayCheckbox.Checked = settings.MinimizeToTray;
+            this.chkShowUserNameInTitle.Checked = settings.ShowUserNameInTitle;
+            this.chkShowInformationToolTips.Checked = settings.ShowInformationToolTips;
+            this.chkShowFullInfo.Checked = settings.ShowFullInformationToolTips;
 
-            if (Settings.Office2007BlueFeel)
+            if (settings.Office2007BlueFeel)
                 this.RenderBlueRadio.Checked = true;
-            else if (Settings.Office2007BlackFeel)
+            else if (settings.Office2007BlackFeel)
                 this.RenderBlackRadio.Checked = true;
             else
                 this.RenderNormalRadio.Checked = true;
@@ -29,19 +31,19 @@ namespace Terminals.Forms
 
         public void SaveSettings()
         {
-            Settings.EnableGroupsMenu = this.chkEnableGroupsMenu.Checked;
-            Settings.MinimizeToTray = this.chkMinimizeToTrayCheckbox.Checked;
-            Settings.ShowUserNameInTitle = this.chkShowUserNameInTitle.Checked;
-            Settings.ShowInformationToolTips = this.chkShowInformationToolTips.Checked;
-            Settings.ShowFullInformationToolTips = this.chkShowFullInfo.Checked;
+            settings.EnableGroupsMenu = this.chkEnableGroupsMenu.Checked;
+            settings.MinimizeToTray = this.chkMinimizeToTrayCheckbox.Checked;
+            settings.ShowUserNameInTitle = this.chkShowUserNameInTitle.Checked;
+            settings.ShowInformationToolTips = this.chkShowInformationToolTips.Checked;
+            settings.ShowFullInformationToolTips = this.chkShowFullInfo.Checked;
 
-            Settings.Office2007BlackFeel = false;
-            Settings.Office2007BlueFeel = false;
+            settings.Office2007BlackFeel = false;
+            settings.Office2007BlueFeel = false;
 
             if (this.RenderBlueRadio.Checked)
-                Settings.Office2007BlueFeel = true;
+                settings.Office2007BlueFeel = true;
             else if (this.RenderBlackRadio.Checked)
-                Settings.Office2007BlackFeel = true;
+                settings.Office2007BlackFeel = true;
         }
 
         private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)
