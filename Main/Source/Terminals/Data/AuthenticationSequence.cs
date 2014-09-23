@@ -20,7 +20,7 @@ namespace Terminals.Data
 
         internal static bool IsMasterPasswordDefined()
         {
-            return !String.IsNullOrEmpty(Settings.MasterPasswordHash);
+            return !String.IsNullOrEmpty(Settings.Instance.MasterPasswordHash);
         }
 
         /// <summary>

@@ -6,6 +6,8 @@ namespace Terminals.Forms
 {
     internal partial class ProxyOptionPanel : UserControl, IOptionPanel
     {
+        private readonly Settings settings = Settings.Instance;
+
         public ProxyOptionPanel()
         {
             InitializeComponent();
@@ -13,19 +15,19 @@ namespace Terminals.Forms
 
         public void LoadSettings()
         {
-            this.AutoProxyRadioButton.Checked = !Settings.UseProxy;
-            this.ProxyRadionButton.Checked = Settings.UseProxy;
-            this.ProxyAddressTextbox.Text = Settings.ProxyAddress;
-            this.ProxyPortTextbox.Text = (Settings.ProxyPort.ToString().Equals("0")) ? "80" : Settings.ProxyPort.ToString();
-            this.ProxyAddressTextbox.Enabled = Settings.UseProxy;
-            this.ProxyPortTextbox.Enabled = Settings.UseProxy;
+            this.AutoProxyRadioButton.Checked = !settings.UseProxy;
+            this.ProxyRadionButton.Checked = settings.UseProxy;
+            this.ProxyAddressTextbox.Text = settings.ProxyAddress;
+            this.ProxyPortTextbox.Text = (settings.ProxyPort.ToString().Equals("0")) ? "80" : settings.ProxyPort.ToString();
+            this.ProxyAddressTextbox.Enabled = settings.UseProxy;
+            this.ProxyPortTextbox.Enabled = settings.UseProxy;
         }
 
         public void SaveSettings()
         {
-            Settings.UseProxy = this.ProxyRadionButton.Checked;
-            Settings.ProxyAddress = this.ProxyAddressTextbox.Text;
-            Settings.ProxyPort = Convert.ToInt32(this.ProxyPortTextbox.Text);
+            settings.UseProxy = this.ProxyRadionButton.Checked;
+            settings.ProxyAddress = this.ProxyAddressTextbox.Text;
+            settings.ProxyPort = Convert.ToInt32(this.ProxyPortTextbox.Text);
         }
 
         private void ProxyRadioButton_CheckedChanged(object sender, EventArgs e)

@@ -11,6 +11,8 @@ namespace Tests.SqlPersisted
     [TestClass]
     public class ImportsTest : TestsLab
     {
+        private readonly Settings settings = Settings.Instance;
+
         [TestInitialize]
         public void TestInitialize()
         {
@@ -21,15 +23,15 @@ namespace Tests.SqlPersisted
         public void TestClose()
         {
             this.ClearTestLab();
-            Settings.DatabaseMasterPassword = string.Empty;
+            settings.DatabaseMasterPassword = string.Empty;
         }
 
         [TestMethod]
         public void ExportImportFavoriteTest()
         {
             IPersistence persistence = this.PrimaryPersistence;
-            DatabasePasswordUpdate.UpdateMastrerPassord(Settings.ConnectionString, string.Empty, VALIDATION_VALUE_B);
-            Settings.DatabaseMasterPassword = VALIDATION_VALUE_B;
+            DatabasePasswordUpdate.UpdateMastrerPassord(settings.ConnectionString, string.Empty, VALIDATION_VALUE_B);
+            settings.DatabaseMasterPassword = VALIDATION_VALUE_B;
             ((SqlPersistenceSecurity)persistence.Security).UpdateDatabaseKey();
             string filePath = this.TestContext.DeploymentDirectory;
             Integrations.ImportsTest.ExportImportFavorite(persistence, filePath);

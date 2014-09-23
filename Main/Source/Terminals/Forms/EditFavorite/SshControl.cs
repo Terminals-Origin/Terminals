@@ -43,7 +43,7 @@ namespace Terminals.Forms.EditFavorite
         {
             try
             {
-                this.SSHPreferences.Keys = Settings.SSHKeys;
+                this.SSHPreferences.Keys = Settings.Instance.SSHKeys;
             }
             catch (System.Security.Cryptography.CryptographicException)
             {

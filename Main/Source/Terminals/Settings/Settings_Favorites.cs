@@ -3,18 +3,18 @@ using SysConfig = System.Configuration;
 
 namespace Terminals.Configuration
 {
-    internal static partial class Settings
+    internal partial class Settings
     {
         /// <summary>
         /// "Since version 2. only for updates. Use new persistence instead."
         /// </summary>
-        internal static void RemoveAllFavoritesAndTags()
+        internal void RemoveAllFavoritesAndTags()
         {
             DeleteFavorites();
             DeleteTags();
         }
         
-        private static void DeleteFavorites()
+        private void DeleteFavorites()
         {
             List<FavoriteConfigurationElement> favorites = GetFavorites().ToList();
             List<string> deletedTags = new List<string>();
@@ -29,13 +29,13 @@ namespace Terminals.Configuration
             SaveAndFinishDelayedUpdate();
         }
 
-        private static void DeleteFavoriteFromSettings(string name)
+        private void DeleteFavoriteFromSettings(string name)
         {
             GetSection().Favorites.Remove(name);
             SaveImmediatelyIfRequested();
         }
 
-        private static void AddFavorite(FavoriteConfigurationElement favorite)
+        private void AddFavorite(FavoriteConfigurationElement favorite)
         {
             AddFavoriteToSettings(favorite);
             AddTagsToSettings(favorite.TagList);
@@ -44,13 +44,13 @@ namespace Terminals.Configuration
         /// <summary>
         /// Adds favorite to the database, but doesn't fire the changed event
         /// </summary>
-        private static void AddFavoriteToSettings(FavoriteConfigurationElement favorite)
+        private void AddFavoriteToSettings(FavoriteConfigurationElement favorite)
         {
             GetSection().Favorites.Add(favorite);
             SaveImmediatelyIfRequested();
         }
 
-        internal static FavoriteConfigurationElement GetDefaultFavorite()
+        internal FavoriteConfigurationElement GetDefaultFavorite()
         {
             TerminalsConfigurationSection section = GetSection();
             if (section != null && section.DefaultFavorite.Count > 0)
@@ -58,7 +58,7 @@ namespace Terminals.Configuration
             return null;
         }
 
-        internal static void SaveDefaultFavorite(FavoriteConfigurationElement favorite)
+        internal void SaveDefaultFavorite(FavoriteConfigurationElement favorite)
         {
             FavoriteConfigurationElementCollection defaultFav = GetSection().DefaultFavorite;
             defaultFav.Clear();
@@ -66,14 +66,14 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested();
         }
 
-        internal static void RemoveDefaultFavorite()
+        internal void RemoveDefaultFavorite()
         {
             FavoriteConfigurationElementCollection defaultFav = GetSection().DefaultFavorite;
             defaultFav.Clear();
             SaveImmediatelyIfRequested();
         }
 
-        internal static FavoriteConfigurationElementCollection GetFavorites()
+        internal FavoriteConfigurationElementCollection GetFavorites()
         {
             TerminalsConfigurationSection section = GetSection();
             if (section != null)

@@ -5,6 +5,8 @@ namespace Terminals.Forms
 {
     internal partial class StartShutdownOptionPanel : UserControl, IOptionPanel
     {
+        private readonly Settings settings = Settings.Instance;
+
         public StartShutdownOptionPanel()
         {
             InitializeComponent();
@@ -12,18 +14,18 @@ namespace Terminals.Forms
 
         public void LoadSettings()
         {
-            this.chkSingleInstance.Checked = Settings.SingleInstance;
-            this.chkNeverShowTerminalsCheckbox.Checked = Settings.NeverShowTerminalsWindow;
-            this.chkShowConfirmDialog.Checked = Settings.ShowConfirmDialog;
-            this.chkSaveConnections.Checked = Settings.SaveConnectionsOnClose;
+            this.chkSingleInstance.Checked = settings.SingleInstance;
+            this.chkNeverShowTerminalsCheckbox.Checked = settings.NeverShowTerminalsWindow;
+            this.chkShowConfirmDialog.Checked = settings.ShowConfirmDialog;
+            this.chkSaveConnections.Checked = settings.SaveConnectionsOnClose;
         }
 
         public void SaveSettings()
         {
-            Settings.SingleInstance = this.chkSingleInstance.Checked;
-            Settings.NeverShowTerminalsWindow = this.chkNeverShowTerminalsCheckbox.Checked;
-            Settings.ShowConfirmDialog = this.chkShowConfirmDialog.Checked;
-            Settings.SaveConnectionsOnClose = this.chkSaveConnections.Checked;
+            settings.SingleInstance = this.chkSingleInstance.Checked;
+            settings.NeverShowTerminalsWindow = this.chkNeverShowTerminalsCheckbox.Checked;
+            settings.ShowConfirmDialog = this.chkShowConfirmDialog.Checked;
+            settings.SaveConnectionsOnClose = this.chkSaveConnections.Checked;
         }
     }
 }

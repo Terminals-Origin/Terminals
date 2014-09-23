@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
+using Terminals.Configuration;
 
 namespace Terminals.Forms
 {
@@ -10,6 +11,7 @@ namespace Terminals.Forms
     /// </summary>
     internal class FormSettings
     {
+        private readonly Settings settings = Configuration.Settings.Instance;
         private readonly Form form;
         private Boolean saveSettings;
         private Boolean loadCalled;
@@ -39,7 +41,7 @@ namespace Terminals.Forms
         {
             get
             {
-                return Configuration.Settings.Forms;
+                return settings.Forms;
             }
         }
 
@@ -182,7 +184,7 @@ namespace Terminals.Forms
 
             FormStateConfigElement formSettings = this.PrepareStateToSave();
             this.Settings.AddForm(formSettings);
-            Configuration.Settings.SaveAndFinishDelayedUpdate();
+            settings.SaveAndFinishDelayedUpdate();
         }
 
         private FormStateConfigElement PrepareStateToSave()

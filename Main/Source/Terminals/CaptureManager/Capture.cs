@@ -37,10 +37,11 @@ namespace Terminals.CaptureManager
 
         public void PostToFlickr()
         {
-            if (Settings.FlickrToken != string.Empty)
+            var settings = Settings.Instance;
+            if (settings.FlickrToken != string.Empty)
             {
                 Flickr flckr = CreateFlickerInstance();
-                flckr.AuthToken = Settings.FlickrToken;
+                flckr.AuthToken = settings.FlickrToken;
                 string c = this.Comments;
                 if (c == null) c = string.Empty;
                 using (FileStream fs = new FileStream(this.FilePath, FileMode.Open))

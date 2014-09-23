@@ -52,7 +52,7 @@ namespace Terminals.Updates
 
         private bool IsMasterPasswordValid(string masterPassword)
         {
-            bool isValid = PasswordFunctions.MasterPasswordIsValid(masterPassword, Settings.MasterPasswordHash);
+            bool isValid = PasswordFunctions.MasterPasswordIsValid(masterPassword, Settings.Instance.MasterPasswordHash);
             if (isValid)
             {
                 this.AssignFieldsByOldMasterPassword(masterPassword);

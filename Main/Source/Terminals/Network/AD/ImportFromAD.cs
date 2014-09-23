@@ -11,6 +11,8 @@ namespace Terminals.Network
     {
         private readonly IPersistence persistence;
 
+        private readonly Settings settings = Settings.Instance;
+
         private readonly ActiveDirectoryClient adClient;
 
         private string defautlDomainName;
@@ -40,8 +42,8 @@ namespace Terminals.Network
 
         private string ResolveDomainName()
         {
-            if (!String.IsNullOrEmpty(Settings.DefaultDomain))
-                return Settings.DefaultDomain;
+            if (!String.IsNullOrEmpty(settings.DefaultDomain))
+                return settings.DefaultDomain;
                 
             return Environment.UserDomainName;
         }

@@ -5,9 +5,9 @@ using SysConfig = System.Configuration;
 
 namespace Terminals.Configuration
 {
-    internal static partial class Settings
+    internal partial class Settings
     {
-        internal static Guid[] FavoritesToolbarButtons
+        internal Guid[] FavoritesToolbarButtons
         {
             get
             {
@@ -20,7 +20,7 @@ namespace Terminals.Configuration
         /// <summary>
         /// For backward compatibility with older version than 2.0 for imports.
         /// </summary>
-        public static string[] FavoriteNamesToolbarButtons
+        public string[] FavoriteNamesToolbarButtons
         {
             get
             {
@@ -28,24 +28,24 @@ namespace Terminals.Configuration
             }
         }
 
-        private static MRUItemConfigurationElementCollection ButtonsCollection
+        private MRUItemConfigurationElementCollection ButtonsCollection
         {
             get { return GetSection().FavoritesButtons; }
         }
 
-        internal static void AddFavoriteButton(Guid favoriteId)
+        internal void AddFavoriteButton(Guid favoriteId)
         {
             AddButtonToInternCollection(favoriteId);
             FireButtonsChangedEvent();
         }
 
-        private static void AddButtonToInternCollection(Guid favoriteId)
+        private void AddButtonToInternCollection(Guid favoriteId)
         {
             ButtonsCollection.AddByName(favoriteId.ToString());
             SaveImmediatelyIfRequested();
         }
 
-        internal static void UpdateFavoritesToolbarButtons(List<Guid> newFavoriteIds)
+        internal void UpdateFavoritesToolbarButtons(List<Guid> newFavoriteIds)
         {
             StartDelayedUpdate();
             ButtonsCollection.Clear();
@@ -57,7 +57,7 @@ namespace Terminals.Configuration
             FireButtonsChangedEvent();
         }
 
-        internal static void EditFavoriteButton(Guid oldFavoriteId, Guid newFavoriteId, bool showOnToolbar)
+        internal void EditFavoriteButton(Guid oldFavoriteId, Guid newFavoriteId, bool showOnToolbar)
         {
             DeleteFavoriteButton(oldFavoriteId);
 
@@ -68,19 +68,19 @@ namespace Terminals.Configuration
                 AddFavoriteButton(newFavoriteId);
         }
 
-        private static void DeleteFavoriteButton(Guid favoriteId)
+        private void DeleteFavoriteButton(Guid favoriteId)
         {
             ButtonsCollection.DeleteByName(favoriteId.ToString());
             SaveImmediatelyIfRequested();
             FireButtonsChangedEvent();
         }
 
-        internal static bool HasToolbarButton(Guid favoriteId)
+        internal bool HasToolbarButton(Guid favoriteId)
         {
             return FavoritesToolbarButtons.Contains(favoriteId);
         }
 
-        private static void FireButtonsChangedEvent()
+        private void FireButtonsChangedEvent()
         {
           var args = ConfigurationChangedEventArgs.CreateFromButtons();
           FireConfigurationChanged(args);

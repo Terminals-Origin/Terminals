@@ -71,8 +71,9 @@ namespace Terminals
             this.favorites.Add(favorite);
             this.favorites.UpdateFavorite(favorite, this.source.Groups);
 
-            if (Settings.HasToolbarButton(this.source.Id))
-                Settings.AddFavoriteButton(favorite.Id);
+            var settings = Settings.Instance;
+            if (settings.HasToolbarButton(this.source.Id))
+                settings.AddFavoriteButton(favorite.Id);
         }
     }
 }

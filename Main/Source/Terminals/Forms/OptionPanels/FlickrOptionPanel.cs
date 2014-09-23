@@ -50,7 +50,7 @@ namespace Terminals.Forms
                 MessageBox.Show("User authenticated successfully");
                 Logging.Info(String.Format("User authenticated successfully. Authentication token is {0}. User id is {1}, username is {2}", auth.Token, auth.User.UserId, auth.User.Username));
                 flickr.AuthToken = auth.Token;
-                Settings.FlickrToken = auth.Token;
+                Settings.Instance.FlickrToken = auth.Token;
             }
             catch (FlickrException ex)
             {

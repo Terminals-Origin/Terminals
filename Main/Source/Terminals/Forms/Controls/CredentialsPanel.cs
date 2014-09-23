@@ -7,6 +7,8 @@ namespace Terminals.Forms.Controls
 {
     internal partial class CredentialsPanel : UserControl
     {
+        private readonly Settings settings = Settings.Instance;
+
         private String favoritePassword = string.Empty;
         internal const String HIDDEN_PASSWORD = "****************";
 
@@ -49,14 +51,14 @@ namespace Terminals.Forms.Controls
 
         internal void LoadMRUs()
         {
-            this.cmbDomains.Items.AddRange(Settings.MRUDomainNames);
-            this.cmbUsers.Items.AddRange(Settings.MRUUserNames);
+            this.cmbDomains.Items.AddRange(settings.MRUDomainNames);
+            this.cmbUsers.Items.AddRange(settings.MRUUserNames);
         }
 
         internal void SaveMRUs()
         {
-            Settings.AddDomainMRUItem(cmbDomains.Text);
-            Settings.AddUserMRUItem(cmbUsers.Text);
+            settings.AddDomainMRUItem(cmbDomains.Text);
+            settings.AddUserMRUItem(cmbUsers.Text);
         }
 
         internal void LoadDirectlyFrom(ICredentialBase security)

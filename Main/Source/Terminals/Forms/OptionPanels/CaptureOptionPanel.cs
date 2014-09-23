@@ -6,6 +6,8 @@ namespace Terminals.Forms
 {
     internal partial class CaptureOptionPanel : UserControl, IOptionPanel
     {
+        private readonly Settings settings = Settings.Instance;
+
         public CaptureOptionPanel()
         {
             InitializeComponent();
@@ -13,10 +15,10 @@ namespace Terminals.Forms
 
         public void LoadSettings()
         {
-            this.chkEnableCaptureToClipboard.Checked = Settings.EnableCaptureToClipboard;
-            this.chkEnableCaptureToFolder.Checked = Settings.EnableCaptureToFolder;
-            this.chkAutoSwitchToCaptureCheckbox.Enabled = Settings.AutoSwitchOnCapture;
-            this.txtScreenCaptureFolder.Text = Settings.CaptureRoot;
+            this.chkEnableCaptureToClipboard.Checked = settings.EnableCaptureToClipboard;
+            this.chkEnableCaptureToFolder.Checked = settings.EnableCaptureToFolder;
+            this.chkAutoSwitchToCaptureCheckbox.Enabled = settings.AutoSwitchOnCapture;
+            this.txtScreenCaptureFolder.Text = settings.CaptureRoot;
 
             this.txtScreenCaptureFolder.SelectionStart = this.txtScreenCaptureFolder.Text.Length;
             UpdateCaptureToFolderControls();
@@ -24,10 +26,10 @@ namespace Terminals.Forms
 
         public void SaveSettings()
         {
-                Settings.AutoSwitchOnCapture = this.chkAutoSwitchToCaptureCheckbox.Checked;
-                Settings.EnableCaptureToClipboard = this.chkEnableCaptureToClipboard.Checked;
-                Settings.EnableCaptureToFolder = this.chkEnableCaptureToFolder.Checked;
-                Settings.CaptureRoot = this.txtScreenCaptureFolder.Text;
+            settings.AutoSwitchOnCapture = this.chkAutoSwitchToCaptureCheckbox.Checked;
+            settings.EnableCaptureToClipboard = this.chkEnableCaptureToClipboard.Checked;
+            settings.EnableCaptureToFolder = this.chkEnableCaptureToFolder.Checked;
+            settings.CaptureRoot = this.txtScreenCaptureFolder.Text;
         }
 
         private void ButtonBrowseCaptureFolder_Click(object sender, EventArgs e)

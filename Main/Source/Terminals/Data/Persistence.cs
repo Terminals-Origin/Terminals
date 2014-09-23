@@ -14,7 +14,7 @@ namespace Terminals.Data
             try
             {
                 this.InitializePersistence();
-                Settings.PersistenceSecurity = this.persistence.Security;
+                Settings.Instance.PersistenceSecurity = this.persistence.Security;
             }
             catch (Exception exception)
             {
@@ -25,7 +25,7 @@ namespace Terminals.Data
 
         private void InitializePersistence()
         {
-            if (Settings.PersistenceType == FilePersistence.TYPE_ID)
+            if (Settings.Instance.PersistenceType == FilePersistence.TYPE_ID)
                 this.persistence = new FilePersistence();
             else
                 this.persistence = new SqlPersistence();
@@ -39,7 +39,7 @@ namespace Terminals.Data
             PromptForFallback();
             var newSecurity = new PersistenceSecurity(security);
             var persistence = new FilePersistence(newSecurity);
-            Settings.PersistenceSecurity = newSecurity;
+            Settings.Instance.PersistenceSecurity = newSecurity;
             Nested.instance.persistence = persistence;
             persistence.Initialize();
         }

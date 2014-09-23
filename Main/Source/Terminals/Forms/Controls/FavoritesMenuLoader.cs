@@ -18,6 +18,7 @@ namespace Terminals
         /// </summary>
         private class FavoritesMenuLoader
         {
+            private readonly Settings settings = Settings.Instance;
             private readonly IPersistence persistence;
 
             private ToolStripMenuItem favoritesToolStripMenuItem;
@@ -95,7 +96,7 @@ namespace Terminals
                 DataDispatcher dispatcher = this.persistence.Dispatcher;
                 dispatcher.GroupsChanged += new GroupsChangedEventHandler(this.OnDataChanged);
                 dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnDataChanged);
-                Settings.ConfigurationChanged += new ConfigurationChangedHandler(this.OnSettingsConfigurationChanged);
+                settings.ConfigurationChanged += new ConfigurationChangedHandler(this.OnSettingsConfigurationChanged);
             }
 
             private void AssignMainFormFields(MainForm mainForm)
@@ -280,7 +281,7 @@ namespace Terminals
 
             private void CreateFavoriteButtons()
             {
-                foreach (Guid favoriteId in Settings.FavoritesToolbarButtons)
+                foreach (Guid favoriteId in settings.FavoritesToolbarButtons)
                 {
                     this.CreateFavoriteButton(favoriteId);
                 }
@@ -361,7 +362,7 @@ namespace Terminals
             {
                 AddCommandMenuItems();
 
-                foreach (SpecialCommandConfigurationElement commad in Settings.SpecialCommands)
+                foreach (SpecialCommandConfigurationElement commad in settings.SpecialCommands)
                 {
                     AddSpecialMenuItem(commad);
                 }

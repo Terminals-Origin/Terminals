@@ -126,7 +126,7 @@ namespace Terminals
             List<FavoriteConfigurationElement> source)
         {
             IOrderedEnumerable<FavoriteConfigurationElement> sorted;
-            switch (Settings.DefaultSortProperty)
+            switch (Settings.Instance.DefaultSortProperty)
             {
                 case SortProperties.ServerName:
                     sorted = source.OrderBy(favorite => favorite.ServerName)

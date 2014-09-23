@@ -20,6 +20,7 @@ namespace Terminals
 {
     internal partial class FavsList : UserControl
     {
+        private readonly Settings settings = Settings.Instance;
         private FavoriteTreeListLoader treeLoader;
         private static readonly string shutdownFailMessage = Program.Resources.GetString("UnableToRemoteShutdown");
         internal ConnectionsUiFactory ConnectionsUiFactory { private get; set; }
@@ -674,18 +675,18 @@ namespace Terminals
 
         public void SaveState()
         {
-            Settings.StartDelayedUpdate();
-            Settings.ExpandedFavoriteNodes = this.favsTree.ExpandedNodes;
-            Settings.ExpandedHistoryNodes = this.historyTreeView.ExpandedNodes;
-            Settings.SaveAndFinishDelayedUpdate();
+            settings.StartDelayedUpdate();
+            settings.ExpandedFavoriteNodes = this.favsTree.ExpandedNodes;
+            settings.ExpandedHistoryNodes = this.historyTreeView.ExpandedNodes;
+            settings.SaveAndFinishDelayedUpdate();
 
             this.searchTextBox.UnloadEvents();
         }
 
         private void LoadState()
         {
-            this.favsTree.ExpandedNodes = Settings.ExpandedFavoriteNodes;
-            this.historyTreeView.ExpandedNodes = Settings.ExpandedHistoryNodes;
+            this.favsTree.ExpandedNodes = settings.ExpandedFavoriteNodes;
+            this.historyTreeView.ExpandedNodes = settings.ExpandedHistoryNodes;
         }
 
         private void NewGroupToolStripMenuItem_Click(object sender, EventArgs e)

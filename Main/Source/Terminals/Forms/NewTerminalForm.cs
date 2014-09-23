@@ -13,6 +13,8 @@ namespace Terminals
     /// </summary>
     internal partial class NewTerminalForm : Form, INewTerminalForm
     {
+        private readonly Settings settings = Settings.Instance;
+
         private NewTerminalFormValidator validator;
 
         public Guid EditedId { get; private set; }
@@ -108,7 +110,7 @@ namespace Terminals
 
         private void RemoveSavedDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Settings.RemoveDefaultFavorite();
+            settings.RemoveDefaultFavorite();
         }
 
         /// <summary>
@@ -165,7 +167,7 @@ namespace Terminals
             {
                 this.favoritePropertiesControl1.FillCredentialsCombobox(Guid.Empty);
 
-                var defaultSavedFavorite = Settings.GetDefaultFavorite();
+                var defaultSavedFavorite = settings.GetDefaultFavorite();
                 if (defaultSavedFavorite != null)
                 {
                     var defaultFavorite = ModelConverterV1ToV2.ConvertToFavorite(defaultSavedFavorite, this.persistence);
@@ -272,30 +274,30 @@ namespace Terminals
             }
 
             var defaultFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, this.persistence);
-            Settings.SaveDefaultFavorite(defaultFavorite);
+            settings.SaveDefaultFavorite(defaultFavorite);
         }
 
         private void CommitFavoriteChanges(IFavorite favorite)
         {
-            Settings.StartDelayedUpdate();
+            settings.StartDelayedUpdate();
             this.persistence.StartDelayedUpdate();
 
             if (this.EditingNew)
                 this.AddToPersistence(favorite);
             else
-                Settings.EditFavoriteButton(this.EditedId, favorite.Id, this.favoritePropertiesControl1.ShowOnToolbar);
+                settings.EditFavoriteButton(this.EditedId, favorite.Id, this.favoritePropertiesControl1.ShowOnToolbar);
 
             List<IGroup> updatedGroups = this.favoritePropertiesControl1.GetNewlySelectedGroups();
             PersistedFavorites.UpdateFavorite(favorite, updatedGroups);
             this.persistence.SaveAndFinishDelayedUpdate();
-            Settings.SaveAndFinishDelayedUpdate();
+            settings.SaveAndFinishDelayedUpdate();
         }
 
         private void AddToPersistence(IFavorite favorite)
         {
             this.PersistedFavorites.Add(favorite);
             if (this.favoritePropertiesControl1.ShowOnToolbar)
-                Settings.AddFavoriteButton(favorite.Id);
+                settings.AddFavoriteButton(favorite.Id);
         }
 
         private void ShowErrorMessageBox(string message)

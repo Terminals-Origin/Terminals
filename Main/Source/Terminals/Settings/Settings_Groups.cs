@@ -2,9 +2,9 @@
 
 namespace Terminals.Configuration
 {
-    internal static partial class Settings
+    internal partial class Settings
     {
-        internal static GroupConfigurationElementCollection GetGroups()
+        internal GroupConfigurationElementCollection GetGroups()
         {
             return GetSection().Groups;
         }
@@ -12,7 +12,7 @@ namespace Terminals.Configuration
         /// <summary>
         /// "Since version 2. only for updates. Use new persistence instead."
         /// </summary>
-        internal static void ClearGroups()
+        internal void ClearGroups()
         {
             GroupConfigurationElementCollection configGroups = GetGroups();
             configGroups.Clear();

@@ -21,6 +21,7 @@ namespace Terminals.Data
 
         public string Name { get { return "Files"; } }
 
+        private readonly FileLocations fileLocations = Settings.Instance.FileLocations;
         private readonly Favorites favorites;
         public IFavorites Favorites
         {
@@ -77,7 +78,7 @@ namespace Terminals.Data
         /// Try to reuse current security in case of changing persistence, because user is already authenticated
         /// </summary>
         internal FilePersistence(PersistenceSecurity security)
-            : this(security, new DataFileWatcher(Settings.FileLocations.Favorites))
+            : this(security, new DataFileWatcher(Settings.Instance.FileLocations.Favorites))
         {}
 
         /// <summary>
@@ -125,7 +126,7 @@ namespace Terminals.Data
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
         {
-            Settings.AssignSynchronizationObject(synchronizer);
+            Settings.Instance.AssignSynchronizationObject(synchronizer);
             this.connectionHistory.AssignSynchronizationObject(synchronizer);
             this.storedCredentials.AssignSynchronizationObject(synchronizer);
             this.fileWatcher.AssignSynchronizer(synchronizer);
@@ -189,7 +190,7 @@ namespace Terminals.Data
 
         private FavoritesFile LoadFileContent()
         {
-            string fileLocation = Settings.FileLocations.Favorites;
+            string fileLocation = this.fileLocations.Favorites;
             object fileContent = Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile));
             var file = fileContent as FavoritesFile;
             if (file == null)
@@ -260,7 +261,7 @@ namespace Terminals.Data
                 this.fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
                 FavoritesFile persistenceFile = this.CreatePersistenceFileFromCache();
-                string fileLocation = Settings.FileLocations.Favorites;
+                string fileLocation = this.fileLocations.Favorites;
                 Serialize.SerializeXMLToDisk(persistenceFile, fileLocation);
             }
             catch (Exception exception)

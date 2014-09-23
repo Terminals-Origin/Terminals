@@ -92,7 +92,7 @@ namespace Terminals.Data
         internal static SortableList<IFavorite> OrderByDefaultSorting(IEnumerable<IFavorite> source)
         {
             IOrderedEnumerable<IFavorite> sorted;
-            switch (Settings.DefaultSortProperty)
+            switch (Settings.Instance.DefaultSortProperty)
             {
                 case SortProperties.ServerName:
                     sorted = source.OrderBy(favorite => favorite.ServerName)

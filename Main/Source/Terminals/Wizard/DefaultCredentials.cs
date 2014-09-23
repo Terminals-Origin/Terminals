@@ -10,9 +10,10 @@ namespace Terminals.Wizard
         {
             InitializeComponent();
 
-            this.domainTextbox.Text = Settings.DefaultDomain;
-            this.passwordTextbox.Text = Settings.DefaultPassword;
-            this.usernameTextbox.Text = Settings.DefaultUsername;
+            var settings = Settings.Instance;
+            this.domainTextbox.Text = settings.DefaultDomain;
+            this.passwordTextbox.Text = settings.DefaultPassword;
+            this.usernameTextbox.Text = settings.DefaultUsername;
 
             if(Environment.UserDomainName != Environment.MachineName) {
                 if(this.domainTextbox.Text == "") this.domainTextbox.Text = Environment.UserDomainName;

@@ -62,7 +62,7 @@ namespace Terminals
         {
             this.CaptureControl(window);
 
-            if (Settings.EnableCaptureToFolder)
+            if (Settings.Instance.EnableCaptureToFolder)
                 this.Save(filename, format);
 
             return this.images[0];

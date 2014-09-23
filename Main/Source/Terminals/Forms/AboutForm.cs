@@ -59,7 +59,7 @@ namespace Terminals
 
             return string.Format(DETAILS,
                                     this.textBox1.Text,
-                                    Settings.FileLocations.Configuration,
+                                    Settings.Instance.FileLocations.Configuration,
                                     dt.ToLongDateString(),
                                     dt.ToLongTimeString(),
                                     Program.Info.DLLVersion,

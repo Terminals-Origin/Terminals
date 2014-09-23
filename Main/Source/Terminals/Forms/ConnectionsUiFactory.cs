@@ -20,6 +20,8 @@ namespace Terminals.Forms
 
         private readonly IPersistence persistence;
 
+        private readonly Settings settings = Settings.Instance;
+
         internal ConnectionsUiFactory(MainForm mainForm, TerminalTabsSelectionControler terminalsControler, IPersistence persistence)
         {
             this.mainForm = mainForm;
@@ -158,14 +160,14 @@ namespace Terminals.Forms
             this.TryConnectTabPage(favorite, terminalTabPage);
         }
 
-        private static void CallExecuteBeforeConnectedFromSettings()
+        private void CallExecuteBeforeConnectedFromSettings()
         {
-            if (Settings.ExecuteBeforeConnect && !string.IsNullOrEmpty(Settings.ExecuteBeforeConnectCommand))
+            if (settings.ExecuteBeforeConnect && !string.IsNullOrEmpty(settings.ExecuteBeforeConnectCommand))
             {
-                var processStartInfo = new ProcessStartInfo(Settings.ExecuteBeforeConnectCommand, Settings.ExecuteBeforeConnectArgs);
-                processStartInfo.WorkingDirectory = Settings.ExecuteBeforeConnectInitialDirectory;
+                var processStartInfo = new ProcessStartInfo(settings.ExecuteBeforeConnectCommand, settings.ExecuteBeforeConnectArgs);
+                processStartInfo.WorkingDirectory = settings.ExecuteBeforeConnectInitialDirectory;
                 Process process = Process.Start(processStartInfo);
-                if (Settings.ExecuteBeforeConnectWaitForExit)
+                if (settings.ExecuteBeforeConnectWaitForExit)
                 {
                     process.WaitForExit();
                 }
@@ -187,10 +189,10 @@ namespace Terminals.Forms
             }
         }
 
-        private static TerminalTabControlItem CreateTerminalTabPageByFavoriteName(IFavorite favorite)
+        private TerminalTabControlItem CreateTerminalTabPageByFavoriteName(IFavorite favorite)
         {
             String terminalTabTitle = favorite.Name;
-            if (Settings.ShowUserNameInTitle)
+            if (settings.ShowUserNameInTitle)
             {
                 var security = favorite.Security;
                 string title = HelperFunctions.UserDisplayName(security.Domain, security.UserName);

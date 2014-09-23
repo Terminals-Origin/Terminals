@@ -120,7 +120,7 @@ namespace Tests.SqlPersisted
         {
             DbFavorite favoriteA = this.AddFavoriteToPrimaryPersistence();
             // simulate disconnection using invalid connection string for next call
-            Settings.ConnectionString = @"Data Source=.\\SQLEXPRESS;AttachDbFilename=C:\\fake.mdf;Integrated Security=True;User Instance=True";
+            Settings.Instance.ConnectionString = @"Data Source=.\\SQLEXPRESS;AttachDbFilename=C:\\fake.mdf;Integrated Security=True;User Instance=True";
             this.PrimaryPersistence.Dispatcher.ErrorOccurred += new EventHandler<DataErrorEventArgs>(this.DispatcherErrorOccurred);
             // first call throws a connection exception, which is reported and results in reset connection string
             this.PrimaryFavorites.Delete(favoriteA);

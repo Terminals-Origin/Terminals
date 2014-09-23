@@ -21,6 +21,7 @@ namespace Terminals
     internal partial class FirstRunWizard : Form
     {
         private readonly IPersistence persistence;
+        private readonly Settings settings = Settings.Instance;
         private WizardForms SelectedForm = WizardForms.Intro;
         private MethodInvoker miv;
         private AddExistingRDPConnections rdp = new AddExistingRDPConnections();
@@ -42,7 +43,7 @@ namespace Terminals
             IntroForm frm = new IntroForm();
             frm.Dock = DockStyle.Fill;
             this.panel1.Controls.Add(frm);
-            Settings.StartDelayedUpdate();
+            settings.StartDelayedUpdate();
         }
 
         private void NextButton_Click(object sender, EventArgs e)
@@ -110,22 +111,22 @@ namespace Terminals
 
         private void ApplySettings()
         {
-            Settings.MinimizeToTray = this.co.MinimizeToTray;
-            Settings.SingleInstance = this.co.AllowOnlySingleInstance;
-            Settings.ShowConfirmDialog = this.co.WarnOnDisconnect;
-            Settings.EnableCaptureToClipboard = this.co.EnableCaptureToClipboard;
-            Settings.EnableCaptureToFolder = this.co.EnableCaptureToFolder;
-            Settings.AutoSwitchOnCapture = this.co.AutoSwitchOnCapture;
+            settings.MinimizeToTray = this.co.MinimizeToTray;
+            settings.SingleInstance = this.co.AllowOnlySingleInstance;
+            settings.ShowConfirmDialog = this.co.WarnOnDisconnect;
+            settings.EnableCaptureToClipboard = this.co.EnableCaptureToClipboard;
+            settings.EnableCaptureToFolder = this.co.EnableCaptureToFolder;
+            settings.AutoSwitchOnCapture = this.co.AutoSwitchOnCapture;
 
             if (this.co.LoadDefaultShortcuts)
-                Settings.SpecialCommands = SpecialCommandsWizard.LoadSpecialCommands();
+                settings.SpecialCommands = SpecialCommandsWizard.LoadSpecialCommands();
         }
 
         private void SwitchToOptionsFromCredentials()
         {
-            Settings.DefaultDomain = this.dc.DefaultDomain;
-            Settings.DefaultPassword = this.dc.DefaultPassword;
-            Settings.DefaultUsername = this.dc.DefaultUsername;
+            settings.DefaultDomain = this.dc.DefaultDomain;
+            settings.DefaultPassword = this.dc.DefaultPassword;
+            settings.DefaultUsername = this.dc.DefaultUsername;
 
             this.nextButton.Enabled = true;
             this.panel1.Controls.Clear();
@@ -178,8 +179,8 @@ namespace Terminals
 
         private void FirstRunWizard_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Settings.ShowWizard = false;
-            Settings.SaveAndFinishDelayedUpdate();
+            this.settings.ShowWizard = false;
+            this.settings.SaveAndFinishDelayedUpdate();
             ImportDiscoveredFavorites();
         }
 

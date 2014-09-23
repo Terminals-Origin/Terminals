@@ -16,6 +16,8 @@ namespace Terminals.Updates
     {
         private readonly IPersistence persistence;
 
+        private readonly Settings settings = Settings.Instance;
+
         private readonly PasswordsV2Update passwordsUpdate;
 
         private AuthenticationPrompt prompt;
@@ -45,7 +47,7 @@ namespace Terminals.Updates
 
         private void UpgradeCredentialsFile()
         {
-            string credentialsFile = Settings.FileLocations.Credentials;
+            string credentialsFile = settings.FileLocations.Credentials;
             if (File.Exists(credentialsFile))
             {
                 string credentialsXml = File.ReadAllText(credentialsFile);
@@ -66,20 +68,20 @@ namespace Terminals.Updates
 
         private void UpgradeConfigFile()
         {
-            Settings.StartDelayedUpdate();
+            settings.StartDelayedUpdate();
             this.persistence.StartDelayedUpdate();
-            string newConfigFileName = Settings.FileLocations.Configuration;
+            string newConfigFileName = settings.FileLocations.Configuration;
             this.passwordsUpdate.UpdateConfigFilePasswords(newConfigFileName);
             // we don't have to reload now, because the file watcher is already listening
-            Settings.ForceReload(); // not identified why, but otherwise master password is lost
+            settings.ForceReload(); // not identified why, but otherwise master password is lost
             // now already need to have persistence authenticated, otherwise we are working with wrong masterKey
             this.persistence.Security.Authenticate(retry => this.prompt);
             this.ImportTagsFromConfigFile();
             this.MoveFavoritesFromConfigFile();
             this.MoveGroupsFromConfigFile();
-            Settings.RemoveAllFavoritesAndTags();
+            settings.RemoveAllFavoritesAndTags();
             this.ReplaceFavoriteButtonNamesByIds();
-            Settings.SaveAndFinishDelayedUpdate();
+            settings.SaveAndFinishDelayedUpdate();
             persistence.Groups.Rebuild();
             // we can upgrade only file persistence, so the cast is safe.
             // Credentials Ids were newly created, and the file persistence didn't save the file.
@@ -90,13 +92,13 @@ namespace Terminals.Updates
 
         private void MoveGroupsFromConfigFile()
         {
-            GroupConfigurationElementCollection configGroups = Settings.GetGroups();
+            GroupConfigurationElementCollection configGroups = settings.GetGroups();
             foreach (GroupConfigurationElement configGroup in configGroups)
             {
                 this.MoveFavoriteAliasesGroup(configGroup);
             }
 
-            Settings.ClearGroups();
+            settings.ClearGroups();
         }
 
         private void MoveFavoriteAliasesGroup(GroupConfigurationElement configGroup)
@@ -110,17 +112,17 @@ namespace Terminals.Updates
 
         private void ReplaceFavoriteButtonNamesByIds()
         {
-            string[] favoriteNames = Settings.FavoriteNamesToolbarButtons;
+            string[] favoriteNames = settings.FavoriteNamesToolbarButtons;
             List<Guid> favoritesWithButton = persistence.Favorites
                 .Where(favorite => favoriteNames.Contains(favorite.Name))
                 .Select(candidate => candidate.Id).ToList();
 
-            Settings.UpdateFavoritesToolbarButtons(favoritesWithButton);
+            settings.UpdateFavoritesToolbarButtons(favoritesWithButton);
         }
 
         private void ImportTagsFromConfigFile()
         {
-            foreach (string tag in Settings.Tags)
+            foreach (string tag in settings.Tags)
             {
                 var group = this.persistence.Factory.CreateGroup(tag);
                 this.persistence.Groups.Add(group);
@@ -129,7 +131,7 @@ namespace Terminals.Updates
 
         private void MoveFavoritesFromConfigFile()
         {
-            foreach (FavoriteConfigurationElement favoriteConfigElement in Settings.GetFavorites())
+            foreach (FavoriteConfigurationElement favoriteConfigElement in settings.GetFavorites())
             {
                 IFavorite favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement, this.persistence);
                 ImportWithDialogs.AddFavoriteIntoGroups(this.persistence, favorite, favoriteConfigElement.TagList);

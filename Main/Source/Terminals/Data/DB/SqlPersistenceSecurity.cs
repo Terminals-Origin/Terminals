@@ -19,7 +19,8 @@ namespace Terminals.Data.DB
 
         internal bool UpdateDatabaseKey()
         {
-            return this.UpdateDatabaseKey(Settings.ConnectionString, Settings.DatabaseMasterPassword);
+            var settings = Settings.Instance;
+            return this.UpdateDatabaseKey(settings.ConnectionString, settings.DatabaseMasterPassword);
         }
 
         internal bool UpdateDatabaseKey(string connectionString, string databasePassword)

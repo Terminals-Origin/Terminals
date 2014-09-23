@@ -9,20 +9,21 @@ namespace Tests.FilePersisted
 {
     public abstract class FilePersistedTestLab
     {
+        private readonly Settings settings = Settings.Instance;
         internal FilePersistence Persistence { get; private set; }
 
         [TestInitialize]
         public void InitializeTestLab()
         {
             SetDefaultFileLocations();
-            File.Delete(Settings.FileLocations.Favorites);
+            File.Delete(settings.FileLocations.Favorites);
             this.Persistence = new FilePersistence();
             this.Persistence.Initialize();
         }
 
         internal static void SetDefaultFileLocations()
         {
-            Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
+            Settings.Instance.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
         }
 
         internal Tuple<IFavorite, IGroup> AddFavoriteWithGroup(string groupName)

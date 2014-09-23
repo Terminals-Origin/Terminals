@@ -13,7 +13,7 @@ namespace Terminals.Data.Validation
 
         public static ValidationResult IsValidServerName(string serverName)
         {
-            if (Settings.ForceComputerNamesAsURI && Uri.CheckHostName(serverName) == UriHostNameType.Unknown)
+            if (Settings.Instance.ForceComputerNamesAsURI && Uri.CheckHostName(serverName) == UriHostNameType.Unknown)
                 return new ValidationResult("Server name is not in the correct format.", new string[] { "ServerName" });
 
             return ValidationResult.Success;

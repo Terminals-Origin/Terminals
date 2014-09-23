@@ -13,6 +13,8 @@ namespace Terminals.Updates
     {
         private readonly IPersistence persistence;
 
+        private readonly Settings settings = Settings.Instance;
+
         public UpdateConfig(IPersistence persistence)
         {
             this.persistence = persistence;
@@ -25,13 +27,13 @@ namespace Terminals.Updates
         {
             // If the Terminals version is not in the config or the version number in the config
             // is lower then the current assembly version, check for config updates
-            if (Settings.ConfigVersion == null || Settings.ConfigVersion < Program.Info.Version)
+            if (settings.ConfigVersion == null || settings.ConfigVersion < Program.Info.Version)
             {
                 // keep update sequence ordered!
                 UpdateToVersion20();
 
                 // After all updates change the config version to the current assembly version
-                Settings.ConfigVersion = Program.Info.Version;
+                settings.ConfigVersion = Program.Info.Version;
             }
         }
 
@@ -46,10 +48,10 @@ namespace Terminals.Updates
             }
         }
 
-        private static bool IsVersion2UpTo21()
+        private bool IsVersion2UpTo21()
         {
             return Program.Info.Version >= new Version(2, 0, 0, 0) &&
-                   (Settings.ConfigVersion != null && Settings.ConfigVersion < new Version(2,1,0,0));
+                   (settings.ConfigVersion != null && settings.ConfigVersion < new Version(2, 1, 0, 0));
         }
 
         private void MoveFilesToVersion2Location()
@@ -64,7 +66,7 @@ namespace Terminals.Updates
             MoveDataFile(FileLocations.CREDENTIALS_FILENAME);
             // only this is already in use if started with default location
             MoveDataFile(FileLocations.CONFIG_FILENAME);
-            Settings.ForceReload();
+            settings.ForceReload();
             var contentUpgrade = new FilesV2ContentUpgrade(this.persistence, RequestPassword.KnowsUserPassword);
             contentUpgrade.Run();
         }
