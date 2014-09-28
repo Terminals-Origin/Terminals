@@ -42,7 +42,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void AddGroupTest()
+        public void AddGroup_AddsToDatabaseAndRepoerts()
         {
             DbGroup childGroup = this.CreateTestGroupA();
             DbSet<DbGroup> checkedGroups = this.CheckDatabase.Groups;
@@ -52,7 +52,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void UpdateTest()
+        public void UpdateGroup_UpdatesAllProperties()
         {
             DbGroup childGroup = this.CreateTestGroupA();
             DbGroup parentGroup = this.CreateTestGroup("TestGroupB");
@@ -75,7 +75,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void LoadGroupFavoritesTest()
+        public void AddFavorite_CachesAddedFavorite()
         {
             IGroup group = this.CreateTestGroupA();
             DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
@@ -86,7 +86,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void DeleteGroupTest()
+        public void DeleteGroupReportsGroupDeleted()
         {
             var testGroup = this.CreateTestGroupA();
             int storedBefore = this.CheckDatabase.Groups.Count();
@@ -114,7 +114,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void RebuildGroupsTest()
+        public void RebuildGroups_RemovesEmptyGroups()
         {
             this.CreateTestGroupA();
             int storedBefore = this.CheckDatabase.Groups.Count();
