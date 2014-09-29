@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -42,36 +43,95 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void AddGroup_AddsToDatabaseAndRepoerts()
+        public void AddGroup_AddsToDatabase()
         {
             DbGroup childGroup = this.CreateTestGroupA();
             DbSet<DbGroup> checkedGroups = this.CheckDatabase.Groups;
             DbGroup checkedChild = checkedGroups.FirstOrDefault(group => group.Id == childGroup.Id);
             Assert.IsNotNull(checkedChild, "Group wasn't added to the database");
-            Assert.AreEqual(1, this.addedCount, "Add event wasn't received"); 
         }
 
         [TestMethod]
-        public void UpdateGroup_UpdatesAllProperties()
+        public void AddGroup_ReportsAddedGroup()
+        {
+            this.CreateTestGroupA();
+            Assert.AreEqual(1, this.addedCount, "Add event wasn't received");
+        }
+
+        // "Not implemented yet."
+        [Ignore]
+        [TestMethod]
+        public void LoadGroup_LoadsParentProperty()
+        {
+            
+        }
+
+        // "Not implemented yet."
+        [Ignore]
+        [TestMethod]
+        public void AddGroup_SavesParentToDatabase()
+        {
+
+        }
+
+        [TestMethod]
+        public void UpdateGroup_UpdatesParentProperty()
+        {
+            Tuple<DbGroup, DbGroup> created = this.AssignParentToChildGroup();
+
+            IGroup assignedParent = created.Item2.Parent;
+            Assert.AreEqual(created.Item1, assignedParent, "Parent group wasn't set properly");
+        }
+
+        [TestMethod]
+        public void UpdateGroup_SavesParentPropertyToDatabase()
+        {
+            Tuple<DbGroup, DbGroup> created = this.AssignParentToChildGroup();
+            DbGroup checkedParent = this.FindCheckedGroupById(created.Item1.Id);
+            DbGroup checkedChild = this.FindCheckedGroupById(created.Item2.Id);
+
+            Assert.IsNotNull(checkedChild, "Child group wasn't added to the database");
+            Assert.IsNotNull(checkedParent, "Parent group wasn't added to the database");
+            Assert.AreEqual(1, checkedParent.ChildGroups.Count, "Group wasn't added as child");
+        }
+
+        [TestMethod]
+        public void UpdateGroup_ReportsGroupUpdated()
+        {
+            this.AssignParentToChildGroup();
+            // only one, because Added event is send once for each group
+            Assert.AreEqual(1, this.updatedCount, "Update event wasn't received");
+        }
+
+        /// <summary>
+        /// Returns the newly created groups in Primary persistence. Item1 = Parent, Item2 = Child.
+        /// </summary>
+        private Tuple<DbGroup, DbGroup> AssignParentToChildGroup()
         {
             DbGroup childGroup = this.CreateTestGroupA();
             DbGroup parentGroup = this.CreateTestGroup("TestGroupB");
             childGroup.Parent = parentGroup; // don't use entities here, we are testing intern logic
-            IGroup testParent = childGroup.Parent;
+            this.PrimaryPersistence.Groups.Update(childGroup);
+            return new Tuple<DbGroup, DbGroup>(parentGroup, childGroup);
+        }
+
+        [TestMethod]
+        public void UpdateGroup_UpdatesName()
+        {
+            DbGroup childGroup = this.CreateTestGroupA();
             const string NEWNAME = "UpdatedName";
             childGroup.Name = NEWNAME;
             this.PrimaryPersistence.Groups.Update(childGroup);
 
-            Assert.AreEqual(testParent, parentGroup, "Parent group wasn't set properly");
-            DbSet<DbGroup> checkedGroups = this.CheckDatabase.Groups;
-            DbGroup checkedChild = checkedGroups.FirstOrDefault(group => group.Id == childGroup.Id);
-            DbGroup checkedParent = checkedGroups.FirstOrDefault(group => group.Id == parentGroup.Id);
+            DbGroup checkedChild = this.FindCheckedGroupById(childGroup.Id);
             Assert.IsNotNull(checkedChild, "Group wasn't added to the database");
             Assert.AreEqual(NEWNAME, checkedChild.Name, "Group name wasnt update properly");
-            Assert.IsNotNull(checkedParent, "Group wasn't added to the database");
-            Assert.AreEqual(1, checkedParent.ChildGroups.Count, "Group wasn't added as child");
-            // only one, because Added event is send once for each group
-            Assert.AreEqual(2, this.addedCount, "Add event wasn't received");
+        }
+
+        private DbGroup FindCheckedGroupById(int groupId)
+        {
+            DbSet<DbGroup> checkedGroups = this.CheckDatabase.Groups;
+            return checkedGroups.FirstOrDefault(group => group.Id == groupId);
         }
 
         [TestMethod]
@@ -95,7 +155,6 @@ namespace Tests.SqlPersisted
 
             this.AssertGroupDeleted(storedAfter, storedBefore);
         }
-
 
         [TestMethod]
         public void RemoveGroupUpdatesNestedGroups()
