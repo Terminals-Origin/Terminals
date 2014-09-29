@@ -45,7 +45,7 @@ namespace Tests.SqlPersisted
         [TestMethod]
         public void AddGroup_AddsToDatabase()
         {
-            DbGroup childGroup = this.CreateTestGroupA();
+            DbGroup childGroup = this.AddGroupAToPrimaryPersistence();
             DbSet<DbGroup> checkedGroups = this.CheckDatabase.Groups;
             DbGroup checkedChild = checkedGroups.FirstOrDefault(group => group.Id == childGroup.Id);
             Assert.IsNotNull(checkedChild, "Group wasn't added to the database");
@@ -54,24 +54,38 @@ namespace Tests.SqlPersisted
         [TestMethod]
         public void AddGroup_ReportsAddedGroup()
         {
-            this.CreateTestGroupA();
+            this.AddGroupAToPrimaryPersistence();
             Assert.AreEqual(1, this.addedCount, "Add event wasn't received");
         }
 
         // "Not implemented yet."
-        [Ignore]
         [TestMethod]
         public void LoadGroup_LoadsParentProperty()
         {
-            
+            Tuple<DbGroup, DbGroup> created = this.AssignParentToChildGroup();
+            // we ask the Secondary persistence, not Check database, to ensure loading by the presistence.
+            IGroup childGroup = this.FindInSecondaryPersistence(created.Item1.Id);
+            Assert.IsNotNull(childGroup.Parent, "Parent property has to be loaded on startup.");
+        }
+
+        private IGroup FindInSecondaryPersistence(int databaseId)
+        {
+            return this.SecondaryPersistence.Groups
+                       .FirstOrDefault(group => ((DbGroup)group).Id == databaseId);
         }
 
         // "Not implemented yet."
-        [Ignore]
         [TestMethod]
         public void AddGroup_SavesParentToDatabase()
         {
+            DbGroup parentGroup = this.AddNewGroupToPrimaryPersistence("TestGroupB");
+            // dont save the group before parent is assigned.
+            DbGroup childGroup = this.CreateNewTestGroup("TestGroupA");
+            childGroup.Parent = parentGroup; // don't use entities here, we are testing intern logic
+            this.PrimaryPersistence.Groups.Add(childGroup);
 
+            DbGroup checkedChild = this.FindCheckedGroupById(childGroup.Id);
+            Assert.IsNotNull(checkedChild.Parent, "Newly added group parent wasnt saved to the database.");
         }
 
         [TestMethod]
@@ -108,8 +122,8 @@ namespace Tests.SqlPersisted
         /// </summary>
         private Tuple<DbGroup, DbGroup> AssignParentToChildGroup()
         {
-            DbGroup childGroup = this.CreateTestGroupA();
-            DbGroup parentGroup = this.CreateTestGroup("TestGroupB");
+            DbGroup childGroup = this.AddGroupAToPrimaryPersistence();
+            DbGroup parentGroup = this.AddNewGroupToPrimaryPersistence("TestGroupB");
             childGroup.Parent = parentGroup; // don't use entities here, we are testing intern logic
             this.PrimaryPersistence.Groups.Update(childGroup);
             return new Tuple<DbGroup, DbGroup>(parentGroup, childGroup);
@@ -118,7 +132,7 @@ namespace Tests.SqlPersisted
         [TestMethod]
         public void UpdateGroup_UpdatesName()
         {
-            DbGroup childGroup = this.CreateTestGroupA();
+            DbGroup childGroup = this.AddGroupAToPrimaryPersistence();
             const string NEWNAME = "UpdatedName";
             childGroup.Name = NEWNAME;
             this.PrimaryPersistence.Groups.Update(childGroup);
@@ -137,7 +151,7 @@ namespace Tests.SqlPersisted
         [TestMethod]
         public void AddFavorite_CachesAddedFavorite()
         {
-            IGroup group = this.CreateTestGroupA();
+            IGroup group = this.AddGroupAToPrimaryPersistence();
             DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
             group.AddFavorite(favorite);
             List<IFavorite> favorites = group.Favorites;
@@ -148,7 +162,7 @@ namespace Tests.SqlPersisted
         [TestMethod]
         public void DeleteGroupReportsGroupDeleted()
         {
-            var testGroup = this.CreateTestGroupA();
+            var testGroup = this.AddGroupAToPrimaryPersistence();
             int storedBefore = this.CheckDatabase.Groups.Count();
             this.PrimaryPersistence.Groups.Delete(testGroup);
             int storedAfter = this.CheckDatabase.Groups.Count();
@@ -175,7 +189,7 @@ namespace Tests.SqlPersisted
         [TestMethod]
         public void RebuildGroups_RemovesEmptyGroups()
         {
-            this.CreateTestGroupA();
+            this.AddGroupAToPrimaryPersistence();
             int storedBefore = this.CheckDatabase.Groups.Count();
             this.PrimaryPersistence.Groups.Rebuild();
             int storedAfter = this.CheckDatabase.Groups.Count();
@@ -183,17 +197,22 @@ namespace Tests.SqlPersisted
             this.AssertGroupDeleted(storedAfter, storedBefore);
         }
 
-        private DbGroup CreateTestGroupA()
+        private DbGroup AddGroupAToPrimaryPersistence()
         {
-            return this.CreateTestGroup("TestGroupA");
+            return this.AddNewGroupToPrimaryPersistence("TestGroupA");
         }
 
-        private DbGroup CreateTestGroup(string newGroupName)
+        private DbGroup AddNewGroupToPrimaryPersistence(string newGroupName)
         {
-            IFactory factory = this.PrimaryPersistence.Factory;
-            DbGroup testGroup = factory.CreateGroup(newGroupName) as DbGroup;
+            DbGroup testGroup = this.CreateNewTestGroup(newGroupName);
             this.PrimaryPersistence.Groups.Add(testGroup);
             return testGroup;
+        }
+
+        private DbGroup CreateNewTestGroup(string newGroupName)
+        {
+            IFactory factory = this.PrimaryPersistence.Factory;
+            return factory.CreateGroup(newGroupName) as DbGroup;
         }
 
         private void AssertGroupDeleted(int storedAfter, int storedBefore)
