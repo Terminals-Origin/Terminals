@@ -144,17 +144,30 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal void DetachAll(IEnumerable<DbGroup> entitiesToDetach)
+        internal void DetachAll(List<DbGroup> entitiesToDetach)
         {
-            foreach (DbGroup entity in entitiesToDetach)
+            // if we detach parent, all its childs forget reference to its parent.
+            // So we have to backup all first, before detach them.
+            LoadFieldsFromReferences(entitiesToDetach);
+
+            foreach (DbGroup group in entitiesToDetach)
             {
-                this.DetachGroup(entity);
+                this.Detach(group);
             }
         }
 
-        private void DetachGroup(DbGroup group)
+        private static void LoadFieldsFromReferences(IEnumerable<DbGroup> entitiesToDetach)
         {
-            group.LoadFieldsFromReferences();
+            foreach (DbGroup group in entitiesToDetach)
+            {
+                group.LoadFieldsFromReferences();
+            }
+        }
+        
+        internal void DetachGoup(DbGroup group)
+        {
+            if (group.ParentGroup != null)
+                database.Cache.Detach(group.ParentGroup);
             this.Detach(group);
         }
 

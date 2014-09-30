@@ -139,7 +139,7 @@ namespace Terminals.Data.DB
             {
                 var toUpdate = favorite as DbFavorite;
                 database.Cache.AttachFavorite(toUpdate);
-                List<IGroup> addedGroups = this.groups.AddToDatabase(database, newGroups);
+                List<IGroup> addedGroups = database.AddToDatabase(newGroups);
                 // commit newly created groups, otherwise we cant add into them
                 database.SaveImmediatelyIfRequested();
                 UpdateGroupsMembership(favorite, newGroups);

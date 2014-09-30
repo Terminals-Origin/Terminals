@@ -76,7 +76,7 @@ namespace Terminals.Data.DB
 
         internal string GetProtocolPropertiesByFavorite(int favoriteId)
         {
-            return GetFavoriteProtocolProperties(favoriteId).FirstOrDefault();
+            return this.GetFavoriteProtocolProperties(favoriteId).FirstOrDefault();
         }
 
         internal string GetMasterPasswordHash()
@@ -127,7 +127,25 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal void AddAll(List<IGroup> added)
+        internal void AddToGroups(DbGroup toAdd)
+        {
+            toAdd.FieldsToReferences();
+            if (toAdd.ParentGroup != null)
+                this.Cache.Attach(toAdd.ParentGroup);
+            this.Groups.Add(toAdd);
+        }
+
+        internal List<IGroup> AddToDatabase(List<IGroup> groups)
+        {
+            // not added groups don't have an identifier obtained from database
+            List<IGroup> added = groups.Where(candidate => ((DbGroup)candidate).Id == 0).ToList();
+            this.AddAll(added);
+            List<DbGroup> toAttach = groups.Where(candidate => ((DbGroup)candidate).Id != 0).Cast<DbGroup>().ToList();
+            this.Cache.AttachAll(toAttach);
+            return added;
+        }
+
+        private void AddAll(List<IGroup> added)
         {
             foreach (DbGroup group in added)
             {
