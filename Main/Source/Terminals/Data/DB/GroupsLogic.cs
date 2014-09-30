@@ -80,22 +80,12 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 DbGroup toAdd = group as DbGroup;
-                database.Groups.Add(toAdd);
+                database.AddToGroups(toAdd);
                 database.SaveImmediatelyIfRequested();
-                database.Cache.Detach(toAdd);
+                database.Cache.DetachGoup(toAdd);
                 this.cache.Add(toAdd);
                 this.dispatcher.ReportGroupsAdded(new List<IGroup> {toAdd});
             }
-        }
-
-        internal List<IGroup> AddToDatabase(Database database, List<IGroup> groups)
-        {
-            // not added groups don't have an identifier obtained from database
-            List<IGroup> added = groups.Where(candidate => ((DbGroup)candidate).Id == 0).ToList();
-            database.AddAll(added);
-            List<DbGroup> toAttach = groups.Where(candidate => ((DbGroup)candidate).Id != 0).Cast<DbGroup>().ToList();
-            database.Cache.AttachAll(toAttach);
-            return added;
         }
 
         public void Update(IGroup group)

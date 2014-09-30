@@ -58,13 +58,12 @@ namespace Tests.SqlPersisted
             Assert.AreEqual(1, this.addedCount, "Add event wasn't received");
         }
 
-        // "Not implemented yet."
         [TestMethod]
         public void LoadGroup_LoadsParentProperty()
         {
             Tuple<DbGroup, DbGroup> created = this.AssignParentToChildGroup();
             // we ask the Secondary persistence, not Check database, to ensure loading by the presistence.
-            IGroup childGroup = this.FindInSecondaryPersistence(created.Item1.Id);
+            IGroup childGroup = this.FindInSecondaryPersistence(created.Item2.Id);
             Assert.IsNotNull(childGroup.Parent, "Parent property has to be loaded on startup.");
         }
 
@@ -74,7 +73,6 @@ namespace Tests.SqlPersisted
                        .FirstOrDefault(group => ((DbGroup)group).Id == databaseId);
         }
 
-        // "Not implemented yet."
         [TestMethod]
         public void AddGroup_SavesParentToDatabase()
         {
@@ -84,7 +82,7 @@ namespace Tests.SqlPersisted
             childGroup.Parent = parentGroup; // don't use entities here, we are testing intern logic
             this.PrimaryPersistence.Groups.Add(childGroup);
 
-            DbGroup checkedChild = this.FindCheckedGroupById(childGroup.Id);
+            var checkedChild = this.FindInSecondaryPersistence(childGroup.Id);
             Assert.IsNotNull(checkedChild.Parent, "Newly added group parent wasnt saved to the database.");
         }
 
