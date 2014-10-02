@@ -35,6 +35,7 @@ namespace Terminals.Forms.EditFavorite
 
         private void FillFavoriteTSgatewayOptions(RdpOptions rdpOptions)
         {
+            this.credentialsPanel1.SaveMRUs();
             TsGwOptions tsgwOptions = rdpOptions.TsGateway;
             tsgwOptions.HostName = this.txtTSGWServer.Text;
             this.credentialsPanel1.SaveTo(tsgwOptions.Security);
@@ -70,7 +71,9 @@ namespace Terminals.Forms.EditFavorite
 
         private void FillTsGatewayControls(RdpOptions rdpOptions)
         {
-            var tsGateway = rdpOptions.TsGateway;
+            this.credentialsPanel1.LoadMRUs();
+            TsGwOptions tsGateway = rdpOptions.TsGateway;
+
             switch (tsGateway.UsageMethod)
             {
                 case 0:
