@@ -330,16 +330,9 @@ namespace Terminals
 
         public String GetDesktopShare()
         {
-            String desktopShare = this.terminalsControler.Selected.Favorite.DesktopShare;
-            if (String.IsNullOrEmpty(desktopShare))
-            {
-                desktopShare = settings.DefaultDesktopShare.Replace("%SERVER%", CurrentTerminal.Server)
-                                                                    .Replace("%USER%", CurrentTerminal.UserName)
-                                                                    .Replace("%server%", CurrentTerminal.Server)
-                                                                    .Replace("%user%", CurrentTerminal.UserName);
-            }
-
-            return desktopShare;
+            String currentDesktopShare = this.terminalsControler.Selected.Favorite.DesktopShare;
+            var desktopShares = new DesktopShares(this.CurrentTerminal, settings.DefaultDesktopShare);
+            return desktopShares.EvaluateDesktopShare(currentDesktopShare);
         }
 
         internal void SendNativeMessageToFocus()
