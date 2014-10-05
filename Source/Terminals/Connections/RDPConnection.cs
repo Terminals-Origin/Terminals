@@ -41,6 +41,11 @@ namespace Terminals.Connections
             }
         }
 
+        private bool ClientConnected
+        {
+            get { return Convert.ToBoolean(this.client.Connected); }
+        }
+
         #region IConnection Members
 
         public override bool Connected
@@ -48,7 +53,7 @@ namespace Terminals.Connections
             get
             {
                 // dont let the connection to close with running reconnection
-                return Convert.ToBoolean(this.client.Connected) || this.connectionStateDetector.IsRunning;
+                return this.ClientConnected || this.connectionStateDetector.IsRunning;
             }
         }
 
@@ -478,13 +483,21 @@ namespace Terminals.Connections
         {
             try
             {
-                this.connectionStateDetector.Disable();
-                this.client.Disconnect();
+                this.TryDisconnect();
             }
             catch (Exception e)
             {
                 Logging.Info("Error on Disconnect RDP", e);
             }
+        }
+
+        private void TryDisconnect()
+        {
+            this.connectionStateDetector.Disable();
+            if (this.ClientConnected)
+                this.client.Disconnect();
+            else
+                this.FinishDisconnect();
         }
 
         #endregion

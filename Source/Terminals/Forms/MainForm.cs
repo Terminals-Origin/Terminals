@@ -1083,9 +1083,6 @@ namespace Terminals
 
                 if (close)
                 {
-                    if (CurrentTerminal != null)
-                        CurrentTerminal.Disconnect();
-
                     if (CurrentConnection != null)
                     {
                         CurrentConnection.Disconnect();
