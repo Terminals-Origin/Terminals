@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
-using AxMSTSCLib;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
 
 namespace Terminals.Forms
@@ -14,7 +14,7 @@ namespace Terminals.Forms
         private readonly Settings settings = Settings.Instance;
         private UserControl currentPanel;
 
-        public OptionDialog(AxMsRdpClient6NotSafeForScripting terminal, IPersistence persistence)
+        public OptionDialog(IConnectionExtra terminal, IPersistence persistence)
         {
             this.ApplySystemFont();
 
@@ -34,7 +34,7 @@ namespace Terminals.Forms
             LoadSettings();
         }
 
-        private void UpdateLookAndFeel(AxMsRdpClient6NotSafeForScripting terminal)
+        private void UpdateLookAndFeel(IConnectionExtra terminal)
         {
             // Update the old treeview theme to the new theme
             Native.Methods.SetWindowTheme(this.OptionsTreeView.Handle, "Explorer", null);

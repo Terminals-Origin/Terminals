@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Windows.Forms;
-using AxMSTSCLib;
 using Terminals.Configuration;
+using Terminals.Connections;
 
 namespace Terminals.Forms
 {
     internal partial class ConnectionsOptionPanel : UserControl, IOptionPanel
     {
         private readonly Settings settings = Settings.Instance;
-        internal AxMsRdpClient6NotSafeForScripting CurrentTerminal { get; set; }
+        internal IConnectionExtra CurrentTerminal { get; set; }
 
         public ConnectionsOptionPanel()
         {

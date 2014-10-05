@@ -7,7 +7,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AxMSTSCLib;
 using TabControl;
 using Terminals.Data;
 using Terminals.Forms;
@@ -83,17 +82,11 @@ namespace Terminals
             get { return this.fullScreenSwitch.SwitchingFullScreen; } 
         }
 
-        private AxMsRdpClient6NotSafeForScripting CurrentTerminal
+        private IConnectionExtra CurrentTerminal
         {
             get
             {
-                if (this.CurrentConnection != null)
-                {
-                    if (this.CurrentConnection is RDPConnection)
-                        return (this.CurrentConnection as RDPConnection).AxMsRdpClient;
-                }
-
-                return null;
+                return this.CurrentConnection as IConnectionExtra;
             }
         }
 
@@ -1418,7 +1411,7 @@ namespace Terminals
             try
             {
                 String sessionId = String.Empty;
-                if (!this.CurrentTerminal.AdvancedSettings3.ConnectToServerConsole)
+                if (!this.CurrentTerminal.ConnectToConsole)
                 {
                     sessionId = TSManager.GetCurrentSession(this.CurrentTerminal.Server,
                         this.CurrentTerminal.UserName,
@@ -1446,7 +1439,7 @@ namespace Terminals
             try
             {
                 String sessionId = String.Empty;
-                if (!this.CurrentTerminal.AdvancedSettings3.ConnectToServerConsole)
+                if (!this.CurrentTerminal.ConnectToConsole)
                 {
                     sessionId = TSManager.GetCurrentSession(this.CurrentTerminal.Server,
                         this.CurrentTerminal.UserName,

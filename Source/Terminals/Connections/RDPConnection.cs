@@ -19,7 +19,7 @@ using System.Text;
 
 namespace Terminals.Connections
 {
-    internal class RDPConnection : Connection
+    internal class RDPConnection : Connection, IConnectionExtra
     {
         private readonly Settings settings = Settings.Instance;
         private readonly ReconnectingControl reconecting = new ReconnectingControl();
@@ -33,13 +33,33 @@ namespace Terminals.Connections
         public delegate void ConnectionEstablish(RDPConnection Connection);
         public event ConnectionEstablish OnConnected;
 
-        public AxMsRdpClient6NotSafeForScripting AxMsRdpClient
+        #region IConnectionExtra
+
+        bool IConnectionExtra.FullScreen
         {
-            get
-            {
-                return this.client;
-            }
+            get { return this.client.FullScreen; } 
+            set { this.client.FullScreen = value; }
         }
+
+        string IConnectionExtra.Server { get { return this.client.Server; } }
+
+        string IConnectionExtra.UserName { get { return this.client.UserName; } }
+
+        string IConnectionExtra.Domain { get { return this.client.Domain; } }
+
+        bool IConnectionExtra.ConnectToConsole { get { return this.client.AdvancedSettings3.ConnectToServerConsole; } }
+
+        bool IConnectionExtra.ContainsFocus
+        {
+            get { return this.client.ContainsFocus; }
+        }
+
+        void IConnectionExtra.Focus()
+        {
+            this.client.Focus();
+        }
+
+        #endregion
 
         private bool ClientConnected
         {
