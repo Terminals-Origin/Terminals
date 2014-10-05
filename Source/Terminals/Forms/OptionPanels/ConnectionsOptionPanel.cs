@@ -47,24 +47,8 @@ namespace Terminals.Forms
 
         private void txtDefaultDesktopShare_TextChanged(object sender, EventArgs e)
         {
-            this.EvaluateDesktopShare();
-        }
-
-        private void EvaluateDesktopShare()
-        {
-            if (this.CurrentTerminal != null)
-            {
-                this.EvaluatedDesktopShareLabel.Text =
-                    this.txtDefaultDesktopShare.Text.Replace("%SERVER%", this.CurrentTerminal.Server)
-                                                    .Replace("%USER%", this.CurrentTerminal.UserName)
-                                                    .Replace("%server%", this.CurrentTerminal.Server)
-                                                    .Replace("%user%", this.CurrentTerminal.UserName);
-
-            }
-            else
-            {
-                this.EvaluatedDesktopShareLabel.Text = String.Empty;
-            }
+            var desktopShares = new DesktopShares(this.CurrentTerminal, this.txtDefaultDesktopShare.Text);
+            this.EvaluatedDesktopShareLabel.Text = desktopShares.EvaluateDesktopShare();
         }
     }
 }

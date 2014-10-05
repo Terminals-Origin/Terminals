@@ -173,6 +173,7 @@
   <ItemGroup>
     <Compile Include="Connections\ConnectionManager.cs" />
     <Compile Include="Connections\ConnectionStateDetector.cs" />
+    <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\IConnectionExtra.cs" />
     <Compile Include="Connections\NettworkingTools.cs" />
     <Compile Include="Connections\RdpClientErrorMessages.cs" />
