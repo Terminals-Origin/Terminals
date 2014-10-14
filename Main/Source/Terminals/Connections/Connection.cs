@@ -8,65 +8,48 @@ namespace Terminals.Connections
 {
     internal abstract class Connection : Control, IConnection
     {
-        public string LastError { get; set; }
-        private TerminalServer server;
-        private bool isTerminalServer = false;
-        private IFavorite favorite;
-        private TerminalTabControlItem terminalTabPage;
-        private MainForm parentForm;
-        
-        public delegate void TerminalServerStateDiscovery(IFavorite favorite, bool isTerminalServer, TerminalServer server);
-        
-        public event TerminalServerStateDiscovery OnTerminalServerStateDiscovery;
-
         public delegate void LogHandler(string entry);
 
         public event LogHandler OnLog;
 
-        public abstract bool Connect();
-
-        public abstract void Disconnect();
+        public string LastError { get; set; }
 
         public abstract bool Connected 
         {
             get;
         }
 
-        public TerminalServer Server
-        {
-            get
-            {
-                return this.server;
-            }
-            
-            set
-            {
-                this.server = value;
-            }
-        }
+        public IFavorite Favorite { get; set; }
 
-        public bool IsTerminalServer
-        {
-            get
-            {
-                return this.isTerminalServer;
-            }
+        public TerminalTabControlItem TerminalTabPage { get; set; }
 
-            set
-            {
-                this.isTerminalServer = value;
-            }
+        public MainForm ParentForm { get; set; }
+
+        public TerminalServer Server { get; set; }
+
+        public bool IsTerminalServer { get; set; }
+
+        public abstract bool Connect();
+
+        public abstract void Disconnect();
+
+        public void CheckForTerminalServer(IFavorite favorite)
+        {
+            if (favorite.Protocol == ConnectionManager.RDP)
+                ThreadPool.QueueUserWorkItem(new WaitCallback(this.CheckForTS), favorite);
+
+            this.IsTerminalServer = false;
         }
     
         private void CheckForTS(object state)
         {
-            this.isTerminalServer = false;
+            this.IsTerminalServer = false;
             IFavorite favorite = state as IFavorite;
             try
             {
                 Thread.Sleep(3000);
-                this.server = TerminalServer.LoadServer(favorite.ServerName);
-                this.isTerminalServer = this.server.IsATerminalServer;
+                this.Server = TerminalServer.LoadServer(favorite.ServerName);
+                this.IsTerminalServer = this.Server.IsATerminalServer;
             }
             catch (Exception exception)
             {
@@ -74,19 +57,6 @@ namespace Terminals.Connections
                                                favorite.ServerName);
                 Logging.Error(message, exception);
             }
-
-            if (this.OnTerminalServerStateDiscovery != null)
-                this.OnTerminalServerStateDiscovery(favorite, this.isTerminalServer, this.server);
-        }
-
-        public void CheckForTerminalServer(IFavorite favorite)
-        {
-            if (favorite.Protocol == ConnectionManager.RDP)
-            {
-                ThreadPool.QueueUserWorkItem(new WaitCallback(this.CheckForTS), favorite);
-            }
-
-            this.isTerminalServer = false;
         }
 
         protected void Log(string text)
@@ -96,44 +66,5 @@ namespace Terminals.Connections
         }
         
         public abstract void ChangeDesktopSize(DesktopSize size);
-
-        public IFavorite Favorite 
-        {
-            get
-            {
-                return this.favorite;
-            }
-            
-            set
-            {
-                this.favorite = value;
-            }
-        }
-        
-        public TerminalTabControlItem TerminalTabPage
-        {
-            get
-            {
-                return this.terminalTabPage;
-            }
-            
-            set
-            {
-                this.terminalTabPage = value;
-            }
-        }
-
-        public MainForm ParentForm
-        {
-            get
-            {
-                return this.parentForm;
-            }
-
-            set
-            {
-                this.parentForm = value;
-            }
-        }
     }
 }
