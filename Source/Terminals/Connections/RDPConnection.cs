@@ -575,7 +575,7 @@ namespace Terminals.Connections
         {
             ParentForm.tsbGrabInput.Checked = false;
             ParentForm.UpdateControls();
-            Methods.PostLeavingFullScreenMessage(this);
+            ParentForm.OnLeavingFullScreen();
         }
 
         private void client_OnRequestGoFullScreen(object sender, EventArgs e)

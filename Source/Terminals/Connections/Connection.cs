@@ -151,7 +151,7 @@ namespace Terminals.Connections
             bool wasSelected = tabPage.Selected;
             this.ParentForm.RemoveTabPage(tabPage);
             if (wasSelected)
-                Methods.PostLeavingFullScreenMessage(this);
+                this.ParentForm.OnLeavingFullScreen();
 
             this.ParentForm.UpdateControls();
         }
