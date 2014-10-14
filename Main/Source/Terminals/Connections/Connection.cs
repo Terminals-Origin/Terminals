@@ -1,25 +1,19 @@
 using System;
 using System.Threading;
 using System.Windows.Forms;
-using TabControl;
-using System.Runtime.InteropServices;
 using Terminals.Data;
-using Terminals.Native;
 using Terminals.TerminalServices;
 
 namespace Terminals.Connections
 {
     internal abstract class Connection : Control, IConnection
     {
-        #region IConnection Members
         public string LastError { get; set; }
         private TerminalServer server;
         private bool isTerminalServer = false;
         private IFavorite favorite;
         private TerminalTabControlItem terminalTabPage;
         private MainForm parentForm;
-        
-        internal delegate void InvokeCloseTabPage(TabControlItem tabPage);
         
         public delegate void TerminalServerStateDiscovery(IFavorite favorite, bool isTerminalServer, TerminalServer server);
         
@@ -141,21 +135,5 @@ namespace Terminals.Connections
                 this.parentForm = value;
             }
         }
-
-        internal void CloseTabPage(object tabObject)
-        {
-            var tabPage = tabObject as TabControlItem;
-            if (tabPage == null)
-                return;
-            
-            bool wasSelected = tabPage.Selected;
-            this.ParentForm.RemoveTabPage(tabPage);
-            if (wasSelected)
-                this.ParentForm.OnLeavingFullScreen();
-
-            this.ParentForm.UpdateControls();
-        }
-
-        #endregion
     }
 }

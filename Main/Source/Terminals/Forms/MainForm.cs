@@ -33,6 +33,8 @@ namespace Terminals
 
         private const String FULLSCREEN_ERROR_MSG = "Screen properties not available for RDP";
 
+        private delegate void InvokeCloseTabPage(TabControlItem tabPage);
+
         private FavsList favsList1;
 
         private readonly FormSettings formSettings;
@@ -1057,6 +1059,33 @@ namespace Terminals
         private void TsbGrabInput_Click(object sender, EventArgs e)
         {
             this.ToggleGrabInput();
+        }
+
+        internal void InvokeCloseTab(Control tabControl)
+        {
+            if (this.InvokeRequired)
+            {
+                var d = new InvokeCloseTabPage(this.CloseTabPage);
+                this.Invoke(d, new object[] { tabControl });
+            }
+            else
+            {
+                this.CloseTabPage(tabControl);
+            }
+        }
+
+        private void CloseTabPage(object tabObject)
+        {
+            var tabPage = tabObject as TabControlItem;
+            if (tabPage == null)
+                return;
+
+            bool wasSelected = tabPage.Selected;
+            this.RemoveTabPage(tabPage);
+            if (wasSelected)
+                this.OnLeavingFullScreen();
+
+            this.UpdateControls();
         }
 
         private void TcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e)
