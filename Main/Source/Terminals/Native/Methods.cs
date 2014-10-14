@@ -11,13 +11,6 @@ namespace Terminals.Native
     [ComVisible(false)]
     internal class Methods
     {
-        internal const Int32 WM_LEAVING_FULLSCREEN = 0x4ff;
-
-        internal static void PostLeavingFullScreenMessage(Control source)
-        {
-            PostMessage(new HandleRef(source, source.Handle), WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
-        }
-
         #region User32.dll
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]

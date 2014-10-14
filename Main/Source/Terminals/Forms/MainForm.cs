@@ -128,18 +128,6 @@ namespace Terminals
                         SetGrabInput(false);
                     }
                 }
-                else if (msg.Msg == Methods.WM_LEAVING_FULLSCREEN)
-                {
-                    if (CurrentTerminal != null)
-                    {
-                        if (CurrentTerminal.ContainsFocus)
-                            tscConnectTo.Focus();
-                    }
-                    else
-                    {
-                        this.BringToFront();
-                    }
-                }
 
                 base.WndProc(ref msg);
             }
@@ -147,6 +135,17 @@ namespace Terminals
             {
                 Logging.Info("WnProc Failure", e);
             }
+        }
+
+        internal void OnLeavingFullScreen()
+        {
+            if (this.CurrentTerminal != null)
+            {
+                if (this.CurrentTerminal.ContainsFocus)
+                    this.tscConnectTo.Focus();
+            }
+            else
+                this.BringToFront();
         }
 
         #endregion
