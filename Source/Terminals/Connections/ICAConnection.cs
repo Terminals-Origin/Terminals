@@ -119,14 +119,7 @@ namespace Terminals.Connections
         {
             Logging.Fatal("ICA Connection Lost" + this.Favorite.Name);
             this.connected = false;
-
-            if (ParentForm.InvokeRequired)
-            {
-                InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);
-                this.Invoke(d, new object[] { this.Parent });
-            }
-            else
-                CloseTabPage(this.Parent);
+            this.ParentForm.InvokeCloseTab(this.Parent);
         }
 
         private void ICAConnection_DragDrop(object sender, DragEventArgs e)

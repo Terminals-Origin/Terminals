@@ -61,15 +61,9 @@ namespace Terminals.Connections
         {
             //Terminals.Logging.Log.Fatal("VNC Connection Lost" + this.Favorite.Name);
             this.connected = false;
-
-            if (ParentForm.InvokeRequired)
-            {
-                InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);
-                this.Invoke(d, new object[] { rd.Parent });
-            }
-            else
-                CloseTabPage(rd.Parent);
+            this.ParentForm.InvokeCloseTab(rd.Parent);
         }
+
         private string vncPassword = "";
         string VNCPassword()
         {

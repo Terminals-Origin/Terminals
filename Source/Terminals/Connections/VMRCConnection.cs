@@ -72,14 +72,7 @@ namespace Terminals.Connections
                 connected = false;
                 Logging.Fatal("VMRC Connection Lost" + this.Favorite.Name);
                 this.connected = false;
-
-                if (ParentForm.InvokeRequired)
-                {
-                    InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);
-                    this.Invoke(d, new object[] { this.Parent });
-                }
-                else
-                    CloseTabPage(this.Parent);
+                this.ParentForm.InvokeCloseTab(this.Parent);
             }
         }
 

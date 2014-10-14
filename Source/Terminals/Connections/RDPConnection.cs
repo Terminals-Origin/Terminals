@@ -617,7 +617,7 @@ namespace Terminals.Connections
 
         private void FinishDisconnect()
         {
-            this.CloseTabPageOnParent();
+            this.ParentForm.InvokeCloseTab(this.client.Parent);
             this.FireDisconnected();
         }
 
@@ -630,18 +630,6 @@ namespace Terminals.Connections
             {
                 string message = String.Format("Error connecting to {0}\n\n{1}", this.client.Server, error);
                 MessageBox.Show(this, message, Program.Info.TitleVersion, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-
-        private void CloseTabPageOnParent()
-        {
-            if (this.ParentForm.InvokeRequired)
-            {
-                this.Invoke(new InvokeCloseTabPage(this.CloseTabPage), new object[] { this.client.Parent });
-            }
-            else
-            {
-                this.CloseTabPage(this.client.Parent);
             }
         }
 

@@ -152,15 +152,7 @@ namespace Terminals.Connections
         {
             Logging.Fatal(String.Format("{0} Connection Lost {1}", this.Favorite.Protocol, this.Favorite.Name));
             this.connected = false;
-            if (this.ParentForm.InvokeRequired)
-            {
-                InvokeCloseTabPage d = new InvokeCloseTabPage(this.CloseTabPage);
-                this.Invoke(d, new object[] { this.Parent });
-            }
-            else
-            {
-                this.CloseTabPage(this.Parent);
-            }
+            this.ParentForm.InvokeCloseTab(this.Parent);
         }
 
         public override void Disconnect()
