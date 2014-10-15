@@ -1061,7 +1061,11 @@ namespace Terminals
             this.ToggleGrabInput();
         }
 
-        internal void InvokeCloseTab(Control tabControl)
+        /// <summary>
+        /// Because tabControl is cast internaly to TabControlItem, all connections should send their tab,
+        /// which we already have in the connection.
+        /// </summary>
+        internal void InvokeCloseTab(TabControlItem tabControl)
         {
             if (this.InvokeRequired)
             {

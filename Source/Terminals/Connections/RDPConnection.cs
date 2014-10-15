@@ -617,7 +617,7 @@ namespace Terminals.Connections
 
         private void FinishDisconnect()
         {
-            this.ParentForm.InvokeCloseTab(this.client.Parent);
+            this.FireConnectionClosed();
             this.FireDisconnected();
         }
 
