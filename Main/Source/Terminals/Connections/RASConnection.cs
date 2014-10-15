@@ -87,7 +87,7 @@ namespace Terminals.Connections
             Log("Connected:" + e.Connected.ToString());
 
             if (!e.Connected)
-                this.ParentForm.InvokeCloseTab(this.Parent);
+                this.FireConnectionClosed();
         }
 
         public override void Disconnect()

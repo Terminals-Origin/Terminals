@@ -66,5 +66,19 @@ namespace Terminals.Connections
         }
         
         public abstract void ChangeDesktopSize(DesktopSize size);
+
+        /// <summary>
+        /// Because this method is called from methods, which mean end of the connection,
+        /// the idea behind the refactoring is to avoid to call remove the tab control from connection.
+        /// Instead we are going to fire event to the MainForm, which will do for us:
+        /// - remove the tab
+        /// - Close the connection, when necessary
+        /// - and finally the expected Dispose of Disposable resources 
+        /// After that the connection wouldnt need reference to the TabControl and MainForm.
+        /// </summary>
+        protected void FireConnectionClosed()
+        {
+            this.ParentForm.InvokeCloseTab(this.TerminalTabPage);
+        }
     }
 }

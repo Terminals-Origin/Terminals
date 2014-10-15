@@ -65,7 +65,7 @@ namespace Terminals.Connections
 
         public override void Disconnect()
         {
-            this.ParentForm.InvokeCloseTab(this.Parent);
+            this.FireConnectionClosed();
         }
     }
 }
