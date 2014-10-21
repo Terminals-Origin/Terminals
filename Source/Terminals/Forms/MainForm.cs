@@ -23,7 +23,7 @@ using Settings = Terminals.Configuration.Settings;
 
 namespace Terminals
 {
-    internal partial class MainForm : Form
+    internal partial class MainForm : Form, IConnectionMainView
     {
         private readonly IPersistence persistence;
 
@@ -139,7 +139,7 @@ namespace Terminals
             }
         }
 
-        internal void OnLeavingFullScreen()
+        public void OnLeavingFullScreen()
         {
             if (this.CurrentTerminal != null)
             {
@@ -390,7 +390,7 @@ namespace Terminals
             }
         }
 
-        internal void RemoveTabPage(TabControlItem tabControlToRemove)
+        private void RemoveTabPage(TabControlItem tabControlToRemove)
         {
             this.tcTerminals.RemoveTab(tabControlToRemove);
             this.CloseTabControlItem();
@@ -1061,11 +1061,17 @@ namespace Terminals
             this.ToggleGrabInput();
         }
 
+        internal void OnDisconnected(Connection connection)
+        {
+            connection.OnDisconnected -= this.OnDisconnected;
+            this.InvokeCloseTab(connection.TerminalTabPage);
+        }
+
         /// <summary>
         /// Because tabControl is cast internaly to TabControlItem, all connections should send their tab,
         /// which we already have in the connection.
         /// </summary>
-        internal void InvokeCloseTab(TabControlItem tabControl)
+        private void InvokeCloseTab(TerminalTabControlItem tabControl)
         {
             if (this.InvokeRequired)
             {
@@ -1085,36 +1091,35 @@ namespace Terminals
                 return;
 
             bool wasSelected = tabPage.Selected;
+            
             this.RemoveTabPage(tabPage);
             if (wasSelected)
                 this.OnLeavingFullScreen();
 
             this.UpdateControls();
+            this.CurrentConnection.Dispose();
+        }
+
+        public void SetGrabInputCheck(bool newGrabInput)
+        {
+            tsbGrabInput.Checked = newGrabInput;
+            this.UpdateControls();
         }
 
         private void TcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e)
         {
-            Boolean cancel = false;
             if (this.CurrentConnection != null && this.CurrentConnection.Connected)
             {
-                Boolean close = AskToClose();
-
-                if (close)
+                if (AskToClose()) // ask only when tab is going to be closed by user
                 {
-                    if (CurrentConnection != null)
-                    {
-                        CurrentConnection.Disconnect();
-                        // Close tabitem functions handled under each connection disconnect methods.
-                        cancel = true;
-                    }
+                    // Expecting all connections are disposable, because derive from Connection
+                    CurrentConnection.Dispose();
                 }
                 else
                 {
-                    cancel = true;
+                    e.Cancel = true;
                 }
             }
-
-            e.Cancel = cancel;
         }
 
         private bool AskToClose()

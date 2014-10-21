@@ -7,7 +7,6 @@ using System.IO;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Forms.Controls;
-using Terminals.Native;
 using System.Text;
 
 //http://msdn.microsoft.com/en-us/library/aa381172(v=vs.85).aspx
@@ -28,8 +27,6 @@ namespace Terminals.Connections
         private MSTSCLib.IMsRdpClientNonScriptable4 nonScriptable;
         private AxMsRdpClient6NotSafeForScripting client = null;
 
-        public delegate void Disconnected(RDPConnection Connection);
-        public event Disconnected OnDisconnected;
         public delegate void ConnectionEstablish(RDPConnection Connection);
         public event ConnectionEstablish OnConnected;
 
@@ -37,26 +34,76 @@ namespace Terminals.Connections
 
         bool IConnectionExtra.FullScreen
         {
-            get { return this.client.FullScreen; } 
-            set { this.client.FullScreen = value; }
+            get
+            {
+                if (this.client != null)
+                    return this.client.FullScreen;
+
+                return false;
+            }
+            set
+            {
+                if (this.client != null)
+                    this.client.FullScreen = value;
+            }
         }
 
-        string IConnectionExtra.Server { get { return this.client.Server; } }
+        string IConnectionExtra.Server
+        {
+            get
+            {
+                if (this.client != null)
+                    return this.client.Server;
+                return string.Empty;
+            }
+        }
 
-        string IConnectionExtra.UserName { get { return this.client.UserName; } }
+        string IConnectionExtra.UserName
+        {
+            get
+            {
+                if (this.client != null)
+                    return this.client.UserName;
+                return string.Empty;
+            }
+        }
 
-        string IConnectionExtra.Domain { get { return this.client.Domain; } }
+        string IConnectionExtra.Domain
+        {
+            get
+            {
+                if (this.client != null)
+                    return this.client.Domain;
+                return string.Empty;
+            }
+        }
 
-        bool IConnectionExtra.ConnectToConsole { get { return this.client.AdvancedSettings3.ConnectToServerConsole; } }
+        bool IConnectionExtra.ConnectToConsole
+        {
+            get
+            {
+                if (this.client != null)
+                    return this.client.AdvancedSettings3.ConnectToServerConsole;
+
+                return false;
+            }
+        }
 
         bool IConnectionExtra.ContainsFocus
         {
-            get { return this.client.ContainsFocus; }
+            get
+            {
+                if (this.client != null)
+                  return this.client.ContainsFocus;
+
+                return false;
+            }
         }
 
         void IConnectionExtra.Focus()
         {
-            this.client.Focus();
+            if (this.client != null)
+                this.client.Focus();
         }
 
         #endregion
@@ -202,7 +249,7 @@ namespace Terminals.Connections
             else
             {
                 this.StopReconnect();
-                this.FinishDisconnect();
+                this.FireDisconnected();
             }
         }
 
@@ -517,7 +564,18 @@ namespace Terminals.Connections
             if (this.ClientConnected)
                 this.client.Disconnect();
             else
-                this.FinishDisconnect();
+                this.FireDisconnected();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.client.Dispose();
+                this.client = null;
+            }
+
+            base.Dispose(disposing);
         }
 
         #endregion
@@ -573,15 +631,13 @@ namespace Terminals.Connections
 
         private void client_OnRequestLeaveFullScreen(object sender, EventArgs e)
         {
-            ParentForm.tsbGrabInput.Checked = false;
-            ParentForm.UpdateControls();
+            this.ParentForm.SetGrabInputCheck(false);
             ParentForm.OnLeavingFullScreen();
         }
 
         private void client_OnRequestGoFullScreen(object sender, EventArgs e)
         {
-            ParentForm.tsbGrabInput.Checked = true;
-            ParentForm.UpdateControls();
+            this.ParentForm.SetGrabInputCheck(true);
         }
 
         private void client_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
@@ -593,7 +649,7 @@ namespace Terminals.Connections
             else
             {
                 this.ShowDisconnetMessageBox(e);
-                this.FinishDisconnect();
+                this.FireDisconnected();
             }
         }
 
@@ -615,12 +671,6 @@ namespace Terminals.Connections
             this.connectionStateDetector.Start();
         }
 
-        private void FinishDisconnect()
-        {
-            this.FireConnectionClosed();
-            this.FireDisconnected();
-        }
-
         private void ShowDisconnetMessageBox(IMsTscAxEvents_OnDisconnectedEvent e)
         {
             int reason = e.discReason;
@@ -631,12 +681,6 @@ namespace Terminals.Connections
                 string message = String.Format("Error connecting to {0}\n\n{1}", this.client.Server, error);
                 MessageBox.Show(this, message, Program.Info.TitleVersion, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-        }
-
-        private void FireDisconnected()
-        {
-            if (this.OnDisconnected != null)
-                this.OnDisconnected(this);
         }
 
         private void client_OnFatalError(object sender, IMsTscAxEvents_OnFatalErrorEvent e)

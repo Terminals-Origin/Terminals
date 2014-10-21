@@ -12,7 +12,6 @@ namespace Terminals.Connections
         private Timer timer;
         private MethodInvoker logMiv;
         DateTime connectedTime = DateTime.MinValue;
-        private MainForm parentForm;
         string Entry = string.Empty;
 
         public RASConnection RASConnection
@@ -102,19 +101,6 @@ namespace Terminals.Connections
             set
             {
                 RASConnection.Favorite = value;
-            }
-        }
-
-        public new MainForm ParentForm
-        {
-            get
-            {
-                return this.parentForm;
-            }
-
-            set
-            {
-                this.parentForm = value;
             }
         }
 

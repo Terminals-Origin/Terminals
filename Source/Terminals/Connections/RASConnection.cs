@@ -87,7 +87,7 @@ namespace Terminals.Connections
             Log("Connected:" + e.Connected.ToString());
 
             if (!e.Connected)
-                this.FireConnectionClosed();
+                this.FireDisconnected();
         }
 
         public override void Disconnect()

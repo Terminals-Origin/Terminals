@@ -12,7 +12,11 @@ namespace Terminals.Connections
 
         public event LogHandler OnLog;
 
-        public string LastError { get; set; }
+        public delegate void Disconnected(Connection connection);
+
+        public event Disconnected OnDisconnected;
+
+        public string LastError { get; protected set; }
 
         public abstract bool Connected 
         {
@@ -23,11 +27,11 @@ namespace Terminals.Connections
 
         public TerminalTabControlItem TerminalTabPage { get; set; }
 
-        public MainForm ParentForm { get; set; }
+        public IConnectionMainView ParentForm { get; set; }
 
-        public TerminalServer Server { get; set; }
+        public TerminalServer Server { get; private set; }
 
-        public bool IsTerminalServer { get; set; }
+        public bool IsTerminalServer { get; private set; }
 
         public abstract bool Connect();
 
@@ -68,17 +72,17 @@ namespace Terminals.Connections
         public abstract void ChangeDesktopSize(DesktopSize size);
 
         /// <summary>
-        /// Because this method is called from methods, which mean end of the connection,
-        /// the idea behind the refactoring is to avoid to call remove the tab control from connection.
+        /// Avoid to call remove the tab control from connection.
         /// Instead we are going to fire event to the MainForm, which will do for us:
         /// - remove the tab
         /// - Close the connection, when necessary
         /// - and finally the expected Dispose of Disposable resources 
         /// After that the connection wouldnt need reference to the TabControl and MainForm.
         /// </summary>
-        protected void FireConnectionClosed()
+        protected void FireDisconnected()
         {
-            this.ParentForm.InvokeCloseTab(this.TerminalTabPage);
+            if (this.OnDisconnected != null)
+                this.OnDisconnected(this);
         }
     }
 }

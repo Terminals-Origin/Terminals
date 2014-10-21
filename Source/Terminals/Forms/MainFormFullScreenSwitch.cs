@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Terminals.Connections;
 using Screen = System.Windows.Forms.Screen;
 
 namespace Terminals
 {
-    internal partial class MainForm
+    internal partial class MainForm : IConnectionMainView
     {
         private class MainFormFullScreenSwitch
         {
