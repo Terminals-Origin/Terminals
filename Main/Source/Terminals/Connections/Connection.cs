@@ -33,9 +33,12 @@ namespace Terminals.Connections
 
         public bool IsTerminalServer { get; private set; }
 
+        /// <summary>
+        /// Create this control doesnt mean to open the connection.
+        /// Use explicit call instead. Because there may be related resources, 
+        /// call Dispose to close the connection to prevent memory leak.
+        /// </summary>
         public abstract bool Connect();
-
-        public abstract void Disconnect();
 
         public void CheckForTerminalServer(IFavorite favorite)
         {
@@ -68,8 +71,13 @@ namespace Terminals.Connections
             if (this.OnLog != null)
                 this.OnLog(text);
         }
-        
-        public abstract void ChangeDesktopSize(DesktopSize size);
+
+        /// <summary>
+        /// Default empty implementation to be overriden by connection
+        /// </summary>
+        public virtual void ChangeDesktopSize(DesktopSize size)
+        {
+        }
 
         /// <summary>
         /// Avoid to call remove the tab control from connection.

@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using AxVMRCClientControlLib;
-using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Connections
@@ -11,9 +10,6 @@ namespace Terminals.Connections
         #region IConnection Members
         private bool connected = false;
         public override bool Connected { get { return connected; } }
-        public override void ChangeDesktopSize(DesktopSize Size)
-        {
-        }
 
         AxVMRCClientControl vmrc;
         public override bool Connect()
@@ -103,7 +99,7 @@ namespace Terminals.Connections
         }
 
 
-        public override void Disconnect()
+        public void Disconnect()
         {
             try
             {

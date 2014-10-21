@@ -15,10 +15,6 @@ namespace Terminals.Connections
 
         private AxICAClient iIcaClient;
 
-        public override void ChangeDesktopSize(DesktopSize Size)
-        {
-        }
-
         public override bool Connected { get { return connected; } }
 
         public override bool Connect()
@@ -156,7 +152,7 @@ namespace Terminals.Connections
             return icaPassword;
         }
 
-        public override void Disconnect()
+        public void Disconnect()
         {
             try
             {

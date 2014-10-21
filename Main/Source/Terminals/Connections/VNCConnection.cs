@@ -1,6 +1,5 @@
 using System;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Connections
@@ -9,9 +8,6 @@ namespace Terminals.Connections
     {
         #region IConnection Members
         private bool connected = false;
-        public override void ChangeDesktopSize(DesktopSize Size)
-        {
-        }
 
         public void SendSpecialKeys(VncSharp.SpecialKeys Keys)
         {
@@ -90,7 +86,7 @@ namespace Terminals.Connections
             // Change the Form's title to match desktop name
         }
 
-        public override void Disconnect()
+        public void Disconnect()
         {
             try
             {

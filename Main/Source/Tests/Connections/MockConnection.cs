@@ -1,5 +1,4 @@
-﻿using Terminals;
-using Terminals.Connections;
+﻿using Terminals.Connections;
 
 namespace Tests.Connections
 {
@@ -7,17 +6,7 @@ namespace Tests.Connections
     {
         public override bool Connected { get { throw new System.NotImplementedException(); } }
 
-        public override void ChangeDesktopSize(DesktopSize size)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override bool Connect()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Disconnect()
         {
             throw new System.NotImplementedException();
         }

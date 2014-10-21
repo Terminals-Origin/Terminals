@@ -28,10 +28,6 @@ namespace Terminals.Connections
             }
         }
 
-        public override void ChangeDesktopSize(DesktopSize Size)
-        {
-        }
-
         public override Boolean Connect()
         {
             String protocol = "unknown";
@@ -155,7 +151,7 @@ namespace Terminals.Connections
             this.FireDisconnected();
         }
 
-        public override void Disconnect()
+        public void Disconnect()
         {
             try
             {
