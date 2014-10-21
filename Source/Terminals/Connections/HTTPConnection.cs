@@ -27,10 +27,6 @@ namespace Terminals.Connections
             this.ResumeLayout(false);
         }
 
-        public override void ChangeDesktopSize(DesktopSize Size)
-        {
-        }
-
         public override bool Connect()
         {
             try
@@ -63,7 +59,7 @@ namespace Terminals.Connections
             return true;
         }
 
-        public override void Disconnect()
+        public void Disconnect()
         {
             base.FireDisconnected();
         }

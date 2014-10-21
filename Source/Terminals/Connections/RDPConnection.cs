@@ -546,7 +546,7 @@ namespace Terminals.Connections
             clientControl.DragDrop += new DragEventHandler(this.client_DragDrop);
         }
 
-        public override void Disconnect()
+        public void Disconnect()
         {
             try
             {

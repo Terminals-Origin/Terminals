@@ -1,6 +1,5 @@
 using System;
 using FalafelSoftware.TransPort;
-using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Connections
@@ -10,9 +9,6 @@ namespace Terminals.Connections
         public override bool Connected
         {
             get { return ras.Connected; }
-        }
-        public override void ChangeDesktopSize(DesktopSize Size)
-        {
         }
 
         public Ras ras { get; set; }
@@ -90,7 +86,7 @@ namespace Terminals.Connections
                 this.FireDisconnected();
         }
 
-        public override void Disconnect()
+        public void Disconnect()
         {
             Log("Hanging Up:" + ras.HangUp().ToString());
         }

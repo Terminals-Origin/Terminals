@@ -28,19 +28,11 @@ namespace Terminals.Connections
             }
         }
 
-        public void ChangeDesktopSize(DesktopSize Size)
-        {
-        }
-
         public TerminalServices.TerminalServer Server
         {
             get
             {
                 return null;
-            }
-
-            set
-            {
             }
         }
 
@@ -121,6 +113,10 @@ namespace Terminals.Connections
             {
                 return RASConnection.Connected;
             }
+        }
+
+        public void ChangeDesktopSize(DesktopSize size)
+        {
         }
 
         private void UpdateStats()

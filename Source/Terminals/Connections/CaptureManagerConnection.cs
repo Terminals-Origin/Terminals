@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Forms;
 using Terminals.CaptureManager;
 
@@ -6,46 +5,14 @@ namespace Terminals.Connections
 {
     internal class CaptureManagerConnection : Connection
     {
+        public override bool Connected { get { return true; } }
+
+        private CaptureManagerLayout layout;
+
         public CaptureManagerConnection()
         {
             InitializeComponent();
         }
-        public void RefreshView()
-        {
-            layout.RefreshView();
-        }
-        private CaptureManagerLayout layout;
-
-        #region IConnection Members
-        private bool connected = false;
-        public override void ChangeDesktopSize(DesktopSize Size)
-        {
-        }
-
-        public override bool Connected { get { return connected; } }
-
-
-        public override bool Connect()
-        {
-            layout.Parent = base.TerminalTabPage;
-            this.Parent = TerminalTabPage;
-            TerminalTabPage.Connection = this;
-            return true;
-        }
-
-        public override void Disconnect()
-        {
-            try
-            {
-                connected = false;
-            }
-            catch (Exception e)
-            {
-                Logging.Error("Error on Disconnect", e);
-            }
-        }
-
-        #endregion
 
         private void InitializeComponent()
         {
@@ -60,6 +27,19 @@ namespace Terminals.Connections
             this.layout.TabIndex = 0;
             this.layout.Dock = DockStyle.Fill;
             this.ResumeLayout(false);
+        }
+
+        public void RefreshView()
+        {
+            layout.RefreshView();
+        }
+
+        public override bool Connect()
+        {
+            layout.Parent = this.TerminalTabPage;
+            this.Parent = TerminalTabPage;
+            TerminalTabPage.Connection = this;
+            return true;
         }
     }
 }
