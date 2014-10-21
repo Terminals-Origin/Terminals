@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms.Controls;
 using Terminals.Properties;
@@ -11,7 +12,7 @@ using Settings = Terminals.Configuration.Settings;
 
 namespace Terminals
 {
-    internal partial class MainForm
+    internal partial class MainForm : IConnectionMainView
     {
         /// <summary>
         /// Fills menu, tool strip menu and tool bar with favorite buttons

@@ -152,7 +152,7 @@ namespace Terminals.Connections
         {
             Logging.Fatal(String.Format("{0} Connection Lost {1}", this.Favorite.Protocol, this.Favorite.Name));
             this.connected = false;
-            this.FireConnectionClosed();
+            this.FireDisconnected();
         }
 
         public override void Disconnect()

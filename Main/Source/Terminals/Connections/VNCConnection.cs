@@ -61,7 +61,7 @@ namespace Terminals.Connections
         {
             //Terminals.Logging.Log.Fatal("VNC Connection Lost" + this.Favorite.Name);
             this.connected = false;
-            this.FireConnectionClosed();
+            this.FireDisconnected();
         }
 
         private string vncPassword = "";

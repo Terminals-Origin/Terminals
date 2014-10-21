@@ -65,7 +65,7 @@ namespace Terminals.Connections
 
         public override void Disconnect()
         {
-            this.FireConnectionClosed();
+            base.FireDisconnected();
         }
     }
 }

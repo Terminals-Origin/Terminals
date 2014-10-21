@@ -1,6 +1,8 @@
+using Terminals.Connections;
+
 namespace Terminals
 {
-    partial class MainForm
+    partial class MainForm : IConnectionMainView
     {
         /// <summary>
         /// Required designer variable.

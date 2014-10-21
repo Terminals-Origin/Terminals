@@ -72,7 +72,7 @@ namespace Terminals.Connections
                 connected = false;
                 Logging.Fatal("VMRC Connection Lost" + this.Favorite.Name);
                 this.connected = false;
-                this.FireConnectionClosed();
+                this.FireDisconnected();
             }
         }
 

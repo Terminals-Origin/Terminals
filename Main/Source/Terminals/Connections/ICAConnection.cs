@@ -119,7 +119,7 @@ namespace Terminals.Connections
         {
             Logging.Fatal("ICA Connection Lost" + this.Favorite.Name);
             this.connected = false;
-            this.FireConnectionClosed();
+            this.FireDisconnected();
         }
 
         private void ICAConnection_DragDrop(object sender, DragEventArgs e)

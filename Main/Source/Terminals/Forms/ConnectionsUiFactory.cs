@@ -63,8 +63,7 @@ namespace Terminals.Forms
 
         private void ConfigureConnection(Connection conn, TerminalTabControlItem terminalTabPage)
         {
-            conn.TerminalTabPage = terminalTabPage;
-            conn.ParentForm = this.mainForm;
+            AssignControls(conn, terminalTabPage, this.mainForm);
             conn.Connect();
             this.BringToFrontOnMainForm(conn);
         }
@@ -229,9 +228,15 @@ namespace Terminals.Forms
             Connection conn = ConnectionManager.CreateConnection(favorite);
             conn.Favorite = favorite;
             terminalTabPage.Connection = conn;
+            AssignControls(conn, terminalTabPage, parentForm);
+            return conn;
+        }
+
+        private static void AssignControls(Connection conn, TerminalTabControlItem terminalTabPage, MainForm parentForm)
+        {
             conn.TerminalTabPage = terminalTabPage;
             conn.ParentForm = parentForm;
-            return conn;
+            conn.OnDisconnected += parentForm.OnDisconnected;
         }
 
         private void ConfigureTabPage(TerminalTabControlItem terminalTabPage, string captureTitle,

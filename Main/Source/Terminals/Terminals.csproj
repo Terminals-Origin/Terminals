@@ -175,6 +175,7 @@
     <Compile Include="Connections\ConnectionStateDetector.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\IConnectionExtra.cs" />
+    <Compile Include="Connections\IConnectionMainView.cs" />
     <Compile Include="Connections\NettworkingTools.cs" />
     <Compile Include="Connections\RdpClientErrorMessages.cs" />
     <Compile Include="Converters\TextConverter.cs" />
