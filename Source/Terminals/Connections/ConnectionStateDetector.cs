@@ -7,9 +7,10 @@ namespace Terminals.Connections
 {
     /// <summary>
     /// Checks, if the connection port is available. Simulates reconnect feature of the RDP client.
-    /// Doens use the port scanner, because it needs administrative priviledges 
+    /// Doens use the port scanner, because it needs administrative priviledges.
+    /// Is disposable because of used internal Timer.
     /// </summary>
-    internal class ConnectionStateDetector
+    internal sealed class ConnectionStateDetector : IDisposable
     {
         /// <summary>
         /// Try reconnect max. 1 hour. Consider provide application configuration option for this value.
@@ -153,6 +154,12 @@ namespace Terminals.Connections
         public override string ToString()
         {
             return string.Format("ConnectionStateDetector:IsRunning={0},Disabled={1}", this.isRunning, this.disabled);
+        }
+
+        public void Dispose()
+        {
+            this.Disable();
+            this.retriesTimer.Dispose();
         }
     }
 }

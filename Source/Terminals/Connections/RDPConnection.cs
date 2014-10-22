@@ -546,31 +546,11 @@ namespace Terminals.Connections
             clientControl.DragDrop += new DragEventHandler(this.client_DragDrop);
         }
 
-        public void Disconnect()
-        {
-            try
-            {
-                this.TryDisconnect();
-            }
-            catch (Exception e)
-            {
-                Logging.Info("Error on Disconnect RDP", e);
-            }
-        }
-
-        private void TryDisconnect()
-        {
-            this.connectionStateDetector.Disable();
-            if (this.ClientConnected)
-                this.client.Disconnect();
-            else
-                this.FireDisconnected();
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
+                this.connectionStateDetector.Dispose();
                 this.client.Dispose();
                 this.client = null;
             }

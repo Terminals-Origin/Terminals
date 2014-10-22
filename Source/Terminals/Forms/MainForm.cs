@@ -1091,13 +1091,13 @@ namespace Terminals
                 return;
 
             bool wasSelected = tabPage.Selected;
-            
+            IConnection lostConnection = this.CurrentConnection;
             this.RemoveTabPage(tabPage);
             if (wasSelected)
                 this.OnLeavingFullScreen();
 
             this.UpdateControls();
-            this.CurrentConnection.Dispose();
+            lostConnection.Dispose();
         }
 
         public void SetGrabInputCheck(bool newGrabInput)
