@@ -40,8 +40,7 @@ namespace Terminals.Connections
                 term.BringToFront();
                 this.BringToFront();
 
-                term.Parent = base.TerminalTabPage;
-                this.Parent = TerminalTabPage;
+                term.Parent = this.Parent;
                 term.Dock = System.Windows.Forms.DockStyle.Fill;
 
                 ConsoleOptions consoleOptions = this.GetConsoleOptionsFromFavorite();

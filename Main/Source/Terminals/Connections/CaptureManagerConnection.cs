@@ -36,9 +36,8 @@ namespace Terminals.Connections
 
         public override bool Connect()
         {
-            layout.Parent = this.TerminalTabPage;
-            this.Parent = TerminalTabPage;
-            TerminalTabPage.Connection = this;
+            // no idea, why this is necessary. Otherwise the layout control doesnt apper
+            layout.Parent = this.Parent;
             return true;
         }
     }

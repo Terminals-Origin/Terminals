@@ -194,8 +194,7 @@ namespace Terminals.Connections
             nonScriptable = this.client.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable4;
             this.client.BringToFront();
             this.BringToFront();
-            this.client.Parent = this.TerminalTabPage;
-            this.Parent = this.TerminalTabPage;
+            this.client.Parent = this.Parent;
             this.client.AllowDrop = true;
             this.client.Dock = DockStyle.Fill;
             this.ConfigureReconnect();

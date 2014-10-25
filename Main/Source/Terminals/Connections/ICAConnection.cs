@@ -34,8 +34,7 @@ namespace Terminals.Connections
                 icaPassword = security.Password;
 
                 //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
-                iIcaClient.Parent = base.TerminalTabPage;
-                this.Parent = TerminalTabPage;
+                iIcaClient.Parent = this.Parent;
                 iIcaClient.Dock = DockStyle.Fill;
 
                 iIcaClient.Address = Favorite.ServerName;
