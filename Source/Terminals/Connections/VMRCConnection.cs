@@ -20,8 +20,7 @@ namespace Terminals.Connections
                 Controls.Add(vmrc);
                 vmrc.BringToFront();
                 this.BringToFront();
-                vmrc.Parent = TerminalTabPage;
-                this.Parent = TerminalTabPage;
+                vmrc.Parent = this.Parent;
 
                 vmrc.ServerAddress = Favorite.ServerName;
                 vmrc.ServerPort = Favorite.Port;

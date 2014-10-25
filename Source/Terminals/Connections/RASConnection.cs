@@ -25,7 +25,7 @@ namespace Terminals.Connections
                 Controls.Add(p);
                 p.BringToFront();
                 this.BringToFront();
-                p.Parent = TerminalTabPage;
+                p.Parent = this.Parent;
 
                 this.ras.SetModemSpeaker = false;
                 this.ras.SetSoftwareCompression = false;

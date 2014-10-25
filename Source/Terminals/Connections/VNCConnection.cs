@@ -29,8 +29,7 @@ namespace Terminals.Connections
                 if (string.IsNullOrEmpty(vncPassword)) return false;
 
                 //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
-                rd.Parent = TerminalTabPage;
-                this.Parent = TerminalTabPage;
+                rd.Parent = this.Parent;
                 rd.Dock = DockStyle.Fill;
 
                 rd.VncPort = Favorite.Port;

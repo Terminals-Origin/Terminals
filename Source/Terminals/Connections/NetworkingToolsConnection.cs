@@ -32,8 +32,7 @@ namespace Terminals.Connections
         public override bool Connect()
         {
             networkingToolsLayout1.OnTabChanged += new NetworkingToolsLayout.TabChanged(networkingToolsLayout1_OnTabChanged);
-            networkingToolsLayout1.Parent = this.TerminalTabPage;
-            this.Parent = TerminalTabPage;
+            networkingToolsLayout1.Parent = this.Parent;
             return true;
         }
 

@@ -54,8 +54,8 @@ namespace Terminals.Connections
                     return GetMaxAvailableSize(width, height);
                 case DesktopSize.FitToWindow:
                 case DesktopSize.AutoScale:
-                    width = connection.TerminalTabPage.Width;
-                    height = connection.TerminalTabPage.Height;
+                    width = connection.Parent.Width;
+                    height = connection.Parent.Height;
                     return GetMaxAvailableSize(width, height);
                 default:
                     return new Size(width, height);

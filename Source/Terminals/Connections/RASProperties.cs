@@ -70,19 +70,6 @@ namespace Terminals.Connections
 
         #region IConnection Members
 
-        public TerminalTabControlItem TerminalTabPage
-        {
-            get
-            {
-                return RASConnection.TerminalTabPage;
-            }
-
-            set
-            {
-                RASConnection.TerminalTabPage = value;
-            }
-        }
-
         public IFavorite Favorite
         {
             get

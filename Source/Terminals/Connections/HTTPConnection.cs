@@ -47,7 +47,6 @@ namespace Terminals.Connections
                     this.browser.Navigate(url);
                 }
 
-                this.Parent = TerminalTabPage;
                 this.BringToFront();
                 this.browser.BringToFront();
             }
@@ -57,11 +56,6 @@ namespace Terminals.Connections
                 return false;
             }
             return true;
-        }
-
-        public void Disconnect()
-        {
-            base.FireDisconnected();
         }
     }
 }

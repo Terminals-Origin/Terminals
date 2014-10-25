@@ -227,14 +227,15 @@ namespace Terminals.Forms
         {
             Connection conn = ConnectionManager.CreateConnection(favorite);
             conn.Favorite = favorite;
-            terminalTabPage.Connection = conn;
             AssignControls(conn, terminalTabPage, parentForm);
             return conn;
         }
 
         private static void AssignControls(Connection conn, TerminalTabControlItem terminalTabPage, MainForm parentForm)
         {
+            terminalTabPage.Connection = conn;
             conn.TerminalTabPage = terminalTabPage;
+            conn.Parent = terminalTabPage;
             conn.ParentForm = parentForm;
             conn.OnDisconnected += parentForm.OnDisconnected;
         }
