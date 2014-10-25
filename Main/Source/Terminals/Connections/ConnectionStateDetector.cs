@@ -30,7 +30,13 @@ namespace Terminals.Connections
         private readonly object activityLock = new object();
         private bool disabled;
         private bool isRunning;
-        
+
+        private readonly Action<string, int> testAction;
+
+        private readonly int reconnectMaxDuration;
+
+        private readonly int timerInterval;
+
         internal bool IsRunning
         {
             get
@@ -64,7 +70,18 @@ namespace Terminals.Connections
         internal event EventHandler ReconnectExpired;
 
         internal ConnectionStateDetector()
+            : this(TestAction, RECONNECT_MAX_DURATION, TIMER_INTERVAL)
         {
+        }
+
+        internal ConnectionStateDetector(Action<string, int> testAction, int reconnectMaxDuration, int timerInterval)
+        {
+            if (timerInterval <= 0)
+                throw new ArgumentOutOfRangeException("timerInterval", "Interval has to be non zero positive number.");
+
+            this.testAction = testAction;
+            this.reconnectMaxDuration = reconnectMaxDuration;
+            this.timerInterval = timerInterval;
             this.retriesTimer = new Timer(TryReconnection);
         }
 
@@ -82,7 +99,7 @@ namespace Terminals.Connections
                 return;
             }
 
-            if (this.retriesCount > (RECONNECT_MAX_DURATION / TIMER_INTERVAL))
+            if (this.retriesCount > (reconnectMaxDuration / timerInterval))
                 this.ReconnectionFail();
         }
 
@@ -91,13 +108,18 @@ namespace Terminals.Connections
             try
             {
                 // simulate reconnect, cant use port scanned, because it requires admin priviledges
-                var portClient = new TcpClient(this.serverName, this.port);
+                this.testAction(this.serverName, this.port);
                 return true;
             }
             catch // exception is not necessary, simply is has to work
             {
                 return false;
             }
+        }
+
+        private static void TestAction(string serverName, int port)
+        {
+            var portClient = new TcpClient(serverName, port);
         }
 
         private void ReconnectionFail()
@@ -127,7 +149,7 @@ namespace Terminals.Connections
 
                 this.isRunning = true;
                 this.retriesCount = 0;
-                this.retriesTimer.Change(0, TIMER_INTERVAL);
+                this.retriesTimer.Change(0, timerInterval);
             }
         }
 
@@ -140,10 +162,16 @@ namespace Terminals.Connections
             }
         }
 
+        public void Dispose()
+        {
+            this.Disable();
+            this.retriesTimer.Dispose();
+        }
+
         /// <summary>
         /// Fill space between disconnected request from GUI and real disconnect of the client.
         /// </summary>
-        internal void Disable()
+        private void Disable()
         {
             lock (this.activityLock)
             {
@@ -154,12 +182,6 @@ namespace Terminals.Connections
         public override string ToString()
         {
             return string.Format("ConnectionStateDetector:IsRunning={0},Disabled={1}", this.isRunning, this.disabled);
-        }
-
-        public void Dispose()
-        {
-            this.Disable();
-            this.retriesTimer.Dispose();
         }
     }
 }
