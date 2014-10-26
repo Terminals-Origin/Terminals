@@ -31,14 +31,8 @@ namespace Terminals.Connections
 
         public override bool Connect()
         {
-            networkingToolsLayout1.OnTabChanged += new NetworkingToolsLayout.TabChanged(networkingToolsLayout1_OnTabChanged);
             networkingToolsLayout1.Parent = this.Parent;
             return true;
-        }
-
-        private void networkingToolsLayout1_OnTabChanged(object sender, TabControlEventArgs e)
-        {
-            this.TerminalTabPage.Title = e.TabPage.Text;
         }
 
         internal void Execute(NettworkingTools action, string host, IPersistence persistence)

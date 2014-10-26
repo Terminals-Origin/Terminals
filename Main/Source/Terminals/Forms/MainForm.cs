@@ -1064,7 +1064,15 @@ namespace Terminals
         internal void OnDisconnected(Connection connection)
         {
             connection.OnDisconnected -= this.OnDisconnected;
-            this.InvokeCloseTab(connection.TerminalTabPage);
+            TerminalTabControlItem tabToClose = this.FindTabToClose(connection);
+            this.InvokeCloseTab(tabToClose);
+        }
+
+        private TerminalTabControlItem FindTabToClose(Connection connection)
+        {
+            return this.tcTerminals.Items
+                .OfType<TerminalTabControlItem>()
+                .FirstOrDefault(tab => tab.Connection == connection);
         }
 
         /// <summary>

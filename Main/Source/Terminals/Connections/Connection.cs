@@ -25,8 +25,6 @@ namespace Terminals.Connections
 
         public IFavorite Favorite { get; set; }
 
-        public TerminalTabControlItem TerminalTabPage { get; set; }
-
         public IConnectionMainView ParentForm { get; set; }
 
         public TerminalServer Server { get; private set; }
