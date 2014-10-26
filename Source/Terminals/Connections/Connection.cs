@@ -23,6 +23,10 @@ namespace Terminals.Connections
             get;
         }
 
+        /// <summary>
+        /// Gets or sets the associated favorite.
+        /// If the connection is virtual, it doesnt have any favorite, so it can be null.
+        /// </summary>
         public IFavorite Favorite { get; set; }
 
         public IConnectionMainView ParentForm { get; set; }
