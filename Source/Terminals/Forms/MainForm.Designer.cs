@@ -330,12 +330,10 @@ namespace Terminals
             this.tcTerminals.ShowToolTipOnTitle = false;
             this.tcTerminals.Size = new System.Drawing.Size(757, 499);
             this.tcTerminals.TabIndex = 3;
-            this.tcTerminals.TabControlItemClosing += new TabControl.TabControlItemClosingHandler(this.TcTerminals_TabControlItemClosing);
             this.tcTerminals.TabControlItemSelectionChanged += new TabControl.TabControlItemChangedHandler(this.TcTerminals_TabControlItemSelectionChanged);
             this.tcTerminals.TabControlMouseOnTitle += new TabControl.TabControlMouseOnTitleHandler(this.TcTerminals_TabControlMouseOnTitle);
             this.tcTerminals.TabControlMouseLeftTitle += new TabControl.TabControlMouseLeftTitleHandler(this.TcTerminals_TabControlMouseLeftTitle);
             this.tcTerminals.MenuItemsLoaded += new System.EventHandler(this.TcTerminals_MenuItemsLoaded);
-            this.tcTerminals.TabControlItemClosed += new System.EventHandler(this.TcTerminals_TabControlItemClosed);
             this.tcTerminals.DoubleClick += new System.EventHandler(this.TcTerminals_DoubleClick);
             this.tcTerminals.MouseLeave += new System.EventHandler(this.TcTerminals_MouseLeave);
             this.tcTerminals.MouseHover += new System.EventHandler(this.TcTerminals_MouseHover);

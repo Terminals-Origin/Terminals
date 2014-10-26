@@ -374,6 +374,7 @@
     <Compile Include="Forms\NewTerminalFormValidator.cs" />
     <Compile Include="Forms\RenameCopyService.cs" />
     <Compile Include="Forms\RenameService.cs" />
+    <Compile Include="Forms\TabControlRemover.cs" />
     <Compile Include="Forms\UnhandledTerminationForm.cs">
       <SubType>Form</SubType>
     </Compile>

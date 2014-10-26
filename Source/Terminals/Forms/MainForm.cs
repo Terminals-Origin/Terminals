@@ -33,8 +33,6 @@ namespace Terminals
 
         private const String FULLSCREEN_ERROR_MSG = "Screen properties not available for RDP";
 
-        private delegate void InvokeCloseTabPage(TabControlItem tabPage);
-
         private FavsList favsList1;
 
         private readonly FormSettings formSettings;
@@ -47,6 +45,8 @@ namespace Terminals
 
         private readonly ConnectionsUiFactory connectionsUiFactory;
 
+        private readonly TabControlRemover tabControlRemover;
+
         #endregion
 
         #region Properties
@@ -56,7 +56,7 @@ namespace Terminals
             get { return this.persistence.Favorites; }
         }
 
-        private IConnection CurrentConnection
+        internal IConnection CurrentConnection
         {
             get
             {
@@ -181,6 +181,7 @@ namespace Terminals
                 this.menuLoader = new FavoritesMenuLoader(this, this.persistence);
                 this.favoriteToolBar.Visible = this.toolStripMenuItemShowHideFavoriteToolbar.Checked;
                 this.fullScreenSwitch = new MainFormFullScreenSwitch(this);
+                this.tabControlRemover = new TabControlRemover(this.settings, this, this.tcTerminals);
                 this.favsList1.Persistence = this.persistence;
                 this.AssignToolStripsToContainer();
                 this.ApplyControlsEnableAndVisibleState();
@@ -379,21 +380,6 @@ namespace Terminals
                 this.showInDualScreensToolStripMenuItem.ToolTipText = "You only have one screen";
                 this.showInDualScreensToolStripMenuItem.Enabled = false;
             }
-        }
-
-        private void CloseTabControlItem()
-        {
-            if (settings.RestoreWindowOnLastTerminalDisconnect)
-            {
-                if (this.tcTerminals.Items.Count == 0)
-                    this.FullScreen = false;
-            }
-        }
-
-        private void RemoveTabPage(TabControlItem tabControlToRemove)
-        {
-            this.tcTerminals.RemoveTab(tabControlToRemove);
-            this.CloseTabControlItem();
         }
 
         internal void AssignEventsToConnectionTab(TerminalTabControlItem terminalTabPage)
@@ -1033,16 +1019,7 @@ namespace Terminals
 
         private void TsbDisconnect_Click(object sender, EventArgs e)
         {
-            try
-            {
-                TerminalTabControlItem tabToClose = this.terminalsControler.Selected;
-                if (this.tcTerminals.Items.Contains(tabToClose))
-                    this.tcTerminals.CloseTab(tabToClose);
-            }
-            catch (Exception exc)
-            {
-                Logging.Error("Disconnecting a tab threw an exception", exc);
-            }
+            this.tabControlRemover.Disconnect();
         }
 
         // TODO Assing missing event handler
@@ -1063,87 +1040,13 @@ namespace Terminals
 
         internal void OnDisconnected(Connection connection)
         {
-            connection.OnDisconnected -= this.OnDisconnected;
-            TerminalTabControlItem tabToClose = this.FindTabToClose(connection);
-            this.InvokeCloseTab(tabToClose);
-        }
-
-        private TerminalTabControlItem FindTabToClose(Connection connection)
-        {
-            return this.tcTerminals.Items
-                .OfType<TerminalTabControlItem>()
-                .FirstOrDefault(tab => tab.Connection == connection);
-        }
-
-        /// <summary>
-        /// Because tabControl is cast internaly to TabControlItem, all connections should send their tab,
-        /// which we already have in the connection.
-        /// </summary>
-        private void InvokeCloseTab(TerminalTabControlItem tabControl)
-        {
-            if (this.InvokeRequired)
-            {
-                var d = new InvokeCloseTabPage(this.CloseTabPage);
-                this.Invoke(d, new object[] { tabControl });
-            }
-            else
-            {
-                this.CloseTabPage(tabControl);
-            }
-        }
-
-        private void CloseTabPage(object tabObject)
-        {
-            var tabPage = tabObject as TabControlItem;
-            if (tabPage == null)
-                return;
-
-            bool wasSelected = tabPage.Selected;
-            IConnection lostConnection = this.CurrentConnection;
-            this.RemoveTabPage(tabPage);
-            if (wasSelected)
-                this.OnLeavingFullScreen();
-
-            this.UpdateControls();
-            lostConnection.Dispose();
+            this.tabControlRemover.OnDisconnected(connection);
         }
 
         public void SetGrabInputCheck(bool newGrabInput)
         {
             tsbGrabInput.Checked = newGrabInput;
             this.UpdateControls();
-        }
-
-        private void TcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e)
-        {
-            if (this.CurrentConnection != null && this.CurrentConnection.Connected)
-            {
-                if (AskToClose()) // ask only when tab is going to be closed by user
-                {
-                    // Expecting all connections are disposable, because derive from Connection
-                    CurrentConnection.Dispose();
-                }
-                else
-                {
-                    e.Cancel = true;
-                }
-            }
-        }
-
-        private bool AskToClose()
-        {
-            if (settings.WarnOnConnectionClose)
-            {
-                string message = Program.Resources.GetString("Areyousurethatyouwanttodisconnectfromtheactiveterminal");
-                string title = Program.Resources.GetString("Terminals");
-                YesNoDisableResult answer = YesNoDisableForm.ShowDialog(title, message);
-                if (answer.Disable)
-                    settings.WarnOnConnectionClose = false;
-
-                return answer.Result == DialogResult.Yes;
-            }
-
-            return true;
         }
 
         private void TcTerminals_TabControlItemSelectionChanged(TabControlItemChangedEventArgs e)
@@ -1190,11 +1093,6 @@ namespace Terminals
                 this.currentToolTip.Hide(this.currentToolTipItem);
                 this.currentToolTip.Active = false;
             }
-        }
-
-        private void TcTerminals_TabControlItemClosed(object sender, EventArgs e)
-        {
-            CloseTabControlItem();
         }
 
         private void TcTerminals_DoubleClick(object sender, EventArgs e)
