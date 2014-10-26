@@ -9,16 +9,10 @@ namespace Terminals.Connections
 {
     internal class TerminalConnection : Connection
     {
-        #region Fields
-
         private Boolean connected = false;
         private TerminalEmulator term;
         private Socket client;
         private SSHClient.Protocol sshProtocol;
-
-        #endregion
-
-        #region Connection Members
 
         public override Boolean Connected
         {
@@ -150,11 +144,12 @@ namespace Terminals.Connections
             this.FireDisconnected();
         }
 
-        public void Disconnect()
+        protected override void Dispose(bool isDisposing)
         {
             try
             {
-                this.client.Close();
+                this.client.Dispose();
+                this.client = null;
                 if (this.sshProtocol != null)
                     this.sshProtocol.OnConnectionClosed();
             }
@@ -163,7 +158,5 @@ namespace Terminals.Connections
                 Logging.Error("Disconnect", e);
             }
         }
-
-        #endregion
     }
 }

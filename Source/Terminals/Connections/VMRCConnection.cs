@@ -7,7 +7,6 @@ namespace Terminals.Connections
 {
     internal class VMRCConnection : Connection
     {
-        #region IConnection Members
         private bool connected = false;
         public override bool Connected { get { return connected; } }
 
@@ -97,19 +96,18 @@ namespace Terminals.Connections
             }
         }
 
-
-        public void Disconnect()
+        protected override void Dispose(bool isDisposing)
         {
             try
             {
-                vmrc.Disconnect();
+                if (!this.vmrc.IsDisposed)
+                    this.vmrc.Dispose();
+                this.vmrc = null;
             }
             catch (Exception e)
             {
                 Logging.Error("Disconnect", e);
             }
         }
-
-        #endregion
     }
 }
