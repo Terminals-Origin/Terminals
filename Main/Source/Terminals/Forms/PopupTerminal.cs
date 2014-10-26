@@ -33,7 +33,7 @@ namespace Terminals
         internal void AddTerminal(TerminalTabControlItem tabControlItem)
         {
             this.tabControl1.AddTab(tabControlItem);
-            this.Text = tabControlItem.Connection.Favorite.Name;
+            this.Text = tabControlItem.Title;
         }
 
         internal void UpdateTitle()
