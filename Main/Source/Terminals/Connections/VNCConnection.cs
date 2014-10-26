@@ -6,16 +6,19 @@ namespace Terminals.Connections
 {
     internal class VNCConnection : Connection
     {
-        #region IConnection Members
         private bool connected = false;
+
+        public override bool Connected { get { return this.connected; } }
+
+        private VncSharp.RemoteDesktop rd;
+
+        private string vncPassword = string.Empty;
 
         public void SendSpecialKeys(VncSharp.SpecialKeys Keys)
         {
-
             rd.SendSpecialKeys(Keys);
         }
-        public override bool Connected { get { return connected; } }
-        VncSharp.RemoteDesktop rd;
+
         public override bool Connect()
         {
             try
@@ -59,7 +62,6 @@ namespace Terminals.Connections
             this.FireDisconnected();
         }
 
-        private string vncPassword = "";
         string VNCPassword()
         {
             return vncPassword;
@@ -84,20 +86,5 @@ namespace Terminals.Connections
             }
             // Change the Form's title to match desktop name
         }
-
-        public void Disconnect()
-        {
-            try
-            {
-                connected = false;
-                rd.Disconnect();
-            }
-            catch (Exception e)
-            {
-                Logging.Error("Disconnect", e);
-            }
-        }
-
-        #endregion
     }
 }

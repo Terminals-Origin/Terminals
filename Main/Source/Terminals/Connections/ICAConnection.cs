@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.IO;
 using AxWFICALib;
-using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Connections
 {
     internal class ICAConnection : Connection
     {
-        #region IConnection Members
         private bool connected = false;
 
         private AxICAClient iIcaClient;
@@ -31,7 +29,6 @@ namespace Terminals.Connections
                 Controls.Add(iIcaClient);
 
                 ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
-                icaPassword = security.Password;
 
                 //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
                 iIcaClient.Parent = this.Parent;
@@ -141,28 +138,8 @@ namespace Terminals.Connections
             {
                 e.Effect = DragDropEffects.None;
             }
-
         }
 
-        private string icaPassword = "";
-        
-        private string ICAPassword()
-        {
-            return icaPassword;
-        }
-
-        public void Disconnect()
-        {
-            try
-            {
-                connected = false;
-                iIcaClient.Disconnect();
-            }
-            catch (Exception e)
-            {
-                Logging.Error("Error on Disconnect", e);
-            }
-        }
         private void SHCopyFiles(string[] sourceFiles, string destinationFolder)
         {
             SHFileOperationWrapper fo = new SHFileOperationWrapper();
@@ -180,6 +157,28 @@ namespace Terminals.Connections
 
             fo.DoOperation();
         }
-        #endregion
+
+        protected override void Dispose(bool isDisposing)
+        {
+            try
+            {
+                this.TryDisposeICaClient(isDisposing);
+            }
+            catch (Exception e)
+            {
+                Logging.Error("Error on Disconnect", e);
+            }
+        }
+
+        private void TryDisposeICaClient(bool isDisposing)
+        {
+            this.connected = false;
+            // should be redundant because it is assigned as control
+            if (isDisposing && !this.iIcaClient.IsDisposed)
+            {
+                this.iIcaClient.Dispose();
+                this.iIcaClient = null;
+            }
+        }
     }
 }
