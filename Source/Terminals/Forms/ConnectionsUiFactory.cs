@@ -234,7 +234,6 @@ namespace Terminals.Forms
         private static void AssignControls(Connection conn, TerminalTabControlItem terminalTabPage, MainForm parentForm)
         {
             terminalTabPage.Connection = conn;
-            conn.TerminalTabPage = terminalTabPage;
             conn.Parent = terminalTabPage;
             conn.ParentForm = parentForm;
             conn.OnDisconnected += parentForm.OnDisconnected;
