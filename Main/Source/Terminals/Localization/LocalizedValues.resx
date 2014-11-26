@@ -123,9 +123,6 @@
   <data name="Areyousurethatyouwanttodisconnectfromtheactiveterminal" xml:space="preserve">
     <value>Are you sure that you want to disconnect from the active terminal?</value>
   </data>
-  <data name="Areyousureyouwanttoconnecttoalltheseterminals" xml:space="preserve">
-    <value>Are you sure you want to connect to all {0} terminal(s)?</value>
-  </data>
   <data name="Areyousureyouwanttologthissessionoff" xml:space="preserve">
     <value>Are you sure you want to log this session off?</value>
   </data>

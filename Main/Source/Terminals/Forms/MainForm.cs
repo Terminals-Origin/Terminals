@@ -829,26 +829,6 @@ namespace Terminals
                 String itemName = e.ClickedItem.Text;
                 if (tag == FavoritesMenuLoader.FAVORITE)
                     this.connectionsUiFactory.ConnectByFavoriteNames(new List<string>(){itemName});
-
-                if (tag == GroupMenuItem.TAG)
-                {
-                    var parent = e.ClickedItem as ToolStripMenuItem;
-                    ConnectToAllFavoritesUnderTag(parent);
-                }
-            }
-        }
-
-        private void ConnectToAllFavoritesUnderTag(ToolStripMenuItem parent)
-        {
-            if (parent.DropDownItems.Count > 0)
-            {
-                DialogResult result = this.AskUserIfWantsConnectToAll(parent);
-                if (result == DialogResult.OK)
-                {
-                    IEnumerable<string> connectionNames = parent.DropDownItems.Cast<ToolStripMenuItem>()
-                                                                              .Select(menuItem => menuItem.Text);
-                    this.connectionsUiFactory.ConnectByFavoriteNames(connectionNames);
-                }
             }
         }
 
