@@ -832,14 +832,6 @@ namespace Terminals
             }
         }
 
-        private DialogResult AskUserIfWantsConnectToAll(ToolStripMenuItem parent)
-        {
-            String localizedMessageFormat = Program.Resources.GetString("Areyousureyouwanttoconnecttoalltheseterminals");
-            String message = String.Format(localizedMessageFormat, parent.DropDownItems.Count);
-            String confirmatioTitle = Program.Resources.GetString("Confirmation");
-            return MessageBox.Show(message, confirmatioTitle, MessageBoxButtons.OKCancel);
-        }
-
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
