@@ -1,18 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Configuration;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
+using Terminals.Properties;
 
 namespace Terminals
 {
-
     public class SpecialCommandConfigurationElement : ConfigurationElement
     {
         public SpecialCommandConfigurationElement()
         {
-
         }
 
         public SpecialCommandConfigurationElement(string name)
@@ -46,7 +45,6 @@ namespace Terminals
             }
         }
 
-
         [ConfigurationProperty("arguments", IsRequired = false)]
         public string Arguments
         {
@@ -72,6 +70,7 @@ namespace Terminals
                 this["workingFolder"] = value;
             }
         }
+
         [ConfigurationProperty("thumbnail", IsRequired = false)]
         public string Thumbnail
         {
@@ -84,14 +83,15 @@ namespace Terminals
                 this["thumbnail"] = value;
             }
         }
-        public System.Drawing.Image LoadThumbnail()
+
+        public Image LoadThumbnail()
         {
-            System.Drawing.Image img = Terminals.Properties.Resources.application_xp_terminal;
+            Image img = Resources.application_xp_terminal;
             try
             {
-                if (this.Thumbnail != null && this.Thumbnail != "")
+                if (!string.IsNullOrEmpty(this.Thumbnail))
                 {
-                    if (System.IO.File.Exists(this.Thumbnail)) img = System.Drawing.Image.FromFile(this.Thumbnail);
+                    if (File.Exists(this.Thumbnail)) img = Image.FromFile(this.Thumbnail);
                 }
             }
             catch (Exception exc)
@@ -100,6 +100,7 @@ namespace Terminals
             }
             return img;
         }
+
         public void Launch()
         {
             try
