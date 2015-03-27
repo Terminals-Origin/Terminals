@@ -73,6 +73,7 @@ namespace Terminals.Forms
         private void FormMove(object sender, EventArgs e)
         {
             SaveSizeAndLocation();
+            SaveFormState();
         }
 
         private void FormLoad(object sender, EventArgs e)
@@ -177,6 +178,9 @@ namespace Terminals.Forms
             this.lastNormalSize = this.form.Size;
         }
 
+        /// <summary>
+        /// Consider dont use on move and resize because of performance
+        /// </summary>
         private void SaveFormState()
         {
             if (!this.saveSettings || !this.Enabled)
