@@ -453,15 +453,16 @@ namespace Terminals
         }
 
         private void StartConnection(TreeView tv)
-        {
-            // dont connect in rename in favorites tree
-            var favoriteNode = tv.SelectedNode as FavoriteTreeNode;
-            if (favoriteNode != null && !tv.SelectedNode.IsEditing)
-            {
-                var definition = new ConnectionDefinition(favoriteNode.Favorite);
-                this.ConnectionsUiFactory.Connect(definition);
-            }
-        }
+		{
+			// dont connect in rename in favorites tree
+			var favoriteNode = tv.SelectedNode as FavoriteTreeNode;
+			if (favoriteNode != null && !tv.SelectedNode.IsEditing)
+			{
+				var definition = new ConnectionDefinition(favoriteNode.Favorite);
+				this.ConnectionsUiFactory.Connect(definition);
+				tv.Parent.Focus();
+			}
+		}
 
         private void HistoryTreeView_KeyUp(object sender, KeyEventArgs e)
         {
