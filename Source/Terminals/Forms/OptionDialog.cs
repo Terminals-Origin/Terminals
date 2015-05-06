@@ -43,7 +43,6 @@ namespace Terminals.Forms
             this.currentPanel = this.panelStartupShutdown;
             this.OptionsTreeView.SelectedNode = this.OptionsTreeView.Nodes[0];
             this.OptionsTreeView.Select();
-            this.OptionTitelLabel.BackColor = Color.FromArgb(17, 0, 252);
 
             this.DrawBottomLine();
         }

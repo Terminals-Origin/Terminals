@@ -454,6 +454,7 @@ namespace Terminals.Forms
             this.OptionTitelLabel.Size = new System.Drawing.Size(509, 27);
             this.OptionTitelLabel.TabIndex = 8;
             this.OptionTitelLabel.Text = "Option Title";
+            this.OptionTitelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // OptionDialog
             // 
