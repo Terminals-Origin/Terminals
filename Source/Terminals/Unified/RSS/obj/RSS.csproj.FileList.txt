@@ -1,0 +1,5 @@
+bin\Debug\Unified.RSS.dll
+bin\Debug\Unified.RSS.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Unified.RSS.dll
+obj\Debug\Unified.RSS.pdb

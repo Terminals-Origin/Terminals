@@ -1,10 +1,9 @@
 using System.IO;
 using System.Net;
-using Terminals.Configuration;
 
 namespace Unified.Network.HTTP
 {
-    internal class Web
+    public class Web
     {
         /// <summary>
         /// Generic HTTP String Reader
@@ -26,14 +25,6 @@ namespace Unified.Network.HTTP
 
         public static WebResponse HTTPAsWebResponse(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST)
         {
-            var settings = Settings.Instance;
-
-            if (settings.UseProxy)
-            {
-                ProxyAddress = settings.ProxyAddress;
-                ProxyPort = settings.ProxyPort;
-            }
-
             if (!DoPOST && Data != null && Data.Length > 0)
             {
                 string restoftheurl = System.Text.ASCIIEncoding.ASCII.GetString(Data);
