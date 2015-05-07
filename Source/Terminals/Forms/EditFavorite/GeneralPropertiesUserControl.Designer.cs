@@ -49,9 +49,9 @@ namespace Terminals.Forms.EditFavorite
             // 
             // chkAddtoToolbar
             // 
-            this.chkAddtoToolbar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkAddtoToolbar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
             this.chkAddtoToolbar.AutoSize = true;
-            this.chkAddtoToolbar.Location = new System.Drawing.Point(136, 278);
+            this.chkAddtoToolbar.Location = new System.Drawing.Point(136, 272);
             this.chkAddtoToolbar.Name = "chkAddtoToolbar";
             this.chkAddtoToolbar.Size = new System.Drawing.Size(96, 17);
             this.chkAddtoToolbar.TabIndex = 39;
@@ -60,9 +60,9 @@ namespace Terminals.Forms.EditFavorite
             // 
             // NewWindowCheckbox
             // 
-            this.NewWindowCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.NewWindowCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
             this.NewWindowCheckbox.AutoSize = true;
-            this.NewWindowCheckbox.Location = new System.Drawing.Point(136, 262);
+            this.NewWindowCheckbox.Location = new System.Drawing.Point(136, 252);
             this.NewWindowCheckbox.Name = "NewWindowCheckbox";
             this.NewWindowCheckbox.Size = new System.Drawing.Size(130, 17);
             this.NewWindowCheckbox.TabIndex = 40;
@@ -95,6 +95,7 @@ namespace Terminals.Forms.EditFavorite
             // 
             // chkSavePassword
             // 
+            this.chkSavePassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
             this.chkSavePassword.AutoSize = true;
             this.chkSavePassword.Location = new System.Drawing.Point(136, 232);
             this.chkSavePassword.Name = "chkSavePassword";
