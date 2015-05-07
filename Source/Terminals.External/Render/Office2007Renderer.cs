@@ -23,7 +23,7 @@ namespace Terminals.Forms.Rendering
     /// <summary>
     /// Draw ToolStrips using the Office 2007 themed appearance.
     /// </summary>
-    internal class Office2007Renderer : ToolStripProfessionalRenderer
+    public class Office2007Renderer : ToolStripProfessionalRenderer
     {
         #region GradientItemColors
         private class GradientItemColors
