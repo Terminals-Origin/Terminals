@@ -41,7 +41,7 @@ namespace Unified.Encryption
       }
       catch (Exception e)
       {
-          Terminals.Logging.Error("Decryptor Failed", e);
+          //Terminals.Logging.Error("Decryptor Failed", e);
         throw new Exception(String.Concat("Error while writing encrypted data to the stream: \n", e.Message));
       }
     }

@@ -118,7 +118,7 @@ namespace Terminals.Updates
             try
             {
                 String url = Settings.Instance.UpdateSource;
-                String contents = Web.HTTPAsString(url);
+                string contents = DownloadAsString(url);
 
                 if (!String.IsNullOrEmpty(contents))
                 {
@@ -146,7 +146,10 @@ namespace Terminals.Updates
                                 Boolean downloaded = true;
 
                                 if (!File.Exists(filename))
-                                    downloaded = Web.SaveHTTPToFile((row["Url"] as String), filename);
+                                {
+                                    string targetUrl = row["Url"] as String;
+                                    downloaded = SaveHttpToFile(targetUrl, filename);
+                                }
 
                                 if (downloaded && File.Exists(filename))
                                 {
@@ -190,6 +193,30 @@ namespace Terminals.Updates
             {
                 Logging.Error("Failed during update.", exc);
             }
+        }
+
+        private static bool SaveHttpToFile(string targetUrl, string filename)
+        {
+            Tuple<string, int> proxy = ResolveProxy();
+            return Web.SaveHTTPToFile(targetUrl, null, string.Empty, string.Empty, string.Empty, 
+                filename, proxy.Item1, proxy.Item2, false);
+        }
+
+        private static string DownloadAsString(string url)
+        {
+            Tuple<string, int> proxy = ResolveProxy();
+            return Web.HTTPAsString(url, null, string.Empty, string.Empty,
+                string.Empty, proxy.Item1, proxy.Item2, false);
+        }
+
+        private static Tuple<string, int> ResolveProxy()
+        {
+            var settings = Settings.Instance;
+
+            if (settings.UseProxy)
+                return new Tuple<string, int>(settings.ProxyAddress, settings.ProxyPort);
+
+            return new Tuple<string, int>(string.Empty, 0);
         }
 
         private static DirectoryInfo FindFileInFolder(DirectoryInfo path, String filename)
