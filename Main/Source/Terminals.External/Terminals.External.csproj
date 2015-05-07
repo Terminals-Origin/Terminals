@@ -53,6 +53,7 @@
     </Compile>
     <Compile Include="CommandLineArguments.cs" />
     <Compile Include="IconHandler.cs" />
+    <Compile Include="MagicPaket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Render\Office2007BlackColorTable.cs" />
     <Compile Include="Render\Office2007BlueColorTable.cs" />
