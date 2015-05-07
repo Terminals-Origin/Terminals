@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals", "Terminals\Terminals.csproj", "{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabControl", "TabControl\TabControl.csproj", "{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}"
@@ -53,9 +55,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomSetupAction", "Custom
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "TerminalsSetup", "TerminalsSetup\TerminalsSetup.wixproj", "{D775E5FD-DDD7-46AA-8BEF-CC18BA0BB702}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.External", "Terminals.External\Terminals.External.csproj", "{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 18
+		SccNumberOfProjects = 19
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
@@ -118,9 +122,9 @@ Global
 		SccProjectTopLevelParentUniqueName17 = Terminals.sln
 		SccProjectName17 = TerminalsSetup
 		SccLocalPath17 = TerminalsSetup
-	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Terminals.vsmdi
+		SccProjectUniqueName18 = Terminals.External\\Terminals.External.csproj
+		SccProjectName18 = Terminals.External
+		SccLocalPath18 = Terminals.External
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -327,6 +331,18 @@ Global
 		{D775E5FD-DDD7-46AA-8BEF-CC18BA0BB702}.DistributionRelease|Mixed Platforms.Build.0 = Release|x86
 		{D775E5FD-DDD7-46AA-8BEF-CC18BA0BB702}.Release|Any CPU.ActiveCfg = Release|x86
 		{D775E5FD-DDD7-46AA-8BEF-CC18BA0BB702}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}.DistributionRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}.DistributionRelease|Any CPU.Build.0 = Release|Any CPU
+		{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}.DistributionRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}.DistributionRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -337,5 +353,8 @@ Global
 		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
 		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8} = {BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}
 		{D775E5FD-DDD7-46AA-8BEF-CC18BA0BB702} = {BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Terminals.vsmdi
 	EndGlobalSection
 EndGlobal
