@@ -266,10 +266,10 @@
     </Compile>
     <Compile Include="Forms\Controls\TreeViewDragDrop.cs" />
     <Compile Include="Forms\CopyFavoriteCommand.cs" />
-    <Compile Include="Forms\EditFavorite\CitrixControl.cs">
+    <Compile Include="Connections\ICA\CitrixControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\EditFavorite\CitrixControl.Designer.cs">
+    <Compile Include="Connections\ICA\CitrixControl.Designer.cs">
       <DependentUpon>CitrixControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\EditFavorite\ExecuteControl.cs">
@@ -313,58 +313,58 @@
     <Compile Include="Forms\EditFavorite\ProtocolOptionsPanel.Designer.cs">
       <DependentUpon>ProtocolOptionsPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RasControl.cs">
+    <Compile Include="Connections\Ras\RasControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RasControl.Designer.cs">
+    <Compile Include="Connections\Ras\RasControl.Designer.cs">
       <DependentUpon>RasControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpDisplayControl.cs">
+    <Compile Include="Connections\Rdp\RdpDisplayControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpDisplayControl.Designer.cs">
+    <Compile Include="Connections\Rdp\RdpDisplayControl.Designer.cs">
       <DependentUpon>RdpDisplayControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpExtendedSettingsControl.cs">
+    <Compile Include="Connections\Rdp\RdpExtendedSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpExtendedSettingsControl.Designer.cs">
+    <Compile Include="Connections\Rdp\RdpExtendedSettingsControl.Designer.cs">
       <DependentUpon>RdpExtendedSettingsControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpLocalResourcesControl.cs">
+    <Compile Include="Connections\Rdp\RdpLocalResourcesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpLocalResourcesControl.Designer.cs">
+    <Compile Include="Connections\Rdp\RdpLocalResourcesControl.Designer.cs">
       <DependentUpon>RdpLocalResourcesControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpSecurityControl.cs">
+    <Compile Include="Connections\Rdp\RdpSecurityControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpSecurityControl.Designer.cs">
+    <Compile Include="Connections\Rdp\RdpSecurityControl.Designer.cs">
       <DependentUpon>RdpSecurityControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpTsGatewayControl.cs">
+    <Compile Include="Connections\Rdp\RdpTsGatewayControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\EditFavorite\RdpTsGatewayControl.Designer.cs">
+    <Compile Include="Connections\Rdp\RdpTsGatewayControl.Designer.cs">
       <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditFavorite\SshControl.cs">
+    <Compile Include="Connections\Terminal\SshControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\EditFavorite\SshControl.Designer.cs">
+    <Compile Include="Connections\Terminal\SshControl.Designer.cs">
       <DependentUpon>SshControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditFavorite\VmrcControl.cs">
+    <Compile Include="Connections\VMRC\VmrcControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\EditFavorite\VmrcControl.Designer.cs">
+    <Compile Include="Connections\VMRC\VmrcControl.Designer.cs">
       <DependentUpon>VmrcControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditFavorite\VncControl.cs">
+    <Compile Include="Connections\VNC\VncControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\EditFavorite\VncControl.Designer.cs">
+    <Compile Include="Connections\VNC\VncControl.Designer.cs">
       <DependentUpon>VncControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FavoriteViewModel.cs" />
@@ -684,10 +684,10 @@
     <Compile Include="Forms\OptionPanels\ConnectionsOptionPanel.Designer.cs">
       <DependentUpon>ConnectionsOptionPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Controls\ConsolePreferences.cs">
+    <Compile Include="Connections\Terminal\ConsolePreferences.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Controls\ConsolePreferences.Designer.cs">
+    <Compile Include="Connections\Terminal\ConsolePreferences.Designer.cs">
       <DependentUpon>ConsolePreferences.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\ColorParser.cs" />
@@ -717,10 +717,10 @@
     </Compile>
     <Compile Include="Data\ListsHelper.cs" />
     <Compile Include="Data\GroupsChangedArgs.cs" />
-    <Compile Include="Forms\DiskDrivesForm.cs">
+    <Compile Include="Connections\Rdp\DiskDrivesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\DiskDrivesForm.Designer.cs">
+    <Compile Include="Connections\Rdp\DiskDrivesForm.Designer.cs">
       <DependentUpon>DiskDrivesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ExportForm.cs">
@@ -1182,7 +1182,7 @@
     <EmbeddedResource Include="Forms\Controls\SecurityPanel.resx">
       <DependentUpon>SecurityPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\CitrixControl.resx">
+    <EmbeddedResource Include="Connections\ICA\CitrixControl.resx">
       <DependentUpon>CitrixControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditFavorite\ExecuteControl.resx">
@@ -1203,31 +1203,31 @@
     <EmbeddedResource Include="Forms\EditFavorite\ProtocolOptionsPanel.resx">
       <DependentUpon>ProtocolOptionsPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\RasControl.resx">
+    <EmbeddedResource Include="Connections\Ras\RasControl.resx">
       <DependentUpon>RasControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\RdpDisplayControl.resx">
+    <EmbeddedResource Include="Connections\Rdp\RdpDisplayControl.resx">
       <DependentUpon>RdpDisplayControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\RdpExtendedSettingsControl.resx">
+    <EmbeddedResource Include="Connections\Rdp\RdpExtendedSettingsControl.resx">
       <DependentUpon>RdpExtendedSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\RdpLocalResourcesControl.resx">
+    <EmbeddedResource Include="Connections\Rdp\RdpLocalResourcesControl.resx">
       <DependentUpon>RdpLocalResourcesControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\RdpSecurityControl.resx">
+    <EmbeddedResource Include="Connections\Rdp\RdpSecurityControl.resx">
       <DependentUpon>RdpSecurityControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\RdpTsGatewayControl.resx">
+    <EmbeddedResource Include="Connections\Rdp\RdpTsGatewayControl.resx">
       <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\SshControl.resx">
+    <EmbeddedResource Include="Connections\Terminal\SshControl.resx">
       <DependentUpon>SshControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\VmrcControl.resx">
+    <EmbeddedResource Include="Connections\VMRC\VmrcControl.resx">
       <DependentUpon>VmrcControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\VncControl.resx">
+    <EmbeddedResource Include="Connections\VNC\VncControl.resx">
       <DependentUpon>VncControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\DefaultPasswordOptionPanel.resx">
@@ -1585,7 +1585,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>HTTPConnection.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\ConsolePreferences.resx">
+    <EmbeddedResource Include="Connections\Terminal\ConsolePreferences.resx">
       <DependentUpon>ConsolePreferences.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Credentials\CredentialManager.resx">
@@ -1598,7 +1598,7 @@
     <EmbeddedResource Include="Credentials\ConnectExtraForm.resx">
       <DependentUpon>ConnectExtraForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DiskDrivesForm.resx">
+    <EmbeddedResource Include="Connections\Rdp\DiskDrivesForm.resx">
       <DependentUpon>DiskDrivesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
