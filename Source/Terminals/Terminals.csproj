@@ -176,7 +176,7 @@
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\IConnectionExtra.cs" />
     <Compile Include="Connections\IConnectionMainView.cs" />
-    <Compile Include="Connections\NettworkingTools.cs" />
+    <Compile Include="Network\NettworkingTools.cs" />
     <Compile Include="Connections\Rdp\RdpClientErrorMessages.cs" />
     <Compile Include="Converters\TextConverter.cs" />
     <Compile Include="Data\DataErrorEventArgs.cs" />
@@ -605,7 +605,7 @@
     <Compile Include="Connections\Connection.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Connections\CaptureManagerConnection.cs">
+    <Compile Include="CaptureManager\CaptureManagerConnection.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\Web\HTTPConnection.cs">
@@ -617,17 +617,17 @@
     <Compile Include="Connections\Web\MiniBrowser.Designer.cs">
       <DependentUpon>MiniBrowser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Connections\NetworkingToolsConnection.cs">
+    <Compile Include="Network\NetworkingToolsConnection.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\ICA\ICAConnection.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\IConnection.cs" />
-    <Compile Include="Connections\NetworkingToolsLayout.cs">
+    <Compile Include="Network\NetworkingToolsLayout.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Connections\NetworkingToolsLayout.Designer.cs">
+    <Compile Include="Network\NetworkingToolsLayout.Designer.cs">
       <DependentUpon>NetworkingToolsLayout.cs</DependentUpon>
     </Compile>
     <Compile Include="Connections\Ras\RASConnection.cs">
@@ -642,10 +642,10 @@
     <Compile Include="Connections\Rdp\RDPConnection.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Connections\TabbedTools.cs">
+    <Compile Include="Network\TabbedTools.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Connections\TabbedTools.Designer.cs">
+    <Compile Include="Network\TabbedTools.Designer.cs">
       <DependentUpon>TabbedTools.cs</DependentUpon>
     </Compile>
     <Compile Include="Connections\Terminal\TerminalConnection.cs">
@@ -1142,11 +1142,11 @@
       <DependentUpon>MiniBrowser.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Connections\NetworkingToolsConnection.resx">
+    <EmbeddedResource Include="Network\NetworkingToolsConnection.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkingToolsConnection.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Connections\NetworkingToolsLayout.resx">
+    <EmbeddedResource Include="Network\NetworkingToolsLayout.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkingToolsLayout.cs</DependentUpon>
     </EmbeddedResource>
@@ -1154,7 +1154,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>RASProperties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Connections\TabbedTools.resx">
+    <EmbeddedResource Include="Network\TabbedTools.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TabbedTools.cs</DependentUpon>
     </EmbeddedResource>
@@ -1577,7 +1577,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>CaptureManagerLayout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Connections\CaptureManagerConnection.resx">
+    <EmbeddedResource Include="CaptureManager\CaptureManagerConnection.resx">
       <DependentUpon>CaptureManagerConnection.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
