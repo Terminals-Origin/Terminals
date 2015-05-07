@@ -32,6 +32,8 @@ namespace Terminals.Forms.EditFavorite
 
         private RasControl rasControl;
 
+        private bool canValidate;
+
         public event Action<string> ProtocolChanged;
 
         public event Action<string> ServerNameChanged;
@@ -181,7 +183,7 @@ namespace Terminals.Forms.EditFavorite
         private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.SetControlsProtocolIndependent();
-            if(validator != null)// designer support
+            if(validator != null && this.canValidate)// designer support
                  this.validator.OnServerNameValidating(this.cmbServers, new CancelEventArgs());
 
             if (ConnectionManager.IsProtocolWebBased(this.ProtocolText))
@@ -342,6 +344,7 @@ namespace Terminals.Forms.EditFavorite
             this.ProtocolComboBox.DataSource = protocols;
             // for dynamicaly loaded plugins, this needs to be done later
             this.ProtocolComboBox.SelectedIndex = 0;
+            this.canValidate = true;
         }
     }
 }
