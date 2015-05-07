@@ -171,7 +171,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLine\CommandLineArguments.cs" />
     <Compile Include="Connections\ConnectionManager.cs" />
     <Compile Include="Connections\ConnectionStateDetector.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
