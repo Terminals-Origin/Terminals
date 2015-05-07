@@ -100,6 +100,7 @@
     <Compile Include="Unified\Serialization\Serialize.cs" />
     <Compile Include="Unified\Serialization\StreamHelper.cs" />
     <Compile Include="UserActivityHook.cs" />
+    <Compile Include="WhoisResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Unified\RSS\AUTHORS" />

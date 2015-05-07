@@ -1090,7 +1090,6 @@
     <Compile Include="Network\WhoIs\WhoIs.Designer.cs">
       <DependentUpon>WhoIs.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\WhoIs\WhoisResolver.cs" />
     <Compile Include="Network\WMI\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>

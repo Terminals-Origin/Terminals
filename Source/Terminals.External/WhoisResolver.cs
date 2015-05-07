@@ -38,7 +38,7 @@ namespace Terminals.Network.WhoIs
 	/// <summary>
 	/// Queries the appropriate whois server for a given domain name and returns the results.
 	/// </summary>
-	internal static class WhoisResolver
+	public static class WhoisResolver
 	{
 		public static String Whois(String domain, String host)
 		{
@@ -67,7 +67,7 @@ namespace Terminals.Network.WhoIs
 			catch(Exception e)
 			{
 				ret = "Could not connect to WhoIs Server.  Please try again later.\r\n\r\nDetails:\r\n" + e;
-				Logging.Error(ret, e);
+				//Logging.Error(ret, e);
 			}
 			finally
 			{
