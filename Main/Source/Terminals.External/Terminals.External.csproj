@@ -51,6 +51,21 @@
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Bdev\ANameRecord.cs" />
+    <Compile Include="Bdev\Enums.cs" />
+    <Compile Include="Bdev\InvalidResponseException.cs" />
+    <Compile Include="Bdev\MXRecord.cs" />
+    <Compile Include="Bdev\Nameserver.cs" />
+    <Compile Include="Bdev\NoResponseException.cs" />
+    <Compile Include="Bdev\NSRecord.cs" />
+    <Compile Include="Bdev\Pointer.cs" />
+    <Compile Include="Bdev\Question.cs" />
+    <Compile Include="Bdev\RecordBase.cs" />
+    <Compile Include="Bdev\Request.cs" />
+    <Compile Include="Bdev\Resolver.cs" />
+    <Compile Include="Bdev\ResourceRecord.cs" />
+    <Compile Include="Bdev\Response.cs" />
+    <Compile Include="Bdev\SoaRecord.cs" />
     <Compile Include="CommandLineArguments.cs" />
     <Compile Include="IconHandler.cs" />
     <Compile Include="MagicPaket.cs" />

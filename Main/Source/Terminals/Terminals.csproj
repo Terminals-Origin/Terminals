@@ -1010,21 +1010,6 @@
     <Compile Include="Network\DNSLookup.Designer.cs">
       <DependentUpon>DNSLookup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\Bdev\ANameRecord.cs" />
-    <Compile Include="Network\Bdev\Enums.cs" />
-    <Compile Include="Network\Bdev\InvalidResponseException.cs" />
-    <Compile Include="Network\Bdev\MXRecord.cs" />
-    <Compile Include="Network\Bdev\NoResponseException.cs" />
-    <Compile Include="Network\Bdev\NSRecord.cs" />
-    <Compile Include="Network\Bdev\Pointer.cs" />
-    <Compile Include="Network\Bdev\Question.cs" />
-    <Compile Include="Network\Bdev\RecordBase.cs" />
-    <Compile Include="Network\Bdev\Request.cs" />
-    <Compile Include="Network\Bdev\Resolver.cs" />
-    <Compile Include="Network\Bdev\ResourceRecord.cs" />
-    <Compile Include="Network\Bdev\Response.cs" />
-    <Compile Include="Network\Bdev\Nameserver.cs" />
-    <Compile Include="Network\Bdev\SoaRecord.cs" />
     <Compile Include="Network\InterfacesList.cs">
       <SubType>UserControl</SubType>
     </Compile>
