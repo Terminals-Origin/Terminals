@@ -28,7 +28,6 @@
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using Microsoft.Win32;
 using System.Reflection;
 using System.IO;
 
@@ -45,14 +44,14 @@ namespace IconHandler
 		public string szTypeName;
 	};
 
-	internal enum IconSize : uint
+    public enum IconSize : uint
 	{
 		Large = 0x0,  //32x32
 		Small = 0x1 //16x16		
 	}
 
 	//the function that will extract the icons from a file
-	internal class IconHandler
+    public class IconHandler
 	{
 		const uint SHGFI_ICON = 0x100;
 		const uint SHGFI_USEFILEATTRIBUTES	= 0x10;
@@ -107,7 +106,7 @@ namespace IconHandler
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Error("Could not load icons from file:" + Filename, exc);
+                //Terminals.Logging.Error("Could not load icons from file:" + Filename, exc);
                 return null;
             }
 		}
@@ -155,7 +154,7 @@ namespace IconHandler
 			}
 			catch (Exception e)
 			{
-                Terminals.Logging.Error("error while trying to get icon for " + Extension, e);
+                //Terminals.Logging.Error("error while trying to get icon for " + Extension, e);
 				return null;
 			}
 		}
