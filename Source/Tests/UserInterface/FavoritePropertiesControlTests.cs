@@ -58,7 +58,7 @@ namespace Tests.UserInterface
         private void SimulateGatewayNodeSelection()
         {
             var treeView = this.propertiesControl.Controls["treeView"] as TreeView;
-            var optionsPanel = this.propertiesControl.Controls["protocolOptionsPanel1"];
+            var optionsPanel = this.propertiesControl.Controls["panelContainer"].Controls["protocolOptionsPanel1"];
             optionsPanel.Show(); // otherwise the panel fires the selection it self.
             TreeNode tsgwNode = treeView.Nodes[4].Nodes[4];
             var wrapper = new PrivateObject(this.propertiesControl);
