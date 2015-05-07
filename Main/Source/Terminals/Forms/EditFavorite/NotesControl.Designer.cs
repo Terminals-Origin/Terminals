@@ -39,7 +39,7 @@
             this.NotesTextbox.Location = new System.Drawing.Point(3, 3);
             this.NotesTextbox.Multiline = true;
             this.NotesTextbox.Name = "NotesTextbox";
-            this.NotesTextbox.Size = new System.Drawing.Size(262, 244);
+            this.NotesTextbox.Size = new System.Drawing.Size(284, 244);
             this.NotesTextbox.TabIndex = 34;
             // 
             // NotesControl

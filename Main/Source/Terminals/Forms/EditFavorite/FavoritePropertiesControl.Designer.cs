@@ -41,19 +41,22 @@
             this.generalPanel1 = new Terminals.Forms.EditFavorite.GeneralPropertiesUserControl();
             this.protocolOptionsPanel1 = new Terminals.Forms.EditFavorite.ProtocolOptionsPanel();
             this.notesControl1 = new Terminals.Forms.EditFavorite.NotesControl();
-            this.groupsPanel1 =new GroupsControl();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.groupsPanel1 = new GroupsControl();
             this.executePanel1 = new ExecuteControl();
             this.rasControl1 = new RasControl();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeView
             // 
+            this.treeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.treeView.BackColor = System.Drawing.SystemColors.Window;
-            this.treeView.Dock = System.Windows.Forms.DockStyle.Left;
             this.treeView.HideSelection = false;
             this.treeView.ImageIndex = 0;
             this.treeView.ImageList = this.treeIcons;
-            this.treeView.Location = new System.Drawing.Point(0, 0);
+            this.treeView.Location = new System.Drawing.Point(4, 4);
             this.treeView.Name = "treeView";
             treeNode1.ImageKey = "computer_link.png";
             treeNode1.Name = "generalNode";
@@ -80,7 +83,7 @@
             treeNode4,
             treeNode5});
             this.treeView.SelectedImageIndex = 0;
-            this.treeView.Size = new System.Drawing.Size(150, 407);
+            this.treeView.Size = new System.Drawing.Size(144, 397);
             this.treeView.TabIndex = 1;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewAfterSelect);
             // 
@@ -100,73 +103,86 @@
             // 
             // titleLabel
             // 
+            this.titleLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.titleLabel.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.titleLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titleLabel.ForeColor = System.Drawing.Color.White;
-            this.titleLabel.Location = new System.Drawing.Point(150, 0);
+            this.titleLabel.Location = new System.Drawing.Point(152, 4);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(600, 32);
+            this.titleLabel.Size = new System.Drawing.Size(598, 32);
             this.titleLabel.TabIndex = 7;
             this.titleLabel.Text = "titleLabel";
             this.titleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // generalPanel1
             // 
-            this.generalPanel1.Location = new System.Drawing.Point(173, 35);
+            this.generalPanel1.Location = new System.Drawing.Point(18, 4);
             this.generalPanel1.Name = "generalPanel1";
             this.generalPanel1.Size = new System.Drawing.Size(205, 154);
             this.generalPanel1.TabIndex = 13;
             // 
             // protocolOptionsPanel1
             // 
-            this.protocolOptionsPanel1.Location = new System.Drawing.Point(437, 238);
+            this.protocolOptionsPanel1.Location = new System.Drawing.Point(376, 193);
             this.protocolOptionsPanel1.Name = "protocolOptionsPanel1";
             this.protocolOptionsPanel1.Size = new System.Drawing.Size(186, 141);
             this.protocolOptionsPanel1.TabIndex = 12;
             // 
             // notesControl1
             // 
-            this.notesControl1.Location = new System.Drawing.Point(528, 86);
+            this.notesControl1.Location = new System.Drawing.Point(268, 9);
             this.notesControl1.Name = "notesControl1";
             this.notesControl1.Size = new System.Drawing.Size(294, 250);
             this.notesControl1.TabIndex = 17;
             // 
             // groupsPanel1
             // 
-            this.groupsPanel1.Location = new System.Drawing.Point(386, 35);
+            this.groupsPanel1.Location = new System.Drawing.Point(98, 9);
             this.groupsPanel1.Name = "groupsPanel1";
             this.groupsPanel1.Size = new System.Drawing.Size(237, 126);
             this.groupsPanel1.TabIndex = 14;
             // 
             // executePanel1
             // 
-            this.executePanel1.Location = new System.Drawing.Point(173, 211);
+            this.executePanel1.Location = new System.Drawing.Point(18, 191);
             this.executePanel1.Name = "executePanel1";
             this.executePanel1.Size = new System.Drawing.Size(185, 168);
             this.executePanel1.TabIndex = 15;
             // 
             // rasControl1
             // 
-            this.rasControl1.Location = new System.Drawing.Point(290, 195);
+            this.rasControl1.Location = new System.Drawing.Point(214, 164);
             this.rasControl1.Name = "rasControl1";
             this.rasControl1.Size = new System.Drawing.Size(202, 202);
             this.rasControl1.TabIndex = 16;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.notesControl1);
+            this.panel1.Controls.Add(this.groupsPanel1);
+            this.panel1.Controls.Add(this.executePanel1);
+            this.panel1.Controls.Add(this.generalPanel1);
+            this.panel1.Controls.Add(this.protocolOptionsPanel1);
+            this.panel1.Controls.Add(this.rasControl1);
+            this.panel1.Location = new System.Drawing.Point(152, 38);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(595, 362);
+            this.panel1.TabIndex = 18;
             // 
             // FavoritePropertiesControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.notesControl1);
-            this.Controls.Add(this.executePanel1);
-            this.Controls.Add(this.groupsPanel1);
-            this.Controls.Add(this.generalPanel1);
-            this.Controls.Add(this.protocolOptionsPanel1);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.treeView);
-            this.Controls.Add(this.rasControl1);
             this.Name = "FavoritePropertiesControl";
             this.Size = new System.Drawing.Size(750, 407);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -182,5 +198,6 @@
         private RasControl rasControl1;
         private System.Windows.Forms.ImageList treeIcons;
         private NotesControl notesControl1;
+        private System.Windows.Forms.Panel panel1;
     }
 }
