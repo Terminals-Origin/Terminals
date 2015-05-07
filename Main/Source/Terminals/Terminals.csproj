@@ -796,10 +796,6 @@
     <Compile Include="Forms\Controls\ToolStripContainer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\Render\Office2007BlackColorTable.cs" />
-    <Compile Include="Forms\Render\Office2007BlueColorTable.cs" />
-    <Compile Include="Forms\Render\Office2007Helpers.cs" />
-    <Compile Include="Forms\Render\Office2007Renderer.cs" />
     <Compile Include="Forms\Controls\GroupTreeNode.cs" />
     <Compile Include="Data\History\ConnectionHistory.cs" />
     <Compile Include="Data\History\HistoryByFavorite.cs" />
