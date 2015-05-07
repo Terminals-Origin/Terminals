@@ -50,6 +50,7 @@
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CommandLineArguments.cs" />
     <Compile Include="IconHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
