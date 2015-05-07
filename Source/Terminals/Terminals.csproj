@@ -824,7 +824,6 @@
       <DependentUpon>ImportFromAD.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\IPAddressExtensions.cs" />
-    <Compile Include="Network\MagicPaket.cs" />
     <Compile Include="Network\Pcap\PacketCapture.cs">
       <SubType>UserControl</SubType>
     </Compile>
