@@ -5,6 +5,9 @@
       <Component Id="TerminalsExe" Guid="31F8007A-749F-4A74-AB3B-1F80813CEA32">
         <File Source="$(var.Terminals.TargetPath)" KeyPath="yes" Checksum="yes"/>
       </Component>
+      <Component Id="TerminalsExternal" Guid="79CE7381-21AF-4D69-8B2D-1773943ACFE7">
+        <File Source="$(var.Terminals.External.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>
       <Component Id="GranadosDll" Guid="9748FD50-3853-4FF5-AC40-4F737F4A261A">
         <File Source="$(var.Granados.TargetPath)" KeyPath="yes" Checksum="yes"/>
       </Component>

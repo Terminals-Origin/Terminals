@@ -1859,6 +1859,10 @@
       <Project>{933C6FDB-9617-4F19-89AF-C5D373F88479}</Project>
       <Name>TerminalEmulator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Terminals.External\Terminals.External.csproj">
+      <Project>{fcd4beca-9923-4bb0-bf57-8e8bcd0f784c}</Project>
+      <Name>Terminals.External</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VncSharp\VncSharp.csproj">
       <Project>{E0DED53A-C3E1-441D-9AD2-766E49EAD417}</Project>
       <Name>VncSharp</Name>
