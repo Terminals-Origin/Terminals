@@ -171,6 +171,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandLine\CommandLineArguments.cs" />
     <Compile Include="Connections\ConnectionManager.cs" />
     <Compile Include="Connections\ConnectionStateDetector.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
@@ -1029,7 +1030,6 @@
     </Compile>
     <Compile Include="Converters\FontParser.cs" />
     <Compile Include="Forms\FormSettings.cs" />
-    <Compile Include="IconHandler.cs" />
     <Compile Include="Forms\InputBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1437,7 +1437,6 @@
     <Compile Include="TerminalServices\TerminalServicesAPI.cs" />
     <Compile Include="TerminalServices\TerminalServer.cs" />
     <Compile Include="TerminalServices\TSManager.cs" />
-    <Compile Include="CommandLine\CommandLineArguments.cs" />
     <Compile Include="Wizard\AddExistingRDPConnections.cs">
       <SubType>UserControl</SubType>
     </Compile>
