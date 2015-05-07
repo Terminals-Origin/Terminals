@@ -103,7 +103,7 @@
             this.AllTagsListView.HideSelection = false;
             this.AllTagsListView.Location = new System.Drawing.Point(9, 176);
             this.AllTagsListView.Name = "AllTagsListView";
-            this.AllTagsListView.Size = new System.Drawing.Size(506, 176);
+            this.AllTagsListView.Size = new System.Drawing.Size(506, 150);
             this.AllTagsListView.TabIndex = 0;
             this.AllTagsListView.UseCompatibleStateImageBehavior = false;
             this.AllTagsListView.View = System.Windows.Forms.View.List;
