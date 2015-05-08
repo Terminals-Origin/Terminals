@@ -840,9 +840,10 @@ namespace Terminals
         private void GroupAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IGroup selectedGroup = ((GroupMenuItem)sender).Group;
-            if (selectedGroup != null)
+            IFavorite selectedFavorite = this.terminalsControler.Selected.Favorite;
+            
+            if (selectedGroup != null && selectedFavorite != null)
             {
-                IFavorite selectedFavorite = this.terminalsControler.Selected.Favorite;
                 selectedGroup.AddFavorite(selectedFavorite);
             }
         }
