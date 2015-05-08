@@ -176,7 +176,7 @@
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\IConnectionExtra.cs" />
     <Compile Include="Connections\IConnectionMainView.cs" />
-    <Compile Include="Network\NettworkingTools.cs" />
+    <Compile Include="Network\Tools\NettworkingTools.cs" />
     <Compile Include="Connections\Rdp\RdpClientErrorMessages.cs" />
     <Compile Include="Converters\TextConverter.cs" />
     <Compile Include="Data\DataErrorEventArgs.cs" />
@@ -824,10 +824,10 @@
       <DependentUpon>ImportFromAD.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\IPAddressExtensions.cs" />
-    <Compile Include="Network\Pcap\PacketCapture.cs">
+    <Compile Include="Network\Tools\Pcap\PacketCapture.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\Pcap\PacketCapture.designer.cs">
+    <Compile Include="Network\Tools\Pcap\PacketCapture.designer.cs">
       <DependentUpon>PacketCapture.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\Tools\Ping\PingReplyData.cs" />
@@ -1618,7 +1618,7 @@
       <DependentUpon>ImportFromAD.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\Pcap\PacketCapture.resx">
+    <EmbeddedResource Include="Network\Tools\Pcap\PacketCapture.resx">
       <DependentUpon>PacketCapture.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
