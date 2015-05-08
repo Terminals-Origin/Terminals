@@ -68,7 +68,7 @@ namespace Terminals
         private TabControlItem FindAttachedTab(IFavorite updated)
         {
             return this.mainTabControl.Items.Cast<TerminalTabControlItem>()
-                .FirstOrDefault(tab => tab.Favorite.StoreIdEquals(updated));
+                .FirstOrDefault(tab => tab.Favorite != null && tab.Favorite.StoreIdEquals(updated));
         }
 
         private void UpdateDetachedWindowTitle(IFavorite updated)
@@ -80,7 +80,8 @@ namespace Terminals
 
         private PopupTerminal FindDetachedWindowByFavorite(IFavorite updated)
         {
-            return this.detachedWindows.FirstOrDefault(window => window.Favorite.StoreIdEquals(updated));
+            return this.detachedWindows.FirstOrDefault(window => window.Favorite != null &&
+                    window.Favorite.StoreIdEquals(updated));
         }
 
         /// <summary>
