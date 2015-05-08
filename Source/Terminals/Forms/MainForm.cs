@@ -1099,7 +1099,7 @@ namespace Terminals
             {
                 var tab = this.FindTabControlItemByTitle(menuItem);
 
-                if (tab != null)
+                if (tab != null && tab.Favorite != null)
                     menuItem.Image = tab.Favorite.ToolBarIconImage;
             }
         }
