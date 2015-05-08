@@ -29,6 +29,18 @@ namespace Terminals
                 return this.mainTabControl.SelectedItem as TerminalTabControlItem;
             }
         }
+
+        internal IFavorite SelectedFavorite
+        {
+            get
+            {
+                if (this.HasSelected)
+                    return this.Selected.Favorite;
+
+                return null;
+            }
+        }
+
         internal bool HasSelected
         {
             get
@@ -207,6 +219,21 @@ namespace Terminals
             {
                 detachedWindow.UpdateCaptureButtonEnabled(newEnable);
             }
+        }
+
+        /// <summary>
+        /// We need to provide the tab from outside, because it may be tab from PopUp window
+        /// </summary>
+        internal void CaptureScreenToCaptureManger(TabControl.TabControl tabControl)
+        {
+            CaptureManager.CaptureManager.PerformScreenCapture(tabControl, this.SelectedFavorite);
+            this.RefreshCaptureManagerAndCreateItsTab(false);
+        }
+
+        internal void CaptureScreen()
+        {
+            CaptureManager.CaptureManager.PerformScreenCapture(this.mainTabControl, this.SelectedFavorite);
+            this.RefreshCaptureManager(false);
         }
     }
 }

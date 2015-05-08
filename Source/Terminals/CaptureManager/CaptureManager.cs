@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.CaptureManager
 {
@@ -45,21 +46,25 @@ namespace Terminals.CaptureManager
             }
         }
 
-        internal static void PerformScreenCapture(TabControl.TabControl tab)
+        internal static void PerformScreenCapture(Control control, IFavorite favorite)
         {
-            var activeTab = tab.SelectedItem as TerminalTabControlItem;
-            string name = string.Empty;
-            if (activeTab != null && activeTab.Favorite != null && !string.IsNullOrEmpty(activeTab.Favorite.Name))
-            {
-                name = activeTab.Favorite.Name + "-";
-            }
-            string filename = DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss");
-            string tempFile = Path.Combine(CaptureRoot, string.Format("{0}{1}.png", name, filename));
-            ScreenCapture sc = new ScreenCapture();
-            Bitmap bmp = sc.CaptureControl(tab, tempFile, ImageFormatTypes.imgPNG);
+            string name = ResolveFileName(favorite);
+            string formatedDate = DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss");
+            string filename = String.Format("{0}{1}.png", name, formatedDate);
+            string tempFile = Path.Combine(CaptureRoot, filename);
+            var sc = new ScreenCapture();
+            Bitmap bmp = sc.CaptureControl(control, tempFile, ImageFormatTypes.imgPNG);
 
             if (settings.EnableCaptureToClipboard)
                 Clipboard.SetImage(bmp);
+        }
+
+        private static string ResolveFileName(IFavorite favorite)
+        {
+            if (favorite != null && !string.IsNullOrEmpty(favorite.Name))
+                return favorite.Name + "-";
+
+            return string.Empty;
         }
 
         public static List<DirectoryInfo> LoadCaptureFolder(string path)

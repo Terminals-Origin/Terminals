@@ -632,8 +632,7 @@ namespace Terminals
             //handle global keyup events
             if (e.Control && e.KeyCode == Keys.F12)
             {
-                CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
-                this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(false);
+                this.terminalsControler.CaptureScreenToCaptureManger(this.tcTerminals);
             }
             else if (e.KeyCode == Keys.F4)
             {
@@ -1282,8 +1281,7 @@ namespace Terminals
 
         private void CaptureScreenToolStripButton_Click(object sender, EventArgs e)
         {
-            CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
-            this.terminalsControler.RefreshCaptureManager(false);
+            this.terminalsControler.CaptureScreen();
 
             if (settings.EnableCaptureToFolder && settings.AutoSwitchOnCapture)
                 this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(false);

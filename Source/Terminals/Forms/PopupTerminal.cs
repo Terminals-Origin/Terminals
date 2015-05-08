@@ -92,8 +92,7 @@ namespace Terminals
 
         private void CaptureScreen()
         {
-            CaptureManager.CaptureManager.PerformScreenCapture(this.tabControl1);
-            this.mainTabsControler.RefreshCaptureManagerAndCreateItsTab(false);
+            this.mainTabsControler.CaptureScreenToCaptureManger(this.tabControl1);
         }
 
         internal void UpdateCaptureButtonEnabled(bool newEnabledState)

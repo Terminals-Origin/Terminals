@@ -1,7 +1,9 @@
 ﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Terminals.CaptureManager;
 using Terminals.Configuration;
+using Terminals.Data;
 using Tests.FilePersisted;
 
 namespace Tests.UserInterface
@@ -17,7 +19,8 @@ namespace Tests.UserInterface
             this.ConfigureSettings();
             var expectedFiles = this.GetFilesCountInCaptureDirectory() + 1;
             var tabControl = new TabControl.TabControl();
-            CaptureManager.PerformScreenCapture(tabControl);
+            IFavorite favorite = new Mock<IFavorite>().Object;
+            CaptureManager.PerformScreenCapture(tabControl, favorite);
             var actualFiles = this.GetFilesCountInCaptureDirectory();
             Assert.AreEqual(expectedFiles, actualFiles, "Screen capture should create new file in capture direcotry.");
         }
