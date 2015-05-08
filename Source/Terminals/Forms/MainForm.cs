@@ -230,8 +230,9 @@ namespace Terminals
             this.MainMenuStrip.GripStyle = settings.ToolbarsLocked ? ToolStripGripStyle.Hidden : ToolStripGripStyle.Visible;
 
             this.tcTerminals.ShowToolTipOnTitle = settings.ShowInformationToolTips;
-            if (this.terminalsControler.HasSelected)
-                this.terminalsControler.Selected.ToolTipText = this.terminalsControler.Selected.Favorite.GetToolTipText();
+            IFavorite selectedFavorite = this.terminalsControler.SelectedFavorite;
+            if (selectedFavorite != null)
+                this.terminalsControler.Selected.ToolTipText = selectedFavorite.GetToolTipText();
 
             this.groupsToolStripMenuItem.Visible = settings.EnableGroupsMenu;
             this.tsbTags.Checked = settings.ShowFavoritePanel;
@@ -332,7 +333,8 @@ namespace Terminals
 
         public String GetDesktopShare()
         {
-            String currentDesktopShare = this.terminalsControler.Selected.Favorite.DesktopShare;
+            // it is safe to ask for favorite here, is only called from connection supporting this feature
+            String currentDesktopShare = this.terminalsControler.SelectedFavorite.DesktopShare;
             var desktopShares = new DesktopShares(this.CurrentTerminal, settings.DefaultDesktopShare);
             return desktopShares.EvaluateDesktopShare(currentDesktopShare);
         }
@@ -839,7 +841,7 @@ namespace Terminals
         private void GroupAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IGroup selectedGroup = ((GroupMenuItem)sender).Group;
-            IFavorite selectedFavorite = this.terminalsControler.Selected.Favorite;
+            IFavorite selectedFavorite = this.terminalsControler.SelectedFavorite;
             
             if (selectedGroup != null && selectedFavorite != null)
             {
@@ -1097,18 +1099,11 @@ namespace Terminals
         {
             foreach (ToolStripItem menuItem in this.tcTerminals.Menu.Items)
             {
-                var tab = this.FindTabControlItemByTitle(menuItem);
+                IFavorite favorite = this.terminalsControler.FindFavoriteByTabTitle(menuItem.Text);
 
-                if (tab != null && tab.Favorite != null)
-                    menuItem.Image = tab.Favorite.ToolBarIconImage;
+                if (favorite != null)
+                    menuItem.Image = favorite.ToolBarIconImage;
             }
-        }
-
-        private TerminalTabControlItem FindTabControlItemByTitle(ToolStripItem item)
-        {
-            return this.tcTerminals.Items.Cast<TabControlItem>()
-                   .FirstOrDefault(candidate => candidate is TerminalTabControlItem && candidate.Title == item.Text)
-                   as TerminalTabControlItem;
         }
 
         private void SaveTerminalsAsGroupToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1118,18 +1113,12 @@ namespace Terminals
                 return;
 
             IGroup group = FavoritesFactory.GetOrAddNewGroup(this.persistence, newGroupName);
-            foreach (TerminalTabControlItem tabControlItem in this.SelectTabsWithFavorite())
+            foreach (IFavorite favorite in this.terminalsControler.SelectTabsWithFavorite())
             {
-                group.AddFavorite(tabControlItem.Favorite);
+                group.AddFavorite(favorite);
             }
 
             this.menuLoader.LoadGroups();
-        }
-
-        private IEnumerable<TerminalTabControlItem> SelectTabsWithFavorite()
-        {
-            return this.tcTerminals.Items.OfType<TerminalTabControlItem>()
-                .Where(ti => ti.Favorite != null);
         }
 
         private void OrganizeGroupsToolStripMenuItem_Click(object sender, EventArgs e)
