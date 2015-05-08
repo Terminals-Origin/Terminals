@@ -40,7 +40,6 @@ namespace Unified.Encryption {
                 cryptoStream.Write(bytesData, 0, (int)bytesData.Length);
             }
             catch (Exception e) {
-                //Terminals.Logging.Info(e);
                 throw new Exception(String.Concat("Error while writing encrypted data to the stream: \n", e.Message));
             }
             encKey = transformer.Key;

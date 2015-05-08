@@ -917,7 +917,6 @@ namespace Terminals.CommandLine
             catch (Exception e)
             {
                 string msg = string.Format("Error: Can't open command line argument file '{0}' : '{1}'", fileName, e.Message);
-                //Logging.Info(msg, e);
                 this.reporter(msg);
                 arguments = null;
                 return false;
@@ -1001,7 +1000,6 @@ namespace Terminals.CommandLine
                 if (inQuotes)
                 {
                     string msg = string.Format("Error: Unbalanced '\"' in command line argument file '{0}'", fileName);
-                    //Logging.Info(msg, exc);
                     this.reporter(msg);
                     hadError = true;
                 }
@@ -1237,9 +1235,8 @@ namespace Terminals.CommandLine
                             return true;
                         }
                     }
-                    catch(Exception exc)
+                    catch(Exception)
                     {
-                        //Logging.Error("Parsing Values", exc);
                     }
                 }
                                 

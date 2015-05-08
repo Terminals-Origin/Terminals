@@ -327,10 +327,9 @@ namespace Unified.Network.SNTP
 									IPHostEntry Host = Dns.GetHostEntry(RefAddr);
 									val = Host.HostName + " (" + Address + ")";
 								}
-								catch(Exception e)
+								catch(Exception)
 								{
 									val = "N/A";
-									//Terminals.Logging.Error("Error parsing and DNS Lookup of an IP" + Address, e);
 								}
 
 								break;
@@ -527,10 +526,9 @@ namespace Unified.Network.SNTP
 
 				ReceptionTimestamp = DateTime.Now;
 			}
-			catch (SocketException e)
+			catch (SocketException)
 			{
 				//throw new Exception(e.Message);
-				//Terminals.Logging.Error("Socket Exception", e);
 			}
 		}
 

@@ -104,9 +104,8 @@ namespace IconHandler
 
                 return IconList;
             }
-            catch (Exception exc)
+            catch (Exception)
             {
-                //Terminals.Logging.Error("Could not load icons from file:" + Filename, exc);
                 return null;
             }
 		}
@@ -152,10 +151,9 @@ namespace IconHandler
                 TempIcon = (Icon) Icon.FromHandle(TempFileInfo.hIcon);
 				return GetManagedIcon(ref TempIcon);
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
-                //Terminals.Logging.Error("error while trying to get icon for " + Extension, e);
-				return null;
+			    return null;
 			}
 		}
 
