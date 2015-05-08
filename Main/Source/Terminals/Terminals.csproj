@@ -412,7 +412,7 @@
     <Compile Include="Integration\Import\RdcMan\Settings.cs" />
     <Compile Include="Network\AD\ActiveDirectorySearchParams.cs" />
     <Compile Include="Network\RemoteManagement.cs" />
-    <Compile Include="Network\WMI\Share.cs" />
+    <Compile Include="Network\Tools\WMI\Share.cs" />
     <Compile Include="Properties\Common.AssemblyInfo.cs" />
     <Compile Include="Configuration\FormsCollection.cs" />
     <Compile Include="Configuration\FormsSection.cs" />
@@ -617,17 +617,17 @@
     <Compile Include="Connections\Web\MiniBrowser.Designer.cs">
       <DependentUpon>MiniBrowser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\NetworkingToolsConnection.cs">
+    <Compile Include="Network\Tools\NetworkingToolsConnection.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\ICA\ICAConnection.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\IConnection.cs" />
-    <Compile Include="Network\NetworkingToolsLayout.cs">
+    <Compile Include="Network\Tools\NetworkingToolsLayout.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\NetworkingToolsLayout.Designer.cs">
+    <Compile Include="Network\Tools\NetworkingToolsLayout.Designer.cs">
       <DependentUpon>NetworkingToolsLayout.cs</DependentUpon>
     </Compile>
     <Compile Include="Connections\Ras\RASConnection.cs">
@@ -642,10 +642,10 @@
     <Compile Include="Connections\Rdp\RDPConnection.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Network\TabbedTools.cs">
+    <Compile Include="Network\Tools\TabbedTools.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\TabbedTools.Designer.cs">
+    <Compile Include="Network\Tools\TabbedTools.Designer.cs">
       <DependentUpon>TabbedTools.cs</DependentUpon>
     </Compile>
     <Compile Include="Connections\Terminal\TerminalConnection.cs">
@@ -815,8 +815,8 @@
     <Compile Include="Native\Structs.cs" />
     <Compile Include="Network\AD\ActiveDirectoryClient.cs" />
     <Compile Include="Network\AD\ActiveDirectoryComputer.cs" />
-    <Compile Include="Network\DNS\Adapter.cs" />
-    <Compile Include="Network\DNS\AdapterInfo.cs" />
+    <Compile Include="Network\Tools\DNS\Adapter.cs" />
+    <Compile Include="Network\Tools\DNS\AdapterInfo.cs" />
     <Compile Include="Network\AD\ImportFromAD.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -830,39 +830,39 @@
     <Compile Include="Network\Pcap\PacketCapture.designer.cs">
       <DependentUpon>PacketCapture.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\PingReplyData.cs" />
-    <Compile Include="Network\PortScanner.cs">
+    <Compile Include="Network\Tools\Ping\PingReplyData.cs" />
+    <Compile Include="Network\Tools\PortScanner.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\PortScanner.Designer.cs">
+    <Compile Include="Network\Tools\PortScanner.Designer.cs">
       <DependentUpon>PortScanner.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\PortScanner\ConnectionState.cs" />
     <Compile Include="Network\PortScanner\NetworkScanResult.cs" />
     <Compile Include="Network\Services\ShareFavoritesEventArgs.cs" />
     <Compile Include="Network\SubnetMask.cs" />
-    <Compile Include="Network\TraceRoute\RouteHopFoundEventArgs.cs" />
-    <Compile Include="Network\TraceRoute\TraceRoute.cs">
+    <Compile Include="Network\Tools\TraceRoute\RouteHopFoundEventArgs.cs" />
+    <Compile Include="Network\Tools\TraceRoute\TraceRoute.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Network\TraceRoute\TraceRouteHopData.cs" />
-    <Compile Include="Network\WMI\PivotDataTable.cs" />
-    <Compile Include="Network\WakeOnLan.cs">
+    <Compile Include="Network\Tools\TraceRoute\TraceRouteHopData.cs" />
+    <Compile Include="Network\Tools\WMI\PivotDataTable.cs" />
+    <Compile Include="Network\Tools\WakeOnLan.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\WakeOnLan.Designer.cs">
+    <Compile Include="Network\Tools\WakeOnLan.Designer.cs">
       <DependentUpon>WakeOnLan.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\WMI\Services.cs">
+    <Compile Include="Network\Tools\WMI\Services.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\WMI\Services.Designer.cs">
+    <Compile Include="Network\Tools\WMI\Services.Designer.cs">
       <DependentUpon>Services.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\WMI\WMIServerCredentials.cs">
+    <Compile Include="Network\Tools\WMI\WMIServerCredentials.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\WMI\WMIServerCredentials.Designer.cs">
+    <Compile Include="Network\Tools\WMI\WMIServerCredentials.Designer.cs">
       <DependentUpon>WMIServerCredentials.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\OptionPanels\CaptureOptionPanel.cs">
@@ -1004,37 +1004,37 @@
       <DependentUpon>NetworkScanner.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\Services\Client.cs" />
-    <Compile Include="Network\DNSLookup.cs">
+    <Compile Include="Network\Tools\DNS\DNSLookup.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\DNSLookup.Designer.cs">
+    <Compile Include="Network\Tools\DNS\DNSLookup.Designer.cs">
       <DependentUpon>DNSLookup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\InterfacesList.cs">
+    <Compile Include="Network\Tools\InterfacesList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\InterfacesList.Designer.cs">
+    <Compile Include="Network\Tools\InterfacesList.Designer.cs">
       <DependentUpon>InterfacesList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\LocalConnections.cs">
+    <Compile Include="Network\Tools\LocalConnections.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\LocalConnections.Designer.cs">
+    <Compile Include="Network\Tools\LocalConnections.Designer.cs">
       <DependentUpon>LocalConnections.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\Ping.cs">
+    <Compile Include="Network\Tools\Ping\Ping.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\Ping.Designer.cs">
+    <Compile Include="Network\Tools\Ping\Ping.Designer.cs">
       <DependentUpon>Ping.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\Servers\NetworkManagement.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Network\NTP\NetworkTime.cs">
+    <Compile Include="Network\Tools\NTP\NetworkTime.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\NTP\NetworkTime.Designer.cs">
+    <Compile Include="Network\Tools\NTP\NetworkTime.Designer.cs">
       <DependentUpon>NetworkTime.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\Servers\ServerList.cs">
@@ -1049,16 +1049,16 @@
     <Compile Include="Network\Servers\TerminalServerManager.Designer.cs">
       <DependentUpon>TerminalServerManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\TraceRouteControl.cs">
+    <Compile Include="Network\Tools\TraceRoute\TraceRouteControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\TraceRouteControl.Designer.cs">
+    <Compile Include="Network\Tools\TraceRoute\TraceRouteControl.Designer.cs">
       <DependentUpon>TraceRouteControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\WMI\NetworkShares.cs">
+    <Compile Include="Network\Tools\WMI\NetworkShares.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\WMI\NetworkShares.Designer.cs">
+    <Compile Include="Network\Tools\WMI\NetworkShares.Designer.cs">
       <DependentUpon>NetworkShares.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\Services\Server.cs" />
@@ -1069,16 +1069,16 @@
       <DependentUpon>ShareConnectionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\Services\SharedFavorite.cs" />
-    <Compile Include="Network\WhoIs\WhoIs.cs">
+    <Compile Include="Network\Tools\WhoIs\WhoIs.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\WhoIs\WhoIs.Designer.cs">
+    <Compile Include="Network\Tools\WhoIs\WhoIs.Designer.cs">
       <DependentUpon>WhoIs.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\WMI\LoginForm.cs">
+    <Compile Include="Network\Tools\WMI\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Network\WMI\WMIControl.cs">
+    <Compile Include="Network\Tools\WMI\WMIControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\NewGroupForm.cs">
@@ -1142,11 +1142,11 @@
       <DependentUpon>MiniBrowser.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\NetworkingToolsConnection.resx">
+    <EmbeddedResource Include="Network\Tools\NetworkingToolsConnection.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkingToolsConnection.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\NetworkingToolsLayout.resx">
+    <EmbeddedResource Include="Network\Tools\NetworkingToolsLayout.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkingToolsLayout.cs</DependentUpon>
     </EmbeddedResource>
@@ -1154,7 +1154,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>RASProperties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\TabbedTools.resx">
+    <EmbeddedResource Include="Network\Tools\TabbedTools.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TabbedTools.cs</DependentUpon>
     </EmbeddedResource>
@@ -1280,11 +1280,11 @@
       <SubType>Designer</SubType>
       <DependentUpon>ShareConnectionsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\WMI\LoginForm.resx">
+    <EmbeddedResource Include="Network\Tools\WMI\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\WMI\WMIControl.resx">
+    <EmbeddedResource Include="Network\Tools\WMI\WMIControl.resx">
       <DependentUpon>WMIControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1622,19 +1622,19 @@
       <DependentUpon>PacketCapture.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\PortScanner.resx">
+    <EmbeddedResource Include="Network\Tools\PortScanner.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PortScanner.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\WakeOnLan.resx">
+    <EmbeddedResource Include="Network\Tools\WakeOnLan.resx">
       <SubType>Designer</SubType>
       <DependentUpon>WakeOnLan.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\WMI\Services.resx">
+    <EmbeddedResource Include="Network\Tools\WMI\Services.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Services.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\WMI\WMIServerCredentials.resx">
+    <EmbeddedResource Include="Network\Tools\WMI\WMIServerCredentials.resx">
       <SubType>Designer</SubType>
       <DependentUpon>WMIServerCredentials.cs</DependentUpon>
     </EmbeddedResource>
@@ -1665,19 +1665,19 @@
       <SubType>Designer</SubType>
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\DNSLookup.resx">
+    <EmbeddedResource Include="Network\Tools\DNS\DNSLookup.resx">
       <SubType>Designer</SubType>
       <DependentUpon>DNSLookup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\InterfacesList.resx">
+    <EmbeddedResource Include="Network\Tools\InterfacesList.resx">
       <SubType>Designer</SubType>
       <DependentUpon>InterfacesList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\LocalConnections.resx">
+    <EmbeddedResource Include="Network\Tools\LocalConnections.resx">
       <SubType>Designer</SubType>
       <DependentUpon>LocalConnections.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\Ping.resx">
+    <EmbeddedResource Include="Network\Tools\Ping\Ping.resx">
       <DependentUpon>Ping.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1685,7 +1685,7 @@
       <DependentUpon>NetworkManagement.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\NTP\NetworkTime.resx">
+    <EmbeddedResource Include="Network\Tools\NTP\NetworkTime.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkTime.cs</DependentUpon>
     </EmbeddedResource>
@@ -1697,15 +1697,15 @@
       <SubType>Designer</SubType>
       <DependentUpon>TerminalServerManager.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\TraceRouteControl.resx">
+    <EmbeddedResource Include="Network\Tools\TraceRoute\TraceRouteControl.resx">
       <DependentUpon>TraceRouteControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\WMI\NetworkShares.resx">
+    <EmbeddedResource Include="Network\Tools\WMI\NetworkShares.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkShares.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\WhoIs\WhoIs.resx">
+    <EmbeddedResource Include="Network\Tools\WhoIs\WhoIs.resx">
       <SubType>Designer</SubType>
       <DependentUpon>WhoIs.cs</DependentUpon>
     </EmbeddedResource>
@@ -1848,6 +1848,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
