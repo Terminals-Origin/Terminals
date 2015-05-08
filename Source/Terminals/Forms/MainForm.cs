@@ -1118,12 +1118,18 @@ namespace Terminals
                 return;
 
             IGroup group = FavoritesFactory.GetOrAddNewGroup(this.persistence, newGroupName);
-            foreach (TerminalTabControlItem tabControlItem in this.tcTerminals.Items)
+            foreach (TerminalTabControlItem tabControlItem in this.SelectTabsWithFavorite())
             {
                 group.AddFavorite(tabControlItem.Favorite);
             }
 
             this.menuLoader.LoadGroups();
+        }
+
+        private IEnumerable<TerminalTabControlItem> SelectTabsWithFavorite()
+        {
+            return this.tcTerminals.Items.OfType<TerminalTabControlItem>()
+                .Where(ti => ti.Favorite != null);
         }
 
         private void OrganizeGroupsToolStripMenuItem_Click(object sender, EventArgs e)
