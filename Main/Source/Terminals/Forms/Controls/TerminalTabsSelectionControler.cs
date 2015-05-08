@@ -235,5 +235,23 @@ namespace Terminals
             CaptureManager.CaptureManager.PerformScreenCapture(this.mainTabControl, this.SelectedFavorite);
             this.RefreshCaptureManager(false);
         }
+
+        internal IEnumerable<IFavorite> SelectTabsWithFavorite()
+        {
+            return this.mainTabControl.Items.OfType<TerminalTabControlItem>()
+                .Where(ti => ti.Favorite != null)
+                .Select(ti => ti.Favorite);
+        }
+
+        internal IFavorite FindFavoriteByTabTitle(string tabTitle)
+        {
+            var tab = this.mainTabControl.Items.OfType<TerminalTabControlItem>()
+                .FirstOrDefault(candidate => candidate.Title == tabTitle);
+            
+            if (tab != null)
+                return tab.Favorite;
+            
+            return null;
+        }
     }
 }
