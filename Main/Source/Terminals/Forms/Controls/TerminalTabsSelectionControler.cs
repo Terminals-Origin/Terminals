@@ -4,6 +4,7 @@ using System.Linq;
 using TabControl;
 using Terminals.CaptureManager;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms;
 
@@ -18,6 +19,18 @@ namespace Terminals
         private readonly List<PopupTerminal> detachedWindows = new List<PopupTerminal>();
         private readonly TabControl.TabControl mainTabControl;
         private ConnectionsUiFactory connectionsUiFactory;
+
+
+        internal IConnection CurrentConnection
+        {
+            get
+            {
+                if (this.HasSelected)
+                    return this.Selected.Connection;
+
+                return null;
+            }
+        }
 
         /// <summary>
         /// Gets the actualy selected TabControl even if it is not in main window
@@ -132,7 +145,8 @@ namespace Terminals
         /// </summary>
         internal void DetachTabToNewWindow()
         {
-            this.DetachTabToNewWindow(this.Selected);
+            if (this.Selected != null)
+                this.DetachTabToNewWindow(this.Selected);
         }
 
         internal void DetachTabToNewWindow(TerminalTabControlItem tabControlToOpen)
@@ -273,10 +287,10 @@ namespace Terminals
         {
             var tab = this.mainTabControl.Items.OfType<TerminalTabControlItem>()
                 .FirstOrDefault(candidate => candidate.Title == tabTitle);
-            
+
             if (tab != null)
                 return tab.Favorite;
-            
+
             return null;
         }
     }

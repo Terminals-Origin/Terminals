@@ -19,12 +19,16 @@ namespace Terminals
 
         private readonly MainForm mainForm;
 
+        private readonly TerminalTabsSelectionControler selectionControler;
+
         private readonly TabControl.TabControl tcTerminals;
 
-        internal TabControlRemover(Settings settings, MainForm mainForm, TabControl.TabControl tcTerminals)
+        internal TabControlRemover(Settings settings, MainForm mainForm,
+            TerminalTabsSelectionControler selectionControler, TabControl.TabControl tcTerminals)
         {
             this.settings = settings;
             this.mainForm = mainForm;
+            this.selectionControler = selectionControler;
             this.tcTerminals = tcTerminals;
             this.tcTerminals.TabControlItemClosing += new TabControlItemClosingHandler(this.TcTerminals_TabControlItemClosing);
             this.tcTerminals.TabControlItemClosed += new EventHandler(this.TcTerminals_TabControlItemClosed);
@@ -51,7 +55,7 @@ namespace Terminals
 
         private void TcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e)
         {
-            IConnection currentConnection = this.mainForm.CurrentConnection;
+            IConnection currentConnection = this.selectionControler.CurrentConnection;
             if (currentConnection != null && currentConnection.Connected)
             {
                 if (AskToClose()) // ask only when tab is going to be closed by user
@@ -98,7 +102,7 @@ namespace Terminals
                 return;
 
             bool wasSelected = tabPage.Selected;
-            IConnection lostConnection = this.mainForm.CurrentConnection;
+            IConnection lostConnection = this.selectionControler.CurrentConnection;
             this.RemoveTabPage(tabPage);
             if (wasSelected)
                 this.mainForm.OnLeavingFullScreen();

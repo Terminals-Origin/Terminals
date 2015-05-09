@@ -56,22 +56,11 @@ namespace Terminals
             get { return this.persistence.Favorites; }
         }
 
-        internal IConnection CurrentConnection
-        {
-            get
-            {
-                if (this.terminalsControler.HasSelected)
-                    return this.terminalsControler.Selected.Connection;
-
-                return null;
-            }
-        }
-
         /// <summary>
         /// Get or set wether the MainForm window is in fullscreen mode.
         /// </summary>
         internal bool FullScreen
-        { 
+        {
             private get { return this.fullScreenSwitch.FullScreen; }
             set { this.fullScreenSwitch.FullScreen = value; }
         }
@@ -81,14 +70,14 @@ namespace Terminals
         /// </summary>
         internal Boolean SwitchingFullScreen
         {
-            get { return this.fullScreenSwitch.SwitchingFullScreen; } 
+            get { return this.fullScreenSwitch.SwitchingFullScreen; }
         }
 
         private IConnectionExtra CurrentTerminal
         {
             get
             {
-                return this.CurrentConnection as IConnectionExtra;
+                return this.terminalsControler.CurrentConnection as IConnectionExtra;
             }
         }
 
@@ -181,14 +170,14 @@ namespace Terminals
                 this.menuLoader = new FavoritesMenuLoader(this, this.persistence);
                 this.favoriteToolBar.Visible = this.toolStripMenuItemShowHideFavoriteToolbar.Checked;
                 this.fullScreenSwitch = new MainFormFullScreenSwitch(this);
-                this.tabControlRemover = new TabControlRemover(this.settings, this, this.tcTerminals);
+                this.tabControlRemover = new TabControlRemover(this.settings, this, this.terminalsControler, this.tcTerminals);
                 this.favsList1.Persistence = this.persistence;
                 this.AssignToolStripsToContainer();
                 this.ApplyControlsEnableAndVisibleState();
-                
+
                 this.menuLoader.LoadGroups();
                 this.UpdateControls();
-                this.LoadWindowState();                
+                this.LoadWindowState();
                 this.CheckForMultiMonitorUse();
 
                 this.tcTerminals.TabControlItemDetach += new TabControlItemChangedHandler(this.TcTerminals_TabDetach);
@@ -312,22 +301,22 @@ namespace Terminals
             VMRCAdminSwitchButton.Visible = false;
             VMRCViewOnlyButton.Visible = false;
 
-            if (CurrentConnection != null)
+            if (this.terminalsControler.CurrentConnection != null)
             {
-                var vmrc = this.CurrentConnection as VMRCConnection;
+                var vmrc = this.terminalsControler.CurrentConnection as VMRCConnection;
                 if (vmrc != null)
                 {
                     VMRCAdminSwitchButton.Visible = true;
                     VMRCViewOnlyButton.Visible = true;
                 }
 
-                var vnc = this.CurrentConnection as VNCConnection;
+                var vnc = this.terminalsControler.CurrentConnection as VNCConnection;
                 if (vnc != null)
                 {
                     vncActionButton.Visible = true;
                 }
 
-                this.TerminalServerMenuButton.Visible = this.CurrentConnection.IsTerminalServer;
+                this.TerminalServerMenuButton.Visible = this.terminalsControler.CurrentConnection.IsTerminalServer;
             }
         }
 
@@ -399,27 +388,27 @@ namespace Terminals
         private void BuildTerminalServerButtonMenu()
         {
             TerminalServerMenuButton.DropDownItems.Clear();
-
-            if (this.CurrentConnection != null && this.CurrentConnection.IsTerminalServer)
+            var currentConnection = this.terminalsControler.CurrentConnection;
+            if (currentConnection != null && currentConnection.IsTerminalServer)
             {
                 var sessions = new ToolStripMenuItem(Program.Resources.GetString("Sessions"));
-                sessions.Tag = this.CurrentConnection.Server;
+                sessions.Tag = currentConnection.Server;
                 TerminalServerMenuButton.DropDownItems.Add(sessions);
                 var svr = new ToolStripMenuItem(Program.Resources.GetString("Server"));
-                svr.Tag = this.CurrentConnection.Server;
+                svr.Tag = currentConnection.Server;
                 TerminalServerMenuButton.DropDownItems.Add(svr);
                 var sd = new ToolStripMenuItem(Program.Resources.GetString("Shutdown"));
                 sd.Click += new EventHandler(sd_Click);
-                sd.Tag = this.CurrentConnection.Server;
+                sd.Tag = currentConnection.Server;
                 svr.DropDownItems.Add(sd);
                 var rb = new ToolStripMenuItem(Program.Resources.GetString("Reboot"));
                 rb.Click += new EventHandler(sd_Click);
-                rb.Tag = this.CurrentConnection.Server;
+                rb.Tag = currentConnection.Server;
                 svr.DropDownItems.Add(rb);
 
-                if (this.CurrentConnection.Server.Sessions != null)
+                if (currentConnection.Server.Sessions != null)
                 {
-                    foreach (TerminalServices.Session session in this.CurrentConnection.Server.Sessions)
+                    foreach (TerminalServices.Session session in currentConnection.Server.Sessions)
                     {
                         if (session.Client.ClientName != "")
                         {
@@ -652,7 +641,7 @@ namespace Terminals
             using (var qc = new QuickConnect(this.persistence))
             {
                 if (qc.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(qc.ConnectionName))
-                    this.connectionsUiFactory.ConnectByFavoriteNames(new List<string>(){ qc.ConnectionName} );
+                    this.connectionsUiFactory.ConnectByFavoriteNames(new List<string>() { qc.ConnectionName });
             }
         }
 
@@ -782,41 +771,41 @@ namespace Terminals
                 this.FullScreen = !this.FullScreen;
             }
             else switch (clickedItem.Name)
-            {
-                case FavoritesMenuLoader.COMMAND_CREDENTIALMANAGER:
-                    this.ShowCredentialsManager();
-                    break;
-                case FavoritesMenuLoader.COMMAND_ORGANIZEFAVORITES:
-                    this.ManageConnectionsToolStripMenuItem_Click(null, null);
-                    break;
-                case FavoritesMenuLoader.COMMAND_OPTIONS:
-                    this.OptionsToolStripMenuItem_Click(null, null);
-                    break;
-                case FavoritesMenuLoader.COMMAND_NETTOOLS:
-                    this.ToolStripButton2_Click(null, null);
-                    break;
-                case FavoritesMenuLoader.COMMAND_CAPTUREMANAGER:
-                    this.terminalsControler.FocusCaptureManager();
-                    break;
-                case FavoritesMenuLoader.COMMAND_EXIT:
-                    this.Close();
-                    break;
-                case FavoritesMenuLoader.QUICK_CONNECT:
-                    this.ShowQuickConnect();
-                    break;
-                case FavoritesMenuLoader.COMMAND_SHOWMENU:
-                    {
-                        Boolean visible = !this.menuStrip.Visible;
-                        this.menuStrip.Visible = visible;
-                        this.menubarToolStripMenuItem.Checked = visible;
-                    }
-                    break;
-                case FavoritesMenuLoader.COMMAND_SPECIAL:
-                    return;
-                default:
-                    this.OnFavoriteTrayToolsStripClick(e);
-                    break;
-            }
+                {
+                    case FavoritesMenuLoader.COMMAND_CREDENTIALMANAGER:
+                        this.ShowCredentialsManager();
+                        break;
+                    case FavoritesMenuLoader.COMMAND_ORGANIZEFAVORITES:
+                        this.ManageConnectionsToolStripMenuItem_Click(null, null);
+                        break;
+                    case FavoritesMenuLoader.COMMAND_OPTIONS:
+                        this.OptionsToolStripMenuItem_Click(null, null);
+                        break;
+                    case FavoritesMenuLoader.COMMAND_NETTOOLS:
+                        this.ToolStripButton2_Click(null, null);
+                        break;
+                    case FavoritesMenuLoader.COMMAND_CAPTUREMANAGER:
+                        this.terminalsControler.FocusCaptureManager();
+                        break;
+                    case FavoritesMenuLoader.COMMAND_EXIT:
+                        this.Close();
+                        break;
+                    case FavoritesMenuLoader.QUICK_CONNECT:
+                        this.ShowQuickConnect();
+                        break;
+                    case FavoritesMenuLoader.COMMAND_SHOWMENU:
+                        {
+                            Boolean visible = !this.menuStrip.Visible;
+                            this.menuStrip.Visible = visible;
+                            this.menubarToolStripMenuItem.Checked = visible;
+                        }
+                        break;
+                    case FavoritesMenuLoader.COMMAND_SPECIAL:
+                        return;
+                    default:
+                        this.OnFavoriteTrayToolsStripClick(e);
+                        break;
+                }
 
             this.QuickContextMenu.Hide();
         }
@@ -829,7 +818,7 @@ namespace Terminals
             {
                 String itemName = e.ClickedItem.Text;
                 if (tag == FavoritesMenuLoader.FAVORITE)
-                    this.connectionsUiFactory.ConnectByFavoriteNames(new List<string>(){itemName});
+                    this.connectionsUiFactory.ConnectByFavoriteNames(new List<string>() { itemName });
             }
         }
 
@@ -842,7 +831,7 @@ namespace Terminals
         {
             IGroup selectedGroup = ((GroupMenuItem)sender).Group;
             IFavorite selectedFavorite = this.terminalsControler.SelectedFavorite;
-            
+
             if (selectedGroup != null && selectedFavorite != null)
             {
                 selectedGroup.AddFavorite(selectedFavorite);
@@ -1280,25 +1269,19 @@ namespace Terminals
 
         private void VMRCAdminSwitchButton_Click(object sender, EventArgs e)
         {
-            if (this.CurrentConnection != null)
+            var vmrc = this.terminalsControler.CurrentConnection as VMRCConnection;
+            if (vmrc != null)
             {
-                var vmrc = this.CurrentConnection as VMRCConnection;
-                if (vmrc != null)
-                {
-                    vmrc.AdminDisplay();
-                }
+                vmrc.AdminDisplay();
             }
         }
 
         private void VMRCViewOnlyButton_Click(object sender, EventArgs e)
         {
-            if (this.CurrentConnection != null)
+            var vmrc = this.terminalsControler.CurrentConnection as VMRCConnection;
+            if (vmrc != null)
             {
-                var vmrc = this.CurrentConnection as VMRCConnection;
-                if (vmrc != null)
-                {
-                    vmrc.ViewOnlyMode = !vmrc.ViewOnlyMode;
-                }
+                vmrc.ViewOnlyMode = !vmrc.ViewOnlyMode;
             }
 
             this.UpdateControls();
@@ -1445,34 +1428,32 @@ namespace Terminals
 
         private void SendAltKeyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (sender != null && (sender as ToolStripMenuItem) != null)
+            var menuItem = sender as ToolStripMenuItem;
+            if (sender != null && menuItem != null)
             {
-                String key = (sender as ToolStripMenuItem).Text;
-                if (this.CurrentConnection != null)
+                String key = menuItem.Text;
+                var vnc = this.terminalsControler.CurrentConnection as VNCConnection;
+                if (vnc != null)
                 {
-                    var vnc = this.CurrentConnection as VNCConnection;
-                    if (vnc != null)
+                    if (key == sendALTF4KeyToolStripMenuItem.Text)
                     {
-                        if (key == sendALTF4KeyToolStripMenuItem.Text)
-                        {
-                            vnc.SendSpecialKeys(VncSharp.SpecialKeys.AltF4);
-                        }
-                        else if (key == sendALTKeyToolStripMenuItem.Text)
-                        {
-                            vnc.SendSpecialKeys(VncSharp.SpecialKeys.Alt);
-                        }
-                        else if (key == sendCTRLESCKeysToolStripMenuItem.Text)
-                        {
-                            vnc.SendSpecialKeys(VncSharp.SpecialKeys.CtrlEsc);
-                        }
-                        else if (key == sendCTRLKeyToolStripMenuItem.Text)
-                        {
-                            vnc.SendSpecialKeys(VncSharp.SpecialKeys.Ctrl);
-                        }
-                        else if (key == sentCTRLALTDELETEKeysToolStripMenuItem.Text)
-                        {
-                            vnc.SendSpecialKeys(VncSharp.SpecialKeys.CtrlAltDel);
-                        }
+                        vnc.SendSpecialKeys(VncSharp.SpecialKeys.AltF4);
+                    }
+                    else if (key == sendALTKeyToolStripMenuItem.Text)
+                    {
+                        vnc.SendSpecialKeys(VncSharp.SpecialKeys.Alt);
+                    }
+                    else if (key == sendCTRLESCKeysToolStripMenuItem.Text)
+                    {
+                        vnc.SendSpecialKeys(VncSharp.SpecialKeys.CtrlEsc);
+                    }
+                    else if (key == sendCTRLKeyToolStripMenuItem.Text)
+                    {
+                        vnc.SendSpecialKeys(VncSharp.SpecialKeys.Ctrl);
+                    }
+                    else if (key == sentCTRLALTDELETEKeysToolStripMenuItem.Text)
+                    {
+                        vnc.SendSpecialKeys(VncSharp.SpecialKeys.CtrlAltDel);
                     }
                 }
             }
@@ -1537,10 +1518,7 @@ namespace Terminals
 
         private void ViewInNewWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.CurrentConnection != null)
-            {
-                this.terminalsControler.DetachTabToNewWindow();
-            }
+             this.terminalsControler.DetachTabToNewWindow();
         }
 
         private void RebuildShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
