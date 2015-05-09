@@ -22,7 +22,7 @@ namespace Terminals.Connections
             // networkingToolsLayout1
             // 
             this.layout.Location = new System.Drawing.Point(0, 0);
-            this.layout.Name = "layout1";
+            this.layout.Name = CaptureManagerLayout.ControlName;
             this.layout.Size = new System.Drawing.Size(700, 500);
             this.layout.TabIndex = 0;
             this.layout.Dock = DockStyle.Fill;

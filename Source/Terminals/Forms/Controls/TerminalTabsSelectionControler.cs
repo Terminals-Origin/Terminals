@@ -169,43 +169,55 @@ namespace Terminals
             }
         }
 
-        internal void RefreshCaptureManagerAndCreateItsTab(bool openManagerTab)
+        internal void CaptureScreen()
         {
-            Boolean createNew = !this.RefreshCaptureManager(this.FocusCaptureManager);
+            this.CaptureScreen(this.mainTabControl);
+        }
 
-            if (createNew) // capture manager wasnt found
-            {
-                if (!openManagerTab && (!settings.EnableCaptureToFolder || !settings.AutoSwitchOnCapture))
-                    createNew = false;
-            }
+        /// <summary>
+        /// We need to provide the tab from outside, because it may be tab from PopUp window
+        /// </summary>
+        internal void CaptureScreen(TabControl.TabControl tabControl)
+        {
+            CaptureManager.CaptureManager.PerformScreenCapture(tabControl, this.SelectedFavorite);
+            this.RefreshCaptureManagerAndCreateItsTab(false);
+        }
 
-            if (createNew)
-            {
+        internal void FocusCaptureManager()
+        {
+            this.RefreshCaptureManagerAndCreateItsTab(true);
+        }
+
+        private void RefreshCaptureManagerAndCreateItsTab(bool openManagerTab)
+        {
+            Boolean refreshed = this.RefreshCaptureManager(openManagerTab);
+
+            if (!refreshed && this.NeedsFocusCaptureManagerTab(openManagerTab))
                 this.connectionsUiFactory.CreateCaptureManagerTab();
-            }
         }
 
         /// <summary>
         /// Updates the CaptureManager tabcontrol, focuses it and updates its content.
         /// </summary>
+        /// <param name="openManagerTab"></param>
         /// <returns>true, Tab exists and was updated, otherwise false.</returns>
-        private Boolean RefreshCaptureManager(Action<CaptureManagerLayout> focus)
+        private bool RefreshCaptureManager(bool openManagerTab)
         {
             CaptureManagerLayout captureManager = this.FindCaptureManagerControl();
 
             if (captureManager != null)
             {
                 captureManager.RefreshView();
-                focus(captureManager);
+                this.FocusCaptureManager(captureManager, openManagerTab);
                 return true;
             }
 
             return false;
         }
 
-        private void FocusCaptureManager(CaptureManagerLayout connectionManager)
+        private void FocusCaptureManager(CaptureManagerLayout connectionManager, bool openManagerTab)
         {
-            if (this.settings.EnableCaptureToFolder && this.settings.AutoSwitchOnCapture)
+            if (this.NeedsFocusCaptureManagerTab(openManagerTab))
             {
                 connectionManager.BringToFront();
                 connectionManager.Update();
@@ -215,13 +227,18 @@ namespace Terminals
             }
         }
 
+        private bool NeedsFocusCaptureManagerTab(bool openManagerTab)
+        {
+            return openManagerTab || (this.settings.EnableCaptureToFolder && this.settings.AutoSwitchOnCapture);
+        }
+
         private CaptureManagerLayout FindCaptureManagerControl()
         {
             TerminalTabControlItem tab = this.FindCaptureManagerTab();
             if (tab != null)
             {
                 // after the connection is removed, this index moves to zero
-                return tab.Controls[1] as CaptureManagerLayout;
+                return tab.Controls[CaptureManagerLayout.ControlName] as CaptureManagerLayout;
             }
 
             return null;
@@ -243,21 +260,6 @@ namespace Terminals
             {
                 detachedWindow.UpdateCaptureButtonEnabled(newEnable);
             }
-        }
-
-        /// <summary>
-        /// We need to provide the tab from outside, because it may be tab from PopUp window
-        /// </summary>
-        internal void CaptureScreenToCaptureManger(TabControl.TabControl tabControl)
-        {
-            CaptureManager.CaptureManager.PerformScreenCapture(tabControl, this.SelectedFavorite);
-            this.RefreshCaptureManagerAndCreateItsTab(false);
-        }
-
-        internal void CaptureScreen()
-        {
-            CaptureManager.CaptureManager.PerformScreenCapture(this.mainTabControl, this.SelectedFavorite);
-            this.RefreshCaptureManager(cm => { });
         }
 
         internal IEnumerable<IFavorite> SelectTabsWithFavorite()

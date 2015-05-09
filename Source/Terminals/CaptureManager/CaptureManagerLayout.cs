@@ -12,6 +12,7 @@ namespace Terminals.CaptureManager
 {
     internal partial class CaptureManagerLayout : UserControl
     {
+        public const string ControlName = "layout1";
         private TreeNode root = new TreeNode("Capture Root Folder");
         private ToolStripMenuItem flickrMenuItem;
 
