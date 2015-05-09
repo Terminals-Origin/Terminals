@@ -66,15 +66,9 @@ namespace Terminals
 
         private void UpdateAttachedTabTitle(IFavorite updated)
         {
-            TabControlItem attachedTab = this.FindAttachedTab(updated);
+            TabControlItem attachedTab = this.filter.FindAttachedTab(updated);
             if (attachedTab != null)
                 attachedTab.Title = updated.Name;
-        }
-
-        private TabControlItem FindAttachedTab(IFavorite updated)
-        {
-            return this.mainTabControl.Items.Cast<TerminalTabControlItem>()
-                .FirstOrDefault(tab => tab.Favorite != null && tab.Favorite.StoreIdEquals(updated));
         }
 
         private void UpdateDetachedWindowTitle(IFavorite updated)
@@ -86,8 +80,7 @@ namespace Terminals
 
         private PopupTerminal FindDetachedWindowByFavorite(IFavorite updated)
         {
-            return this.detachedWindows.FirstOrDefault(window => window.Favorite != null &&
-                    window.Favorite.StoreIdEquals(updated));
+            return this.detachedWindows.FirstOrDefault(window => window.HasFavorite(updated));
         }
 
         /// <summary>
@@ -229,7 +222,7 @@ namespace Terminals
 
         private CaptureManagerLayout FindCaptureManagerControl()
         {
-            TerminalTabControlItem tab = this.FindCaptureManagerTab();
+            TerminalTabControlItem tab = this.filter.FindCaptureManagerTab();
             if (tab != null)
             {
                 // after the connection is removed, this index moves to zero
@@ -239,15 +232,6 @@ namespace Terminals
             return null;
         }
 
-        private TerminalTabControlItem FindCaptureManagerTab()
-        {
-            string captureManagerTitle = Program.Resources.GetString("CaptureManager");
-
-            return this.mainTabControl.Items
-                .OfType<TerminalTabControlItem>()
-                .FirstOrDefault(ti => ti.Title == captureManagerTitle);
-        }
-
         internal void UpdateCaptureButtonOnDetachedPopUps()
         {
             bool newEnable = settings.EnabledCaptureToFolderAndClipBoard;
@@ -255,24 +239,6 @@ namespace Terminals
             {
                 detachedWindow.UpdateCaptureButtonEnabled(newEnable);
             }
-        }
-
-        internal IEnumerable<IFavorite> SelectTabsWithFavorite()
-        {
-            return this.mainTabControl.Items.OfType<TerminalTabControlItem>()
-                .Where(ti => ti.Favorite != null)
-                .Select(ti => ti.Favorite);
-        }
-
-        internal IFavorite FindFavoriteByTabTitle(string tabTitle)
-        {
-            var tab = this.mainTabControl.Items.OfType<TerminalTabControlItem>()
-                .FirstOrDefault(candidate => candidate.Title == tabTitle);
-
-            if (tab != null)
-                return tab.Favorite;
-
-            return null;
         }
     }
 }
