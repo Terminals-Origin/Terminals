@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Terminals.Connections;
 using Terminals.Data;
 
 namespace Terminals
@@ -10,6 +11,13 @@ namespace Terminals
         private readonly TerminalTabsSelectionControler mainTabsControler;
         private bool fullScreen;
 
+        private readonly TabControlFilter filter;
+
+        internal IFavorite Favorite
+        {
+            get { return this.filter.SelectedFavorite; }
+        }
+
         internal PopupTerminal()
         {
             InitializeComponent();
@@ -19,15 +27,7 @@ namespace Terminals
             : this()
         {
             this.mainTabsControler = mainTabsControler;
-        }
-
-        internal IFavorite Favorite
-        {
-            get
-            {
-                var tabControl = (TerminalTabControlItem)this.tabControl1.Items[0];
-                return tabControl.Connection.Favorite;
-            }
+            this.filter = new TabControlFilter(this.tabControl1);
         }
 
         internal void AddTerminal(TerminalTabControlItem tabControlItem)
@@ -44,10 +44,14 @@ namespace Terminals
 
         private void PopupTerminal_Load(object sender, EventArgs e)
         {
-            closeTimer = new Timer();
-            closeTimer.Interval = 500;
-            closeTimer.Tick += new EventHandler(this.CloseTimer_Tick);
-            closeTimer.Start();
+            IConnection connection = this.filter.CurrentConnection;
+            if (connection != null) // dont run the timer for not connected tab
+            {
+                closeTimer = new Timer();
+                closeTimer.Interval = 500;
+                closeTimer.Tick += new EventHandler(this.CloseTimer_Tick);
+                closeTimer.Start();
+            }
         }
 
         /// <summary>
@@ -55,8 +59,8 @@ namespace Terminals
         /// </summary>
         private void CloseTimer_Tick(object sender, EventArgs e)
         {
-            TerminalTabControlItem activeTab = this.tabControl1.SelectedItem as TerminalTabControlItem;
-            if (activeTab != null && !activeTab.Connection.Connected)
+            IConnection connection = this.filter.CurrentConnection;
+            if (connection != null && !connection.Connected)
             {
                 this.closeTimer.Stop();
                 this.Close();

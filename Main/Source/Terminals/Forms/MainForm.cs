@@ -1461,14 +1461,11 @@ namespace Terminals
 
         private void ToolStripButton4_Click(object sender, EventArgs e)
         {
-            if (this.terminalsControler.HasSelected)
+            IConnection connection = this.terminalsControler.CurrentConnection;
+            if (connection != null && connection.Favorite != null)
             {
-                TerminalTabControlItem terminalTabPage = this.terminalsControler.Selected;
-                if (terminalTabPage.Connection != null)
-                {
-                    DesktopSize desktop = terminalTabPage.Connection.Favorite.Display.DesktopSize;
-                    terminalTabPage.Connection.ChangeDesktopSize(desktop);
-                }
+                DesktopSize desktop = connection.Favorite.Display.DesktopSize;
+                connection.ChangeDesktopSize(desktop);
             }
         }
 
