@@ -179,6 +179,7 @@
     <Compile Include="Connections\VMRC\FakeVmrcConnection.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Connections\VMRC\ICurrenctConnectionProvider.cs" />
     <Compile Include="Connections\VMRC\IToolbarExtender.cs" />
     <Compile Include="Connections\VMRC\VmrcMenuVisitor.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />

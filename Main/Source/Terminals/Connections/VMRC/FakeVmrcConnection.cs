@@ -26,8 +26,8 @@ namespace Terminals.Connections
 
         public void Visit(ToolStrip standardToolbar)
         {
-            var menuVisitor = new VmrcMenuVisitor();
-            menuVisitor.UpdateMenu(standardToolbar);
+            //var menuVisitor = new VmrcMenuVisitor();
+            //menuVisitor.UpdateMenu(standardToolbar);
         }
     }
 }
