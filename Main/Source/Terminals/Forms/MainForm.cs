@@ -634,7 +634,7 @@ namespace Terminals
             //handle global keyup events
             if (e.Control && e.KeyCode == Keys.F12)
             {
-                this.terminalsControler.CaptureScreenToCaptureManger(this.tcTerminals);
+                this.terminalsControler.CaptureScreen();
             }
             else if (e.KeyCode == Keys.F4)
             {
@@ -796,7 +796,7 @@ namespace Terminals
                     this.ToolStripButton2_Click(null, null);
                     break;
                 case FavoritesMenuLoader.COMMAND_CAPTUREMANAGER:
-                    this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(true);
+                    this.terminalsControler.FocusCaptureManager();
                     break;
                 case FavoritesMenuLoader.COMMAND_EXIT:
                     this.Close();
@@ -1271,14 +1271,11 @@ namespace Terminals
         private void CaptureScreenToolStripButton_Click(object sender, EventArgs e)
         {
             this.terminalsControler.CaptureScreen();
-
-            if (settings.EnableCaptureToFolder && settings.AutoSwitchOnCapture)
-                this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(false);
         }
 
         private void CaptureTerminalScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.CaptureScreenToolStripButton_Click(null, null);
+            this.terminalsControler.CaptureScreen();
         }
 
         private void VMRCAdminSwitchButton_Click(object sender, EventArgs e)
@@ -1438,19 +1435,12 @@ namespace Terminals
 
         private void ToolStripMenuItemCaptureManager_Click(object sender, EventArgs e)
         {
-            this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(true);
+            this.terminalsControler.FocusCaptureManager();
         }
 
         private void ToolStripButtonCaptureManager_Click(object sender, EventArgs e)
         {
-            Boolean origval = settings.AutoSwitchOnCapture;
-            if (!settings.EnableCaptureToFolder || !settings.AutoSwitchOnCapture)
-            {
-                settings.AutoSwitchOnCapture = true;
-            }
-
-            this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(true);
-            settings.AutoSwitchOnCapture = origval;
+            this.terminalsControler.FocusCaptureManager();
         }
 
         private void SendAltKeyToolStripMenuItem_Click(object sender, EventArgs e)
