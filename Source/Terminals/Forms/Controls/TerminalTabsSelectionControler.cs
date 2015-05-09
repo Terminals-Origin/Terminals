@@ -20,51 +20,32 @@ namespace Terminals
         private readonly TabControl.TabControl mainTabControl;
         private ConnectionsUiFactory connectionsUiFactory;
 
+        private readonly TabControlFilter filter;
 
         internal IConnection CurrentConnection
         {
-            get
-            {
-                if (this.HasSelected)
-                    return this.Selected.Connection;
-
-                return null;
-            }
+            get { return this.filter.CurrentConnection; }
         }
 
-        /// <summary>
-        /// Gets the actualy selected TabControl even if it is not in main window
-        /// </summary>
         internal TerminalTabControlItem Selected
         {
-            get
-            {
-                return this.mainTabControl.SelectedItem as TerminalTabControlItem;
-            }
+            get { return this.filter.Selected; }
         }
 
         internal IFavorite SelectedFavorite
         {
-            get
-            {
-                if (this.HasSelected)
-                    return this.Selected.Favorite;
-
-                return null;
-            }
+            get { return this.filter.SelectedFavorite; }
         }
 
         internal bool HasSelected
         {
-            get
-            {
-                return this.mainTabControl.SelectedItem != null;
-            }
+            get { return this.filter.HasSelected; }
         }
 
         internal TerminalTabsSelectionControler(TabControl.TabControl tabControl, IPersistence persistence)
         {
             this.mainTabControl = tabControl;
+            this.filter = new TabControlFilter(tabControl);
             persistence.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesChanged);
         }
 
