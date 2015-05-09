@@ -13,7 +13,7 @@ namespace Terminals
     /// <summary>
     /// Adapter between all windows (including main window) and TabControl
     /// </summary>
-    internal class TerminalTabsSelectionControler
+    internal class TerminalTabsSelectionControler : ICurrenctConnectionProvider
     {
         private readonly Settings settings = Settings.Instance;
         private readonly List<PopupTerminal> detachedWindows = new List<PopupTerminal>();
@@ -22,7 +22,7 @@ namespace Terminals
 
         private readonly TabControlFilter filter;
 
-        internal IConnection CurrentConnection
+        public IConnection CurrentConnection
         {
             get { return this.filter.CurrentConnection; }
         }
