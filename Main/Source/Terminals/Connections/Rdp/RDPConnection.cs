@@ -27,9 +27,6 @@ namespace Terminals.Connections
         private MSTSCLib.IMsRdpClientNonScriptable4 nonScriptable;
         private AxMsRdpClient6NotSafeForScripting client = null;
 
-        public delegate void ConnectionEstablish(RDPConnection Connection);
-        public event ConnectionEstablish OnConnected;
-
         #region IConnectionExtra
 
         bool IConnectionExtra.FullScreen
@@ -538,7 +535,6 @@ namespace Terminals.Connections
             this.client.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(this.client_OnWarning);
             this.client.OnFatalError += new IMsTscAxEvents_OnFatalErrorEventHandler(this.client_OnFatalError);
             this.client.OnLogonError += new IMsTscAxEvents_OnLogonErrorEventHandler(this.client_OnLogonError);
-            this.client.OnConnected += new EventHandler(this.client_OnConnected);
             // assign the drag and drop event handlers directly throws an exception
             var clientControl = (Control)this.client;
             clientControl.DragEnter += new DragEventHandler(this.client_DragEnter);
@@ -560,12 +556,6 @@ namespace Terminals.Connections
         #endregion
 
         #region Eventing
-
-        private void client_OnConnected(object sender, EventArgs e)
-        {
-            if (this.OnConnected != null)
-                this.OnConnected(this);
-        }
 
         private void client_DragDrop(object sender, DragEventArgs e)
         {
