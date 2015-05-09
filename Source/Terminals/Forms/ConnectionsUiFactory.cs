@@ -32,33 +32,26 @@ namespace Terminals.Forms
 
         internal void CreateCaptureManagerTab()
         {
-            string title = Program.Resources.GetString("CaptureManager");
-            var terminalTabPage = new TerminalTabControlItem(title);
-            this.ConfigureTabPage(terminalTabPage, title);
-            var control = new CaptureManagerLayout();
-            control.Name = CaptureManagerLayout.ControlName;
-            control.Dock = DockStyle.Fill;
-            control.Parent = terminalTabPage;
-            this.BringToFrontOnMainForm(control);
+            Action<CaptureManagerLayout> executeExtra = control => { };
+            this.OpenTabControl("CaptureManager", CaptureManagerLayout.ControlName,
+                "Error loading the Capture Manager Tab Page", executeExtra);
         }
 
         internal void OpenNetworkingTools(NettworkingTools action, string host)
         {
-            Action<NetworkingToolsConnection> executeExtra = connection => connection.Execute(action, host, this.persistence);
-            this.OpenConenction("NetworkingTools", "Open Networking Tools Failure", executeExtra);
+            Action<NetworkingToolsLayout> executeExtra = control => { control.Execute(action, host, this.persistence); };
+            this.OpenTabControl("NetworkingTools", "NetworkingTools", "Open Networking Tools Failure", executeExtra);
         }
 
-        private void OpenConenction<TConnection>(string titleResourceKey, string openErrorMessage, Action<TConnection> executeExtra)
-            where TConnection : Connection
+        private void OpenTabControl<TControl>(string titleResourceKey,  string controlName,
+            string openErrorMessage, Action<TControl> executeExtra)
+            where TControl : UserControl
         {
             string title = Program.Resources.GetString(titleResourceKey);
             var terminalTabPage = new TerminalTabControlItem(title);
             try
             {
-                this.ConfigureTabPage(terminalTabPage, title);
-                var conn = Activator.CreateInstance<TConnection>();
-                this.ConfigureConnection(conn, terminalTabPage);
-                executeExtra(conn);
+                this.ConfigureTabPage(title, controlName, executeExtra, terminalTabPage);
             }
             catch (Exception exc)
             {
@@ -68,11 +61,17 @@ namespace Terminals.Forms
             }
         }
 
-        private void ConfigureConnection(Connection conn, TerminalTabControlItem terminalTabPage)
+        private void ConfigureTabPage<TControl>(string title, string controlName,
+            Action<TControl> executeExtra, TerminalTabControlItem terminalTabPage)
+            where TControl : UserControl
         {
-            AssignControls(conn, terminalTabPage, this.mainForm);
-            conn.Connect();
-            this.BringToFrontOnMainForm(conn);
+            this.ConfigureTabPage(terminalTabPage, title);
+            var control = Activator.CreateInstance<TControl>();
+            control.Name = controlName;
+            control.Dock = DockStyle.Fill;
+            control.Parent = terminalTabPage;
+            executeExtra(control);
+            this.BringToFrontOnMainForm(control);
         }
 
         internal void ConnectByFavoriteNames(IEnumerable<string> favoriteNames, bool forceConsole = false, bool forceNewWindow = false, ICredentialSet credentials = null)
