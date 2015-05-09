@@ -20,7 +20,7 @@ namespace Terminals
 
         internal PopupTerminal()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         internal PopupTerminal(TerminalTabsSelectionControler mainTabsControler)
@@ -36,9 +36,15 @@ namespace Terminals
             this.Text = tabControlItem.Title;
         }
 
+        internal bool HasFavorite(IFavorite updated)
+        {
+            return this.Favorite != null && this.Favorite.StoreIdEquals(updated);
+        }
+
         internal void UpdateTitle()
         {
-            this.Text = this.Favorite.Name;
+            if(this.Favorite != null)
+                this.Text = this.Favorite.Name;
             this.tabControl1.Items[0].Title = this.Text;
         }
 
@@ -47,10 +53,10 @@ namespace Terminals
             IConnection connection = this.filter.CurrentConnection;
             if (connection != null) // dont run the timer for not connected tab
             {
-                closeTimer = new Timer();
-                closeTimer.Interval = 500;
-                closeTimer.Tick += new EventHandler(this.CloseTimer_Tick);
-                closeTimer.Start();
+                this.closeTimer = new Timer();
+                this.closeTimer.Interval = 500;
+                this.closeTimer.Tick += new EventHandler(this.CloseTimer_Tick);
+                this.closeTimer.Start();
             }
         }
 
@@ -91,7 +97,7 @@ namespace Terminals
 
         private void CaptureToolStripButton_Click(object sender, EventArgs e)
         {
-            CaptureScreen();
+            this.CaptureScreen();
         }
 
         private void CaptureScreen()
@@ -107,7 +113,7 @@ namespace Terminals
         private void PopupTerminal_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.F12)
-                CaptureScreen();
+                this.CaptureScreen();
 
             if (e.KeyCode == Keys.F11)
                 this.SwithFullScreen();

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -46,6 +45,8 @@ namespace Terminals
         private readonly ConnectionsUiFactory connectionsUiFactory;
 
         private readonly TabControlRemover tabControlRemover;
+
+        private readonly TabControlFilter tabsFilter;
 
         #endregion
 
@@ -156,7 +157,7 @@ namespace Terminals
                 InitializeComponent(); // main designer procedure
 
                 this.formSettings = new FormSettings(this);
-
+                this.tabsFilter = new TabControlFilter(this.tcTerminals);
                 this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals, this.persistence);
                 this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler, this.persistence);
                 this.terminalsControler.AssingUiFactory(this.connectionsUiFactory);
@@ -1088,7 +1089,7 @@ namespace Terminals
         {
             foreach (ToolStripItem menuItem in this.tcTerminals.Menu.Items)
             {
-                IFavorite favorite = this.terminalsControler.FindFavoriteByTabTitle(menuItem.Text);
+                IFavorite favorite = this.tabsFilter.FindFavoriteByTabTitle(menuItem.Text);
 
                 if (favorite != null)
                     menuItem.Image = favorite.ToolBarIconImage;
@@ -1102,7 +1103,7 @@ namespace Terminals
                 return;
 
             IGroup group = FavoritesFactory.GetOrAddNewGroup(this.persistence, newGroupName);
-            foreach (IFavorite favorite in this.terminalsControler.SelectTabsWithFavorite())
+            foreach (IFavorite favorite in this.tabsFilter.SelectTabsWithFavorite())
             {
                 group.AddFavorite(favorite);
             }

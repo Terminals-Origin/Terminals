@@ -74,7 +74,7 @@ namespace Terminals
         {
             // unregister not the method here, but the registered method
             connection.OnDisconnected -= this.mainForm.OnDisconnected;
-            TerminalTabControlItem tabToClose = this.FindTabToClose(connection);
+            TerminalTabControlItem tabToClose = new TabControlFilter(this.tcTerminals).FindTabToClose(connection);
             this.InvokeCloseTab(tabToClose);
         }
 
@@ -140,13 +140,6 @@ namespace Terminals
                 if (this.tcTerminals.Items.Count == 0)
                     this.mainForm.FullScreen = false;
             }
-        }
-
-        private TerminalTabControlItem FindTabToClose(Connection connection)
-        {
-            return this.tcTerminals.Items
-                .OfType<TerminalTabControlItem>()
-                .FirstOrDefault(tab => tab.Connection == connection);
         }
     }
 }
