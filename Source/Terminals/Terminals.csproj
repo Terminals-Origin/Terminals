@@ -606,9 +606,6 @@
     <Compile Include="Connections\Connection.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CaptureManager\CaptureManagerConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Connections\Web\HTTPConnection.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1577,10 +1574,6 @@
     <EmbeddedResource Include="CaptureManager\CaptureManagerLayout.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CaptureManagerLayout.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CaptureManager\CaptureManagerConnection.resx">
-      <DependentUpon>CaptureManagerConnection.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Connections\Web\HTTPConnection.resx">
       <SubType>Designer</SubType>

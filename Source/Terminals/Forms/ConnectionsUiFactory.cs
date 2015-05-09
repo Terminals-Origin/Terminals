@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.CaptureManager;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
@@ -31,8 +32,14 @@ namespace Terminals.Forms
 
         internal void CreateCaptureManagerTab()
         {
-            Action<Connection> executeExtra = (connection) => { };
-            this.OpenConenction<CaptureManagerConnection>("CaptureManager", "Error loading the Capture Manager Tab Page", executeExtra);
+            string title = Program.Resources.GetString("CaptureManager");
+            var terminalTabPage = new TerminalTabControlItem(title);
+            this.ConfigureTabPage(terminalTabPage, title);
+            var control = new CaptureManagerLayout();
+            control.Name = CaptureManagerLayout.ControlName;
+            control.Dock = DockStyle.Fill;
+            control.Parent = terminalTabPage;
+            this.BringToFrontOnMainForm(control);
         }
 
         internal void OpenNetworkingTools(NettworkingTools action, string host)
@@ -109,6 +116,8 @@ namespace Terminals.Forms
 
         private static IFavorite GetFavoriteUpdatedCopy(IFavorite favorite, ConnectionDefinition definition)
         {
+            // TODO ensure the ID was copied, otherwise the tabControl can never communicate 
+            // with rest of the app, because it will never find it by ID.
             IFavorite favoriteCopy = favorite.Copy();
             UpdateForceConsole(favoriteCopy, definition);
             
@@ -270,10 +279,10 @@ namespace Terminals.Forms
             }
         }
 
-        private void BringToFrontOnMainForm(Control conn)
+        private void BringToFrontOnMainForm(Control tabContentControl)
         {
-            conn.BringToFront();
-            conn.Update();
+            tabContentControl.BringToFront();
+            tabContentControl.Update();
             this.mainForm.UpdateControls();
         }
     }
