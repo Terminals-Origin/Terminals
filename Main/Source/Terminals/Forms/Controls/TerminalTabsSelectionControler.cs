@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using TabControl;
+using Terminals.CaptureManager;
 using Terminals.Configuration;
-using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms;
 
@@ -171,7 +171,7 @@ namespace Terminals
 
         internal void RefreshCaptureManagerAndCreateItsTab(bool openManagerTab)
         {
-            Boolean createNew = !this.RefreshCaptureManager(true);
+            Boolean createNew = !this.RefreshCaptureManager(this.FocusCaptureManager);
 
             if (createNew) // capture manager wasnt found
             {
@@ -188,28 +188,52 @@ namespace Terminals
         /// <summary>
         /// Updates the CaptureManager tabcontrol, focuses it and updates its content.
         /// </summary>
-        /// <param name="setFocus">If true, focuses the capture manager Tab; otherwise nothting</param>
         /// <returns>true, Tab exists and was updated, otherwise false.</returns>
-        internal Boolean RefreshCaptureManager(Boolean setFocus)
+        private Boolean RefreshCaptureManager(Action<CaptureManagerLayout> focus)
         {
-            foreach (TerminalTabControlItem tab in this.mainTabControl.Items)
-            {
-                if (tab.Title == Program.Resources.GetString("CaptureManager"))
-                {
-                    CaptureManagerConnection conn = (tab.Connection as CaptureManagerConnection);
-                    conn.RefreshView();
-                    if (setFocus && settings.EnableCaptureToFolder && settings.AutoSwitchOnCapture)
-                    {
-                        conn.BringToFront();
-                        conn.Update();
-                        this.Select(tab);
-                    }
+            CaptureManagerLayout captureManager = this.FindCaptureManagerControl();
 
-                    return true;
-                }
+            if (captureManager != null)
+            {
+                captureManager.RefreshView();
+                focus(captureManager);
+                return true;
             }
 
             return false;
+        }
+
+        private void FocusCaptureManager(CaptureManagerLayout connectionManager)
+        {
+            if (this.settings.EnableCaptureToFolder && this.settings.AutoSwitchOnCapture)
+            {
+                connectionManager.BringToFront();
+                connectionManager.Update();
+                // the connection manager was resolved as control on the tab
+                var tab = connectionManager.Parent as TerminalTabControlItem;
+                this.Select(tab);
+            }
+        }
+
+        private CaptureManagerLayout FindCaptureManagerControl()
+        {
+            TerminalTabControlItem tab = this.FindCaptureManagerTab();
+            if (tab != null)
+            {
+                // after the connection is removed, this index moves to zero
+                return tab.Controls[1] as CaptureManagerLayout;
+            }
+
+            return null;
+        }
+
+        private TerminalTabControlItem FindCaptureManagerTab()
+        {
+            string captureManagerTitle = Program.Resources.GetString("CaptureManager");
+
+            return this.mainTabControl.Items
+                .OfType<TerminalTabControlItem>()
+                .FirstOrDefault(ti => ti.Title == captureManagerTitle);
         }
 
         internal void UpdateCaptureButtonOnDetachedPopUps()
@@ -233,7 +257,7 @@ namespace Terminals
         internal void CaptureScreen()
         {
             CaptureManager.CaptureManager.PerformScreenCapture(this.mainTabControl, this.SelectedFavorite);
-            this.RefreshCaptureManager(false);
+            this.RefreshCaptureManager(cm => { });
         }
 
         internal IEnumerable<IFavorite> SelectTabsWithFavorite()
