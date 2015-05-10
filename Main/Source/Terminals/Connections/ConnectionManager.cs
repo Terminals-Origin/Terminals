@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
@@ -76,6 +77,7 @@ namespace Terminals.Connections
                 case VNC:
                     return new VNCConnection();
                 case VMRC:
+                    //return new FakeVmrcConnection();
                     return new VMRCConnection();
                 case RAS:
                     return new RASConnection();
@@ -230,6 +232,11 @@ namespace Terminals.Connections
                     HTTP,
                     HTTPS
                 };
+        }
+
+        public static IEnumerable<IToolbarExtender> CreateToolbarExtensions(ICurrenctConnectionProvider provider)
+        {
+            yield return new VmrcMenuVisitor(provider);
         }
     }
 }
