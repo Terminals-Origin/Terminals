@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Terminals.Connections
 {
-    internal class VmrcMenuVisitor
+    internal class VmrcMenuVisitor : IToolbarExtender
     {
         internal const string VMRCADMINSWITCHBUTTON = "VMRCAdminSwitchButton";
         internal const string VMRCVIEWONLYBUTTON = "VMRCViewOnlyButton";
@@ -18,7 +18,7 @@ namespace Terminals.Connections
             this.connectionProvider = connectionProvider;
         }
 
-        internal void UpdateMenu(ToolStrip standardToolbar)
+        public void Visit(ToolStrip standardToolbar)
         {
             this.EnusereMenuCreated(standardToolbar);
 
