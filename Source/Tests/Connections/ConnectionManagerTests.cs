@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,17 +22,49 @@ namespace Tests.Connections
         [TestMethod]
         public void GetAvailableProtocols_ReturnsAll()
         {
-            int knownProtocols = ConnectionManager.GetAvailableProtocols().Distinct().Count();
+            int knownProtocols = GetUniqueProtocols().Count();
             Assert.AreEqual(8, knownProtocols, "All other test in this SUT operate on wrong data.");
         }
-        
+
         [TestMethod]
-        public void AllKnownProtocols_IsKnownProtocol_ReturnTrue()
+        public void UnknownPort_GetPortName_ReturnsRdp()
         {
-            bool allKnownAreKnown = ConnectionManager.GetAvailableProtocols()
-                .Distinct()
-                .All(ConnectionManager.IsKnownProtocol);
-            Assert.IsTrue(allKnownAreKnown, "GetAvailable protocols should match all of them as known.");
+            var testData = new Tuple<int, bool, string>(1111, false, ConnectionManager.RDP);
+            var allValid = this.AssertPortName(testData);
+            Assert.IsTrue(allValid, "We gues RDP for unknonwn default port number.");
+        }
+
+        [TestMethod]
+        public void AllKnownProtocols_GetPortName_ReturnValidPort()
+        {
+            var testData = new[]
+            {
+                new Tuple<int, bool, string>(ConnectionManager.RDPPort, false, ConnectionManager.RDP),
+                new Tuple<int, bool, string>(ConnectionManager.VNCVMRCPort, false, ConnectionManager.VNC),
+                new Tuple<int, bool, string>(ConnectionManager.VNCVMRCPort, true, ConnectionManager.VMRC),
+                new Tuple<int, bool, string>(ConnectionManager.TelnetPort, false, ConnectionManager.TELNET),
+                new Tuple<int, bool, string>(ConnectionManager.SSHPort, false, ConnectionManager.SSH),
+                new Tuple<int, bool, string>(ConnectionManager.HTTPPort, false, ConnectionManager.HTTP),
+                new Tuple<int, bool, string>(ConnectionManager.HTTPSPort, false, ConnectionManager.HTTPS),
+                new Tuple<int, bool, string>(ConnectionManager.ICAPort, false, ConnectionManager.ICA_CITRIX)
+            };
+
+            var allValid = testData.All(this.AssertPortName);
+            Assert.IsTrue(allValid, "All protocols have to be identified by default port.");
+        }
+
+        private bool AssertPortName(Tuple<int, bool, string> testCase)
+        {
+            var portName = ConnectionManager.GetPortName(testCase.Item1, testCase.Item2);
+            this.ReportResolvedPort(testCase, portName);
+            return testCase.Item3 == portName;
+        }
+
+        private void ReportResolvedPort(Tuple<int, bool, string> testCase, string portName)
+        {
+            const string MESSAGE_FORMAT = "Port {0} and isvmrc='{1}' resolved as {2}";
+            string message = string.Format(MESSAGE_FORMAT, testCase.Item1, testCase.Item2, portName);
+            this.TestContext.WriteLine(message);
         }
 
         [TestMethod]
@@ -63,6 +96,14 @@ namespace Tests.Connections
         {
             bool nonHttp = ConnectionManager.IsProtocolWebBased(UNKNOWN_PROTOCOL);
             Assert.IsFalse(nonHttp, "Unknown protcol cant fit to any category, definitely is not web based.");
+        }
+
+        [TestMethod]
+        public void AllKnownProtocols_IsKnownProtocol_ReturnTrue()
+        {
+            bool allKnownAreKnown = GetUniqueProtocols()
+                .All(ConnectionManager.IsKnownProtocol);
+            Assert.IsTrue(allKnownAreKnown, "GetAvailable protocols should match all of them as known.");
         }
 
         [TestMethod]
@@ -126,6 +167,11 @@ namespace Tests.Connections
             const string MESSAGE_FORMAT = "Tested Protocol '{0}': {1} controls, first '{2}'";
             string messgae = string.Format(MESSAGE_FORMAT, protocol, controls.Length, firstControl.Name);
             this.TestContext.WriteLine(messgae);
+        }
+
+        private static IEnumerable<string> GetUniqueProtocols()
+        {
+            return ConnectionManager.GetAvailableProtocols().Distinct();
         }
     }
 }
