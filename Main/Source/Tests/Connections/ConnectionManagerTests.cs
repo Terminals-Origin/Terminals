@@ -12,6 +12,8 @@ namespace Tests.Connections
     [TestClass]
     public class ConnectionManagerTests
     {
+        private const string PORTSMESSAGE = "All protocols have to be identified by default port and vice versa.";
+
         private const string UNKNOWN_PROTOCOL = "UNKNOWN_PROTOCOL";
 
         public TestContext TestContext { get; set; }
@@ -24,6 +26,40 @@ namespace Tests.Connections
         {
             int knownProtocols = GetUniqueProtocols().Count();
             Assert.AreEqual(8, knownProtocols, "All other test in this SUT operate on wrong data.");
+        }
+        [TestMethod]
+        public void UnknownProtocol_GetPort_Returns0()
+        {
+            var testData = new Tuple<string, int>(UNKNOWN_PROTOCOL, 0);
+            var allValid = this.AssertResolvedPort(testData);
+            Assert.IsTrue(allValid, "Unknow port we gues 0 as port number.");
+        }
+
+        [TestMethod]
+        public void AllKnownProtocols_GetPort_ReturnValidPort()
+        {
+            var testData = new[]
+            {
+                new Tuple<string, int>(ConnectionManager.RDP, ConnectionManager.RDPPort),
+                new Tuple<string, int>(ConnectionManager.VNC, ConnectionManager.VNCVMRCPort),
+                new Tuple<string, int>(ConnectionManager.VMRC, ConnectionManager.VNCVMRCPort),
+                new Tuple<string, int>(ConnectionManager.TELNET, ConnectionManager.TelnetPort),
+                new Tuple<string, int>(ConnectionManager.SSH, ConnectionManager.SSHPort),
+                new Tuple<string, int>(ConnectionManager.HTTP, ConnectionManager.HTTPPort),
+                new Tuple<string, int>(ConnectionManager.HTTPS, ConnectionManager.HTTPSPort),
+                new Tuple<string, int>(ConnectionManager.ICA_CITRIX, ConnectionManager.ICAPort)
+            };
+
+            var allValid = testData.All(this.AssertResolvedPort);
+            Assert.IsTrue(allValid, PORTSMESSAGE);
+        }
+
+        private bool AssertResolvedPort(Tuple<string, int> testCase)
+        {
+            var port = ConnectionManager.GetPort(testCase.Item1);
+            string message = string.Format("For '{0}' resolved '{1}' as port number", testCase.Item1, port);
+            this.TestContext.WriteLine(message);
+            return port == testCase.Item2;
         }
 
         [TestMethod]
@@ -50,7 +86,7 @@ namespace Tests.Connections
             };
 
             var allValid = testData.All(this.AssertPortName);
-            Assert.IsTrue(allValid, "All protocols have to be identified by default port.");
+            Assert.IsTrue(allValid, PORTSMESSAGE);
         }
 
         private bool AssertPortName(Tuple<int, bool, string> testCase)
