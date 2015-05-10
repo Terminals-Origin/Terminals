@@ -224,6 +224,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Resources\Libraries\mstsc\MSTSCLib.dll">
+      <Link>MSTSCLib.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\Resources\TestData\EmptyCredentials.xml">
       <Link>EmptyCredentials.xml</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

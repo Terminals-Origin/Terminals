@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Terminals;
 using Terminals.Connections;
+using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 
 namespace Tests.Connections
@@ -27,6 +29,42 @@ namespace Tests.Connections
             int knownProtocols = GetUniqueProtocols().Count();
             Assert.AreEqual(8, knownProtocols, "All other test in this SUT operate on wrong data.");
         }
+
+        [TestMethod]
+        public void AllKnownProtocols_CreateConnection_ReturnValidType()
+        {
+            var testData = new[]
+            {
+                new Tuple<string, Type>(ConnectionManager.RDP, typeof(RDPConnection)),
+                new Tuple<string, Type>(ConnectionManager.VNC, typeof(VNCConnection)),
+                new Tuple<string, Type>(ConnectionManager.VMRC, typeof(VMRCConnection)),
+                new Tuple<string, Type>(ConnectionManager.TELNET, typeof(TerminalConnection)),
+                new Tuple<string, Type>(ConnectionManager.SSH, typeof(TerminalConnection)),
+                new Tuple<string, Type>(ConnectionManager.HTTP, typeof(HTTPConnection)),
+                new Tuple<string, Type>(ConnectionManager.HTTPS, typeof(HTTPConnection)),
+                new Tuple<string, Type>(ConnectionManager.ICA_CITRIX, typeof(ICAConnection))
+            };
+
+            var allValid = testData.All(this.AssertCratedConnection);
+            Assert.IsTrue(allValid, "User would be unable to connect.");
+        }
+
+        private bool AssertCratedConnection(Tuple<string, Type> testCase)
+        {
+            var mockFavorite = new Mock<IFavorite>();
+            mockFavorite.SetupGet(f => f.Protocol).Returns(testCase.Item1);
+            Type created = ConnectionManager.CreateConnection(mockFavorite.Object).GetType();
+            this.ReportCreatedConnection(testCase, created);
+            return testCase.Item2 == created;
+        }
+
+        private void ReportCreatedConnection(Tuple<string, Type> testCase, Type created)
+        {
+            const string MESSAGE_FORMAT = "For protocol '{0}' created '{1}' connection, expected {2}.";
+            string message = string.Format(MESSAGE_FORMAT, testCase.Item1, created.Name, testCase.Item2.Name);
+            this.TestContext.WriteLine(message);
+        }
+
         [TestMethod]
         public void UnknownProtocol_GetPort_Returns0()
         {
@@ -57,7 +95,8 @@ namespace Tests.Connections
         private bool AssertResolvedPort(Tuple<string, int> testCase)
         {
             var port = ConnectionManager.GetPort(testCase.Item1);
-            string message = string.Format("For '{0}' resolved '{1}' as port number", testCase.Item1, port);
+            const string MESSAGE_FORAMT = "For '{0}' resolved '{1}' as port number, expected {2}";
+            string message = string.Format(MESSAGE_FORAMT, testCase.Item1, port, testCase.Item2);
             this.TestContext.WriteLine(message);
             return port == testCase.Item2;
         }
@@ -98,8 +137,8 @@ namespace Tests.Connections
 
         private void ReportResolvedPort(Tuple<int, bool, string> testCase, string portName)
         {
-            const string MESSAGE_FORMAT = "Port {0} and isvmrc='{1}' resolved as {2}";
-            string message = string.Format(MESSAGE_FORMAT, testCase.Item1, testCase.Item2, portName);
+            const string MESSAGE_FORMAT = "Port {0} and isvmrc='{1}' resolved as {2}, expected '{3}'";
+            string message = string.Format(MESSAGE_FORMAT, testCase.Item1, testCase.Item2, portName, testCase.Item3);
             this.TestContext.WriteLine(message);
         }
 
@@ -171,7 +210,7 @@ namespace Tests.Connections
         public void KnownProtocols_CreateControls_ReturnsAllControls()
         {
             Tuple<string, int, Type>[] testData = CreateControlsTestData();
-            bool allValid = testData.All(d => AssertCreatedControls(d.Item1, d.Item2, d.Item3));
+            bool allValid = testData.All(this.AssertCreatedControls);
             const string MESSAGE = "Created controls dont match expectations.";
             Assert.IsTrue(allValid, MESSAGE);
         }
@@ -188,20 +227,21 @@ namespace Tests.Connections
             };
         }
 
-        private bool AssertCreatedControls(string protocol, int expectedCount, Type firstControlExpected)
+        private bool AssertCreatedControls(Tuple<string, int, Type> testCase)
         {
-            var controls = ConnectionManager.CreateControls(protocol);
+            var controls = ConnectionManager.CreateControls(testCase.Item1);
             Type firstControl = controls[0].GetType();
-            this.ReportAssertedResult(protocol, controls, firstControl);
-            bool countMathes = expectedCount == controls.Length;
-            bool controlTypeMatches = firstControl == firstControlExpected;
+            this.ReportAssertedResult(testCase, controls, firstControl);
+            bool countMathes = testCase.Item2 == controls.Length;
+            bool controlTypeMatches = firstControl == testCase.Item3;
             return countMathes && controlTypeMatches;
         }
 
-        private void ReportAssertedResult(string protocol, Control[] controls, Type firstControl)
+        private void ReportAssertedResult(Tuple<string, int, Type> testCase, Control[] controls, Type firstControl)
         {
-            const string MESSAGE_FORMAT = "Tested Protocol '{0}': {1} controls, first '{2}'";
-            string messgae = string.Format(MESSAGE_FORMAT, protocol, controls.Length, firstControl.Name);
+            const string MESSAGE_FORMAT = "Tested Protocol '{0}': {1} controls, first '{2}', expected ({3},'{4}')";
+            string messgae = string.Format(MESSAGE_FORMAT, testCase.Item1,
+                controls.Length, firstControl.Name, testCase.Item2, testCase.Item3);
             this.TestContext.WriteLine(messgae);
         }
 
