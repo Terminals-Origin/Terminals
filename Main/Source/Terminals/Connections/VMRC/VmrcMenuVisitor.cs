@@ -20,9 +20,18 @@ namespace Terminals.Connections
 
         internal void UpdateMenu(ToolStrip standardToolbar)
         {
+            this.EnusereMenuCreated(standardToolbar);
+
+            bool commandsAvailable = this.connectionProvider.CurrentConnection is VMRCConnection;
+            adminSwitchButton.Visible = commandsAvailable;
+            viewOnlyButton.Visible = commandsAvailable;
+        }
+
+        private void EnusereMenuCreated(ToolStrip standardToolbar)
+        {
             if (standardToolbar.Items[VMRCADMINSWITCHBUTTON] == null)
                 this.CreateAdminSwitchButton(standardToolbar);
-            
+
             if (standardToolbar.Items[VMRCVIEWONLYBUTTON] == null)
                 this.CreateViewOnlyButton(standardToolbar);
         }
