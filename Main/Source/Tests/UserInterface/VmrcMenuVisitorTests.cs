@@ -19,7 +19,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void EmptyToolBar_UpdateMenu_CreatesNewButtons()
         {
-            this.menuVisitor.UpdateMenu(this.toolbar);
+            this.menuVisitor.Visit(this.toolbar);
             int itemsCount = this.toolbar.Items.Count;
             Assert.AreEqual(2, itemsCount, "First visit should update the menu by addint its own menu items");
         }

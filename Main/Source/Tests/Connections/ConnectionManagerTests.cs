@@ -249,5 +249,13 @@ namespace Tests.Connections
         {
             return ConnectionManager.GetAvailableProtocols().Distinct();
         }
+
+        [TestMethod]
+        public void DummyProvider_CreateToolbarExtensions_CreatesAll()
+        {
+            var mockProvider = new Mock<ICurrenctConnectionProvider>();
+            var extensions = ConnectionManager.CreateToolbarExtensions(mockProvider.Object).Count();
+            Assert.AreEqual(1, extensions, "All known extensions have to be registered");
+        }
     }
 }

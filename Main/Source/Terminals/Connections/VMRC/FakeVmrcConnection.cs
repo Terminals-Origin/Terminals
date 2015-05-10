@@ -5,7 +5,7 @@ namespace Terminals.Connections
     /// <summary>
     /// Allows testing specific command without real Vmrc connction
     /// </summary>
-    internal class FakeVmrcConnection : Connection, IToolbarExtender
+    internal class FakeVmrcConnection : Connection
     {
         public override bool Connected { get { return true; } }
         
@@ -22,12 +22,6 @@ namespace Terminals.Connections
 
         public void AdminDisplay()
         {
-        }
-
-        public void Visit(ToolStrip standardToolbar)
-        {
-            //var menuVisitor = new VmrcMenuVisitor();
-            //menuVisitor.UpdateMenu(standardToolbar);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Terminals.Connections
         /// <summary>
         /// Allowes customize toolbar buttons
         /// </summary>
-        /// <param name="standardToolbar">Not null toolbar to extend</param>
-        void Visit(ToolStrip standardToolbar);
+        /// <param name="toolbar">Not null toolbar to extend</param>
+        void Visit(ToolStrip toolbar);
     }
 }
