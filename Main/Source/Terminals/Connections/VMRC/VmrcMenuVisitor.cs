@@ -53,7 +53,7 @@ namespace Terminals.Connections
         {
             this.viewOnlyButton = new ToolStripButton();
             this.viewOnlyButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            // viewOnlyButton.Image = ((Image)(resources.GetObject("VMRCViewOnlyButton.Image")));
+            this.viewOnlyButton.Image = Properties.Resources.polarized_glasses;
             this.viewOnlyButton.ImageTransparentColor = Color.White;
             this.viewOnlyButton.Name = VMRCVIEWONLYBUTTON;
             this.viewOnlyButton.Size = new Size(23, 22);

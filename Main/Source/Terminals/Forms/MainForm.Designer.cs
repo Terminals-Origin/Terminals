@@ -123,8 +123,6 @@ namespace Terminals
             this.CaptureScreenToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCaptureManager = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.VMRCAdminSwitchButton = new System.Windows.Forms.ToolStripButton();
-            this.VMRCViewOnlyButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.vncActionButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.sendALTKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -854,8 +852,6 @@ namespace Terminals
             this.CaptureScreenToolStripButton,
             this.toolStripButtonCaptureManager,
             this.toolStripSeparator4,
-            this.VMRCAdminSwitchButton,
-            this.VMRCViewOnlyButton,
             this.toolStripButton2,
             this.vncActionButton,
             this.TerminalServerMenuButton,
@@ -1059,26 +1055,6 @@ namespace Terminals
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
-            // VMRCAdminSwitchButton
-            // 
-            this.VMRCAdminSwitchButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.VMRCAdminSwitchButton.Image = global::Terminals.Properties.Resources.server_administrator_icon;
-            this.VMRCAdminSwitchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.VMRCAdminSwitchButton.Name = "VMRCAdminSwitchButton";
-            this.VMRCAdminSwitchButton.Size = new System.Drawing.Size(23, 22);
-            this.VMRCAdminSwitchButton.Text = "VMRC: Switch to Administrator View";
-            this.VMRCAdminSwitchButton.Click += new System.EventHandler(this.VMRCAdminSwitchButton_Click);
-            // 
-            // VMRCViewOnlyButton
-            // 
-            this.VMRCViewOnlyButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.VMRCViewOnlyButton.Image = ((System.Drawing.Image)(resources.GetObject("VMRCViewOnlyButton.Image")));
-            this.VMRCViewOnlyButton.ImageTransparentColor = System.Drawing.Color.White;
-            this.VMRCViewOnlyButton.Name = "VMRCViewOnlyButton";
-            this.VMRCViewOnlyButton.Size = new System.Drawing.Size(23, 22);
-            this.VMRCViewOnlyButton.Text = "VMRC: View Only Mode";
-            this.VMRCViewOnlyButton.Click += new System.EventHandler(this.VMRCViewOnlyButton_Click);
-            // 
             // toolStripButton2
             // 
             this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1255,8 +1231,6 @@ namespace Terminals
         private System.Windows.Forms.ToolStripButton CaptureScreenToolStripButton;
         private System.Windows.Forms.ToolStripMenuItem captureTerminalScreenToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripButton VMRCAdminSwitchButton;
-        private System.Windows.Forms.ToolStripButton VMRCViewOnlyButton;
         private System.Windows.Forms.ContextMenuStrip QuickContextMenu;
         private System.Windows.Forms.ToolStrip tsRemoteToolbar;
         private System.Windows.Forms.ToolStripButton tsbCMD;

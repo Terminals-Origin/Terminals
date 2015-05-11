@@ -48,6 +48,8 @@ namespace Terminals
 
         private readonly TabControlFilter tabsFilter;
 
+        private readonly IToolbarExtender[] toolbarExtenders;
+
         #endregion
 
         #region Properties
@@ -161,6 +163,7 @@ namespace Terminals
                 this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals, this.persistence);
                 this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler, this.persistence);
                 this.terminalsControler.AssingUiFactory(this.connectionsUiFactory);
+                this.toolbarExtenders = ConnectionManager.CreateToolbarExtensions(this.terminalsControler);
 
                 // Initialize FavsList outside of InitializeComponent
                 // Inside InitializeComponent it sometimes caused the design view in VS to return errors
@@ -299,18 +302,9 @@ namespace Terminals
 
             this.TerminalServerMenuButton.Visible = false;
             vncActionButton.Visible = false;
-            VMRCAdminSwitchButton.Visible = false;
-            VMRCViewOnlyButton.Visible = false;
 
             if (this.terminalsControler.CurrentConnection != null)
             {
-                var vmrc = this.terminalsControler.CurrentConnection as VMRCConnection;
-                if (vmrc != null)
-                {
-                    VMRCAdminSwitchButton.Visible = true;
-                    VMRCViewOnlyButton.Visible = true;
-                }
-
                 var vnc = this.terminalsControler.CurrentConnection as VNCConnection;
                 if (vnc != null)
                 {
@@ -318,6 +312,11 @@ namespace Terminals
                 }
 
                 this.TerminalServerMenuButton.Visible = this.terminalsControler.CurrentConnection.IsTerminalServer;
+            }
+
+            foreach (IToolbarExtender extender in this.toolbarExtenders)
+            {
+                extender.Visit(this.toolbarStd);
             }
         }
 
@@ -1266,26 +1265,6 @@ namespace Terminals
         private void CaptureTerminalScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.terminalsControler.CaptureScreen();
-        }
-
-        private void VMRCAdminSwitchButton_Click(object sender, EventArgs e)
-        {
-            var vmrc = this.terminalsControler.CurrentConnection as VMRCConnection;
-            if (vmrc != null)
-            {
-                vmrc.AdminDisplay();
-            }
-        }
-
-        private void VMRCViewOnlyButton_Click(object sender, EventArgs e)
-        {
-            var vmrc = this.terminalsControler.CurrentConnection as VMRCConnection;
-            if (vmrc != null)
-            {
-                vmrc.ViewOnlyMode = !vmrc.ViewOnlyMode;
-            }
-
-            this.UpdateControls();
         }
 
         private void ToolStripButton1_Click(object sender, EventArgs e)

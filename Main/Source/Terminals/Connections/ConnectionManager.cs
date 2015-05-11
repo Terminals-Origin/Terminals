@@ -234,9 +234,12 @@ namespace Terminals.Connections
                 };
         }
 
-        public static IEnumerable<IToolbarExtender> CreateToolbarExtensions(ICurrenctConnectionProvider provider)
+        public static IToolbarExtender[] CreateToolbarExtensions(ICurrenctConnectionProvider provider)
         {
-            yield return new VmrcMenuVisitor(provider);
+            return new IToolbarExtender[]
+            {
+                new VmrcMenuVisitor(provider)
+            };
         }
     }
 }
