@@ -182,6 +182,9 @@
     <Compile Include="Connections\VMRC\ICurrenctConnectionProvider.cs" />
     <Compile Include="Connections\VMRC\IToolbarExtender.cs" />
     <Compile Include="Connections\VMRC\VmrcMenuVisitor.cs" />
+    <Compile Include="Connections\VNC\FakeVNCConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Connections\VNC\VncMenuVisitor.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
     <Compile Include="Network\Tools\NettworkingTools.cs" />
