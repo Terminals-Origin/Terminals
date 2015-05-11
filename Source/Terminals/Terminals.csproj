@@ -176,6 +176,10 @@
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\IConnectionExtra.cs" />
     <Compile Include="Connections\IConnectionMainView.cs" />
+    <Compile Include="Connections\Rdp\FakeRdpConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Connections\Rdp\RdpMenuVisitor.cs" />
     <Compile Include="Connections\VMRC\FakeVmrcConnection.cs">
       <SubType>Component</SubType>
     </Compile>

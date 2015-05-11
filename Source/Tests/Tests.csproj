@@ -167,6 +167,7 @@
     <Compile Include="UserInterface\ProtocolOptionsPanelTests.cs" />
     <Compile Include="UserInterface\CredentialPanelTests.cs" />
     <Compile Include="UserInterface\CaptureManagerTests.cs" />
+    <Compile Include="UserInterface\RdpMenuVisitorTests.cs" />
     <Compile Include="UserInterface\VncMenuVisitorTests.cs" />
     <Compile Include="UserInterface\VmrcMenuVisitorTests.cs" />
     <Compile Include="Validation\FavoriteNameValidatorTests.cs" />
