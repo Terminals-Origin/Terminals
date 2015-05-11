@@ -180,6 +180,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\Rdp\RdpMenuVisitor.cs" />
+    <Compile Include="Connections\Rdp\RdpService.cs" />
     <Compile Include="Connections\VMRC\FakeVmrcConnection.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -8,6 +8,12 @@ using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Forms.Controls;
 using System.Text;
+using MSTSCLib;
+using Terminals.TerminalServices;
+using IMsTscAxEvents_OnDisconnectedEventHandler = AxMSTSCLib.IMsTscAxEvents_OnDisconnectedEventHandler;
+using IMsTscAxEvents_OnFatalErrorEventHandler = AxMSTSCLib.IMsTscAxEvents_OnFatalErrorEventHandler;
+using IMsTscAxEvents_OnLogonErrorEventHandler = AxMSTSCLib.IMsTscAxEvents_OnLogonErrorEventHandler;
+using IMsTscAxEvents_OnWarningEventHandler = AxMSTSCLib.IMsTscAxEvents_OnWarningEventHandler;
 
 //http://msdn.microsoft.com/en-us/library/aa381172(v=vs.85).aspx
 //http://msdn.microsoft.com/en-us/library/aa380838(v=VS.85).aspx
@@ -24,8 +30,14 @@ namespace Terminals.Connections
         private readonly ReconnectingControl reconecting = new ReconnectingControl();
         private readonly ConnectionStateDetector connectionStateDetector = new ConnectionStateDetector();
 
-        private MSTSCLib.IMsRdpClientNonScriptable4 nonScriptable;
+        private IMsRdpClientNonScriptable4 nonScriptable;
         private AxMsRdpClient6NotSafeForScripting client = null;
+
+        private readonly RdpService service = new RdpService();
+
+        public TerminalServer Server { get{ return this.service.Server; } }
+
+        public bool IsTerminalServer { get { return this.service.IsTerminalServer; } }
 
         #region IConnectionExtra
 
@@ -51,7 +63,7 @@ namespace Terminals.Connections
             {
                 if (this.client != null)
                     return this.client.Server;
-                return string.Empty;
+                return String.Empty;
             }
         }
 
@@ -61,7 +73,7 @@ namespace Terminals.Connections
             {
                 if (this.client != null)
                     return this.client.UserName;
-                return string.Empty;
+                return String.Empty;
             }
         }
 
@@ -71,7 +83,7 @@ namespace Terminals.Connections
             {
                 if (this.client != null)
                     return this.client.Domain;
-                return string.Empty;
+                return String.Empty;
             }
         }
 
@@ -128,7 +140,7 @@ namespace Terminals.Connections
                 if (!this.InitializeClientControl())
                     return false;
                 this.ConfigureCientUserControl();
-                ChangeDesktopSize(Favorite.Display.DesktopSize);
+                this.ChangeDesktopSize(this.Favorite.Display.DesktopSize);
 
                 try
                 {
@@ -148,7 +160,7 @@ namespace Terminals.Connections
                     this.ConfigureConnection(rdpOptions);
                     this.AssignEventHandlers();
 
-                    Text = "Connecting to RDP Server...";
+                    this.Text = "Connecting to RDP Server...";
                     this.client.FullScreen = true;
                 }
                 catch (Exception exc)
@@ -158,6 +170,8 @@ namespace Terminals.Connections
                 // if next line fails on Protected memory access exception,
                 // some string property is set to null, which leads to this exception
                 this.client.Connect();
+
+                this.service.CheckForTerminalServer(this.Favorite);
                 return true;
             }
             catch (Exception exc)
@@ -188,7 +202,7 @@ namespace Terminals.Connections
             var clientControl = (Control)this.client;
             this.Controls.Add(clientControl);
             this.client.CreateControl();
-            nonScriptable = this.client.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable4;
+            this.nonScriptable = this.client.GetOcx() as IMsRdpClientNonScriptable4;
             this.client.BringToFront();
             this.BringToFront();
             this.client.Parent = this.Parent;
@@ -205,8 +219,8 @@ namespace Terminals.Connections
             this.reconecting.Hide();
             this.reconecting.AbortReconnectRequested += new EventHandler(this.Recoonecting_AbortReconnectRequested);
             this.connectionStateDetector.AssignFavorite(this.Favorite);
-            this.connectionStateDetector.ReconnectExpired += ConnectionStateDetectorOnReconnectExpired;
-            this.connectionStateDetector.Reconnected += ConnectionStateDetectorOnReconnected;
+            this.connectionStateDetector.ReconnectExpired += this.ConnectionStateDetectorOnReconnectExpired;
+            this.connectionStateDetector.Reconnected += this.ConnectionStateDetectorOnReconnected;
         }
 
         private void ConnectionStateDetectorOnReconnected(object sender, EventArgs eventArgs)
@@ -254,7 +268,7 @@ namespace Terminals.Connections
             this.connectionStateDetector.Stop();
             this.reconecting.Hide();
             if (this.reconecting.Disable)
-                settings.AskToReconnect = false;
+                this.settings.AskToReconnect = false;
         }
 
         public override void ChangeDesktopSize(DesktopSize desktopSize)
@@ -308,9 +322,9 @@ namespace Terminals.Connections
                 this.client.AdvancedSettings2.RedirectDrives = true;
             else
             {
-                for (int i = 0; i < nonScriptable.DriveCollection.DriveCount; i++)
+                for (int i = 0; i < this.nonScriptable.DriveCollection.DriveCount; i++)
                 {
-                    MSTSCLib.IMsRdpDrive drive = nonScriptable.DriveCollection.get_DriveByIndex((uint)i);
+                    IMsRdpDrive drive = this.nonScriptable.DriveCollection.get_DriveByIndex((uint)i);
                     foreach (string str in rdpOptions.Redirect.Drives)
                     {
                         if (drive.Name.IndexOf(str) > -1)
@@ -382,7 +396,7 @@ namespace Terminals.Connections
         /// </summary>
         private void ConfigureAzureService(RdpOptions rdpOptions)
         {
-            if (!string.IsNullOrEmpty(rdpOptions.UserInterface.LoadBalanceInfo))
+            if (!String.IsNullOrEmpty(rdpOptions.UserInterface.LoadBalanceInfo))
             {
                 var lbTemp = rdpOptions.UserInterface.LoadBalanceInfo;
 
@@ -560,7 +574,7 @@ namespace Terminals.Connections
         private void client_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            string desktopShare = ParentForm.GetDesktopShare();
+            string desktopShare = this.ParentForm.GetDesktopShare();
             if (String.IsNullOrEmpty(desktopShare))
             {
                 MessageBox.Show(this, "A Desktop Share was not defined for this connection.\n" +
@@ -569,7 +583,7 @@ namespace Terminals.Connections
             }
             else
             {
-                SHCopyFiles(files, desktopShare);
+                this.SHCopyFiles(files, desktopShare);
             }
         }
 
@@ -601,7 +615,7 @@ namespace Terminals.Connections
         private void client_OnRequestLeaveFullScreen(object sender, EventArgs e)
         {
             this.ParentForm.SetGrabInputCheck(false);
-            ParentForm.OnLeavingFullScreen();
+            this.ParentForm.OnLeavingFullScreen();
         }
 
         private void client_OnRequestGoFullScreen(object sender, EventArgs e)
@@ -611,7 +625,7 @@ namespace Terminals.Connections
 
         private void client_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            if (DecideToReconnect(e))
+            if (this.DecideToReconnect(e))
             {
                 this.TryReconnect();
             }
@@ -630,7 +644,7 @@ namespace Terminals.Connections
             if (e.discReason != 2308 && e.discReason != 2)
                 return false;
 
-            return settings.AskToReconnect;
+            return this.settings.AskToReconnect;
         }
 
         private void TryReconnect()
@@ -645,7 +659,7 @@ namespace Terminals.Connections
             int reason = e.discReason;
             string error = RdpClientErrorMessages.ToDisconnectMessage(this.client, reason);
 
-            if (!string.IsNullOrEmpty(error))
+            if (!String.IsNullOrEmpty(error))
             {
                 string message = String.Format("Error connecting to {0}\n\n{1}", this.client.Server, error);
                 MessageBox.Show(this, message, Program.Info.TitleVersion, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -656,7 +670,7 @@ namespace Terminals.Connections
         {
             int errorCode = e.errorCode;
             string message = RdpClientErrorMessages.ToFatalErrorMessage(errorCode);
-            string finalMsg = string.Format("There was a fatal error returned from the RDP Connection, details:\n\nError Code:{0}\n\nError Description:{1}", errorCode, message);
+            string finalMsg = String.Format("There was a fatal error returned from the RDP Connection, details:\n\nError Code:{0}\n\nError Description:{1}", errorCode, message);
             MessageBox.Show(finalMsg);
             Logging.Fatal(finalMsg);
         }
@@ -665,7 +679,7 @@ namespace Terminals.Connections
         {
             int warningCode = e.warningCode;
             string message = RdpClientErrorMessages.ToWarningMessage(warningCode);
-            string finalMsg = string.Format("There was a warning returned from the RDP Connection, details:\n\nWarning Code:{0}\n\nWarning Description:{1}", warningCode, message);
+            string finalMsg = String.Format("There was a warning returned from the RDP Connection, details:\n\nWarning Code:{0}\n\nWarning Description:{1}", warningCode, message);
             Logging.Warn(finalMsg);
         }
 
@@ -673,7 +687,7 @@ namespace Terminals.Connections
         {
             int errorCode = e.lError;
             string message = RdpClientErrorMessages.ToLogonMessage(errorCode);
-            string finalMsg = string.Format("There was a logon error returned from the RDP Connection, details:\n\nLogon Code:{0}\n\nLogon Description:{1}", errorCode, message);
+            string finalMsg = String.Format("There was a logon error returned from the RDP Connection, details:\n\nLogon Code:{0}\n\nLogon Description:{1}", errorCode, message);
             Logging.Error(finalMsg);
         }
 

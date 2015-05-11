@@ -265,8 +265,6 @@ namespace Terminals.Forms
                 this.BringToFrontOnMainForm(conn);
                 if (favorite.Display.DesktopSize == DesktopSize.FullScreen)
                     this.mainForm.FullScreen = true;
-
-                 conn.CheckForTerminalServer(favorite);
             }
             else
             {
