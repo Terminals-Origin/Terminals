@@ -182,6 +182,7 @@
     <Compile Include="Connections\VMRC\ICurrenctConnectionProvider.cs" />
     <Compile Include="Connections\VMRC\IToolbarExtender.cs" />
     <Compile Include="Connections\VMRC\VmrcMenuVisitor.cs" />
+    <Compile Include="Connections\VNC\VncMenuVisitor.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
     <Compile Include="Network\Tools\NettworkingTools.cs" />
     <Compile Include="Connections\Rdp\RdpClientErrorMessages.cs" />
@@ -1532,6 +1533,8 @@
     <None Include="Resources\terminalsbanner-small.png" />
     <None Include="Resources\terminalsbanner.png" />
     <None Include="Resources\terminalsicon.png" />
+    <None Include="Resources\vncviewer.ico" />
+    <None Include="Resources\vnc.png" />
     <Content Include="terminalsicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

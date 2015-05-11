@@ -301,16 +301,9 @@ namespace Terminals
             saveTerminalsAsGroupToolStripMenuItem.Enabled = (tcTerminals.Items.Count > 0);
 
             this.TerminalServerMenuButton.Visible = false;
-            vncActionButton.Visible = false;
 
             if (this.terminalsControler.CurrentConnection != null)
             {
-                var vnc = this.terminalsControler.CurrentConnection as VNCConnection;
-                if (vnc != null)
-                {
-                    vncActionButton.Visible = true;
-                }
-
                 this.TerminalServerMenuButton.Visible = this.terminalsControler.CurrentConnection.IsTerminalServer;
             }
 
@@ -1404,39 +1397,6 @@ namespace Terminals
         private void ToolStripButtonCaptureManager_Click(object sender, EventArgs e)
         {
             this.terminalsControler.FocusCaptureManager();
-        }
-
-        private void SendAltKeyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var menuItem = sender as ToolStripMenuItem;
-            if (sender != null && menuItem != null)
-            {
-                String key = menuItem.Text;
-                var vnc = this.terminalsControler.CurrentConnection as VNCConnection;
-                if (vnc != null)
-                {
-                    if (key == sendALTF4KeyToolStripMenuItem.Text)
-                    {
-                        vnc.SendSpecialKeys(VncSharp.SpecialKeys.AltF4);
-                    }
-                    else if (key == sendALTKeyToolStripMenuItem.Text)
-                    {
-                        vnc.SendSpecialKeys(VncSharp.SpecialKeys.Alt);
-                    }
-                    else if (key == sendCTRLESCKeysToolStripMenuItem.Text)
-                    {
-                        vnc.SendSpecialKeys(VncSharp.SpecialKeys.CtrlEsc);
-                    }
-                    else if (key == sendCTRLKeyToolStripMenuItem.Text)
-                    {
-                        vnc.SendSpecialKeys(VncSharp.SpecialKeys.Ctrl);
-                    }
-                    else if (key == sentCTRLALTDELETEKeysToolStripMenuItem.Text)
-                    {
-                        vnc.SendSpecialKeys(VncSharp.SpecialKeys.CtrlAltDel);
-                    }
-                }
-            }
         }
 
         private void ToolStripButton4_Click(object sender, EventArgs e)
