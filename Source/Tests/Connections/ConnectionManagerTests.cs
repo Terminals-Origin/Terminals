@@ -255,7 +255,7 @@ namespace Tests.Connections
         {
             var mockProvider = new Mock<ICurrenctConnectionProvider>();
             var extensions = ConnectionManager.CreateToolbarExtensions(mockProvider.Object).Count();
-            Assert.AreEqual(1, extensions, "All known extensions have to be registered");
+            Assert.AreEqual(3, extensions, "All known extensions have to be registered");
         }
     }
 }
