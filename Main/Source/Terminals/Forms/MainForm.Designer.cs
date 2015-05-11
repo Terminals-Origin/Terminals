@@ -124,7 +124,6 @@ namespace Terminals
             this.toolStripButtonCaptureManager = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.TerminalServerMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
             this.ShortcutsContextMenu.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
@@ -847,7 +846,6 @@ namespace Terminals
             this.toolStripButtonCaptureManager,
             this.toolStripSeparator4,
             this.toolStripButton2,
-            this.TerminalServerMenuButton,
             this.toolStripButton5});
             this.toolbarStd.Location = new System.Drawing.Point(114, 49);
             this.toolbarStd.Name = "toolbarStd";
@@ -1058,16 +1056,6 @@ namespace Terminals
             this.toolStripButton2.Text = "Networking Tools";
             this.toolStripButton2.Click += new System.EventHandler(this.ToolStripButton2_Click);
             // 
-            // TerminalServerMenuButton
-            // 
-            this.TerminalServerMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.TerminalServerMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("TerminalServerMenuButton.Image")));
-            this.TerminalServerMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.TerminalServerMenuButton.Name = "TerminalServerMenuButton";
-            this.TerminalServerMenuButton.Size = new System.Drawing.Size(29, 22);
-            this.TerminalServerMenuButton.Text = "Terminal Server";
-            this.TerminalServerMenuButton.DropDownOpening += new System.EventHandler(this.TerminalServerMenuButton_DropDownOpening);
-            // 
             // toolStripButton5
             // 
             this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1189,7 +1177,6 @@ namespace Terminals
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCaptureManager;
         private System.Windows.Forms.ToolStripButton toolStripButtonCaptureManager;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
-        private System.Windows.Forms.ToolStripDropDownButton TerminalServerMenuButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ToolStripMenuItem standardToolbarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemShowHideFavoriteToolbar;

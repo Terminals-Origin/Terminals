@@ -92,7 +92,8 @@ namespace Terminals.Connections
                 case HTTPS:
                     return new HTTPConnection();
                 default:
-                    return new RDPConnection();
+                   // return new FakeRdpConnection();
+                   return new RDPConnection();
             }
         }
 
@@ -239,6 +240,7 @@ namespace Terminals.Connections
         {
             return new IToolbarExtender[]
             {
+                new RdpMenuVisitor(provider), 
                 new VncMenuVisitor(provider), 
                 new VmrcMenuVisitor(provider)
             };
