@@ -96,10 +96,10 @@ namespace Terminals
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.favoriteToolBar = new System.Windows.Forms.ToolStrip();
             this.tsRemoteToolbar = new System.Windows.Forms.ToolStrip();
             this.tsbCMD = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.favoriteToolBar = new System.Windows.Forms.ToolStrip();
             this.SpecialCommandsToolStrip = new System.Windows.Forms.ToolStrip();
             this.toolbarStd = new System.Windows.Forms.ToolStrip();
             this.tsbNewTerminal = new System.Windows.Forms.ToolStripButton();
@@ -124,12 +124,6 @@ namespace Terminals
             this.toolStripButtonCaptureManager = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.vncActionButton = new System.Windows.Forms.ToolStripDropDownButton();
-            this.sendALTKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sendALTF4KeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sendCTRLKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sendCTRLESCKeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sentCTRLALTDELETEKeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TerminalServerMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
             this.ShortcutsContextMenu.SuspendLayout();
@@ -776,14 +770,6 @@ namespace Terminals
             this.updateToolStripItem.Visible = false;
             this.updateToolStripItem.Click += new System.EventHandler(this.UpdateToolStripItem_Click);
             // 
-            // favoriteToolBar
-            // 
-            this.favoriteToolBar.Dock = System.Windows.Forms.DockStyle.None;
-            this.favoriteToolBar.Location = new System.Drawing.Point(3, 24);
-            this.favoriteToolBar.Name = "favoriteToolBar";
-            this.favoriteToolBar.Size = new System.Drawing.Size(111, 25);
-            this.favoriteToolBar.TabIndex = 4;
-            // 
             // tsRemoteToolbar
             // 
             this.tsRemoteToolbar.Dock = System.Windows.Forms.DockStyle.None;
@@ -792,7 +778,7 @@ namespace Terminals
             this.toolStripButton1});
             this.tsRemoteToolbar.Location = new System.Drawing.Point(3, 24);
             this.tsRemoteToolbar.Name = "tsRemoteToolbar";
-            this.tsRemoteToolbar.Size = new System.Drawing.Size(58, 25);
+            this.tsRemoteToolbar.Size = new System.Drawing.Size(89, 25);
             this.tsRemoteToolbar.TabIndex = 3;
             this.tsRemoteToolbar.Visible = false;
             // 
@@ -815,6 +801,14 @@ namespace Terminals
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click);
+            // 
+            // favoriteToolBar
+            // 
+            this.favoriteToolBar.Dock = System.Windows.Forms.DockStyle.None;
+            this.favoriteToolBar.Location = new System.Drawing.Point(3, 24);
+            this.favoriteToolBar.Name = "favoriteToolBar";
+            this.favoriteToolBar.Size = new System.Drawing.Size(111, 25);
+            this.favoriteToolBar.TabIndex = 4;
             // 
             // SpecialCommandsToolStrip
             // 
@@ -853,12 +847,11 @@ namespace Terminals
             this.toolStripButtonCaptureManager,
             this.toolStripSeparator4,
             this.toolStripButton2,
-            this.vncActionButton,
             this.TerminalServerMenuButton,
             this.toolStripButton5});
             this.toolbarStd.Location = new System.Drawing.Point(114, 49);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(818, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(772, 25);
             this.toolbarStd.TabIndex = 2;
             // 
             // tsbNewTerminal
@@ -1065,57 +1058,6 @@ namespace Terminals
             this.toolStripButton2.Text = "Networking Tools";
             this.toolStripButton2.Click += new System.EventHandler(this.ToolStripButton2_Click);
             // 
-            // vncActionButton
-            // 
-            this.vncActionButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.vncActionButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sendALTKeyToolStripMenuItem,
-            this.sendALTF4KeyToolStripMenuItem,
-            this.sendCTRLKeyToolStripMenuItem,
-            this.sendCTRLESCKeysToolStripMenuItem,
-            this.sentCTRLALTDELETEKeysToolStripMenuItem});
-            this.vncActionButton.Image = ((System.Drawing.Image)(resources.GetObject("vncActionButton.Image")));
-            this.vncActionButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.vncActionButton.Name = "vncActionButton";
-            this.vncActionButton.Size = new System.Drawing.Size(29, 22);
-            this.vncActionButton.Text = "toolStripButton4";
-            this.vncActionButton.Visible = false;
-            // 
-            // sendALTKeyToolStripMenuItem
-            // 
-            this.sendALTKeyToolStripMenuItem.Name = "sendALTKeyToolStripMenuItem";
-            this.sendALTKeyToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.sendALTKeyToolStripMenuItem.Text = "Send ALT Key";
-            this.sendALTKeyToolStripMenuItem.Click += new System.EventHandler(this.SendAltKeyToolStripMenuItem_Click);
-            // 
-            // sendALTF4KeyToolStripMenuItem
-            // 
-            this.sendALTF4KeyToolStripMenuItem.Name = "sendALTF4KeyToolStripMenuItem";
-            this.sendALTF4KeyToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.sendALTF4KeyToolStripMenuItem.Text = "Send ALT-F4 Keys";
-            this.sendALTF4KeyToolStripMenuItem.Click += new System.EventHandler(this.SendAltKeyToolStripMenuItem_Click);
-            // 
-            // sendCTRLKeyToolStripMenuItem
-            // 
-            this.sendCTRLKeyToolStripMenuItem.Name = "sendCTRLKeyToolStripMenuItem";
-            this.sendCTRLKeyToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.sendCTRLKeyToolStripMenuItem.Text = "Send CTRL Key";
-            this.sendCTRLKeyToolStripMenuItem.Click += new System.EventHandler(this.SendAltKeyToolStripMenuItem_Click);
-            // 
-            // sendCTRLESCKeysToolStripMenuItem
-            // 
-            this.sendCTRLESCKeysToolStripMenuItem.Name = "sendCTRLESCKeysToolStripMenuItem";
-            this.sendCTRLESCKeysToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.sendCTRLESCKeysToolStripMenuItem.Text = "Send CTRL ESC Keys";
-            this.sendCTRLESCKeysToolStripMenuItem.Click += new System.EventHandler(this.SendAltKeyToolStripMenuItem_Click);
-            // 
-            // sentCTRLALTDELETEKeysToolStripMenuItem
-            // 
-            this.sentCTRLALTDELETEKeysToolStripMenuItem.Name = "sentCTRLALTDELETEKeysToolStripMenuItem";
-            this.sentCTRLALTDELETEKeysToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.sentCTRLALTDELETEKeysToolStripMenuItem.Text = "Sent CTRL ALT DEL Keys";
-            this.sentCTRLALTDELETEKeysToolStripMenuItem.Click += new System.EventHandler(this.SendAltKeyToolStripMenuItem_Click);
-            // 
             // TerminalServerMenuButton
             // 
             this.TerminalServerMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1246,12 +1188,6 @@ namespace Terminals
         private System.Windows.Forms.ToolStripMenuItem networkingToolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCaptureManager;
         private System.Windows.Forms.ToolStripButton toolStripButtonCaptureManager;
-        private System.Windows.Forms.ToolStripDropDownButton vncActionButton;
-        private System.Windows.Forms.ToolStripMenuItem sendALTKeyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem sendALTF4KeyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem sendCTRLKeyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem sendCTRLESCKeysToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem sentCTRLALTDELETEKeysToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.ToolStripDropDownButton TerminalServerMenuButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
