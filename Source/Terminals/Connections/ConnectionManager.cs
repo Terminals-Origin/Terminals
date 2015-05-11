@@ -75,6 +75,7 @@ namespace Terminals.Connections
             switch (favorite.Protocol)
             {
                 case VNC:
+                    //return new FakeVNCConnection();
                     return new VNCConnection();
                 case VMRC:
                     //return new FakeVmrcConnection();
@@ -238,6 +239,7 @@ namespace Terminals.Connections
         {
             return new IToolbarExtender[]
             {
+                new VncMenuVisitor(provider), 
                 new VmrcMenuVisitor(provider)
             };
         }
