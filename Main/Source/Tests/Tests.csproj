@@ -158,6 +158,7 @@
     <Compile Include="SqlPersisted\CredentialsTest.cs" />
     <Compile Include="CustomSetupActionTest.cs" />
     <Compile Include="ConfigurationSettingsTests.cs" />
+    <Compile Include="UserInterface\MenuVisitorSut.cs" />
     <Compile Include="UserInterface\MockChildProtocolControl.cs">
       <SubType>Component</SubType>
     </Compile>
