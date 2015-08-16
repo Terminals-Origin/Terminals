@@ -161,7 +161,6 @@ namespace Terminals.Connections
                     this.AssignEventHandlers();
 
                     this.Text = "Connecting to RDP Server...";
-                    this.client.FullScreen = true;
                 }
                 catch (Exception exc)
                 {
@@ -549,10 +548,17 @@ namespace Terminals.Connections
             this.client.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(this.client_OnWarning);
             this.client.OnFatalError += new IMsTscAxEvents_OnFatalErrorEventHandler(this.client_OnFatalError);
             this.client.OnLogonError += new IMsTscAxEvents_OnLogonErrorEventHandler(this.client_OnLogonError);
+            this.client.OnConnected += new EventHandler(client_OnConnected);
             // assign the drag and drop event handlers directly throws an exception
             var clientControl = (Control)this.client;
             clientControl.DragEnter += new DragEventHandler(this.client_DragEnter);
             clientControl.DragDrop += new DragEventHandler(this.client_DragDrop);
+        }
+
+        private void client_OnConnected(object sender, EventArgs e)
+        {
+            // setting the full screen directly in constructor may affect screen resolution changes
+            this.client.FullScreen = true;
         }
 
         protected override void Dispose(bool disposing)
