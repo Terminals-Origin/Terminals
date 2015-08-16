@@ -97,12 +97,12 @@ namespace Terminals
 
         private void CloseTabPage(object tabObject)
         {
-            var tabPage = tabObject as TabControlItem;
+            var tabPage = tabObject as TerminalTabControlItem;
             if (tabPage == null)
                 return;
 
             bool wasSelected = tabPage.Selected;
-            IConnection lostConnection = this.selectionControler.CurrentConnection;
+            IConnection lostConnection = tabPage.Connection;
             this.RemoveTabPage(tabPage);
             if (wasSelected)
                 this.mainForm.OnLeavingFullScreen();
