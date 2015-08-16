@@ -62,7 +62,7 @@ namespace TabControl
         public event TabControlMouseEnteredTitleHandler TabControlMouseEnteredTitle;
         public event HandledEventHandler MenuItemsLoading;
         public event EventHandler MenuItemsLoaded;
-        public event EventHandler TabControlItemClosed;
+        public event TabControlItemClosedHandler TabControlItemClosed;
         public event TabControlItemChangedHandler TabControlItemDetach;
 
         #endregion
@@ -258,7 +258,7 @@ namespace TabControl
         public void ForceCloseTab(TabControlItem tabItem)
         {
             RemoveTab(tabItem);
-            OnTabControlItemClosed(EventArgs.Empty);
+            this.OnTabControlItemClosed(tabItem);
         }
 
         public void CloseTab(TabControlItem tabItem)
@@ -271,7 +271,7 @@ namespace TabControl
                 if (SelectedItem != null && !args.Cancel && SelectedItem.CanClose)
                 {
                     RemoveTab(SelectedItem);
-                    OnTabControlItemClosed(EventArgs.Empty);
+                    this.OnTabControlItemClosed(tabItem);
                 }
             }
         }
@@ -512,10 +512,13 @@ namespace TabControl
                 TabControlItemClosing(e);
         }
 
-        protected internal virtual void OnTabControlItemClosed(EventArgs e)
+        protected internal virtual void OnTabControlItemClosed(TabControlItem tabItem)
         {
             if (TabControlItemClosed != null)
-                TabControlItemClosed(this, e);
+            {
+                var args = new TabControlItemClosedEventArgs() { Item = tabItem };
+                TabControlItemClosed(this, args);
+            }
         }
 
         private void SetDefaultSelected()

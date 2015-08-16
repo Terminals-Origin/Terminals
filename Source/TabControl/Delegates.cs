@@ -1,10 +1,16 @@
 using System;
-using System.Windows.Forms;
 using System.Drawing;
-using System.ComponentModel;
 
 namespace TabControl
 {
+    public class TabControlItemClosedEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Gets or sets the currently closed tab.
+        /// </summary>
+        public TabControlItem Item { get; set; }
+    }
+
     #region TabControlItemClosingEventArgs
 
     public class TabControlItemClosingEventArgs : EventArgs
@@ -86,6 +92,7 @@ namespace TabControl
 
     public delegate void TabControlItemChangedHandler(TabControlItemChangedEventArgs e);
     public delegate void TabControlItemClosingHandler(TabControlItemClosingEventArgs e);
+    public delegate void TabControlItemClosedHandler(object sender, TabControlItemClosedEventArgs e);
     public delegate void TabControlMouseEnteredTitleHandler(TabControlMouseOnTitleEventArgs e);
     public delegate void TabControlMouseOnTitleHandler(TabControlMouseOnTitleEventArgs e);
     public delegate void TabControlMouseLeftTitleHandler(TabControlMouseOnTitleEventArgs e);

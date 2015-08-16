@@ -31,7 +31,7 @@ namespace Terminals
             this.selectionControler = selectionControler;
             this.tcTerminals = tcTerminals;
             this.tcTerminals.TabControlItemClosing += new TabControlItemClosingHandler(this.TcTerminals_TabControlItemClosing);
-            this.tcTerminals.TabControlItemClosed += new EventHandler(this.TcTerminals_TabControlItemClosed);
+            this.tcTerminals.TabControlItemClosed += new TabControlItemClosedHandler(this.TcTerminals_TabControlItemClosed);
         }
 
         internal void Disconnect()
@@ -48,13 +48,14 @@ namespace Terminals
             }
         }
 
-        private void TcTerminals_TabControlItemClosed(object sender, EventArgs e)
+        private void TcTerminals_TabControlItemClosed(object sender, TabControlItemClosedEventArgs e)
         {
             this.CloseTabControlItem();
         }
 
         private void TcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e)
         {
+            // we have to check the connection state in case tab is closing because of lost connection
             IConnection currentConnection = this.selectionControler.CurrentConnection;
             if (currentConnection != null && currentConnection.Connected)
             {
