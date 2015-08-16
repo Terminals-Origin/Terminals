@@ -119,7 +119,13 @@ namespace Terminals.Connections
 
         private bool ClientConnected
         {
-            get { return Convert.ToBoolean(this.client.Connected); }
+            get
+            {
+                if (this.client != null) 
+                    return Convert.ToBoolean(this.client.Connected);
+
+                return false;
+            }
         }
 
         #region IConnection Members
