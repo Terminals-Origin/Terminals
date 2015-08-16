@@ -50,7 +50,7 @@ namespace Terminals
 
         private void TcTerminals_TabControlItemClosed(object sender, TabControlItemClosedEventArgs e)
         {
-            this.CloseTabControlItem();
+            this.CloseTabControlItem(e.Item);
         }
 
         private void TcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e)
@@ -59,15 +59,8 @@ namespace Terminals
             IConnection currentConnection = this.selectionControler.CurrentConnection;
             if (currentConnection != null && currentConnection.Connected)
             {
-                if (AskToClose()) // ask only when tab is going to be closed by user
-                {
-                    // Expecting all connections are disposable, because derive from Connection
-                    currentConnection.Dispose();
-                }
-                else
-                {
+                if (!this.AskToClose())
                     e.Cancel = true;
-                }
             }
         }
 
@@ -75,41 +68,41 @@ namespace Terminals
         {
             // unregister not the method here, but the registered method
             connection.OnDisconnected -= this.mainForm.OnDisconnected;
-            TerminalTabControlItem tabToClose = new TabControlFilter(this.tcTerminals).FindTabToClose(connection);
-            this.InvokeCloseTab(tabToClose);
+            TerminalTabControlItem tabPage = new TabControlFilter(this.tcTerminals).FindTabToClose(connection);
+            this.InvokeCloseTab(tabPage);
         }
 
         /// <summary>
         /// Because tabControl is cast internaly to TabControlItem, all connections should send their tab,
         /// which we already have in the connection.
         /// </summary>
-        private void InvokeCloseTab(TerminalTabControlItem tabControl)
+        private void InvokeCloseTab(TerminalTabControlItem tabPage)
         {
             if (this.mainForm.InvokeRequired)
             {
                 var d = new InvokeCloseTabPage(this.CloseTabPage);
-                this.mainForm.Invoke(d, new object[] { tabControl });
+                this.mainForm.Invoke(d, new object[] { tabPage });
             }
             else
             {
-                this.CloseTabPage(tabControl);
+                this.CloseTabPage(tabPage);
             }
         }
 
         private void CloseTabPage(object tabObject)
         {
-            var tabPage = tabObject as TerminalTabControlItem;
+            var tabPage = tabObject as TabControlItem;
             if (tabPage == null)
                 return;
 
             bool wasSelected = tabPage.Selected;
-            IConnection lostConnection = tabPage.Connection;
-            this.RemoveTabPage(tabPage);
+            this.tcTerminals.RemoveTab(tabPage);
+            this.CloseTabControlItem(tabPage);
+
             if (wasSelected)
                 this.mainForm.OnLeavingFullScreen();
 
             this.mainForm.UpdateControls();
-            lostConnection.Dispose();
         }
 
         private bool AskToClose()
@@ -128,13 +121,23 @@ namespace Terminals
             return true;
         }
 
-        private void RemoveTabPage(TabControlItem tabControlToRemove)
+        private void CloseTabControlItem(TabControlItem tabPage)
         {
-            this.tcTerminals.RemoveTab(tabControlToRemove);
-            CloseTabControlItem();
+            DisposeConnection(tabPage);
+            this.RestoreWindowAfterLastClosed();
         }
 
-        private void CloseTabControlItem()
+        private static void DisposeConnection(TabControlItem tabPage)
+        {
+            var toDispose = tabPage as TerminalTabControlItem;
+            if (toDispose != null && toDispose.Connection != null)
+            {
+                // Expecting all connections are disposable, because derive from Connection
+                toDispose.Connection.Dispose();
+            }
+        }
+
+        private void RestoreWindowAfterLastClosed()
         {
             if (this.settings.RestoreWindowOnLastTerminalDisconnect)
             {
