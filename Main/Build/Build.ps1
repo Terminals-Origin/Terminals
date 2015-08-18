@@ -24,7 +24,7 @@ $installerTargetPath = Join-Path $outputDir $installerName;
 .\InstallPrerequisities.ps1
 
 # Compile the solution - the distributionrelease configuration contains installer, which is not normal configurations
-& $msbuild ..\Source\Terminals.sln /m /p:configuration=DistributionRelease /toolsversion:4.0 /t:clean /t:build
+& $msbuild ..\Source\Terminals.sln /m /p:configuration=DistributionRelease /toolsversion:4.0 /t:rebuild
  
 # Collect the outputs
 if(!(Test-Path $outputDir))
