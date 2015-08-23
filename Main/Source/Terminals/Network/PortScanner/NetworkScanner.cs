@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using System.Net.NetworkInformation;
 using Terminals.Connections;
@@ -25,6 +26,8 @@ namespace Terminals
         {
             InitializeComponent();
 
+            this.checkListPorts.DataSource = ConnectionManager.GetAvailableProtocols();
+            this.CheckAllPorts();
             this.persistence = persistence;
             this.server = new Server(persistence);
             FillTextBoxesFromLocalIp();
@@ -108,17 +111,9 @@ namespace Terminals
 
         private List<int> GetSelectedPorts()
         {
-            List<Int32> ports = new List<Int32>();
-            if (this.RDPCheckbox.Checked)
-                ports.Add(ConnectionManager.RDPPort);
-            if (this.VNCCheckbox.Checked || this.VMRCCheckbox.Checked)
-                ports.Add(ConnectionManager.VNCVMRCPort);
-            if(this.TelnetCheckbox.Checked)
-                ports.Add(ConnectionManager.TelnetPort);
-            if (this.SSHCheckbox.Checked)
-                ports.Add(ConnectionManager.SSHPort);
-
-            return ports;
+            return checkListPorts.CheckedItems.OfType<string>()
+                .Select(ConnectionManager.GetPort)
+                .ToList();
         }
 
         private void manager_OnAddresScanFinished(ScanItemEventArgs args)
@@ -164,15 +159,23 @@ namespace Terminals
             }
         }
 
-        private void AllCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void CheckListPorts_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            if (this.AllCheckbox.Checked)
+            if (e.NewValue == CheckState.Unchecked)
+                this.checkBoxAll.Checked = false;
+        }
+
+        private void CheckBoxAll_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.checkBoxAll.Checked)
+                this.CheckAllPorts();
+        }
+
+        private void CheckAllPorts()
+        {
+            for (int index = 0; index < this.checkListPorts.Items.Count; index++)
             {
-                this.RDPCheckbox.Checked = AllCheckbox.Checked;
-                this.VNCCheckbox.Checked = AllCheckbox.Checked;
-                this.VMRCCheckbox.Checked = AllCheckbox.Checked;
-                this.TelnetCheckbox.Checked = AllCheckbox.Checked;
-                this.SSHCheckbox.Checked = AllCheckbox.Checked;
+                this.checkListPorts.SetItemChecked(index, true);
             }
         }
 
@@ -259,12 +262,6 @@ namespace Terminals
         private void CancelButton_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void PortCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            if(!(sender as CheckBox).Checked)
-              this.AllCheckbox.Checked = false;
         }
 
         /// <summary>
