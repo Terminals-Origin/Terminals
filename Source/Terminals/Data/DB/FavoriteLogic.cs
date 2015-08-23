@@ -269,7 +269,7 @@ namespace Terminals.Data.DB
 
         private void UpdateProtocolProperties(ProtocolOptions protocolOptions)
         {
-            this.protocolProperties = Favorite.UpdateProtocolPropertiesByProtocol(this.protocol, protocolOptions);
+            this.protocolProperties = ConnectionManager.UpdateProtocolPropertiesByProtocol(this.protocol, protocolOptions);
             this.AssignStoreToRdpOptions();
         }
 
