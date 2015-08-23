@@ -138,6 +138,7 @@
     <Compile Include="Integrations\RdcManImporterTests.cs" />
     <Compile Include="Integrations\ExportRdpTest.cs" />
     <Compile Include="Integrations\ImportRdpTest.cs" />
+    <Compile Include="Integrations\ExportTerminalsTests.cs" />
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />
     <Compile Include="FilePersisted\SearchEngineTest.cs" />
     <Compile Include="SqlPersisted\ComparersTest.cs" />

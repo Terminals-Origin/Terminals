@@ -1,0 +1,82 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Terminals;
+using Terminals.Connections;
+using Terminals.Integration.Export;
+using Terminals.Integration.Import;
+using Tests.FilePersisted;
+
+namespace Tests.Integrations
+{
+    /// <summary>
+    /// Needs persistence, because of historical reasons the FavoriteConfigurationElement
+    /// resolves security using persistence
+    /// </summary>
+    [TestClass]
+    public class ExportTerminalsTests : FilePersistedTestLab
+    {
+        private const string TEST_FILE = "Exported.xml";
+
+        public TestContext TestContext { get; set; }
+
+        [TestMethod]
+        public void ValidFavorite_Export_WritesProtocolOptions()
+        {
+            var testData = new[]
+            {
+                new Tuple<string, string>(ConnectionManager.RDP, "sounds"),
+                new Tuple<string, string>(ConnectionManager.VNC, "vncAutoScale"),
+                new Tuple<string, string>(ConnectionManager.VMRC, "vmrcadministratormode"),
+                new Tuple<string, string>(ConnectionManager.TELNET, "telnet"),
+                new Tuple<string, string>(ConnectionManager.SSH, "ssh1"),
+                new Tuple<string, string>(ConnectionManager.SSH, "consolerows"),
+                new Tuple<string, string>(ConnectionManager.ICA_CITRIX, "iCAApplicationName")
+            };
+
+            bool allValid = testData.All(this.AssertExportedFavoriteContent);
+            Assert.IsTrue(allValid, "all protocols have to export only their options");
+        }
+
+        private bool AssertExportedFavoriteContent(Tuple<string, string> testCase)
+        {
+            var favoriteElement = new FavoriteConfigurationElement()
+            {
+                Protocol = testCase.Item1
+            };
+
+            ExportFavorite(favoriteElement);
+            return this.AssertAttribute(testCase);
+        }
+
+        private static void ExportFavorite(FavoriteConfigurationElement favoriteElement)
+        {
+            ExportOptions options = new ExportOptions
+            {
+                ProviderFilter = ImportTerminals.TERMINALS_FILEEXTENSION,
+                Favorites = new List<FavoriteConfigurationElement> {favoriteElement},
+                FileName = TEST_FILE,
+                IncludePasswords = true
+            };
+
+            var exporter = new ExportTerminals();
+            exporter.Export(options);
+        }
+
+        private bool AssertAttribute(Tuple<string, string> testCase)
+        {
+            string fileContent = System.IO.File.ReadAllText(TEST_FILE);
+            bool contains = fileContent.Contains(testCase.Item2);
+            this.ReportTestCase(testCase, contains);
+            return contains;
+        }
+
+        private void ReportTestCase(Tuple<string, string> testCase, bool contains)
+        {
+            const string FORMAT = "Exported attribute '{0}' in '{1}' is present: {2}";
+            string message = string.Format(FORMAT, testCase.Item2, testCase.Item1, contains);
+            this.TestContext.WriteLine(message);
+        }
+    }
+}
