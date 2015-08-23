@@ -52,7 +52,7 @@ namespace Terminals.Data
             set
             {
                 protocol = value;
-                this.protocolProperties = UpdateProtocolPropertiesByProtocol(this.protocol, this.protocolProperties);
+                this.protocolProperties = ConnectionManager.UpdateProtocolPropertiesByProtocol(this.protocol, this.protocolProperties);
                 AssignStoreToRdpOptions(this.ProtocolProperties, this.persistenceSecurity);
             }
         }
@@ -167,42 +167,6 @@ namespace Terminals.Data
             get { return protocolProperties; }
             // setter should be used for deserialization only
             set { protocolProperties = value; }
-        }
-
-        /// <summary>
-        /// Explicit call of update properties container depending on selected protocol.
-        /// </summary>
-        internal static ProtocolOptions UpdateProtocolPropertiesByProtocol(string newProtocol, ProtocolOptions currentOptions)
-        {
-            switch (newProtocol) // Don't call this in property setter, because of serializer
-            {
-                case ConnectionManager.VNC:
-                    return SwitchPropertiesIfNotTheSameType<VncOptions>(currentOptions);
-                case ConnectionManager.VMRC:
-                    return SwitchPropertiesIfNotTheSameType<VMRCOptions>(currentOptions);
-                case ConnectionManager.TELNET:
-                    return SwitchPropertiesIfNotTheSameType<ConsoleOptions>(currentOptions);
-                case ConnectionManager.SSH:
-                    return SwitchPropertiesIfNotTheSameType<SshOptions>(currentOptions);
-                case ConnectionManager.RDP:
-                    return SwitchPropertiesIfNotTheSameType<RdpOptions>(currentOptions);
-                case ConnectionManager.ICA_CITRIX:
-                    return SwitchPropertiesIfNotTheSameType<ICAOptions>(currentOptions);
-                case ConnectionManager.HTTP:
-                case ConnectionManager.HTTPS:
-                    return SwitchPropertiesIfNotTheSameType<WebOptions>(currentOptions);
-                default:
-                    return new EmptyOptions();
-            }
-        }
-
-        private static ProtocolOptions SwitchPropertiesIfNotTheSameType<TOptions>(ProtocolOptions currentOptions)
-            where TOptions: ProtocolOptions
-        {
-            if (!(currentOptions is TOptions)) // prevent to reset properties
-                return Activator.CreateInstance<TOptions>();
-
-            return currentOptions;
         }
 
         private string notes;
