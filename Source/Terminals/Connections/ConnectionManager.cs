@@ -11,10 +11,11 @@ namespace Terminals.Connections
     {
         internal const int RDPPort = 3389;
         internal const int VNCVMRCPort = 5900;
+        internal const int HTTPPort = 80;
+        
         internal const int TelnetPort = 23;
         internal const int SSHPort = 22;
         internal const int ICAPort = 1494;
-        internal const int HTTPPort = 80;
         internal const int HTTPSPort = 443;
 
         internal const string VNC = "VNC";
@@ -68,6 +69,44 @@ namespace Terminals.Connections
             width = Math.Min(MAX_WIDTH, width);
             height = Math.Min(MAX_HEIGHT, height);
             return new Size(width, height);
+        }
+
+        /// <summary>
+        /// Explicit call of update properties container depending on selected protocol.
+        /// Don't call this in property setter, because of serializer.
+        /// Returns never null instance of the options, in case the protocol is identical, returns currentOptions.
+        /// </summary>
+        internal static ProtocolOptions UpdateProtocolPropertiesByProtocol(string newProtocol, ProtocolOptions currentOptions)
+        {
+            switch (newProtocol)
+            {
+                case VNC:
+                    return SwitchPropertiesIfNotTheSameType<VncOptions>(currentOptions);
+                case VMRC:
+                    return SwitchPropertiesIfNotTheSameType<VMRCOptions>(currentOptions);
+                case TELNET:
+                    return SwitchPropertiesIfNotTheSameType<ConsoleOptions>(currentOptions);
+                case SSH:
+                    return SwitchPropertiesIfNotTheSameType<SshOptions>(currentOptions);
+                case RDP:
+                    return SwitchPropertiesIfNotTheSameType<RdpOptions>(currentOptions);
+                case ICA_CITRIX:
+                    return SwitchPropertiesIfNotTheSameType<ICAOptions>(currentOptions);
+                case HTTP:
+                case HTTPS:
+                    return SwitchPropertiesIfNotTheSameType<WebOptions>(currentOptions);
+                default:
+                    return new EmptyOptions();
+            }
+        }
+
+        private static ProtocolOptions SwitchPropertiesIfNotTheSameType<TOptions>(ProtocolOptions currentOptions)
+            where TOptions : ProtocolOptions
+        {
+            if (!(currentOptions is TOptions)) // prevent to reset properties
+                return Activator.CreateInstance<TOptions>();
+
+            return currentOptions;
         }
 
         internal static ushort[] SupportedPorts()
