@@ -154,8 +154,7 @@ namespace Terminals.Wizard
 
                 IPAddress address = (IPAddress)machine;
                 _scannerList.Add(scanner);
-                scanner.StartScan(address, new ushort[] { ConnectionManager.ICAPort, ConnectionManager.RDPPort, ConnectionManager.SSHPort, 
-                    ConnectionManager.TelnetPort, ConnectionManager.VNCVMRCPort }, 1000, 100, true);
+                scanner.StartScan(address, ConnectionManager.SupportedPorts(), 1000, 100, true);
                 _scannerCount++;
             }
             catch (Exception)

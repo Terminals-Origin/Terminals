@@ -70,6 +70,11 @@ namespace Terminals.Connections
             return new Size(width, height);
         }
 
+        internal static ushort[] SupportedPorts()
+        {
+            return new ushort[] { ICAPort, RDPPort, SSHPort, TelnetPort, VNCVMRCPort };
+        }
+
         internal static Connection CreateConnection(IFavorite favorite)
         {
             switch (favorite.Protocol)
