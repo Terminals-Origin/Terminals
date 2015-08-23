@@ -128,6 +128,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\ConnectionManagerTests.cs" />
+    <Compile Include="Connections\FavoriteTests.cs" />
     <Compile Include="FilePersisted\FavoritesTest.cs" />
     <Compile Include="FilePersisted\FilePersistedTestLab.cs" />
     <Compile Include="FilePersisted\GroupsTest.cs" />
