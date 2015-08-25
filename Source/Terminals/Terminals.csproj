@@ -192,6 +192,13 @@
     </Compile>
     <Compile Include="Connections\VNC\VncMenuVisitor.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
+    <Compile Include="Integration\Export\TerminalsConsoleExport.cs" />
+    <Compile Include="Integration\Export\TerminalsIcaExport.cs" />
+    <Compile Include="Integration\Export\TerminalsRdpExport.cs" />
+    <Compile Include="Integration\Export\TerminalsSshExport.cs" />
+    <Compile Include="Integration\Export\TerminalsTelnetExport.cs" />
+    <Compile Include="Integration\Export\TerminalsVmrcExport.cs" />
+    <Compile Include="Integration\Export\TerminalsVncExport.cs" />
     <Compile Include="Network\Tools\NettworkingTools.cs" />
     <Compile Include="Connections\Rdp\RdpClientErrorMessages.cs" />
     <Compile Include="Converters\TextConverter.cs" />
