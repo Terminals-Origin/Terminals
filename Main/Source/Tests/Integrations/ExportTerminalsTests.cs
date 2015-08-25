@@ -27,6 +27,9 @@ namespace Tests.Integrations
             var testData = new[]
             {
                 new Tuple<string, string>(ConnectionManager.RDP, "sounds"),
+                new Tuple<string, string>(ConnectionManager.RDP, "enableSecuritySettings"),
+                new Tuple<string, string>(ConnectionManager.RDP, "tsgwUsageMethod"),
+                new Tuple<string, string>(ConnectionManager.RDP, "executeBeforeConnect"), // applies to all protocols
                 new Tuple<string, string>(ConnectionManager.VNC, "vncAutoScale"),
                 new Tuple<string, string>(ConnectionManager.VMRC, "vmrcadministratormode"),
                 new Tuple<string, string>(ConnectionManager.TELNET, "telnet"),
@@ -43,7 +46,10 @@ namespace Tests.Integrations
         {
             var favoriteElement = new FavoriteConfigurationElement()
             {
-                Protocol = testCase.Item1
+                Protocol = testCase.Item1,
+                EnableSecuritySettings = true,
+                TsgwUsageMethod = 1, // anything else than default value
+                ExecuteBeforeConnect = true
             };
 
             ExportFavorite(favoriteElement);
