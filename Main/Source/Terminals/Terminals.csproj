@@ -192,6 +192,7 @@
     </Compile>
     <Compile Include="Connections\VNC\VncMenuVisitor.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
+    <Compile Include="Integration\Export\ITerminalsOptionsExport.cs" />
     <Compile Include="Integration\Export\TerminalsConsoleExport.cs" />
     <Compile Include="Integration\Export\TerminalsIcaExport.cs" />
     <Compile Include="Integration\Export\TerminalsRdpExport.cs" />

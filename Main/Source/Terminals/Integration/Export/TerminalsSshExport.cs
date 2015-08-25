@@ -3,9 +3,9 @@ using Terminals.Connections;
 
 namespace Terminals.Integration.Export
 {
-    internal class TerminalsSshExport
+    internal class TerminalsSshExport : ITerminalsOptionsExport
     {
-        public static void ExportSshOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
+        public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
         {
             if (favorite.Protocol == ConnectionManager.SSH)
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Xml;
+using Terminals.Connections;
 using Terminals.Integration.Import;
 
 namespace Terminals.Integration.Export
@@ -43,12 +44,10 @@ namespace Terminals.Integration.Export
             ExportCredentials(w, includePassword, favorite);
             ExportExecuteBeforeConnect(w, favorite);
 
-            TerminalsRdpExport.ExportRdpOptions(w, favorite);
-            TerminalsVncExport.ExportVncOptions(w, favorite);
-            TerminalsSshExport.ExportSshOptions(w, favorite);
-            TerminalsTelnetExport.ExportTelnetOptions(w, favorite);
-            TerminalsVmrcExport.ExportVmrc(w, favorite);
-            TerminalsIcaExport.ExportIcaOptions(w, favorite);
+            foreach (ITerminalsOptionsExport optionsExporter in ConnectionManager.GetTerminalsOptionsExporters())
+            {
+                optionsExporter.ExportOptions(w, favorite);
+            }
 
             w.WriteEndElement();
         }

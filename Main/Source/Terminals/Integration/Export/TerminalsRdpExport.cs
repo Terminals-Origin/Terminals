@@ -4,9 +4,9 @@ using Terminals.Connections;
 
 namespace Terminals.Integration.Export
 {
-    internal class TerminalsRdpExport
+    internal class TerminalsRdpExport : ITerminalsOptionsExport
     {
-        public static void ExportRdpOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
+        public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
         {
             if (favorite.Protocol == ConnectionManager.RDP)
             {

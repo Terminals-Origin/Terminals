@@ -3,9 +3,9 @@ using Terminals.Connections;
 
 namespace Terminals.Integration.Export
 {
-    internal class TerminalsTelnetExport
+    internal class TerminalsTelnetExport : ITerminalsOptionsExport
     {
-        public static void ExportTelnetOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
+        public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
         {
             if (favorite.Protocol == ConnectionManager.TELNET)
             {
