@@ -33,6 +33,7 @@ namespace Tests.Integrations
                 new Tuple<string, string>(ConnectionManager.VNC, "vncAutoScale"),
                 new Tuple<string, string>(ConnectionManager.VMRC, "vmrcadministratormode"),
                 new Tuple<string, string>(ConnectionManager.TELNET, "telnet"),
+                new Tuple<string, string>(ConnectionManager.TELNET, "consolerows"),
                 new Tuple<string, string>(ConnectionManager.SSH, "ssh1"),
                 new Tuple<string, string>(ConnectionManager.SSH, "consolerows"),
                 new Tuple<string, string>(ConnectionManager.ICA_CITRIX, "iCAApplicationName")
