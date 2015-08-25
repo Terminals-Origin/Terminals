@@ -3,9 +3,9 @@ using Terminals.Connections;
 
 namespace Terminals.Integration.Export
 {
-    internal class TerminalsIcaExport
+    internal class TerminalsIcaExport : ITerminalsOptionsExport
     {
-        public static void ExportIcaOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
+        public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
         {
             if (favorite.Protocol == ConnectionManager.ICA_CITRIX)
             {

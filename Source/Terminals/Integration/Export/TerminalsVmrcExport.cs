@@ -3,9 +3,9 @@ using Terminals.Connections;
 
 namespace Terminals.Integration.Export
 {
-    internal class TerminalsVmrcExport
+    internal class TerminalsVmrcExport : ITerminalsOptionsExport
     {
-        public static void ExportVmrc(XmlTextWriter w, FavoriteConfigurationElement favorite)
+        public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
         {
             if (favorite.Protocol == ConnectionManager.VMRC)
             {

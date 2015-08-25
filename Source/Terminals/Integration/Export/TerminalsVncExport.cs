@@ -3,9 +3,9 @@ using Terminals.Connections;
 
 namespace Terminals.Integration.Export
 {
-    internal class TerminalsVncExport
+    internal class TerminalsVncExport : ITerminalsOptionsExport
     {
-        public static void ExportVncOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
+        public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
         {
             if (favorite.Protocol == ConnectionManager.VNC)
             {
