@@ -39,12 +39,6 @@
             this.imageListIcons.TransparentColor = System.Drawing.Color.Magenta;
             this.imageListIcons.Images.SetKeyName(0, "XPfolder_closed.bmp");
             this.imageListIcons.Images.SetKeyName(1, "XPfolder_Open.bmp");
-            this.imageListIcons.Images.SetKeyName(2, "treeIcon_rdp.png");
-            this.imageListIcons.Images.SetKeyName(3, "treeIcon_http.png");
-            this.imageListIcons.Images.SetKeyName(4, "treeIcon_vnc.png");
-            this.imageListIcons.Images.SetKeyName(5, "treeIcon_telnet.png");
-            this.imageListIcons.Images.SetKeyName(6, "treeIcon_ssh.png");
-            this.imageListIcons.Images.SetKeyName(7, "terminalsicon.png");
             // 
             // FavoritesTreeView
             // 

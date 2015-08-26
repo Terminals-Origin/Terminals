@@ -87,6 +87,9 @@ namespace Terminals.Forms.Controls
         public SearchResultsPanel()
         {
             InitializeComponent();
+
+            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.GetProtocolIcons);
+            iconsBuilder.Build(this.protocolsImageList);
         }
 
         internal void LoadEvents(IPersistence persistence)

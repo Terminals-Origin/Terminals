@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using Terminals.Configuration;
@@ -29,6 +30,19 @@ namespace Terminals.Data
         private static readonly Image TreeIconTelnet = Resources.treeIcon_telnet;
         private static readonly Image TreeIconSsh = Resources.treeIcon_ssh;
         private static readonly Image Terminalsicon = Resources.terminalsicon;
+
+        internal static IDictionary<string, Image> GetProtocolIcons()
+        {
+            return new Dictionary<string, Image>()
+            {
+                {"treeIcon_rdp.png", Resources.treeIcon_rdp },
+                {"treeIcon_vnc.png", Resources.treeIcon_vnc },
+                {"treeIcon_ssh.png", Resources.treeIcon_ssh },
+                {"treeIcon_telnet.png", Resources.treeIcon_telnet },
+                {"treeIcon_http.png", Resources.treeIcon_http },
+                {"terminalsicon.png", Resources.terminalsicon },
+            };
+        }
 
         /// <summary>
         /// Gets the icon file name by icons defined in FavoritesTreeView imageListIcons

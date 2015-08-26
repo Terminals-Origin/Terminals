@@ -66,6 +66,9 @@ namespace Terminals.Forms.Controls
         public FavoritesTreeView()
         {
             InitializeComponent();
+
+            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.GetProtocolIcons);
+            iconsBuilder.Build(this.imageListIcons);
         }
 
         internal GroupTreeNode FindSelectedGroupNode()
