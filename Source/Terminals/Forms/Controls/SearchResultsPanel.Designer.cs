@@ -35,7 +35,6 @@ namespace Terminals.Forms.Controls
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchResultsPanel));
             this.protocolsImageList = new System.Windows.Forms.ImageList(this.components);
             this.resultsListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,14 +42,9 @@ namespace Terminals.Forms.Controls
             // 
             // protocolsImageList
             // 
-            this.protocolsImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("protocolsImageList.ImageStream")));
+            this.protocolsImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.protocolsImageList.ImageSize = new System.Drawing.Size(16, 16);
             this.protocolsImageList.TransparentColor = System.Drawing.Color.Magenta;
-            this.protocolsImageList.Images.SetKeyName(0, "treeIcon_rdp.png");
-            this.protocolsImageList.Images.SetKeyName(1, "treeIcon_http.png");
-            this.protocolsImageList.Images.SetKeyName(2, "treeIcon_vnc.png");
-            this.protocolsImageList.Images.SetKeyName(3, "treeIcon_ssh.png");
-            this.protocolsImageList.Images.SetKeyName(4, "treeIcon_telnet.png");
-            this.protocolsImageList.Images.SetKeyName(5, "terminalsicon.png");
             // 
             // resultsListView
             // 
@@ -69,12 +63,12 @@ namespace Terminals.Forms.Controls
             this.resultsListView.View = System.Windows.Forms.View.Details;
             this.resultsListView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ResultsListView_MouseUp);
             // 
-            // SearchPanel
+            // SearchResultsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.resultsListView);
-            this.Name = "SearchPanel";
+            this.Name = "SearchResultsPanel";
             this.Size = new System.Drawing.Size(218, 318);
             this.ResumeLayout(false);
 

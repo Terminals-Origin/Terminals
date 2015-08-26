@@ -191,6 +191,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\VNC\VncMenuVisitor.cs" />
+    <Compile Include="Forms\Controls\ProtocolImageListBuilder.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
     <Compile Include="Integration\Export\ITerminalsOptionsExport.cs" />
     <Compile Include="Integration\Export\TerminalsConsoleExport.cs" />

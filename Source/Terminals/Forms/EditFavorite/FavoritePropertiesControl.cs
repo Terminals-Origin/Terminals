@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Data;
+using Terminals.Forms.Controls;
 
 namespace Terminals.Forms.EditFavorite
 {
@@ -40,6 +41,8 @@ namespace Terminals.Forms.EditFavorite
         {
             this.InitializeComponent();
 
+            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.GetProtocolIcons);
+            iconsBuilder.Build(this.treeIcons);
             this.generalPanel1.AssignRasControl(this.rasControl1);
         }
 

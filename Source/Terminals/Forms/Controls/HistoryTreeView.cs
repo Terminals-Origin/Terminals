@@ -19,6 +19,9 @@ namespace Terminals.Forms.Controls
         public HistoryTreeView()
         {
             InitializeComponent();
+
+            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.GetProtocolIcons);
+            iconsBuilder.Build(this.imageListIcons);
         }
 
         /// <summary>

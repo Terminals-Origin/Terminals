@@ -45,11 +45,6 @@
             this.imageListIcons.Images.SetKeyName(5, "history_icon_overmonth.png");
             this.imageListIcons.Images.SetKeyName(6, "history_icon_halfyear.png");
             this.imageListIcons.Images.SetKeyName(7, "history_icon_year.png");
-            this.imageListIcons.Images.SetKeyName(8, "treeIcon_vnc.png");
-            this.imageListIcons.Images.SetKeyName(9, "treeIcon_http.png");
-            this.imageListIcons.Images.SetKeyName(10, "treeIcon_rdp.png");
-            this.imageListIcons.Images.SetKeyName(11, "treeIcon_ssh.png");
-            this.imageListIcons.Images.SetKeyName(12, "treeIcon_telnet.png");
             // 
             // HistoryTreeView
             // 

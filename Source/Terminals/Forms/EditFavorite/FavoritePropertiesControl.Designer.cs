@@ -45,7 +45,7 @@
             this.lblLine = new System.Windows.Forms.Label();
             this.groupsPanel1 = new GroupsControl();
             this.executePanel1 = new ExecuteControl();
-            this.rasControl1 = new RasControl();
+            this.rasControl1 = new RasControl(); 
             this.panelContainer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,12 +95,6 @@
             this.treeIcons.Images.SetKeyName(0, "computer_link.png");
             this.treeIcons.Images.SetKeyName(1, "tag_blue_add.png");
             this.treeIcons.Images.SetKeyName(2, "application_xp_terminal.png");
-            this.treeIcons.Images.SetKeyName(3, "terminalsicon.png");
-            this.treeIcons.Images.SetKeyName(4, "treeIcon_rdp.png");
-            this.treeIcons.Images.SetKeyName(5, "treeIcon_vnc.png");
-            this.treeIcons.Images.SetKeyName(6, "treeIcon_ssh.png");
-            this.treeIcons.Images.SetKeyName(7, "treeIcon_telnet.png");
-            this.treeIcons.Images.SetKeyName(8, "treeIcon_http.png");
             // 
             // titleLabel
             // 
