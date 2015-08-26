@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
+using Terminals.Integration.Export;
+using Terminals.Properties;
 
 namespace Terminals.Connections
 {
@@ -18,6 +20,9 @@ namespace Terminals.Connections
         internal const int ICAPort = 1494;
         internal const int HTTPSPort = 443;
 
+        internal const string HTTP = "HTTP";
+        internal const string HTTPS = "HTTPS";
+
         internal const string VNC = "VNC";
         internal const string VMRC = "VMRC";
         internal const string RAS = "RAS";
@@ -25,8 +30,7 @@ namespace Terminals.Connections
         internal const string SSH = "SSH";
         internal const string RDP = "RDP";
         internal const string ICA_CITRIX = "ICA Citrix";
-        internal const string HTTP = "HTTP";
-        internal const string HTTPS = "HTTPS";
+
 
         private const int MAX_WIDTH = 4096;
         private const int MAX_HEIGHT = 2048;
@@ -69,6 +73,27 @@ namespace Terminals.Connections
             width = Math.Min(MAX_WIDTH, width);
             height = Math.Min(MAX_HEIGHT, height);
             return new Size(width, height);
+        }
+
+        // cached images, bad performace, but simplifies check, if the image is known
+        internal static readonly Image TreeIconRdp = Resources.treeIcon_rdp;
+        internal static readonly Image TreeIconHttp = Resources.treeIcon_http;
+        internal static readonly Image TreeIconVnc = Resources.treeIcon_vnc;
+        internal static readonly Image TreeIconTelnet = Resources.treeIcon_telnet;
+        internal static readonly Image TreeIconSsh = Resources.treeIcon_ssh;
+        internal static readonly Image Terminalsicon = Resources.terminalsicon;
+
+        internal static Dictionary<string, Image> GetPluginIcons()
+        {
+            return new Dictionary<string, Image>()
+            {
+                { RDP, TreeIconRdp },
+                { VNC, TreeIconVnc },
+                { SSH, TreeIconSsh },
+                { TELNET, TreeIconTelnet },
+                { HTTP, TreeIconHttp },
+                { HTTPS, TreeIconHttp }
+            };
         }
 
         /// <summary>
@@ -217,6 +242,19 @@ namespace Terminals.Connections
                 default:
                     return false;
             } 
+        }
+
+        internal static ITerminalsOptionsExport[] GetTerminalsOptionsExporters()
+        {
+            return new ITerminalsOptionsExport[]
+            {
+                new TerminalsRdpExport(),
+                new TerminalsVncExport(),
+                new TerminalsSshExport(),
+                new TerminalsTelnetExport(),
+                new TerminalsVmrcExport(),
+                new TerminalsIcaExport()
+            };
         }
 
         internal static Control[] CreateControls(string newProtocol)
