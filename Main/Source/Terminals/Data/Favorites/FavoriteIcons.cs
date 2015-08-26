@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Properties;
@@ -13,6 +14,10 @@ namespace Terminals.Data
     /// </summary>
     internal static class FavoriteIcons
     {
+        private const string DEFAULT_ICONKEY = "terminalsicon.png";
+
+        private const string ICON_PREFIX = "treeIcon_";
+
         /// <summary>
         /// Gets empty bytes array used as empty not assigned image data.
         /// </summary>
@@ -24,24 +29,18 @@ namespace Terminals.Data
             }
         }
 
-        internal static readonly Image TreeIconRdp = Resources.treeIcon_rdp;
-        internal static readonly Image TreeIconHttp = Resources.treeIcon_http;
-        internal static readonly Image TreeIconVnc = Resources.treeIcon_vnc;
-        internal static readonly Image TreeIconTelnet = Resources.treeIcon_telnet;
-        internal static readonly Image TreeIconSsh = Resources.treeIcon_ssh;
-        internal static readonly Image Terminalsicon = Resources.terminalsicon;
+        private static readonly Dictionary<string, Image> pluginIcons = ConnectionManager.GetPluginIcons();
 
         internal static IDictionary<string, Image> GetProtocolIcons()
         {
-            return new Dictionary<string, Image>()
-            {
-                {"treeIcon_rdp.png", Resources.treeIcon_rdp },
-                {"treeIcon_vnc.png", Resources.treeIcon_vnc },
-                {"treeIcon_ssh.png", Resources.treeIcon_ssh },
-                {"treeIcon_telnet.png", Resources.treeIcon_telnet },
-                {"treeIcon_http.png", Resources.treeIcon_http },
-                {"terminalsicon.png", Resources.terminalsicon },
-            };
+            Dictionary<string, Image> uiIcons = pluginIcons.ToDictionary(k => CreateIconKey(k.Key), v => v.Value);
+            uiIcons.Add(DEFAULT_ICONKEY, ConnectionManager.Terminalsicon);
+            return uiIcons;
+        }
+
+        private static string CreateIconKey(string protocol)
+        {
+            return ICON_PREFIX + protocol;
         }
 
         /// <summary>
@@ -49,22 +48,10 @@ namespace Terminals.Data
         /// </summary>
         internal static string GetTreeviewImageListKey(string protocol)
         {
-            switch (protocol)
-            {
-                case ConnectionManager.RDP:
-                    return "treeIcon_rdp.png";
-                case ConnectionManager.HTTP:
-                case ConnectionManager.HTTPS:
-                    return "treeIcon_http.png";
-                case ConnectionManager.VNC:
-                    return "treeIcon_vnc.png";
-                case ConnectionManager.TELNET:
-                    return "treeIcon_telnet.png";
-                case ConnectionManager.SSH:
-                    return "treeIcon_ssh.png";
-                default:
-                    return "terminalsicon.png";
-            }
+            if (pluginIcons.ContainsKey(protocol))
+                return CreateIconKey(protocol);
+
+            return DEFAULT_ICONKEY;
         }
 
         /// <summary>
@@ -72,22 +59,10 @@ namespace Terminals.Data
         /// </summary>
         private static Image GetProtocolImage(IFavorite favorite)
         {
-            switch (favorite.Protocol)
-            {
-                case ConnectionManager.RDP:
-                    return TreeIconRdp;
-                case ConnectionManager.HTTP:
-                case ConnectionManager.HTTPS:
-                    return TreeIconHttp;
-                case ConnectionManager.VNC:
-                    return TreeIconVnc;
-                case ConnectionManager.TELNET:
-                    return TreeIconTelnet;
-                case ConnectionManager.SSH:
-                    return TreeIconSsh;
-                default:
-                    return Terminalsicon;
-            }
+            if (pluginIcons.ContainsKey(favorite.Protocol))
+                return pluginIcons[favorite.Protocol];
+             
+            return ConnectionManager.Terminalsicon;
         }
 
         internal static Image GetFavoriteIcon(IFavorite favorite)
@@ -197,12 +172,12 @@ namespace Terminals.Data
 
         internal static bool IsDefaultProtocolImage(Image image)
         {
-            return image == TreeIconRdp ||
-                   image == TreeIconHttp ||
-                   image == TreeIconVnc ||
-                   image == TreeIconTelnet ||
-                   image == TreeIconSsh ||
-                   image == Terminalsicon;
+            return image == ConnectionManager.TreeIconRdp ||
+                   image == ConnectionManager.TreeIconHttp ||
+                   image == ConnectionManager.TreeIconVnc ||
+                   image == ConnectionManager.TreeIconTelnet ||
+                   image == ConnectionManager.TreeIconSsh ||
+                   image == ConnectionManager.Terminalsicon;
         }
     }
 }

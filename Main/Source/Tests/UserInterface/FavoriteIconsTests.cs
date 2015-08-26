@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,12 +25,12 @@ namespace Tests.UserInterface
         {
             var testData = new[]
             {
-                new Tuple<string, string>(ConnectionManager.RDP, "treeIcon_rdp.png"),
-                new Tuple<string, string>(ConnectionManager.VNC, "treeIcon_vnc.png"),
-                new Tuple<string, string>(ConnectionManager.SSH, "treeIcon_ssh.png"),
-                new Tuple<string, string>(ConnectionManager.TELNET, "treeIcon_telnet.png"),
-                new Tuple<string, string>(ConnectionManager.HTTP, "treeIcon_http.png"),
-                new Tuple<string, string>(ConnectionManager.HTTPS, "treeIcon_http.png"),
+                new Tuple<string, string>(ConnectionManager.RDP, "treeIcon_RDP"),
+                new Tuple<string, string>(ConnectionManager.VNC, "treeIcon_VNC"),
+                new Tuple<string, string>(ConnectionManager.SSH, "treeIcon_SSH"),
+                new Tuple<string, string>(ConnectionManager.TELNET, "treeIcon_Telnet"),
+                new Tuple<string, string>(ConnectionManager.HTTP, "treeIcon_HTTP"),
+                new Tuple<string, string>(ConnectionManager.HTTPS, "treeIcon_HTTPS"),
 
                 // undefined icons use default icon
                 new Tuple<string, string>(ConnectionManager.VMRC, UNKNOWN_ICON_KEY),
@@ -61,16 +62,16 @@ namespace Tests.UserInterface
         {
             var testData = new[]
             {
-                new Tuple<string, Image>(ConnectionManager.RDP, FavoriteIcons.TreeIconRdp),
-                new Tuple<string, Image>(ConnectionManager.VNC, FavoriteIcons.TreeIconVnc),
-                new Tuple<string, Image>(ConnectionManager.SSH, FavoriteIcons.TreeIconSsh),
-                new Tuple<string, Image>(ConnectionManager.TELNET, FavoriteIcons.TreeIconTelnet),
-                new Tuple<string, Image>(ConnectionManager.HTTP, FavoriteIcons.TreeIconHttp),
-                new Tuple<string, Image>(ConnectionManager.HTTPS, FavoriteIcons.TreeIconHttp),
+                new Tuple<string, Image>(ConnectionManager.RDP, ConnectionManager.TreeIconRdp),
+                new Tuple<string, Image>(ConnectionManager.VNC, ConnectionManager.TreeIconVnc),
+                new Tuple<string, Image>(ConnectionManager.SSH, ConnectionManager.TreeIconSsh),
+                new Tuple<string, Image>(ConnectionManager.TELNET, ConnectionManager.TreeIconTelnet),
+                new Tuple<string, Image>(ConnectionManager.HTTP, ConnectionManager.TreeIconHttp),
+                new Tuple<string, Image>(ConnectionManager.HTTPS, ConnectionManager.TreeIconHttp),
 
                 // undefined icons use default icon
-                new Tuple<string, Image>(ConnectionManager.ICA_CITRIX, FavoriteIcons.Terminalsicon),
-                new Tuple<string, Image>(ConnectionManager.VMRC, FavoriteIcons.Terminalsicon)
+                new Tuple<string, Image>(ConnectionManager.ICA_CITRIX, ConnectionManager.Terminalsicon),
+                new Tuple<string, Image>(ConnectionManager.VMRC, ConnectionManager.Terminalsicon)
             };
 
             bool iconsEquals = testData.All(this.AssertGetFavoriteIcon);
@@ -80,7 +81,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void UnKnownProtocols_GetFavoriteIcon_ReturnDefaultIcon()
         {
-            var testCase = new Tuple<string, Image>(UNKNOWNPROTOCOL, FavoriteIcons.Terminalsicon);
+            var testCase = new Tuple<string, Image>(UNKNOWNPROTOCOL, ConnectionManager.Terminalsicon);
             bool keyEquals = this.AssertGetFavoriteIcon(testCase);
             Assert.IsTrue(keyEquals, UNKNOWN_PROTOCOL_DEFUULT_ICON_MESSAGE);
         }
@@ -93,6 +94,14 @@ namespace Tests.UserInterface
             bool iconEquals = icon == testCase.Item2;
             this.TestContext.WriteLine("{0} icon equals: {1}", testCase.Item1, iconEquals);
             return iconEquals;
+        }
+
+        [TestMethod]
+        public void AllKnownProtocols_IsDefaultProtocolImage_ReturnTrue()
+        {
+            IEnumerable<Image> testCase = FavoriteIcons.GetProtocolIcons().Values;
+            bool allDefault = testCase.All(FavoriteIcons.IsDefaultProtocolImage);
+            Assert.IsTrue(allDefault, "The produced default icons have to be identified as produced.");
         }
     }
 }
