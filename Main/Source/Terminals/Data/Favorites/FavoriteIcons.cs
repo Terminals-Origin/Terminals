@@ -172,12 +172,7 @@ namespace Terminals.Data
 
         internal static bool IsDefaultProtocolImage(Image image)
         {
-            return image == ConnectionManager.TreeIconRdp ||
-                   image == ConnectionManager.TreeIconHttp ||
-                   image == ConnectionManager.TreeIconVnc ||
-                   image == ConnectionManager.TreeIconTelnet ||
-                   image == ConnectionManager.TreeIconSsh ||
-                   image == ConnectionManager.Terminalsicon;
+            return ConnectionManager.Terminalsicon == image || pluginIcons.ContainsValue(image);
         }
     }
 }
