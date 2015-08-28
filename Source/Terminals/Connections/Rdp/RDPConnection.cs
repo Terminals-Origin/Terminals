@@ -278,7 +278,7 @@ namespace Terminals.Connections
 
         public override void ChangeDesktopSize(DesktopSize desktopSize)
         {
-            Size size = ConnectionManager.GetSize(this, this.Favorite);
+            Size size = DesktopSizeCalculator.GetSize(this, this.Favorite);
 
             try
             {

@@ -32,7 +32,7 @@ namespace Terminals.Connections
                 vmrc.AdministratorMode = options.AdministratorMode;
                 vmrc.ReducedColorsMode = options.ReducedColorsMode;
 
-                Size size = ConnectionManager.GetSize(this, Favorite);
+                Size size = DesktopSizeCalculator.GetSize(this, Favorite);
                 //vmrc.ServerDisplayHeight = size.Height;
                 //vmrc.ServerDisplayWidth = size.Width;
 

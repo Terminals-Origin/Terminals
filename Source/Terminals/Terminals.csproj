@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connections\ConnectionManager.cs" />
+    <Compile Include="Connections\DesktopSizeCalculator.cs" />
     <Compile Include="Connections\Rdp\ConnectionStateDetector.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\IConnectionExtra.cs" />
