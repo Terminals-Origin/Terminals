@@ -84,7 +84,7 @@ namespace Terminals.Network
             favorite.UserName = Environment.UserName;
             favorite.DomainName = domain;
             favorite.Tags = this.Tags;
-            favorite.Port = ConnectionManager.GetPort(this.Protocol);
+            favorite.Port = ConnectionManager.Instance.GetPort(this.Protocol);
             favorite.Protocol = this.Protocol;
             favorite.Notes = this.Notes;
             return favorite;

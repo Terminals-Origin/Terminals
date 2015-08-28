@@ -44,7 +44,7 @@ namespace Terminals.Integration.Export
             ExportCredentials(w, includePassword, favorite);
             ExportExecuteBeforeConnect(w, favorite);
 
-            foreach (ITerminalsOptionsExport optionsExporter in ConnectionManager.GetTerminalsOptionsExporters())
+            foreach (ITerminalsOptionsExport optionsExporter in ConnectionManager.Instance.GetTerminalsOptionsExporters())
             {
                 optionsExporter.ExportOptions(w, favorite);
             }

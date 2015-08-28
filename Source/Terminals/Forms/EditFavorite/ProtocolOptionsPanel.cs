@@ -18,13 +18,13 @@ namespace Terminals.Forms.EditFavorite
         {
             get
             {
-                return ConnectionManager.GetAvailableProtocols();
+                return ConnectionManager.Instance.GetAvailableProtocols();
             }
         }
 
         internal void ReloadControls(string newProtocol)
         {
-            Control[] newControls = ConnectionManager.CreateControls(newProtocol);
+            Control[] newControls = ConnectionManager.Instance.CreateControls(newProtocol);
             this.ReloadControls(newControls);
         }
 

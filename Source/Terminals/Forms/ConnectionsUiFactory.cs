@@ -233,7 +233,7 @@ namespace Terminals.Forms
 
         private static Connection CreateConnection(IFavorite favorite, TerminalTabControlItem terminalTabPage, MainForm parentForm)
         {
-            Connection conn = ConnectionManager.CreateConnection(favorite);
+            Connection conn = ConnectionManager.Instance.CreateConnection(favorite);
             conn.Favorite = favorite;
             AssignControls(conn, terminalTabPage, parentForm);
             return conn;

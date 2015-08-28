@@ -52,7 +52,7 @@ namespace Terminals.Data
             set
             {
                 protocol = value;
-                this.protocolProperties = ConnectionManager.UpdateProtocolPropertiesByProtocol(this.protocol, this.protocolProperties);
+                this.protocolProperties = ConnectionManager.Instance.UpdateProtocolPropertiesByProtocol(this.protocol, this.protocolProperties);
                 AssignStoreToRdpOptions(this.ProtocolProperties, this.persistenceSecurity);
             }
         }
