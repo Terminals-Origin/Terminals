@@ -31,49 +31,7 @@ namespace Terminals.Connections
         internal const string RDP = "RDP";
         internal const string ICA_CITRIX = "ICA Citrix";
 
-
-        private const int MAX_WIDTH = 4096;
-        private const int MAX_HEIGHT = 2048;
-
         private const string CONSOLE = "Console";
-
-        public static Size GetSize(Connection connection, IFavorite favorite)
-        {
-            int height = favorite.Display.Height;
-            int width = favorite.Display.Width;
-
-            switch (favorite.Display.DesktopSize)
-            {
-                case DesktopSize.x640:
-                    return new Size(640, 480);
-                case DesktopSize.x800:
-                    return new Size(800, 600);
-                case DesktopSize.x1024:
-                    return new Size(1024, 768);
-                case DesktopSize.x1152:
-                    return new Size(1152, 864);
-                case DesktopSize.x1280:
-                    return new Size(1280, 1024);
-                case DesktopSize.FullScreen:
-                    width = Screen.FromControl(connection).Bounds.Width - 13;
-                    height = Screen.FromControl(connection).Bounds.Height - 1;
-                    return GetMaxAvailableSize(width, height);
-                case DesktopSize.FitToWindow:
-                case DesktopSize.AutoScale:
-                    width = connection.Parent.Width;
-                    height = connection.Parent.Height;
-                    return GetMaxAvailableSize(width, height);
-                default:
-                    return new Size(width, height);
-            }
-        }
-
-        private static Size GetMaxAvailableSize(int width, int height)
-        {
-            width = Math.Min(MAX_WIDTH, width);
-            height = Math.Min(MAX_HEIGHT, height);
-            return new Size(width, height);
-        }
 
         // cached images, bad performace, but simplifies check, if the image is known
         internal static readonly Image TreeIconRdp = Resources.treeIcon_rdp;
