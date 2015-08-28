@@ -9,7 +9,7 @@ using Terminals.Properties;
 
 namespace Terminals.Connections
 {
-    internal static class ConnectionManager
+    internal class ConnectionManager
     {
         internal const int RDPPort = 3389;
         internal const int VNCVMRCPort = 5900;
@@ -41,7 +41,32 @@ namespace Terminals.Connections
         internal static readonly Image TreeIconSsh = Resources.treeIcon_ssh;
         internal static readonly Image Terminalsicon = Resources.terminalsicon;
 
-        internal static Dictionary<string, Image> GetPluginIcons()
+        #region Thread safe singleton with lazy loading
+
+        /// <summary>
+        /// Gets the thread safe singleton instance. Use only for startup procedure, will removed in the future.
+        /// </summary>
+        public static ConnectionManager Instance
+        {
+            get
+            {
+                return Nested.instance;
+            }
+        }
+
+        private static class Nested
+        {
+            internal static readonly ConnectionManager instance = new ConnectionManager();
+        }
+
+        #endregion
+
+        public ConnectionManager()
+        {
+            // load the plugins
+        }
+
+        internal Dictionary<string, Image> GetPluginIcons()
         {
             return new Dictionary<string, Image>()
             {
@@ -59,7 +84,7 @@ namespace Terminals.Connections
         /// Don't call this in property setter, because of serializer.
         /// Returns never null instance of the options, in case the protocol is identical, returns currentOptions.
         /// </summary>
-        internal static ProtocolOptions UpdateProtocolPropertiesByProtocol(string newProtocol, ProtocolOptions currentOptions)
+        internal ProtocolOptions UpdateProtocolPropertiesByProtocol(string newProtocol, ProtocolOptions currentOptions)
         {
             switch (newProtocol)
             {
@@ -92,12 +117,12 @@ namespace Terminals.Connections
             return currentOptions;
         }
 
-        internal static ushort[] SupportedPorts()
+        internal ushort[] SupportedPorts()
         {
             return new ushort[] { ICAPort, RDPPort, SSHPort, TelnetPort, VNCVMRCPort };
         }
 
-        internal static Connection CreateConnection(IFavorite favorite)
+        internal Connection CreateConnection(IFavorite favorite)
         {
             switch (favorite.Protocol)
             {
@@ -124,7 +149,7 @@ namespace Terminals.Connections
             }
         }
 
-        internal static int GetPort(string name)
+        internal int GetPort(string name)
         {
             switch (name)
             {
@@ -149,7 +174,7 @@ namespace Terminals.Connections
             }
         }
 
-        internal static string GetPortName(int port, bool isVMRC)
+        internal string GetPortName(int port, bool isVMRC)
         {
             switch (port)
             {
@@ -179,12 +204,12 @@ namespace Terminals.Connections
         /// Ensures web based protocol shortcut. Returns true in case of HTTP or HTTPS.
         /// </summary>
         /// <param name="protocol">One of connection short cuts.</param>
-        internal static bool IsProtocolWebBased(string protocol)
+        internal bool IsProtocolWebBased(string protocol)
         {
             return protocol == HTTP || protocol == HTTPS;
         }
 
-        internal static bool IsKnownProtocol(string protocol)
+        internal bool IsKnownProtocol(string protocol)
         {
             switch (protocol)
             {
@@ -202,7 +227,7 @@ namespace Terminals.Connections
             } 
         }
 
-        internal static ITerminalsOptionsExport[] GetTerminalsOptionsExporters()
+        internal ITerminalsOptionsExport[] GetTerminalsOptionsExporters()
         {
             return new ITerminalsOptionsExport[]
             {
@@ -215,7 +240,7 @@ namespace Terminals.Connections
             };
         }
 
-        internal static Control[] CreateControls(string newProtocol)
+        internal Control[] CreateControls(string newProtocol)
         {
             switch (newProtocol)
             {
@@ -260,7 +285,7 @@ namespace Terminals.Connections
             };
         }
 
-        public static string[] GetAvailableProtocols()
+        public string[] GetAvailableProtocols()
         {
             return new string[]
                 {

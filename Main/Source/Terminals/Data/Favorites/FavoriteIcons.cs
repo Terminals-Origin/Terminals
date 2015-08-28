@@ -29,7 +29,7 @@ namespace Terminals.Data
             }
         }
 
-        private static readonly Dictionary<string, Image> pluginIcons = ConnectionManager.GetPluginIcons();
+        private static readonly Dictionary<string, Image> pluginIcons = ConnectionManager.Instance.GetPluginIcons();
 
         internal static IDictionary<string, Image> GetProtocolIcons()
         {

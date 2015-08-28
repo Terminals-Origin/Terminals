@@ -14,7 +14,7 @@ namespace Terminals.Scanner
         {
             get
             {
-                return ConnectionManager.GetPortName(this.Port, this.IsVMRC);
+                return ConnectionManager.Instance.GetPortName(this.Port, this.IsVMRC);
             }
         }
 
@@ -29,7 +29,7 @@ namespace Terminals.Scanner
             FavoriteConfigurationElement favorite = new FavoriteConfigurationElement();
             favorite.ServerName = this.IPAddress;
             favorite.Port = this.Port;
-            favorite.Protocol = ConnectionManager.GetPortName(favorite.Port, this.IsVMRC);
+            favorite.Protocol = ConnectionManager.Instance.GetPortName(favorite.Port, this.IsVMRC);
             if (tags != String.Empty)
                 favorite.Tags = tags;
             favorite.Name = String.Format("{0}_{1}", this.HostName, favorite.Protocol);

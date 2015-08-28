@@ -21,7 +21,7 @@ namespace Terminals.Data.Validation
 
         public static ValidationResult IsKnownProtocol(string protocol)
         {
-            if (ConnectionManager.IsKnownProtocol(protocol))
+            if (ConnectionManager.Instance.IsKnownProtocol(protocol))
                 return ValidationResult.Success;
 
             return new ValidationResult(Validations.UNKNOWN_PROTOCOL, new string[] { "Protocol" });

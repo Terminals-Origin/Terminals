@@ -154,7 +154,7 @@ namespace Terminals.Wizard
 
                 IPAddress address = (IPAddress)machine;
                 _scannerList.Add(scanner);
-                scanner.StartScan(address, ConnectionManager.SupportedPorts(), 1000, 100, true);
+                scanner.StartScan(address, ConnectionManager.Instance.SupportedPorts(), 1000, 100, true);
                 _scannerCount++;
             }
             catch (Exception)
@@ -195,7 +195,7 @@ namespace Terminals.Wizard
         {
             try
             {
-                string protocol = ConnectionManager.GetPortName(endPoint.Port, true);
+                string protocol = ConnectionManager.Instance.GetPortName(endPoint.Port, true);
                 string serverName = endPoint.Address.ToString();
                 string connectionName = String.Format("{0}_{1}", serverName, protocol);
                 FavoriteConfigurationElement newFavorite =

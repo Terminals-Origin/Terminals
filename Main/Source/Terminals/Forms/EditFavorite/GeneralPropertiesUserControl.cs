@@ -34,6 +34,8 @@ namespace Terminals.Forms.EditFavorite
 
         private bool canValidate;
 
+        private readonly ConnectionManager connectionManager = ConnectionManager.Instance;
+
         public event Action<string> ProtocolChanged;
 
         public event Action<string> ServerNameChanged;
@@ -186,11 +188,11 @@ namespace Terminals.Forms.EditFavorite
             if(validator != null && this.canValidate)// designer support
                  this.validator.OnServerNameValidating(this.cmbServers, new CancelEventArgs());
 
-            if (ConnectionManager.IsProtocolWebBased(this.ProtocolText))
+            if (this.connectionManager.IsProtocolWebBased(this.ProtocolText))
                 this.SetControlsForWeb();
 
             this.FireProtocolChanged();
-            int defaultPort = ConnectionManager.GetPort(this.ProtocolText);
+            int defaultPort = this.connectionManager.GetPort(this.ProtocolText);
             this.txtPort.Text = defaultPort.ToString(CultureInfo.InvariantCulture);
             this.SetOkButtonState();
         }
@@ -221,7 +223,7 @@ namespace Terminals.Forms.EditFavorite
 
         private void HttpUrlTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (ConnectionManager.IsProtocolWebBased(this.ProtocolComboBox.Text))
+            if (this.connectionManager.IsProtocolWebBased(this.ProtocolComboBox.Text))
             {
                 Uri newUrl = GetFullUrlFromHttpTextBox();
                 if (newUrl != null)

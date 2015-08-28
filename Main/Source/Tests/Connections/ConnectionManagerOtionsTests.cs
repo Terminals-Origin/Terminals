@@ -9,12 +9,13 @@ namespace Tests.Connections
     [TestClass]
     public class ConnectionManagerOtionsTests
     {
+        private readonly ConnectionManager connectionManager = new ConnectionManager();
         public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void UnknownProtocol_UpdateProtocolPropertiesByProtocol_ReturnsEmptyOptions()
         {
-            var returned = ConnectionManager.UpdateProtocolPropertiesByProtocol("UnknonwProtocol", new ConsoleOptions());
+            var returned = connectionManager.UpdateProtocolPropertiesByProtocol("UnknonwProtocol", new ConsoleOptions());
             Assert.IsInstanceOfType(returned, typeof(EmptyOptions), "There is no option, how to switch the properties.");
         }
         
@@ -39,7 +40,7 @@ namespace Tests.Connections
 
         private bool AssertTheSameInstance(Tuple<string, ProtocolOptions> testCase)
         {
-            var returned = ConnectionManager.UpdateProtocolPropertiesByProtocol(testCase.Item1, testCase.Item2);
+            var returned = connectionManager.UpdateProtocolPropertiesByProtocol(testCase.Item1, testCase.Item2);
             string expected = testCase.Item2.GetType().Name;
             string returnedType = returned.GetType().Name;
             ReportChangedOptions(testCase.Item1, expected, returnedType);
@@ -68,7 +69,7 @@ namespace Tests.Connections
         private bool AssertOptions(Tuple<string, Type> testCase)
         {
             // No protocol uses EmptyOptions, so it is used as change from something else
-            var returned = ConnectionManager.UpdateProtocolPropertiesByProtocol(testCase.Item1, new EmptyOptions());
+            var returned = connectionManager.UpdateProtocolPropertiesByProtocol(testCase.Item1, new EmptyOptions());
             ReportCreated(returned, testCase);
             return returned.GetType() == testCase.Item2;
         }

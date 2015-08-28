@@ -116,7 +116,7 @@ namespace Terminals.Forms
         private bool IsServerNameValid()
         {
             string protocol = this.form.ProtocolText;
-            if (ConnectionManager.IsProtocolWebBased(protocol))
+            if (ConnectionManager.Instance.IsProtocolWebBased(protocol))
                 return true;
 
             return this.ServerNameInvalid();

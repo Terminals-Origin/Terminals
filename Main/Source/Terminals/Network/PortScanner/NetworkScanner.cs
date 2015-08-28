@@ -26,7 +26,7 @@ namespace Terminals
         {
             InitializeComponent();
 
-            this.checkListPorts.DataSource = ConnectionManager.GetAvailableProtocols();
+            this.checkListPorts.DataSource = ConnectionManager.Instance.GetAvailableProtocols();
             this.CheckAllPorts();
             this.persistence = persistence;
             this.server = new Server(persistence);
@@ -112,7 +112,7 @@ namespace Terminals
         private List<int> GetSelectedPorts()
         {
             return checkListPorts.CheckedItems.OfType<string>()
-                .Select(ConnectionManager.GetPort)
+                .Select(ConnectionManager.Instance.GetPort)
                 .ToList();
         }
 
