@@ -188,6 +188,7 @@
     </Compile>
     <Compile Include="Connections\VMRC\ICurrenctConnectionProvider.cs" />
     <Compile Include="Connections\VMRC\IToolbarExtender.cs" />
+    <Compile Include="Connections\VMRC\VmrcConnectionPlugin.cs" />
     <Compile Include="Connections\VMRC\VmrcMenuVisitor.cs" />
     <Compile Include="Connections\VNC\FakeVNCConnection.cs">
       <SubType>Component</SubType>
