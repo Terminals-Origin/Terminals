@@ -192,6 +192,7 @@
     <Compile Include="Connections\VNC\FakeVNCConnection.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Connections\VNC\VncConnectionPlugin.cs" />
     <Compile Include="Connections\VNC\VncMenuVisitor.cs" />
     <Compile Include="Connections\Web\HttpConnectionPlugin.cs" />
     <Compile Include="Connections\Web\HttpsConnectionPlugin.cs" />
