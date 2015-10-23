@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
@@ -33,8 +34,6 @@ namespace Terminals.Connections
         internal const string SSH = "SSH";
         internal const string RDP = "RDP";
         internal const string ICA_CITRIX = "ICA Citrix";
-
-        private const string CONSOLE = "Console";
 
         // cached images, bad performace, but simplifies check, if the image is known
         internal static readonly Image TreeIconRdp = Resources.treeIcon_rdp;
@@ -68,6 +67,7 @@ namespace Terminals.Connections
         private readonly IConnectionPlugin httpsPlugin = new HttpsConnectionPlugin();
         private readonly IConnectionPlugin vncPlugin = new VncConnectionPlugin();
         private readonly IConnectionPlugin vmrcPlugin = new VmrcConnectionPlugin();
+        private readonly IConnectionPlugin telnetPlugin = new TelnetConnectionPlugin();
 
         public ConnectionManager()
         {
@@ -141,7 +141,7 @@ namespace Terminals.Connections
                 case RAS:
                     return new RASConnection();
                 case TELNET:
-                    return new TerminalConnection();
+                    return telnetPlugin.CreateConnection();
                 case SSH:
                     return new TerminalConnection();
                 case ICA_CITRIX:
@@ -165,7 +165,7 @@ namespace Terminals.Connections
                 case VMRC:
                     return vmrcPlugin.Port;
                 case TELNET:
-                    return TelnetPort;
+                    return telnetPlugin.Port;
                 case SSH:
                     return SSHPort;
                 case RDP:
@@ -193,7 +193,7 @@ namespace Terminals.Connections
 
                     return vncPlugin.PortName;
                 case TelnetPort:
-                    return TELNET;
+                    return telnetPlugin.PortName;
                 case SSHPort:
                     return SSH;
                 case ICAPort:
@@ -258,7 +258,7 @@ namespace Terminals.Connections
                 case VMRC:
                     return vmrcPlugin.CreateOptionsControls();
                 case TELNET:
-                    return new Control[] { new ConsolePreferences() { Name = CONSOLE } };
+                    return telnetPlugin.CreateOptionsControls();
                 case SSH:
                     return CreateSshControls();
                 case ICA_CITRIX:
@@ -288,7 +288,7 @@ namespace Terminals.Connections
         {
             return new Control[]
             {
-                new ConsolePreferences() { Name = CONSOLE },
+                new ConsolePreferences() { Name = TelnetConnectionPlugin.CONSOLE },
                 new SshControl() { Name = "SSH" }
             };
         }
@@ -301,7 +301,7 @@ namespace Terminals.Connections
                     vncPlugin.PortName,
                     vmrcPlugin.PortName,
                     SSH,
-                    TELNET,
+                    telnetPlugin.PortName,
                     // RAS, // this protocol doesnt fit to the concept and seems to be broken 
                     ICA_CITRIX,
                     httpPlugin.PortName,
