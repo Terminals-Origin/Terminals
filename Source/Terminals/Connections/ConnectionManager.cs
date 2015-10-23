@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
@@ -64,6 +65,7 @@ namespace Terminals.Connections
 
         private readonly IConnectionPlugin httpPlugin = new HttpConnectionPlugin();
         private readonly IConnectionPlugin httpsPlugin = new HttpsConnectionPlugin();
+        private readonly IConnectionPlugin vncPlugin = new VncConnectionPlugin();
 
         public ConnectionManager()
         {
@@ -131,8 +133,7 @@ namespace Terminals.Connections
             switch (favorite.Protocol)
             {
                 case VNC:
-                    //return new FakeVNCConnection();
-                    return new VNCConnection();
+                    return vncPlugin.CreateConnection();
                 case VMRC:
                     //return new FakeVmrcConnection();
                     return new VMRCConnection();
@@ -159,7 +160,7 @@ namespace Terminals.Connections
             switch (name)
             {
                 case VNC:
-                    return VNCVMRCPort;
+                    return vncPlugin.Port;
                 case VMRC:
                     return VNCVMRCPort;
                 case TELNET:
@@ -189,7 +190,7 @@ namespace Terminals.Connections
                         return VMRC;
                     }
 
-                    return VNC;
+                    return vncPlugin.PortName;
                 case TelnetPort:
                     return TELNET;
                 case SSHPort:
@@ -252,7 +253,7 @@ namespace Terminals.Connections
                 case RDP:
                     return CreateRdpControls();
                 case VNC:
-                    return new Control[] { new VncControl() { Name = "VNC" } };
+                    return vncPlugin.CreateOptionsControls();
                 case VMRC:
                     return new Control[] { new VmrcControl() { Name = "VMRC" } };
                 case TELNET:
@@ -296,7 +297,7 @@ namespace Terminals.Connections
             return new string[]
                 {
                     RDP,
-                    VNC,
+                    vncPlugin.PortName,
                     VMRC,
                     SSH,
                     TELNET,
