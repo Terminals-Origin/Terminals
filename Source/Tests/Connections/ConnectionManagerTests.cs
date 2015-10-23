@@ -259,5 +259,15 @@ namespace Tests.Connections
             var extensions = ConnectionManager.CreateToolbarExtensions(mockProvider.Object).Count();
             Assert.AreEqual(3, extensions, "All known extensions have to be registered");
         }
+        
+        [TestMethod]
+        public void GetSupportedPorts_ReturnsAllNonWeb()
+        {
+            var resolved = connectionManager.SupportedPorts();
+            var expected = new ushort[] { 22, 23, 1494, 3389, 5900 };
+            Assert.AreEqual(expected.Length, resolved.Length, "We want to scan each unique port only once ignoring default web ports.");
+            bool allResolved = resolved.All(port => expected.Contains(port));
+            Assert.IsTrue(allResolved, "Port numbers have to obtained from plugins.");
+        }
     }
 }
