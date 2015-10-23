@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
 using Terminals.Data;
@@ -66,6 +67,7 @@ namespace Terminals.Connections
         private readonly IConnectionPlugin httpPlugin = new HttpConnectionPlugin();
         private readonly IConnectionPlugin httpsPlugin = new HttpsConnectionPlugin();
         private readonly IConnectionPlugin vncPlugin = new VncConnectionPlugin();
+        private readonly IConnectionPlugin vmrcPlugin = new VmrcConnectionPlugin();
 
         public ConnectionManager()
         {
@@ -135,8 +137,7 @@ namespace Terminals.Connections
                 case VNC:
                     return vncPlugin.CreateConnection();
                 case VMRC:
-                    //return new FakeVmrcConnection();
-                    return new VMRCConnection();
+                    return vmrcPlugin.CreateConnection();
                 case RAS:
                     return new RASConnection();
                 case TELNET:
@@ -162,7 +163,7 @@ namespace Terminals.Connections
                 case VNC:
                     return vncPlugin.Port;
                 case VMRC:
-                    return VNCVMRCPort;
+                    return vmrcPlugin.Port;
                 case TELNET:
                     return TelnetPort;
                 case SSH:
@@ -187,7 +188,7 @@ namespace Terminals.Connections
                 case VNCVMRCPort:
                     if (isVMRC)
                     {
-                        return VMRC;
+                        return vmrcPlugin.PortName;
                     }
 
                     return vncPlugin.PortName;
@@ -255,7 +256,7 @@ namespace Terminals.Connections
                 case VNC:
                     return vncPlugin.CreateOptionsControls();
                 case VMRC:
-                    return new Control[] { new VmrcControl() { Name = "VMRC" } };
+                    return vmrcPlugin.CreateOptionsControls();
                 case TELNET:
                     return new Control[] { new ConsolePreferences() { Name = CONSOLE } };
                 case SSH:
@@ -298,7 +299,7 @@ namespace Terminals.Connections
                 {
                     RDP,
                     vncPlugin.PortName,
-                    VMRC,
+                    vmrcPlugin.PortName,
                     SSH,
                     TELNET,
                     // RAS, // this protocol doesnt fit to the concept and seems to be broken 
