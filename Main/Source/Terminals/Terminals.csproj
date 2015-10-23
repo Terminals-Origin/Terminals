@@ -173,6 +173,7 @@
   <ItemGroup>
     <Compile Include="Connections\ConnectionManager.cs" />
     <Compile Include="Connections\DesktopSizeCalculator.cs" />
+    <Compile Include="Connections\IConnectionPlugin.cs" />
     <Compile Include="Connections\Rdp\ConnectionStateDetector.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\IConnectionExtra.cs" />
@@ -192,6 +193,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\VNC\VncMenuVisitor.cs" />
+    <Compile Include="Connections\Web\HttpConnectionPlugin.cs" />
     <Compile Include="Forms\Controls\ProtocolImageListBuilder.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
     <Compile Include="Integration\Export\ITerminalsOptionsExport.cs" />

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Terminals.Connections.Web;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
@@ -60,6 +61,8 @@ namespace Terminals.Connections
         }
 
         #endregion
+
+        private readonly IConnectionPlugin httpPlugin = new HttpConnectionPlugin();
 
         public ConnectionManager()
         {
@@ -142,7 +145,7 @@ namespace Terminals.Connections
                     return new ICAConnection();
                 case HTTP:
                 case HTTPS:
-                    return new HTTPConnection();
+                    return httpPlugin.CreateConnection();
                 default:
                    // return new FakeRdpConnection();
                    return new RDPConnection();
@@ -166,7 +169,7 @@ namespace Terminals.Connections
                 case ICA_CITRIX:
                     return ICAPort;
                 case HTTP:
-                    return HTTPPort;
+                    return httpPlugin.Port;
                 case HTTPS:
                     return HTTPSPort;
                 default:
@@ -192,7 +195,7 @@ namespace Terminals.Connections
                 case ICAPort:
                     return ICA_CITRIX;
                 case HTTPPort:
-                    return HTTP;
+                    return httpPlugin.PortName;
                 case HTTPSPort:
                     return HTTPS;
                 default:
@@ -258,7 +261,7 @@ namespace Terminals.Connections
                     return new Control[] { new CitrixControl() { Name = "ICA Citrix" } };
                 case HTTP:
                 case HTTPS:
-                    return new Control[0];
+                    return httpPlugin.CreateOptionsControls();
                 default:
                     return new Control[0];
             }
@@ -296,7 +299,7 @@ namespace Terminals.Connections
                     TELNET,
                     // RAS, // this protocol doesnt fit to the concept and seems to be broken 
                     ICA_CITRIX,
-                    HTTP,
+                    httpPlugin.PortName,
                     HTTPS
                 };
         }
