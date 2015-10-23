@@ -63,6 +63,7 @@ namespace Terminals.Connections
         #endregion
 
         private readonly IConnectionPlugin httpPlugin = new HttpConnectionPlugin();
+        private readonly IConnectionPlugin httpsPlugin = new HttpsConnectionPlugin();
 
         public ConnectionManager()
         {
@@ -144,8 +145,9 @@ namespace Terminals.Connections
                 case ICA_CITRIX:
                     return new ICAConnection();
                 case HTTP:
-                case HTTPS:
                     return httpPlugin.CreateConnection();
+                case HTTPS:
+                    return httpsPlugin.CreateConnection();
                 default:
                    // return new FakeRdpConnection();
                    return new RDPConnection();
@@ -171,7 +173,7 @@ namespace Terminals.Connections
                 case HTTP:
                     return httpPlugin.Port;
                 case HTTPS:
-                    return HTTPSPort;
+                    return httpsPlugin.Port;
                 default:
                     return 0;
             }
@@ -197,7 +199,7 @@ namespace Terminals.Connections
                 case HTTPPort:
                     return httpPlugin.PortName;
                 case HTTPSPort:
-                    return HTTPS;
+                    return httpsPlugin.PortName;
                 default:
                     return RDP;
             }
@@ -260,8 +262,9 @@ namespace Terminals.Connections
                 case ICA_CITRIX:
                     return new Control[] { new CitrixControl() { Name = "ICA Citrix" } };
                 case HTTP:
-                case HTTPS:
                     return httpPlugin.CreateOptionsControls();
+                case HTTPS:
+                    return httpsPlugin.CreateOptionsControls();
                 default:
                     return new Control[0];
             }
@@ -300,7 +303,7 @@ namespace Terminals.Connections
                     // RAS, // this protocol doesnt fit to the concept and seems to be broken 
                     ICA_CITRIX,
                     httpPlugin.PortName,
-                    HTTPS
+                    httpsPlugin.PortName
                 };
         }
 
