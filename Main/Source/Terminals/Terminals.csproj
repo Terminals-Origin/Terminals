@@ -182,6 +182,7 @@
     <Compile Include="Connections\Rdp\FakeRdpConnection.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Connections\Rdp\RdpConnectionPlugin.cs" />
     <Compile Include="Connections\Rdp\RdpMenuVisitor.cs" />
     <Compile Include="Connections\Rdp\RdpService.cs" />
     <Compile Include="Connections\Terminal\SshConnectionPlugin.cs" />
