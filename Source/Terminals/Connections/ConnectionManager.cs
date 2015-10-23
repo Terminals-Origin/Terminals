@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Connections.ICA;
+using Terminals.Connections.Rdp;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
@@ -71,6 +72,7 @@ namespace Terminals.Connections
         private readonly IConnectionPlugin telnetPlugin = new TelnetConnectionPlugin();
         private readonly IConnectionPlugin sshPlugin = new SshConnectionPlugin();
         private readonly IConnectionPlugin icaPlugin = new ICAConnectionPlugin();
+        private readonly IConnectionPlugin rdpPlugin = new RdpConnectionPlugin();
 
         public ConnectionManager()
         {
@@ -154,8 +156,7 @@ namespace Terminals.Connections
                 case HTTPS:
                     return httpsPlugin.CreateConnection();
                 default:
-                   // return new FakeRdpConnection();
-                   return new RDPConnection();
+                   return rdpPlugin.CreateConnection();
             }
         }
 
@@ -172,7 +173,7 @@ namespace Terminals.Connections
                 case SSH:
                     return sshPlugin.Port;
                 case RDP:
-                    return RDPPort;
+                    return rdpPlugin.Port;
                 case ICA_CITRIX:
                     return icaPlugin.Port;
                 case HTTP:
@@ -206,7 +207,7 @@ namespace Terminals.Connections
                 case HTTPSPort:
                     return httpsPlugin.PortName;
                 default:
-                    return RDP;
+                    return rdpPlugin.PortName;
             }
         }
 
@@ -255,7 +256,7 @@ namespace Terminals.Connections
             switch (newProtocol)
             {
                 case RDP:
-                    return CreateRdpControls();
+                    return rdpPlugin.CreateOptionsControls();
                 case VNC:
                     return vncPlugin.CreateOptionsControls();
                 case VMRC:
@@ -291,7 +292,7 @@ namespace Terminals.Connections
         {
             return new string[]
                 {
-                    RDP,
+                    rdpPlugin.PortName,
                     vncPlugin.PortName,
                     vmrcPlugin.PortName,
                     sshPlugin.PortName,
