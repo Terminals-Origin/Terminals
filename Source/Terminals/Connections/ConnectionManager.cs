@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Terminals.Connections.ICA;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
@@ -69,6 +70,7 @@ namespace Terminals.Connections
         private readonly IConnectionPlugin vmrcPlugin = new VmrcConnectionPlugin();
         private readonly IConnectionPlugin telnetPlugin = new TelnetConnectionPlugin();
         private readonly IConnectionPlugin sshPlugin = new SshConnectionPlugin();
+        private readonly IConnectionPlugin icaPlugin = new ICAConnectionPlugin();
 
         public ConnectionManager()
         {
@@ -146,7 +148,7 @@ namespace Terminals.Connections
                 case SSH:
                     return sshPlugin.CreateConnection();
                 case ICA_CITRIX:
-                    return new ICAConnection();
+                    return icaPlugin.CreateConnection();
                 case HTTP:
                     return httpPlugin.CreateConnection();
                 case HTTPS:
@@ -172,7 +174,7 @@ namespace Terminals.Connections
                 case RDP:
                     return RDPPort;
                 case ICA_CITRIX:
-                    return ICAPort;
+                    return icaPlugin.Port;
                 case HTTP:
                     return httpPlugin.Port;
                 case HTTPS:
@@ -198,7 +200,7 @@ namespace Terminals.Connections
                 case SSHPort:
                     return sshPlugin.PortName;
                 case ICAPort:
-                    return ICA_CITRIX;
+                    return icaPlugin.PortName;
                 case HTTPPort:
                     return httpPlugin.PortName;
                 case HTTPSPort:
@@ -263,7 +265,7 @@ namespace Terminals.Connections
                 case SSH:
                     return sshPlugin.CreateOptionsControls();
                 case ICA_CITRIX:
-                    return new Control[] { new CitrixControl() { Name = "ICA Citrix" } };
+                    return icaPlugin.CreateOptionsControls();
                 case HTTP:
                     return httpPlugin.CreateOptionsControls();
                 case HTTPS:
@@ -295,7 +297,7 @@ namespace Terminals.Connections
                     sshPlugin.PortName,
                     telnetPlugin.PortName,
                     // RAS, // this protocol doesnt fit to the concept and seems to be broken 
-                    ICA_CITRIX,
+                    icaPlugin.PortName,
                     httpPlugin.PortName,
                     httpsPlugin.PortName
                 };
