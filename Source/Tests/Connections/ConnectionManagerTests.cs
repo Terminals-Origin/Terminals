@@ -14,6 +14,8 @@ namespace Tests.Connections
     [TestClass]
     public class ConnectionManagerTests
     {
+        private readonly ConnectionManager connectionManager = new ConnectionManager();
+
         private const string PORTSMESSAGE = "All protocols have to be identified by default port and vice versa.";
 
         private const string UNKNOWN_PROTOCOL = "UNKNOWN_PROTOCOL";
@@ -53,7 +55,7 @@ namespace Tests.Connections
         {
             var mockFavorite = new Mock<IFavorite>();
             mockFavorite.SetupGet(f => f.Protocol).Returns(testCase.Item1);
-            Type created = ConnectionManager.CreateConnection(mockFavorite.Object).GetType();
+            Type created = connectionManager.CreateConnection(mockFavorite.Object).GetType();
             this.ReportCreatedConnection(testCase, created);
             return testCase.Item2 == created;
         }
@@ -94,7 +96,7 @@ namespace Tests.Connections
 
         private bool AssertResolvedPort(Tuple<string, int> testCase)
         {
-            var port = ConnectionManager.GetPort(testCase.Item1);
+            var port = connectionManager.GetPort(testCase.Item1);
             const string MESSAGE_FORAMT = "For '{0}' resolved '{1}' as port number, expected {2}";
             string message = string.Format(MESSAGE_FORAMT, testCase.Item1, port, testCase.Item2);
             this.TestContext.WriteLine(message);
@@ -130,7 +132,7 @@ namespace Tests.Connections
 
         private bool AssertPortName(Tuple<int, bool, string> testCase)
         {
-            var portName = ConnectionManager.GetPortName(testCase.Item1, testCase.Item2);
+            var portName = connectionManager.GetPortName(testCase.Item1, testCase.Item2);
             this.ReportResolvedPort(testCase, portName);
             return testCase.Item3 == portName;
         }
@@ -154,7 +156,7 @@ namespace Tests.Connections
                 ConnectionManager.VMRC
             };
             
-            bool nonHttp = nonHttpPorts.All(ConnectionManager.IsProtocolWebBased);
+            bool nonHttp = nonHttpPorts.All(connectionManager.IsProtocolWebBased);
             Assert.IsFalse(nonHttp, "Only Http based protocols are known web based.");
         }
         
@@ -162,14 +164,14 @@ namespace Tests.Connections
         public void HttpBasedProtocols_IsPortWebbased_ReturnTrue()
         {
             var nonHttpPorts = new[] { ConnectionManager.HTTP, ConnectionManager.HTTPS };
-            bool nonHttp = nonHttpPorts.All(ConnectionManager.IsProtocolWebBased);
+            bool nonHttp = nonHttpPorts.All(connectionManager.IsProtocolWebBased);
             Assert.IsTrue(nonHttp, "Only Http based protocols are known web based.");
         }
         
         [TestMethod]
         public void UnknownProtocol_IsPortWebbased_ReturnFalse()
         {
-            bool nonHttp = ConnectionManager.IsProtocolWebBased(UNKNOWN_PROTOCOL);
+            bool nonHttp = connectionManager.IsProtocolWebBased(UNKNOWN_PROTOCOL);
             Assert.IsFalse(nonHttp, "Unknown protcol cant fit to any category, definitely is not web based.");
         }
 
@@ -177,21 +179,21 @@ namespace Tests.Connections
         public void AllKnownProtocols_IsKnownProtocol_ReturnTrue()
         {
             bool allKnownAreKnown = GetUniqueProtocols()
-                .All(ConnectionManager.IsKnownProtocol);
+                .All(connectionManager.IsKnownProtocol);
             Assert.IsTrue(allKnownAreKnown, "GetAvailable protocols should match all of them as known.");
         }
 
         [TestMethod]
         public void UknownProtocol_IsKnownProtocol_ReturnFalse()
         {
-            bool unknonw = ConnectionManager.IsKnownProtocol(UNKNOWN_PROTOCOL);
+            bool unknonw = connectionManager.IsKnownProtocol(UNKNOWN_PROTOCOL);
             Assert.IsFalse(unknonw, "We cant support unknown protocols.");
         }
 
         [TestMethod]
         public void UnknownProtocol_CreateControls_ReturnsEmpty()
         {
-            int controlsCount = ConnectionManager.CreateControls(UNKNOWN_PROTOCOL).Length;
+            int controlsCount = connectionManager.CreateControls(UNKNOWN_PROTOCOL).Length;
             const string MESSAGE = "For unknow protocol, dont fire exception, instead there is nothing to configure.";
             Assert.AreEqual(0, controlsCount, MESSAGE);
         }
@@ -199,8 +201,8 @@ namespace Tests.Connections
         [TestMethod]
         public void WebProtocols_CreateControls_ReturnsEmpty()
         {
-            int httpControls = ConnectionManager.CreateControls(ConnectionManager.HTTP).Length;
-            int httpsControls = ConnectionManager.CreateControls(ConnectionManager.HTTPS).Length;
+            int httpControls = connectionManager.CreateControls(ConnectionManager.HTTP).Length;
+            int httpsControls = connectionManager.CreateControls(ConnectionManager.HTTPS).Length;
             const string MESSAGE = "Web based protocols have no configuration.";
             bool bothEmpty = httpControls == 0 && httpsControls == 0;
             Assert.IsTrue(bothEmpty, MESSAGE);
@@ -229,7 +231,7 @@ namespace Tests.Connections
 
         private bool AssertCreatedControls(Tuple<string, int, Type> testCase)
         {
-            var controls = ConnectionManager.CreateControls(testCase.Item1);
+            var controls = connectionManager.CreateControls(testCase.Item1);
             Type firstControl = controls[0].GetType();
             this.ReportAssertedResult(testCase, controls, firstControl);
             bool countMathes = testCase.Item2 == controls.Length;
@@ -245,9 +247,9 @@ namespace Tests.Connections
             this.TestContext.WriteLine(messgae);
         }
 
-        private static IEnumerable<string> GetUniqueProtocols()
+        private IEnumerable<string> GetUniqueProtocols()
         {
-            return ConnectionManager.GetAvailableProtocols().Distinct();
+            return connectionManager.GetAvailableProtocols().Distinct();
         }
 
         [TestMethod]
