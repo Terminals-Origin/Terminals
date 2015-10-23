@@ -68,6 +68,7 @@ namespace Terminals.Connections
         private readonly IConnectionPlugin vncPlugin = new VncConnectionPlugin();
         private readonly IConnectionPlugin vmrcPlugin = new VmrcConnectionPlugin();
         private readonly IConnectionPlugin telnetPlugin = new TelnetConnectionPlugin();
+        private readonly IConnectionPlugin sshPlugin = new SshConnectionPlugin();
 
         public ConnectionManager()
         {
@@ -143,7 +144,7 @@ namespace Terminals.Connections
                 case TELNET:
                     return telnetPlugin.CreateConnection();
                 case SSH:
-                    return new TerminalConnection();
+                    return sshPlugin.CreateConnection();
                 case ICA_CITRIX:
                     return new ICAConnection();
                 case HTTP:
@@ -167,7 +168,7 @@ namespace Terminals.Connections
                 case TELNET:
                     return telnetPlugin.Port;
                 case SSH:
-                    return SSHPort;
+                    return sshPlugin.Port;
                 case RDP:
                     return RDPPort;
                 case ICA_CITRIX:
@@ -195,7 +196,7 @@ namespace Terminals.Connections
                 case TelnetPort:
                     return telnetPlugin.PortName;
                 case SSHPort:
-                    return SSH;
+                    return sshPlugin.PortName;
                 case ICAPort:
                     return ICA_CITRIX;
                 case HTTPPort:
@@ -260,7 +261,7 @@ namespace Terminals.Connections
                 case TELNET:
                     return telnetPlugin.CreateOptionsControls();
                 case SSH:
-                    return CreateSshControls();
+                    return sshPlugin.CreateOptionsControls();
                 case ICA_CITRIX:
                     return new Control[] { new CitrixControl() { Name = "ICA Citrix" } };
                 case HTTP:
@@ -284,15 +285,6 @@ namespace Terminals.Connections
             };
         }
 
-        private static Control[] CreateSshControls()
-        {
-            return new Control[]
-            {
-                new ConsolePreferences() { Name = TelnetConnectionPlugin.CONSOLE },
-                new SshControl() { Name = "SSH" }
-            };
-        }
-
         public string[] GetAvailableProtocols()
         {
             return new string[]
@@ -300,7 +292,7 @@ namespace Terminals.Connections
                     RDP,
                     vncPlugin.PortName,
                     vmrcPlugin.PortName,
-                    SSH,
+                    sshPlugin.PortName,
                     telnetPlugin.PortName,
                     // RAS, // this protocol doesnt fit to the concept and seems to be broken 
                     ICA_CITRIX,
