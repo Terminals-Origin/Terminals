@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
+using Terminals.Data;
 
 namespace Terminals.Connections.Terminal
 {
@@ -18,6 +20,16 @@ namespace Terminals.Connections.Terminal
         public Control[] CreateOptionsControls()
         {
             return new Control[] { new ConsolePreferences() { Name = CONSOLE } };
+        }
+
+        public Type GetOptionsType()
+        {
+            return typeof (ConsoleOptions);
+        }
+
+        public ProtocolOptions CreateOptions()
+        {
+            return new ConsoleOptions();
         }
     }
 }

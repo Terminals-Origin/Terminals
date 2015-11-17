@@ -102,30 +102,31 @@ namespace Terminals.Connections
             switch (newProtocol)
             {
                 case VNC:
-                    return SwitchPropertiesIfNotTheSameType<VncOptions>(currentOptions);
+                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.vncPlugin);
                 case VMRC:
-                    return SwitchPropertiesIfNotTheSameType<VMRCOptions>(currentOptions);
+                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.vmrcPlugin);
                 case TELNET:
-                    return SwitchPropertiesIfNotTheSameType<ConsoleOptions>(currentOptions);
+                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.telnetPlugin);
                 case SSH:
-                    return SwitchPropertiesIfNotTheSameType<SshOptions>(currentOptions);
+                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.sshPlugin);
                 case RDP:
-                    return SwitchPropertiesIfNotTheSameType<RdpOptions>(currentOptions);
+                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.rdpPlugin);
                 case ICA_CITRIX:
-                    return SwitchPropertiesIfNotTheSameType<ICAOptions>(currentOptions);
+                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.icaPlugin);
                 case HTTP:
+                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.httpPlugin);
                 case HTTPS:
-                    return SwitchPropertiesIfNotTheSameType<WebOptions>(currentOptions);
+                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.httpsPlugin);
                 default:
                     return new EmptyOptions();
             }
         }
 
-        private static ProtocolOptions SwitchPropertiesIfNotTheSameType<TOptions>(ProtocolOptions currentOptions)
-            where TOptions : ProtocolOptions
+        private static ProtocolOptions SwitchPropertiesIfNotTheSameType(ProtocolOptions currentOptions, IConnectionPlugin plugin)
         {
-            if (!(currentOptions is TOptions)) // prevent to reset properties
-                return Activator.CreateInstance<TOptions>();
+            // prevent to reset properties
+            if (currentOptions.GetType() != plugin.GetOptionsType()) 
+                return plugin.CreateOptions();
 
             return currentOptions;
         }

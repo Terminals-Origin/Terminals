@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
+using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 
 namespace Terminals.Connections.VNC
@@ -18,6 +20,16 @@ namespace Terminals.Connections.VNC
         public Control[] CreateOptionsControls()
         {
             return new Control[] { new VncControl() { Name = "VNC" } };
+        }
+
+        public Type GetOptionsType()
+        {
+            return typeof (VncOptions);
+        }
+
+        public ProtocolOptions CreateOptions()
+        {
+            return new VncOptions();
         }
     }
 }

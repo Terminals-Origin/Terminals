@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
+using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 
 namespace Terminals.Connections.Terminal
@@ -21,6 +23,16 @@ namespace Terminals.Connections.Terminal
                 new ConsolePreferences() { Name = TelnetConnectionPlugin.CONSOLE },
                 new SshControl() { Name = "SSH" }
             };
+        }
+
+        public Type GetOptionsType()
+        {
+            return typeof (SshOptions);
+        }
+
+        public ProtocolOptions CreateOptions()
+        {
+            return new SshOptions();
         }
     }
 }
