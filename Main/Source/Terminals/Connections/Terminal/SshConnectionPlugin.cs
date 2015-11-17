@@ -2,10 +2,11 @@
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
+using Terminals.Integration.Export;
 
 namespace Terminals.Connections.Terminal
 {
-    internal class SshConnectionPlugin: IConnectionPlugin
+    internal class SshConnectionPlugin: IConnectionPlugin, IOptionsExporterFactory
     {
         internal const int SSHPort = 22;
 
@@ -37,6 +38,11 @@ namespace Terminals.Connections.Terminal
         public ProtocolOptions CreateOptions()
         {
             return new SshOptions();
+        }
+
+        public ITerminalsOptionsExport CreateOptionsExporter()
+        {
+            return new TerminalsSshExport();
         }
     }
 }

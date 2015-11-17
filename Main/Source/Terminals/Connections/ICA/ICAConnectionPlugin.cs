@@ -2,10 +2,11 @@
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
+using Terminals.Integration.Export;
 
 namespace Terminals.Connections.ICA
 {
-    internal class ICAConnectionPlugin :IConnectionPlugin
+    internal class ICAConnectionPlugin :IConnectionPlugin, IOptionsExporterFactory
     {
         internal const int ICAPort = 1494;
 
@@ -33,6 +34,11 @@ namespace Terminals.Connections.ICA
         public ProtocolOptions CreateOptions()
         {
             return new ICAOptions();
+        }
+
+        public ITerminalsOptionsExport CreateOptionsExporter()
+        {
+            return new TerminalsIcaExport();
         }
     }
 }

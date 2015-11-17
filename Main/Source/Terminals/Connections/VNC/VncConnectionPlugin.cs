@@ -2,10 +2,11 @@
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
+using Terminals.Integration.Export;
 
 namespace Terminals.Connections.VNC
 {
-    internal class VncConnectionPlugin : IConnectionPlugin
+    internal class VncConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory
     {
         internal const string VNC = "VNC";
 
@@ -32,6 +33,11 @@ namespace Terminals.Connections.VNC
         public ProtocolOptions CreateOptions()
         {
             return new VncOptions();
+        }
+
+        public ITerminalsOptionsExport CreateOptionsExporter()
+        {
+            return new TerminalsVncExport();
         }
     }
 }

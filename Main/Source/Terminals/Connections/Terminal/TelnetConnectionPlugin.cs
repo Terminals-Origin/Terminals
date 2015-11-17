@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
 using Terminals.Data;
+using Terminals.Integration.Export;
 
 namespace Terminals.Connections.Terminal
 {
-    internal class TelnetConnectionPlugin : IConnectionPlugin
+    internal class TelnetConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory
     {
         internal const string CONSOLE = "Console";
 
@@ -34,6 +35,11 @@ namespace Terminals.Connections.Terminal
         public ProtocolOptions CreateOptions()
         {
             return new ConsoleOptions();
+        }
+
+        public ITerminalsOptionsExport CreateOptionsExporter()
+        {
+            return new TerminalsTelnetExport();
         }
     }
 }
