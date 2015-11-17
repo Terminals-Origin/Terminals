@@ -13,6 +13,13 @@ namespace Tests.Connections
         public TestContext TestContext { get; set; }
 
         [TestMethod]
+        public void NullCurrentOptionsRdpProtocol_UpdateProtocolPropertiesByProtocol_ReturnsRdpOptions()
+        {
+            var returned = connectionManager.UpdateProtocolPropertiesByProtocol(ConnectionManager.RDP, null);
+            Assert.IsInstanceOfType(returned, typeof(RdpOptions), "When creating new favorite, the options arent set yet.");
+        }
+        
+        [TestMethod]
         public void UnknownProtocol_UpdateProtocolPropertiesByProtocol_ReturnsEmptyOptions()
         {
             var returned = connectionManager.UpdateProtocolPropertiesByProtocol("UnknonwProtocol", new ConsoleOptions());

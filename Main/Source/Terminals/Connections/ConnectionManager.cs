@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -9,7 +8,6 @@ using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
 using Terminals.Data;
-using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
 using Terminals.Properties;
 
@@ -74,9 +72,21 @@ namespace Terminals.Connections
         private readonly IConnectionPlugin icaPlugin = new ICAConnectionPlugin();
         private readonly IConnectionPlugin rdpPlugin = new RdpConnectionPlugin();
 
+        private readonly Dictionary<string, IConnectionPlugin> plugins;
+
         public ConnectionManager()
         {
-            // load the plugins
+            this.plugins = new Dictionary<string, IConnectionPlugin>()
+            {
+                { HTTP, this.httpPlugin },
+                { HTTPS, this.httpsPlugin },
+                { VNC, this.vncPlugin },
+                { VMRC, this.vmrcPlugin },
+                { TELNET, this.telnetPlugin },
+                { SSH, this.sshPlugin },
+                { ICA_CITRIX, this.icaPlugin },
+                { RDP, this.rdpPlugin }
+            };
         }
 
         internal Dictionary<string, Image> GetPluginIcons()
@@ -99,33 +109,18 @@ namespace Terminals.Connections
         /// </summary>
         internal ProtocolOptions UpdateProtocolPropertiesByProtocol(string newProtocol, ProtocolOptions currentOptions)
         {
-            switch (newProtocol)
-            {
-                case VNC:
-                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.vncPlugin);
-                case VMRC:
-                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.vmrcPlugin);
-                case TELNET:
-                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.telnetPlugin);
-                case SSH:
-                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.sshPlugin);
-                case RDP:
-                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.rdpPlugin);
-                case ICA_CITRIX:
-                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.icaPlugin);
-                case HTTP:
-                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.httpPlugin);
-                case HTTPS:
-                    return SwitchPropertiesIfNotTheSameType(currentOptions, this.httpsPlugin);
-                default:
-                    return new EmptyOptions();
-            }
+            IConnectionPlugin plugin = null;
+
+            if (this.plugins.TryGetValue(newProtocol, out plugin))
+                return SwitchPropertiesIfNotTheSameType(currentOptions, plugin);
+            
+            return new EmptyOptions();
         }
 
         private static ProtocolOptions SwitchPropertiesIfNotTheSameType(ProtocolOptions currentOptions, IConnectionPlugin plugin)
         {
             // prevent to reset properties
-            if (currentOptions.GetType() != plugin.GetOptionsType()) 
+            if (currentOptions == null || currentOptions.GetType() != plugin.GetOptionsType()) 
                 return plugin.CreateOptions();
 
             return currentOptions;
