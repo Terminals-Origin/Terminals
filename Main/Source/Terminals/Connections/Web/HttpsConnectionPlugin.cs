@@ -6,7 +6,9 @@ namespace Terminals.Connections.Web
 {
     internal class HttpsConnectionPlugin: IConnectionPlugin
     {
-        public int Port { get { return ConnectionManager.HTTPSPort; } }
+        internal const int HTTPSPort = 443;
+
+        public int Port { get { return HTTPSPort; } }
 
         public string PortName { get { return ConnectionManager.HTTPS; } }
 

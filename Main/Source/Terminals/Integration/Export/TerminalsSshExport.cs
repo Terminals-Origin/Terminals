@@ -1,5 +1,6 @@
 using System.Xml;
 using Terminals.Connections;
+using Terminals.Connections.Terminal;
 
 namespace Terminals.Integration.Export
 {
@@ -7,7 +8,7 @@ namespace Terminals.Integration.Export
     {
         public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
         {
-            if (favorite.Protocol == ConnectionManager.SSH)
+            if (favorite.Protocol == SshConnectionPlugin.SSH)
             {
                 TerminalsConsoleExport.ExportConsoleOptions(w, favorite);
 

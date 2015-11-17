@@ -4,6 +4,10 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Terminals.Connections;
+using Terminals.Connections.ICA;
+using Terminals.Connections.Terminal;
+using Terminals.Connections.VMRC;
+using Terminals.Connections.VNC;
 using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.EditFavorite;
@@ -96,7 +100,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Vnc_LoadSave_KeepsDisplayNumber()
         {
-            this.AssertExpectedPropertyValue<VncOptions, int>(ConnectionManager.VNC,
+            this.AssertExpectedPropertyValue<VncOptions, int>(VncConnectionPlugin.VNC,
                   (options, newValue) => options.DisplayNumber = newValue,
                   options => options.DisplayNumber,
                   EXPECTED_NUMBER);
@@ -107,7 +111,7 @@ namespace Tests.UserInterface
         {
             // because of statics used in Settings.SshKeys
             FilePersistedTestLab.SetDefaultFileLocations();
-            this.AssertExpectedPropertyValue<SshOptions, string>(ConnectionManager.SSH,
+            this.AssertExpectedPropertyValue<SshOptions, string>(SshConnectionPlugin.SSH,
                   (options, newValue) => options.SSHKeyFile = newValue,
                   options => options.SSHKeyFile,
                   "ExpectedKeyFile");
@@ -116,7 +120,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Telnet_LoadSave_KeepsColumns()
         {
-            this.AssertExpectedPropertyValue<ConsoleOptions, int>(ConnectionManager.TELNET,
+            this.AssertExpectedPropertyValue<ConsoleOptions, int>(TelnetConnectionPlugin.TELNET,
                   (options, newValue) => options.Columns = newValue,
                   options => options.Columns,
                   EXPECTED_NUMBER);
@@ -125,7 +129,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Vmrc_LoadSave_KeepsReducedColorsMode()
         {
-            this.AssertExpectedPropertyValue<VMRCOptions, bool>(ConnectionManager.VMRC,
+            this.AssertExpectedPropertyValue<VMRCOptions, bool>(VmrcConnectionPlugin.VMRC,
                   (options, newValue) => options.ReducedColorsMode = newValue,
                   options => options.ReducedColorsMode,
                   true);
@@ -134,7 +138,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Ica_LoadSave_KeepsReducedApplicationName()
         {
-            this.AssertExpectedPropertyValue<ICAOptions, string>(ConnectionManager.ICA_CITRIX,
+            this.AssertExpectedPropertyValue<ICAOptions, string>(ICAConnectionPlugin.ICA_CITRIX,
                   (options, newValue) => options.ApplicationName = newValue,
                   options => options.ApplicationName,
                   "ApplicationName");
@@ -192,31 +196,31 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Vnc_ReloadControls_ImplementIProtocolOptionsControl()
         {
-            this.AssertLoadedControlsImplementInterface(ConnectionManager.VNC);
+            this.AssertLoadedControlsImplementInterface(VncConnectionPlugin.VNC);
         }
 
         [TestMethod]
         public void SSh_ReloadControls_ImplementIProtocolOptionsControl()
         {
-            this.AssertLoadedControlsImplementInterface(ConnectionManager.SSH);
+            this.AssertLoadedControlsImplementInterface(SshConnectionPlugin.SSH);
         }
 
         [TestMethod]
         public void Telnet_ReloadControls_ImplementIProtocolOptionsControl()
         {
-            this.AssertLoadedControlsImplementInterface(ConnectionManager.TELNET);
+            this.AssertLoadedControlsImplementInterface(TelnetConnectionPlugin.TELNET);
         }
 
         [TestMethod]
         public void Vmrc_ReloadControls_ImplementIProtocolOptionsControl()
         {
-            this.AssertLoadedControlsImplementInterface(ConnectionManager.VMRC);
+            this.AssertLoadedControlsImplementInterface(VmrcConnectionPlugin.VMRC);
         }
 
         [TestMethod]
         public void Ica_ReloadControls_ImplementIProtocolOptionsControl()
         {
-            this.AssertLoadedControlsImplementInterface(ConnectionManager.ICA_CITRIX);
+            this.AssertLoadedControlsImplementInterface(ICAConnectionPlugin.ICA_CITRIX);
         }
 
         private void AssertLoadedControlsImplementInterface(string protocol)

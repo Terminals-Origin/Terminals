@@ -7,9 +7,13 @@ namespace Terminals.Connections.Terminal
 {
     internal class SshConnectionPlugin: IConnectionPlugin
     {
-        public int Port { get { return ConnectionManager.SSHPort; } }
+        internal const int SSHPort = 22;
 
-        public string PortName { get { return ConnectionManager.SSH; } }
+        internal const string SSH = "SSH";
+
+        public int Port { get { return SSHPort; } }
+
+        public string PortName { get { return SSH; } }
 
         public Connection CreateConnection()
         {

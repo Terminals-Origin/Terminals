@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Connections;
+using Terminals.Connections.Terminal;
 using Terminals.Data;
 using Terminals.Forms.Controls;
 
@@ -20,7 +21,7 @@ namespace Tests.FilePersisted
     {
         private IFavorite favoriteSsh;
 
-        private const string PROTOCOL = ConnectionManager.SSH;
+        private const string PROTOCOL = SshConnectionPlugin.SSH;
 
         private IFavorite favoriteNamed;
 

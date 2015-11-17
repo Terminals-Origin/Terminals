@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Connections;
+using Terminals.Connections.VNC;
 using Terminals.Data;
 
 namespace Tests.FilePersisted
@@ -45,7 +46,7 @@ namespace Tests.FilePersisted
         {
             IFavorite favorite = this.AddFavorite();
             // now it has RdpOptions
-            favorite.Protocol = ConnectionManager.VNC;
+            favorite.Protocol = VncConnectionPlugin.VNC;
             this.Persistence.Favorites.Update(favorite);
             AssertRdpSecurity(favorite);
         }

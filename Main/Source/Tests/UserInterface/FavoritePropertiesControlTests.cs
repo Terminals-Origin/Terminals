@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Terminals.Connections;
+using Terminals.Connections.VNC;
 using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.EditFavorite;
@@ -100,7 +101,7 @@ namespace Tests.UserInterface
         {
             this.LoadPropertiesControl();
             Favorite source = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
-            source.Protocol = ConnectionManager.VNC;
+            source.Protocol = VncConnectionPlugin.VNC;
             Favorite result = this.LoadAndSaveToResult(source);
             const string PROTOCOL_MESSAGE = "Roundtrip has to preserve the protocol properties";
             Assert.IsInstanceOfType(result.ProtocolProperties, typeof(VncOptions), PROTOCOL_MESSAGE);

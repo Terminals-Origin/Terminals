@@ -7,9 +7,13 @@ namespace Terminals.Connections.ICA
 {
     internal class ICAConnectionPlugin :IConnectionPlugin
     {
-        public int Port { get { return ConnectionManager.ICAPort; } }
+        internal const int ICAPort = 1494;
 
-        public string PortName { get { return ConnectionManager.ICA_CITRIX; } }
+        internal const string ICA_CITRIX = "ICA Citrix";
+
+        public int Port { get { return ICAPort; } }
+
+        public string PortName { get { return ICA_CITRIX; } }
 
         public Connection CreateConnection()
         {

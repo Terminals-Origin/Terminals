@@ -2,6 +2,10 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Connections;
+using Terminals.Connections.ICA;
+using Terminals.Connections.Terminal;
+using Terminals.Connections.VMRC;
+using Terminals.Connections.VNC;
 using Terminals.Data;
 
 namespace Tests.Connections
@@ -32,13 +36,13 @@ namespace Tests.Connections
             var testData = new[]
             {
                 new Tuple<string, ProtocolOptions>(ConnectionManager.RDP, new RdpOptions()),
-                new Tuple<string, ProtocolOptions>(ConnectionManager.VNC, new VncOptions()),
-                new Tuple<string, ProtocolOptions>(ConnectionManager.VMRC, new VMRCOptions()),
-                new Tuple<string, ProtocolOptions>(ConnectionManager.TELNET, new ConsoleOptions()),
-                new Tuple<string, ProtocolOptions>(ConnectionManager.SSH, new SshOptions()),
+                new Tuple<string, ProtocolOptions>(VncConnectionPlugin.VNC, new VncOptions()),
+                new Tuple<string, ProtocolOptions>(VmrcConnectionPlugin.VMRC, new VMRCOptions()),
+                new Tuple<string, ProtocolOptions>(TelnetConnectionPlugin.TELNET, new ConsoleOptions()),
+                new Tuple<string, ProtocolOptions>(SshConnectionPlugin.SSH, new SshOptions()),
                 new Tuple<string, ProtocolOptions>(ConnectionManager.HTTP, new WebOptions()),
                 new Tuple<string, ProtocolOptions>(ConnectionManager.HTTPS, new WebOptions()),
-                new Tuple<string, ProtocolOptions>(ConnectionManager.ICA_CITRIX, new ICAOptions())
+                new Tuple<string, ProtocolOptions>(ICAConnectionPlugin.ICA_CITRIX, new ICAOptions())
             };
 
             var allValid = testData.All(this.AssertTheSameInstance);
@@ -60,13 +64,13 @@ namespace Tests.Connections
             var testData = new[]
             {
                 new Tuple<string, Type>(ConnectionManager.RDP, typeof(RdpOptions)),
-                new Tuple<string, Type>(ConnectionManager.VNC, typeof(VncOptions)),
-                new Tuple<string, Type>(ConnectionManager.VMRC, typeof(VMRCOptions)),
-                new Tuple<string, Type>(ConnectionManager.TELNET, typeof(ConsoleOptions)),
-                new Tuple<string, Type>(ConnectionManager.SSH, typeof(SshOptions)),
+                new Tuple<string, Type>(VncConnectionPlugin.VNC, typeof(VncOptions)),
+                new Tuple<string, Type>(VmrcConnectionPlugin.VMRC, typeof(VMRCOptions)),
+                new Tuple<string, Type>(TelnetConnectionPlugin.TELNET, typeof(ConsoleOptions)),
+                new Tuple<string, Type>(SshConnectionPlugin.SSH, typeof(SshOptions)),
                 new Tuple<string, Type>(ConnectionManager.HTTP, typeof(WebOptions)),
                 new Tuple<string, Type>(ConnectionManager.HTTPS, typeof(WebOptions)),
-                new Tuple<string, Type>(ConnectionManager.ICA_CITRIX, typeof(ICAOptions))
+                new Tuple<string, Type>(ICAConnectionPlugin.ICA_CITRIX, typeof(ICAOptions))
             };
 
             var allValid = testData.All(this.AssertOptions);

@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using Terminals.Connections;
+using Terminals.Connections.VNC;
 
 namespace Terminals.Integration.Export
 {
@@ -7,7 +8,7 @@ namespace Terminals.Integration.Export
     {
         public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
         {
-            if (favorite.Protocol == ConnectionManager.VNC)
+            if (favorite.Protocol == VncConnectionPlugin.VNC)
             {
                 w.WriteElementString("vncAutoScale", favorite.VncAutoScale.ToString());
                 w.WriteElementString("vncViewOnly", favorite.VncViewOnly.ToString());
