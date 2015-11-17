@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Connections.ICA;
 using Terminals.Connections.Rdp;
@@ -128,32 +130,19 @@ namespace Terminals.Connections
 
         internal ushort[] SupportedPorts()
         {
-            return new ushort[] { ICAPort, RDPPort, SSHPort, TelnetPort, VNCVMRCPort };
+            return this.plugins.Values.Where(p => !this.IsProtocolWebBased(p.PortName))
+                .Select(p => Convert.ToUInt16(p.Port))
+                .Distinct()
+                .ToArray();
         }
 
         internal Connection CreateConnection(IFavorite favorite)
         {
-            switch (favorite.Protocol)
-            {
-                case VNC:
-                    return vncPlugin.CreateConnection();
-                case VMRC:
-                    return vmrcPlugin.CreateConnection();
-                //case RAS:
-                //    return new RASConnection();
-                case TELNET:
-                    return telnetPlugin.CreateConnection();
-                case SSH:
-                    return sshPlugin.CreateConnection();
-                case ICA_CITRIX:
-                    return icaPlugin.CreateConnection();
-                case HTTP:
-                    return httpPlugin.CreateConnection();
-                case HTTPS:
-                    return httpsPlugin.CreateConnection();
-                default:
-                   return rdpPlugin.CreateConnection();
-            }
+            IConnectionPlugin plugin = null;
+            if (this.plugins.TryGetValue(favorite.Protocol, out plugin))
+                return plugin.CreateConnection();
+
+            return this.rdpPlugin.CreateConnection();
         }
 
         internal int GetPort(string name)

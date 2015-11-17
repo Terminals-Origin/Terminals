@@ -51,6 +51,14 @@ namespace Tests.Connections
             Assert.IsTrue(allValid, "User would be unable to connect.");
         }
 
+        [TestMethod]
+        public void UnknownProtocol_CreateConnection_CreatesRdpConnection()
+        {
+            var testCase = new Tuple<string, Type>("UnknownProtocol", typeof(RDPConnection));
+            var isValid = AssertCratedConnection(testCase);
+            Assert.IsTrue(isValid, "For unknown protocol we fall back to RdpConnection.");
+        }
+
         private bool AssertCratedConnection(Tuple<string, Type> testCase)
         {
             var mockFavorite = new Mock<IFavorite>();
