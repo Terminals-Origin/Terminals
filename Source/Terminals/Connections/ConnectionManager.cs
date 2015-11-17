@@ -172,15 +172,9 @@ namespace Terminals.Connections
 
         internal ITerminalsOptionsExport[] GetTerminalsOptionsExporters()
         {
-            return new ITerminalsOptionsExport[]
-            {
-                new TerminalsRdpExport(),
-                new TerminalsVncExport(),
-                new TerminalsSshExport(),
-                new TerminalsTelnetExport(),
-                new TerminalsVmrcExport(),
-                new TerminalsIcaExport()
-            };
+            return this.plugins.OfType<IOptionsExporterFactory>()
+                .Select(p => p.CreateOptionsExporter())
+                .ToArray();
         }
 
         public static IToolbarExtender[] CreateToolbarExtensions(ICurrenctConnectionProvider provider)

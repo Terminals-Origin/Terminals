@@ -2,10 +2,11 @@
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
+using Terminals.Integration.Export;
 
 namespace Terminals.Connections.VMRC
 {
-    internal class VmrcConnectionPlugin : IConnectionPlugin
+    internal class VmrcConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory
     {
         internal const string VMRC = "VMRC";
 
@@ -32,6 +33,11 @@ namespace Terminals.Connections.VMRC
         public ProtocolOptions CreateOptions()
         {
             return new VMRCOptions();
+        }
+
+        public ITerminalsOptionsExport CreateOptionsExporter()
+        {
+            return new TerminalsVmrcExport();
         }
     }
 }

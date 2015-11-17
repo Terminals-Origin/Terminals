@@ -2,10 +2,11 @@
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
+using Terminals.Integration.Export;
 
 namespace Terminals.Connections.Rdp
 {
-    internal class RdpConnectionPlugin : IConnectionPlugin
+    internal class RdpConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory
     {
         public int Port { get { return KnownConnectionConstants.RDPPort; } }
 
@@ -37,6 +38,11 @@ namespace Terminals.Connections.Rdp
         public ProtocolOptions CreateOptions()
         {
             return new RdpOptions();
+        }
+
+        public ITerminalsOptionsExport CreateOptionsExporter()
+        {
+            return new TerminalsRdpExport();
         }
     }
 }
