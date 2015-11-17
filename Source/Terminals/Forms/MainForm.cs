@@ -163,7 +163,7 @@ namespace Terminals
                 this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals, this.persistence);
                 this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler, this.persistence);
                 this.terminalsControler.AssingUiFactory(this.connectionsUiFactory);
-                this.toolbarExtenders = ConnectionManager.CreateToolbarExtensions(this.terminalsControler);
+                this.toolbarExtenders = ConnectionManager.Instance.CreateToolbarExtensions(this.terminalsControler);
 
                 // Initialize FavsList outside of InitializeComponent
                 // Inside InitializeComponent it sometimes caused the design view in VS to return errors
