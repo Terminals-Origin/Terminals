@@ -6,7 +6,7 @@ using Terminals.Integration.Export;
 
 namespace Terminals.Connections.VNC
 {
-    internal class VncConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory
+    internal class VncConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory, IToolbarExtenderFactory
     {
         internal const string VNC = "VNC";
 
@@ -38,6 +38,11 @@ namespace Terminals.Connections.VNC
         public ITerminalsOptionsExport CreateOptionsExporter()
         {
             return new TerminalsVncExport();
+        }
+
+        public IToolbarExtender CreateToolbarExtender(ICurrenctConnectionProvider provider)
+        {
+            return new VncMenuVisitor(provider);
         }
     }
 }

@@ -177,14 +177,11 @@ namespace Terminals.Connections
                 .ToArray();
         }
 
-        public static IToolbarExtender[] CreateToolbarExtensions(ICurrenctConnectionProvider provider)
+        public IToolbarExtender[] CreateToolbarExtensions(ICurrenctConnectionProvider provider)
         {
-            return new IToolbarExtender[]
-            {
-                new RdpMenuVisitor(provider), 
-                new VncMenuVisitor(provider), 
-                new VmrcMenuVisitor(provider)
-            };
+            return this.plugins.OfType<IToolbarExtenderFactory>()
+                .Select(p => p.CreateToolbarExtender(provider))
+                .ToArray();
         }
     }
 }

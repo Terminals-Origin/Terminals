@@ -6,7 +6,7 @@ using Terminals.Integration.Export;
 
 namespace Terminals.Connections.VMRC
 {
-    internal class VmrcConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory
+    internal class VmrcConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory, IToolbarExtenderFactory
     {
         internal const string VMRC = "VMRC";
 
@@ -38,6 +38,11 @@ namespace Terminals.Connections.VMRC
         public ITerminalsOptionsExport CreateOptionsExporter()
         {
             return new TerminalsVmrcExport();
+        }
+
+        public IToolbarExtender CreateToolbarExtender(ICurrenctConnectionProvider provider)
+        {
+            return new VmrcMenuVisitor(provider);
         }
     }
 }
