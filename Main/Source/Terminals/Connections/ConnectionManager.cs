@@ -143,8 +143,8 @@ namespace Terminals.Connections
                     return vncPlugin.CreateConnection();
                 case VMRC:
                     return vmrcPlugin.CreateConnection();
-                case RAS:
-                    return new RASConnection();
+                //case RAS:
+                //    return new RASConnection();
                 case TELNET:
                     return telnetPlugin.CreateConnection();
                 case SSH:
@@ -274,18 +274,6 @@ namespace Terminals.Connections
                 default:
                     return new Control[0];
             }
-        }
-
-        private static Control[] CreateRdpControls()
-        {
-            return new Control[]
-            {
-                new RdpDisplayControl() { Name = "Display" },
-                new RdpExtendedSettingsControl() { Name = "Extended settings" },
-                new RdpLocalResourcesControl() { Name = "Local resources" },
-                new RdpSecurityControl() { Name = "Security" },
-                new RdpTsGatewayControl() { Name = "TS Gateway" }
-            };
         }
 
         public string[] GetAvailableProtocols()
