@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Connections;
+using Terminals.Connections.VNC;
 using Terminals.Data;
 using Terminals.Data.DB;
 
@@ -89,12 +90,12 @@ namespace Tests.SqlPersisted
         public void UpdateFavoriteTest()
         {
             IFavorite favorite = this.AddFavoriteToPrimaryPersistence();
-            favorite.Protocol = ConnectionManager.VNC;
+            favorite.Protocol = VncConnectionPlugin.VNC;
             favorite.Display.Colors = Terminals.Colors.Bits24;
             this.PrimaryFavorites.Update(favorite);
 
             IFavorite target = this.SecondaryFavorites.FirstOrDefault();
-            Assert.IsTrue(target.Protocol == ConnectionManager.VNC, "Protocol wasn't updated");
+            Assert.IsTrue(target.Protocol == VncConnectionPlugin.VNC, "Protocol wasn't updated");
             Assert.IsTrue(target.Display.Colors == Terminals.Colors.Bits24, "Colors property wasn't updated");
 
             var testOptions = target.ProtocolProperties as VncOptions;
@@ -183,7 +184,7 @@ namespace Tests.SqlPersisted
         {
             IFavorite favorite = this.CreateTestFavorite();
             // now it has RdpOptions
-            favorite.Protocol = ConnectionManager.VNC;
+            favorite.Protocol = VncConnectionPlugin.VNC;
             this.PrimaryFavorites.Update(favorite);
             FilePersisted.FavoritesTest.AssertRdpSecurity(favorite);
         }

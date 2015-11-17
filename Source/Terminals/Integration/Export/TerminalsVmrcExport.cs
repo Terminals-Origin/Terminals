@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using Terminals.Connections;
+using Terminals.Connections.VMRC;
 
 namespace Terminals.Integration.Export
 {
@@ -7,7 +8,7 @@ namespace Terminals.Integration.Export
     {
         public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
         {
-            if (favorite.Protocol == ConnectionManager.VMRC)
+            if (favorite.Protocol == VmrcConnectionPlugin.VMRC)
             {
                 w.WriteElementString("vmrcadministratormode", favorite.VMRCAdministratorMode.ToString());
                 w.WriteElementString("vmrcreducedcolorsmode", favorite.VMRCReducedColorsMode.ToString());

@@ -20,22 +20,12 @@ namespace Terminals.Connections
         internal const int RDPPort = 3389;
         internal const int VNCVMRCPort = 5900;
         internal const int HTTPPort = 80;
-        
-        internal const int TelnetPort = 23;
-        internal const int SSHPort = 22;
-        internal const int ICAPort = 1494;
-        internal const int HTTPSPort = 443;
 
         internal const string HTTP = "HTTP";
         internal const string HTTPS = "HTTPS";
 
-        internal const string VNC = "VNC";
-        internal const string VMRC = "VMRC";
         internal const string RAS = "RAS";
-        internal const string TELNET = "Telnet";
-        internal const string SSH = "SSH";
         internal const string RDP = "RDP";
-        internal const string ICA_CITRIX = "ICA Citrix";
 
         // cached images, bad performace, but simplifies check, if the image is known
         internal static readonly Image TreeIconRdp = Resources.treeIcon_rdp;
@@ -65,13 +55,7 @@ namespace Terminals.Connections
 
         #endregion
 
-        private readonly IConnectionPlugin httpPlugin = new HttpConnectionPlugin();
-        private readonly IConnectionPlugin httpsPlugin = new HttpsConnectionPlugin();
-        private readonly IConnectionPlugin vncPlugin = new VncConnectionPlugin();
         private readonly IConnectionPlugin vmrcPlugin = new VmrcConnectionPlugin();
-        private readonly IConnectionPlugin telnetPlugin = new TelnetConnectionPlugin();
-        private readonly IConnectionPlugin sshPlugin = new SshConnectionPlugin();
-        private readonly IConnectionPlugin icaPlugin = new ICAConnectionPlugin();
         private readonly IConnectionPlugin rdpPlugin = new RdpConnectionPlugin();
 
         private readonly Dictionary<string, IConnectionPlugin> plugins;
@@ -81,13 +65,13 @@ namespace Terminals.Connections
             // RAS, // this protocol doesnt fit to the concept and seems to be broken 
             this.plugins = new Dictionary<string, IConnectionPlugin>()
             {
-                { HTTP, this.httpPlugin },
-                { HTTPS, this.httpsPlugin },
-                { VNC, this.vncPlugin },
-                { VMRC, this.vmrcPlugin },
-                { TELNET, this.telnetPlugin },
-                { SSH, this.sshPlugin },
-                { ICA_CITRIX, this.icaPlugin },
+                { HTTP, new HttpConnectionPlugin() },
+                { HTTPS, new HttpsConnectionPlugin() },
+                { VncConnectionPlugin.VNC, new VncConnectionPlugin() },
+                { VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin() },
+                {TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin() },
+                {SshConnectionPlugin.SSH, new SshConnectionPlugin() },
+                {ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin() },
                 { RDP, this.rdpPlugin }
             };
         }
@@ -97,9 +81,9 @@ namespace Terminals.Connections
             return new Dictionary<string, Image>()
             {
                 { RDP, TreeIconRdp },
-                { VNC, TreeIconVnc },
-                { SSH, TreeIconSsh },
-                { TELNET, TreeIconTelnet },
+                {VncConnectionPlugin.VNC, TreeIconVnc },
+                {SshConnectionPlugin.SSH, TreeIconSsh },
+                {TelnetConnectionPlugin.TELNET, TreeIconTelnet },
                 { HTTP, TreeIconHttp },
                 { HTTPS, TreeIconHttp }
             };

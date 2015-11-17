@@ -1,6 +1,7 @@
 using System;
 using System.Net.Sockets;
 using Terminals.Configuration;
+using Terminals.Connections.Terminal;
 using Terminals.Converters;
 using Terminals.Data;
 using WalburySoftware;
@@ -49,13 +50,13 @@ namespace Terminals.Connections
                 ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
                 switch (Favorite.Protocol)
                 {
-                    case ConnectionManager.TELNET:
+                    case TelnetConnectionPlugin.TELNET:
                         {
                             protocol = ConfigureTelnetConnection(security);
                         }
                         break;
 
-                    case ConnectionManager.SSH:
+                    case SshConnectionPlugin.SSH:
                         {
                             protocol = ConfigureSshConnection(security);
                         }
@@ -105,7 +106,7 @@ namespace Terminals.Connections
             this.term.OnDataRequested += p.RequestData;
             this.connected = this.client.Connected;
 
-            return ConnectionManager.TELNET;
+            return TelnetConnectionPlugin.TELNET;
         }
 
         private string ConfigureSshConnection(ISecurityOptions security)

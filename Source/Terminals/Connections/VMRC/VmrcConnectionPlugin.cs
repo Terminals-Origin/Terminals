@@ -7,9 +7,11 @@ namespace Terminals.Connections.VMRC
 {
     internal class VmrcConnectionPlugin : IConnectionPlugin
     {
+        internal const string VMRC = "VMRC";
+
         public int Port { get { return ConnectionManager.VNCVMRCPort; } }
 
-        public string PortName { get { return ConnectionManager.VMRC; }}
+        public string PortName { get { return VMRC; }}
 
         public Connection CreateConnection()
         {

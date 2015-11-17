@@ -7,9 +7,11 @@ namespace Terminals.Connections.VNC
 {
     internal class VncConnectionPlugin : IConnectionPlugin
     {
+        internal const string VNC = "VNC";
+
         public int Port { get { return ConnectionManager.VNCVMRCPort; } }
 
-        public string PortName { get { return ConnectionManager.VNC; } }
+        public string PortName { get { return VNC; } }
 
         public Connection CreateConnection()
         {

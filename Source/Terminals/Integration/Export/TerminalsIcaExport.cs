@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using Terminals.Connections;
+using Terminals.Connections.ICA;
 
 namespace Terminals.Integration.Export
 {
@@ -7,7 +8,7 @@ namespace Terminals.Integration.Export
     {
         public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
         {
-            if (favorite.Protocol == ConnectionManager.ICA_CITRIX)
+            if (favorite.Protocol == ICAConnectionPlugin.ICA_CITRIX)
             {
                 w.WriteElementString("iCAApplicationName", favorite.ICAApplicationName);
                 w.WriteElementString("iCAApplicationPath", favorite.ICAApplicationPath);

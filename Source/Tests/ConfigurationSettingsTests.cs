@@ -6,6 +6,7 @@ using Moq;
 using Terminals;
 using Terminals.Configuration;
 using Terminals.Connections;
+using Terminals.Connections.Terminal;
 using Terminals.Data;
 using Tests.FilePersisted;
 
@@ -43,12 +44,12 @@ namespace Tests
         public void Ssh_SaveDefaultFavorite_IsSaved()
         {
             var favorite = new FavoriteConfigurationElement();
-            favorite.Protocol = ConnectionManager.SSH; // avoid all default values
+            favorite.Protocol = SshConnectionPlugin.SSH; // avoid all default values
             settings.SaveDefaultFavorite(favorite);
             settings.ForceReload();
             var loaded = settings.GetDefaultFavorite();
             const string MESSAGE = "Newly saved default favorite has return last saved value.";
-            Assert.AreEqual(ConnectionManager.SSH, loaded.Protocol, MESSAGE);
+            Assert.AreEqual(SshConnectionPlugin.SSH, loaded.Protocol, MESSAGE);
         }
 
         [TestMethod]

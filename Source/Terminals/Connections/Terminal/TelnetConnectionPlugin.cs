@@ -8,9 +8,13 @@ namespace Terminals.Connections.Terminal
     {
         internal const string CONSOLE = "Console";
 
-        public int Port { get { return ConnectionManager.TelnetPort; }}
+        internal const int TelnetPort = 23;
 
-        public string PortName { get { return ConnectionManager.TELNET; } }
+        internal const string TELNET = "Telnet";
+
+        public int Port { get { return TelnetPort; }}
+
+        public string PortName { get { return TELNET; } }
 
         public Connection CreateConnection()
         {
