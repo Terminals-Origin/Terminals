@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 
 namespace Terminals.Connections.Rdp
@@ -26,6 +27,16 @@ namespace Terminals.Connections.Rdp
                 new RdpSecurityControl() { Name = "Security" },
                 new RdpTsGatewayControl() { Name = "TS Gateway" }
             };
+        }
+
+        public Type GetOptionsType()
+        {
+            return typeof (RdpOptions);
+        }
+
+        public ProtocolOptions CreateOptions()
+        {
+            return new RdpOptions();
         }
     }
 }

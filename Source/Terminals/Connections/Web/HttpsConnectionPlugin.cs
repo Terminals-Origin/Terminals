@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
+using Terminals.Data;
 
 namespace Terminals.Connections.Web
 {
@@ -16,6 +18,16 @@ namespace Terminals.Connections.Web
         public Control[] CreateOptionsControls()
         {
             return new Control[0];
+        }
+
+        public Type GetOptionsType()
+        {
+            return typeof (WebOptions);
+        }
+
+        public ProtocolOptions CreateOptions()
+        {
+            return new WebOptions();
         }
     }
 }

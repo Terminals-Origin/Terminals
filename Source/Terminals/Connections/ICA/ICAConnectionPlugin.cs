@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
+using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 
 namespace Terminals.Connections.ICA
@@ -17,6 +19,16 @@ namespace Terminals.Connections.ICA
         public Control[] CreateOptionsControls()
         {
             return new Control[] { new CitrixControl() { Name = "ICA Citrix" } };
+        }
+
+        public Type GetOptionsType()
+        {
+            return typeof (ICAOptions);
+        }
+
+        public ProtocolOptions CreateOptions()
+        {
+            return new ICAOptions();
         }
     }
 }
