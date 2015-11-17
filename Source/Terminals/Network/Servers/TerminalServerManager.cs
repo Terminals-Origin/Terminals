@@ -110,7 +110,7 @@ namespace Terminals.Network.Servers
             ServerNameComboBox.Items.Clear();
             foreach (IFavorite favorite in this.persistence.Favorites)
             {
-                if (favorite.Protocol == ConnectionManager.RDP)
+                if (favorite.Protocol == KnownConnectionConstants.RDP)
                 {
                     this.ServerNameComboBox.Items.Add(favorite.ServerName);
                 }

@@ -164,13 +164,13 @@ namespace Terminals.Forms.EditFavorite
         private static void GetServerAndPort(String connection, out String server, out Int32 port)
         {
             server = connection;
-            port = ConnectionManager.RDPPort;
+            port = KnownConnectionConstants.RDPPort;
             if (connection != null && connection.Trim() != String.Empty && connection.Contains(":"))
             {
                 int separatorIndex = connection.IndexOf(":", StringComparison.Ordinal);
                 String parsedServer = connection.Substring(0, separatorIndex);
                 String rawPort = connection.Substring(separatorIndex + 1);
-                Int32 parsedPort = ConnectionManager.RDPPort;
+                Int32 parsedPort = KnownConnectionConstants.RDPPort;
                 if (rawPort.Trim() != String.Empty)
                 {
                     rawPort = rawPort.Trim();
@@ -247,8 +247,8 @@ namespace Terminals.Forms.EditFavorite
             string newUrlText = this.httpUrlTextBox.Text.ToLower();
             string protocolPrefix = this.ProtocolComboBox.Text.ToLower();
 
-            if (!newUrlText.StartsWith(ConnectionManager.HTTP.ToLower()) &&
-                !newUrlText.StartsWith(ConnectionManager.HTTPS.ToLower()))
+            if (!newUrlText.StartsWith(KnownConnectionConstants.HTTP.ToLower()) &&
+                !newUrlText.StartsWith(KnownConnectionConstants.HTTPS.ToLower()))
                 newUrlText = String.Format("{0}://{1}", protocolPrefix, newUrlText);
             return WebOptions.TryParseUrl(newUrlText);
         }

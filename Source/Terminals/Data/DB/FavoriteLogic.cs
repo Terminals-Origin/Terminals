@@ -173,8 +173,8 @@ namespace Terminals.Data.DB
         public DbFavorite()
         {
             this.Groups = new HashSet<DbGroup>();
-            this.Protocol = ConnectionManager.RDP;
-            this.Port = ConnectionManager.RDPPort;
+            this.Protocol = KnownConnectionConstants.RDP;
+            this.Port = KnownConnectionConstants.RDPPort;
             this.protocolProperties = new RdpOptions();
             this.Details = new FavoriteDetails(this);
         }

@@ -175,6 +175,7 @@
     <Compile Include="Connections\DesktopSizeCalculator.cs" />
     <Compile Include="Connections\ICA\ICAConnectionPlugin.cs" />
     <Compile Include="Connections\IConnectionPlugin.cs" />
+    <Compile Include="Connections\KnownConnectionConstants.cs" />
     <Compile Include="Connections\Rdp\ConnectionStateDetector.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\IConnectionExtra.cs" />

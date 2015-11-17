@@ -17,15 +17,10 @@ namespace Terminals.Connections
 {
     internal class ConnectionManager
     {
-        internal const int RDPPort = 3389;
-        internal const int VNCVMRCPort = 5900;
-        internal const int HTTPPort = 80;
+        private readonly IConnectionPlugin vmrcPlugin = new VmrcConnectionPlugin();
+        private readonly IConnectionPlugin rdpPlugin = new RdpConnectionPlugin();
 
-        internal const string HTTP = "HTTP";
-        internal const string HTTPS = "HTTPS";
-
-        internal const string RAS = "RAS";
-        internal const string RDP = "RDP";
+        private readonly Dictionary<string, IConnectionPlugin> plugins;
 
         // cached images, bad performace, but simplifies check, if the image is known
         internal static readonly Image TreeIconRdp = Resources.treeIcon_rdp;
@@ -55,24 +50,19 @@ namespace Terminals.Connections
 
         #endregion
 
-        private readonly IConnectionPlugin vmrcPlugin = new VmrcConnectionPlugin();
-        private readonly IConnectionPlugin rdpPlugin = new RdpConnectionPlugin();
-
-        private readonly Dictionary<string, IConnectionPlugin> plugins;
-
         public ConnectionManager()
         {
             // RAS, // this protocol doesnt fit to the concept and seems to be broken 
             this.plugins = new Dictionary<string, IConnectionPlugin>()
             {
-                { HTTP, new HttpConnectionPlugin() },
-                { HTTPS, new HttpsConnectionPlugin() },
+                { KnownConnectionConstants.HTTP, new HttpConnectionPlugin() },
+                { KnownConnectionConstants.HTTPS, new HttpsConnectionPlugin() },
                 { VncConnectionPlugin.VNC, new VncConnectionPlugin() },
                 { VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin() },
-                {TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin() },
-                {SshConnectionPlugin.SSH, new SshConnectionPlugin() },
-                {ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin() },
-                { RDP, this.rdpPlugin }
+                { TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin() },
+                { SshConnectionPlugin.SSH, new SshConnectionPlugin() },
+                { ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin() },
+                { KnownConnectionConstants.RDP, this.rdpPlugin }
             };
         }
 
@@ -80,12 +70,12 @@ namespace Terminals.Connections
         {
             return new Dictionary<string, Image>()
             {
-                { RDP, TreeIconRdp },
+                {KnownConnectionConstants.RDP, TreeIconRdp },
                 {VncConnectionPlugin.VNC, TreeIconVnc },
                 {SshConnectionPlugin.SSH, TreeIconSsh },
                 {TelnetConnectionPlugin.TELNET, TreeIconTelnet },
-                { HTTP, TreeIconHttp },
-                { HTTPS, TreeIconHttp }
+                {KnownConnectionConstants.HTTP, TreeIconHttp },
+                {KnownConnectionConstants.HTTPS, TreeIconHttp }
             };
         }
 
@@ -157,7 +147,7 @@ namespace Terminals.Connections
         /// <param name="protocol">One of connection short cuts.</param>
         internal bool IsProtocolWebBased(string protocol)
         {
-            return protocol == HTTP || protocol == HTTPS;
+            return protocol == KnownConnectionConstants.HTTP || protocol == KnownConnectionConstants.HTTPS;
         }
 
         internal bool IsKnownProtocol(string protocol)

@@ -10,7 +10,7 @@ namespace Terminals.Connections.Web
 
         public int Port { get { return HTTPSPort; } }
 
-        public string PortName { get { return ConnectionManager.HTTPS; } }
+        public string PortName { get { return KnownConnectionConstants.HTTPS; } }
 
         public Connection CreateConnection()
         {

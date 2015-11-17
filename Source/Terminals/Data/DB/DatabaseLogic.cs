@@ -95,7 +95,7 @@ namespace Terminals.Data.DB
 
         internal List<int> GetRdpFavoriteIds()
         {
-            return this.Favorites.Where(candidate => candidate.Protocol == ConnectionManager.RDP)
+            return this.Favorites.Where(candidate => candidate.Protocol == KnownConnectionConstants.RDP)
                        .Select(rdpFavorite => rdpFavorite.Id).ToList();
         }
 

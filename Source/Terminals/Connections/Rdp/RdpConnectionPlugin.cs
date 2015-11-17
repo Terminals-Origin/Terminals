@@ -7,9 +7,9 @@ namespace Terminals.Connections.Rdp
 {
     internal class RdpConnectionPlugin : IConnectionPlugin
     {
-        public int Port { get { return ConnectionManager.RDPPort; } }
+        public int Port { get { return KnownConnectionConstants.RDPPort; } }
 
-        public string PortName { get { return ConnectionManager.RDP; } }
+        public string PortName { get { return KnownConnectionConstants.RDP; } }
 
         public Connection CreateConnection()
         {

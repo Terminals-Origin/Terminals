@@ -143,7 +143,7 @@ namespace Terminals.Scanner
 
         private Boolean CheckVNCPport(Int32 port)
         {
-            if (port == ConnectionManager.VNCVMRCPort)
+            if (port == KnownConnectionConstants.VNCVMRCPort)
             {
                 return !this.IsPortVNC(port);
             }

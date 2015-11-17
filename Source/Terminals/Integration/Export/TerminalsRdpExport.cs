@@ -8,7 +8,7 @@ namespace Terminals.Integration.Export
     {
         public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
         {
-            if (favorite.Protocol == ConnectionManager.RDP)
+            if (favorite.Protocol == KnownConnectionConstants.RDP)
             {
                 ExportRdpDesktopOptions(w, favorite);
                 ExportRdpUiOptions(w, favorite);

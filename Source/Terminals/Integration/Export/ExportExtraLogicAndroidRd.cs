@@ -41,7 +41,7 @@ namespace Terminals.Integration.Export
         {
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
-                if (favorite.Protocol.Equals(ConnectionManager.RDP))
+                if (favorite.Protocol.Equals(KnownConnectionConstants.RDP))
                 {
                     doc.Root.Add(ExportFavorite(favorite));
                 }

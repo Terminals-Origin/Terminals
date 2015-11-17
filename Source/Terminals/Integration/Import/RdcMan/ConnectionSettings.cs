@@ -42,7 +42,7 @@ namespace Terminals.Integration.Import.RdcMan
             {
                 Func<int> getParentValue = () => this.Parent.Port;
                 Func<int> getElementValue = this.PropertiesElement.GetPort;
-                return this.ResolveValue(getParentValue, getElementValue, ConnectionManager.RDPPort);
+                return this.ResolveValue(getParentValue, getElementValue, KnownConnectionConstants.RDPPort);
             }
         }
 

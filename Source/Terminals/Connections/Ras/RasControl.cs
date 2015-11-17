@@ -23,7 +23,7 @@ namespace Terminals.Forms.EditFavorite
 
         internal void OnServerNameChanged(string protocolName, string serverName)
         {
-            if (protocolName == ConnectionManager.RAS)
+            if (protocolName == KnownConnectionConstants.RAS)
                 this.FillRasControls(serverName);
         }
 
