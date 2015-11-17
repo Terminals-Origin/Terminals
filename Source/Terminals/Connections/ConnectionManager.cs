@@ -78,6 +78,7 @@ namespace Terminals.Connections
 
         public ConnectionManager()
         {
+            // RAS, // this protocol doesnt fit to the concept and seems to be broken 
             this.plugins = new Dictionary<string, IConnectionPlugin>()
             {
                 { HTTP, this.httpPlugin },
@@ -147,53 +148,23 @@ namespace Terminals.Connections
 
         internal int GetPort(string name)
         {
-            switch (name)
-            {
-                case VNC:
-                    return vncPlugin.Port;
-                case VMRC:
-                    return vmrcPlugin.Port;
-                case TELNET:
-                    return telnetPlugin.Port;
-                case SSH:
-                    return sshPlugin.Port;
-                case RDP:
-                    return rdpPlugin.Port;
-                case ICA_CITRIX:
-                    return icaPlugin.Port;
-                case HTTP:
-                    return httpPlugin.Port;
-                case HTTPS:
-                    return httpsPlugin.Port;
-                default:
-                    return 0;
-            }
+            IConnectionPlugin plugin;
+            if (this.plugins.TryGetValue(name, out plugin))
+                return plugin.Port;
+
+            return 0;
         }
 
         internal string GetPortName(int port, bool isVMRC)
         {
-            switch (port)
-            {
-                case VNCVMRCPort:
-                    if (isVMRC)
-                    {
-                        return vmrcPlugin.PortName;
-                    }
+            if (isVMRC && this.vmrcPlugin.Port == port)
+                return vmrcPlugin.PortName;
 
-                    return vncPlugin.PortName;
-                case TelnetPort:
-                    return telnetPlugin.PortName;
-                case SSHPort:
-                    return sshPlugin.PortName;
-                case ICAPort:
-                    return icaPlugin.PortName;
-                case HTTPPort:
-                    return httpPlugin.PortName;
-                case HTTPSPort:
-                    return httpsPlugin.PortName;
-                default:
-                    return rdpPlugin.PortName;
-            }
+            var plugin = this.plugins.Values.FirstOrDefault(p => p.Port == port);
+            if (plugin != null)
+                return plugin.PortName;
+
+            return rdpPlugin.PortName;
         }
 
         /// <summary>
@@ -207,20 +178,22 @@ namespace Terminals.Connections
 
         internal bool IsKnownProtocol(string protocol)
         {
-            switch (protocol)
-            {
-                case VNC:
-                case VMRC:
-                case TELNET:
-                case SSH:
-                case RDP:
-                case ICA_CITRIX:
-                case HTTP:
-                case HTTPS:
-                    return true;
-                default:
-                    return false;
-            } 
+            return this.plugins.Any(p => p.Key == protocol);
+        }
+
+        internal Control[] CreateControls(string newProtocol)
+        {
+            IConnectionPlugin plugin;
+            if(this.plugins.TryGetValue(newProtocol, out plugin))
+                return plugin.CreateOptionsControls();
+            
+            return new Control[0];
+        }
+
+        public string[] GetAvailableProtocols()
+        {
+            return this.plugins.Values.Select(p => p.PortName)
+                .ToArray();
         }
 
         internal ITerminalsOptionsExport[] GetTerminalsOptionsExporters()
@@ -234,47 +207,6 @@ namespace Terminals.Connections
                 new TerminalsVmrcExport(),
                 new TerminalsIcaExport()
             };
-        }
-
-        internal Control[] CreateControls(string newProtocol)
-        {
-            switch (newProtocol)
-            {
-                case RDP:
-                    return rdpPlugin.CreateOptionsControls();
-                case VNC:
-                    return vncPlugin.CreateOptionsControls();
-                case VMRC:
-                    return vmrcPlugin.CreateOptionsControls();
-                case TELNET:
-                    return telnetPlugin.CreateOptionsControls();
-                case SSH:
-                    return sshPlugin.CreateOptionsControls();
-                case ICA_CITRIX:
-                    return icaPlugin.CreateOptionsControls();
-                case HTTP:
-                    return httpPlugin.CreateOptionsControls();
-                case HTTPS:
-                    return httpsPlugin.CreateOptionsControls();
-                default:
-                    return new Control[0];
-            }
-        }
-
-        public string[] GetAvailableProtocols()
-        {
-            return new string[]
-                {
-                    rdpPlugin.PortName,
-                    vncPlugin.PortName,
-                    vmrcPlugin.PortName,
-                    sshPlugin.PortName,
-                    telnetPlugin.PortName,
-                    // RAS, // this protocol doesnt fit to the concept and seems to be broken 
-                    icaPlugin.PortName,
-                    httpPlugin.PortName,
-                    httpsPlugin.PortName
-                };
         }
 
         public static IToolbarExtender[] CreateToolbarExtensions(ICurrenctConnectionProvider provider)
