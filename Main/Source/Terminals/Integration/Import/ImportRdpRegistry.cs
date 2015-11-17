@@ -69,7 +69,7 @@ namespace Terminals.Integration.Import
             }
 
             return FavoritesFactory.CreateNewFavorite(favoriteName, favoriteName,
-                ConnectionManager.RDPPort, domainName, userName);
+                KnownConnectionConstants.RDPPort, domainName, userName);
         }
     }
 }

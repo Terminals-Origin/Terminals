@@ -6,9 +6,9 @@ namespace Terminals.Connections.Web
 {
     internal class HttpConnectionPlugin: IConnectionPlugin
     {
-        public int Port { get { return ConnectionManager.HTTPPort; } }
+        public int Port { get { return KnownConnectionConstants.HTTPPort; } }
 
-        public string PortName { get { return ConnectionManager.HTTP; } }
+        public string PortName { get { return KnownConnectionConstants.HTTP; } }
 
         public Connection CreateConnection()
         {

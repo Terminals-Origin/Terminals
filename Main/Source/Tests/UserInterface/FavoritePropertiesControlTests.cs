@@ -111,7 +111,7 @@ namespace Tests.UserInterface
         {
             var formStub = new Mock<INewTerminalForm>();
             // return RDP doesnt play rule, because the validation asks only for non web protocol
-            formStub.SetupGet(form => form.PortText).Returns(ConnectionManager.RDP);
+            formStub.SetupGet(form => form.PortText).Returns(KnownConnectionConstants.RDP);
             var formValidator = new NewTerminalFormValidator(this.irelevantPersistence, formStub.Object);
             this.propertiesControl.RegisterValidations(formValidator);
             this.propertiesControl.LoadContent();

@@ -20,7 +20,7 @@ namespace Terminals.Network
 
         internal ActiveDirectoryComputer()
         {
-            this.Protocol = ConnectionManager.RDP;
+            this.Protocol = KnownConnectionConstants.RDP;
             this.ComputerName = String.Empty;
             this.OperatingSystem = String.Empty;
             this.Tags = String.Empty;

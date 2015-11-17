@@ -105,7 +105,7 @@ namespace Terminals.CommandLine
                     ProtocolHandler.Parse(this.url, out server, out port);
                     return port;
                 }
-                return ConnectionManager.HTTPPort;
+                return KnownConnectionConstants.HTTPPort;
             }
         }
 
@@ -145,7 +145,7 @@ namespace Terminals.CommandLine
                     }
                 }
 
-                return ConnectionManager.RDPPort;
+                return KnownConnectionConstants.RDPPort;
             }
         }
 

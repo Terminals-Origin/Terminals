@@ -9,7 +9,7 @@ namespace Terminals.Connections.VNC
     {
         internal const string VNC = "VNC";
 
-        public int Port { get { return ConnectionManager.VNCVMRCPort; } }
+        public int Port { get { return KnownConnectionConstants.VNCVMRCPort; } }
 
         public string PortName { get { return VNC; } }
 

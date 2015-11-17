@@ -118,8 +118,8 @@ namespace Terminals.Data
             IFavorite release = PersistenceFactory.CreateFavorite();
             release.Name = TerminalsReleasesFavoriteName;
             release.ServerName = TerminalsReleasesUrl;
-            release.Protocol = ConnectionManager.HTTP;
-            release.Port = ConnectionManager.HTTPPort;
+            release.Protocol = KnownConnectionConstants.HTTP;
+            release.Port = KnownConnectionConstants.HTTPPort;
             return release;
         }
 

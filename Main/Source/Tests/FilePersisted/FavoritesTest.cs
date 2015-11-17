@@ -56,7 +56,7 @@ namespace Tests.FilePersisted
         /// </summary>
         internal static void AssertRdpSecurity(IFavorite favorite)
         {
-            favorite.Protocol = ConnectionManager.RDP;
+            favorite.Protocol = KnownConnectionConstants.RDP;
             var rdpOptions = favorite.ProtocolProperties as RdpOptions;
             // next line shouldn't fail
             rdpOptions.TsGateway.Security.Password = "aaa";

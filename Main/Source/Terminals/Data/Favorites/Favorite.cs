@@ -45,7 +45,7 @@ namespace Terminals.Data
             get { return this.GetGroups(); }
         }
 
-        private string protocol = ConnectionManager.RDP;
+        private string protocol = KnownConnectionConstants.RDP;
         public String Protocol
         {
             get { return protocol; }
@@ -57,7 +57,7 @@ namespace Terminals.Data
             }
         }
 
-        private int port = ConnectionManager.RDPPort;
+        private int port = KnownConnectionConstants.RDPPort;
         public Int32 Port
         {
             get { return port; }

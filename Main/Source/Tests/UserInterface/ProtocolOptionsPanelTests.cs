@@ -42,7 +42,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Rdp_LoadSave_KeepsDisableWallPaper()
         {
-            this.AssertExpectedPropertyValue<RdpOptions, bool>(ConnectionManager.RDP,
+            this.AssertExpectedPropertyValue<RdpOptions, bool>(KnownConnectionConstants.RDP,
                   (options, newValue) => options.UserInterface.DisableWallPaper = newValue,
                   options => options.UserInterface.DisableWallPaper,
                   true);
@@ -51,7 +51,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Rdp_LoadSave_KeepsLoadBalanceInfo()
         {
-            this.AssertExpectedPropertyValue<RdpOptions, string>(ConnectionManager.RDP,
+            this.AssertExpectedPropertyValue<RdpOptions, string>(KnownConnectionConstants.RDP,
                   (options, newValue) => options.UserInterface.LoadBalanceInfo = newValue,
                   options => options.UserInterface.LoadBalanceInfo,
                   "LoadBalanceInfo");
@@ -60,7 +60,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Rdp_LoadSave_KeepsRedirectSmartCards()
         {
-            this.AssertExpectedPropertyValue<RdpOptions, bool>(ConnectionManager.RDP,
+            this.AssertExpectedPropertyValue<RdpOptions, bool>(KnownConnectionConstants.RDP,
                   (options, newValue) => options.Redirect.SmartCards = newValue,
                   options => options.Redirect.SmartCards,
                   true);
@@ -69,7 +69,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Rdp_LoadSave_KeepsWorkingFolder()
         {
-            this.AssertExpectedPropertyValue<RdpOptions, string>(ConnectionManager.RDP,
+            this.AssertExpectedPropertyValue<RdpOptions, string>(KnownConnectionConstants.RDP,
                   SetWorkingFolder,
                   options => options.Security.WorkingFolder,
                   "WorkingFolder");
@@ -85,7 +85,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Rdp_LoadSave_KeepsGatewayDomain()
         {
-            this.AssertExpectedPropertyValue<RdpOptions, string>(ConnectionManager.RDP,
+            this.AssertExpectedPropertyValue<RdpOptions, string>(KnownConnectionConstants.RDP,
                   ConfigureTsGateway,
                   options => options.TsGateway.Security.Domain,
                   "TsGwDomain");
@@ -190,7 +190,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Rdp_ReloadControls_ImplementIProtocolOptionsControl()
         {
-            this.AssertLoadedControlsImplementInterface(ConnectionManager.RDP);
+            this.AssertLoadedControlsImplementInterface(KnownConnectionConstants.RDP);
         }
 
         [TestMethod]

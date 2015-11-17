@@ -9,7 +9,7 @@ namespace Terminals.Connections.VMRC
     {
         internal const string VMRC = "VMRC";
 
-        public int Port { get { return ConnectionManager.VNCVMRCPort; } }
+        public int Port { get { return KnownConnectionConstants.VNCVMRCPort; } }
 
         public string PortName { get { return VMRC; }}
 

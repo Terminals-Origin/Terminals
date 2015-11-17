@@ -30,10 +30,10 @@ namespace Tests.Integrations
         {
             var testData = new[]
             {
-                new Tuple<string, string>(ConnectionManager.RDP, "sounds"),
-                new Tuple<string, string>(ConnectionManager.RDP, "enableSecuritySettings"),
-                new Tuple<string, string>(ConnectionManager.RDP, "tsgwUsageMethod"),
-                new Tuple<string, string>(ConnectionManager.RDP, "executeBeforeConnect"), // applies to all protocols
+                new Tuple<string, string>(KnownConnectionConstants.RDP, "sounds"),
+                new Tuple<string, string>(KnownConnectionConstants.RDP, "enableSecuritySettings"),
+                new Tuple<string, string>(KnownConnectionConstants.RDP, "tsgwUsageMethod"),
+                new Tuple<string, string>(KnownConnectionConstants.RDP, "executeBeforeConnect"), // applies to all protocols
                 new Tuple<string, string>(VncConnectionPlugin.VNC, "vncAutoScale"),
                 new Tuple<string, string>(VmrcConnectionPlugin.VMRC, "vmrcadministratormode"),
                 new Tuple<string, string>(TelnetConnectionPlugin.TELNET, "telnet"),
