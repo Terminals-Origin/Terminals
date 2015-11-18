@@ -1,12 +1,9 @@
-using System;
-using System.Threading;
 using System.Windows.Forms;
 using Terminals.Data;
-using Terminals.TerminalServices;
 
 namespace Terminals.Connections
 {
-    internal abstract class Connection : Control, IConnection
+    internal class Connection : Control, IConnection
     {
         public delegate void LogHandler(string entry);
 
@@ -18,9 +15,9 @@ namespace Terminals.Connections
 
         public string LastError { get; protected set; }
 
-        public abstract bool Connected 
+        public virtual bool Connected 
         {
-            get;
+            get; private set;
         }
 
         /// <summary>
@@ -36,7 +33,10 @@ namespace Terminals.Connections
         /// Use explicit call instead. Because there may be related resources, 
         /// call Dispose to close the connection to prevent memory leak.
         /// </summary>
-        public abstract bool Connect();
+        public virtual bool Connect()
+        {
+            return true;
+        }
 
         protected void Log(string text)
         {

@@ -45,6 +45,7 @@ namespace Tests.Connections
             {
                 new Tuple<string, Type>(KnownConnectionConstants.RDP, typeof(RDPConnection)),
                 new Tuple<string, Type>(VncConnectionPlugin.VNC, typeof(VNCConnection)),
+                // VMRCConnection creation may fail in some test runners.
                 new Tuple<string, Type>(VmrcConnectionPlugin.VMRC, typeof(VMRCConnection)),
                 new Tuple<string, Type>(TelnetConnectionPlugin.TELNET, typeof(TerminalConnection)),
                 new Tuple<string, Type>(SshConnectionPlugin.SSH, typeof(TerminalConnection)),
@@ -60,7 +61,7 @@ namespace Tests.Connections
         [TestMethod]
         public void UnknownProtocol_CreateConnection_CreatesRdpConnection()
         {
-            var testCase = new Tuple<string, Type>("UnknownProtocol", typeof(RDPConnection));
+            var testCase = new Tuple<string, Type>("UnknownProtocol", typeof(Connection));
             var isValid = AssertCratedConnection(testCase);
             Assert.IsTrue(isValid, "For unknown protocol we fall back to RdpConnection.");
         }
