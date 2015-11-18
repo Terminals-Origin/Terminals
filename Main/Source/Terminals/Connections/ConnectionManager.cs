@@ -19,6 +19,7 @@ namespace Terminals.Connections
     {
         private readonly IConnectionPlugin vmrcPlugin = new VmrcConnectionPlugin();
         private readonly IConnectionPlugin rdpPlugin = new RdpConnectionPlugin();
+        private readonly IConnectionPlugin dummyPlugin = new DummyPlugin();
 
         private readonly Dictionary<string, IConnectionPlugin> plugins;
 
@@ -86,12 +87,8 @@ namespace Terminals.Connections
         /// </summary>
         internal ProtocolOptions UpdateProtocolPropertiesByProtocol(string newProtocol, ProtocolOptions currentOptions)
         {
-            IConnectionPlugin plugin = null;
-
-            if (this.plugins.TryGetValue(newProtocol, out plugin))
-                return SwitchPropertiesIfNotTheSameType(currentOptions, plugin);
-            
-            return new EmptyOptions();
+            IConnectionPlugin plugin = FindPlugin(newProtocol);
+            return SwitchPropertiesIfNotTheSameType(currentOptions, plugin);
         }
 
         private static ProtocolOptions SwitchPropertiesIfNotTheSameType(ProtocolOptions currentOptions, IConnectionPlugin plugin)
@@ -113,20 +110,14 @@ namespace Terminals.Connections
 
         internal Connection CreateConnection(IFavorite favorite)
         {
-            IConnectionPlugin plugin = null;
-            if (this.plugins.TryGetValue(favorite.Protocol, out plugin))
-                return plugin.CreateConnection();
-
-            return this.rdpPlugin.CreateConnection();
+            IConnectionPlugin plugin = FindPlugin(favorite.Protocol);
+            return plugin.CreateConnection();
         }
 
         internal int GetPort(string name)
         {
-            IConnectionPlugin plugin;
-            if (this.plugins.TryGetValue(name, out plugin))
-                return plugin.Port;
-
-            return 0;
+            IConnectionPlugin plugin = FindPlugin(name);
+            return plugin.Port;
         }
 
         internal string GetPortName(int port, bool isVMRC)
@@ -138,7 +129,7 @@ namespace Terminals.Connections
             if (plugin != null)
                 return plugin.PortName;
 
-            return rdpPlugin.PortName;
+            return this.dummyPlugin.PortName;
         }
 
         /// <summary>
@@ -157,11 +148,17 @@ namespace Terminals.Connections
 
         internal Control[] CreateControls(string newProtocol)
         {
+            IConnectionPlugin plugin = FindPlugin(newProtocol);
+            return plugin.CreateOptionsControls();
+        }
+
+        private IConnectionPlugin FindPlugin(string protocolName)
+        {
             IConnectionPlugin plugin;
-            if(this.plugins.TryGetValue(newProtocol, out plugin))
-                return plugin.CreateOptionsControls();
-            
-            return new Control[0];
+            if (this.plugins.TryGetValue(protocolName, out plugin))
+                return plugin;
+
+            return this.dummyPlugin;
         }
 
         public string[] GetAvailableProtocols()
@@ -172,14 +169,14 @@ namespace Terminals.Connections
 
         internal ITerminalsOptionsExport[] GetTerminalsOptionsExporters()
         {
-            return this.plugins.OfType<IOptionsExporterFactory>()
+            return this.plugins.Values.OfType<IOptionsExporterFactory>()
                 .Select(p => p.CreateOptionsExporter())
                 .ToArray();
         }
 
         public IToolbarExtender[] CreateToolbarExtensions(ICurrenctConnectionProvider provider)
         {
-            return this.plugins.OfType<IToolbarExtenderFactory>()
+            return this.plugins.Values.OfType<IToolbarExtenderFactory>()
                 .Select(p => p.CreateToolbarExtender(provider))
                 .ToArray();
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms.Controls;
 
@@ -54,7 +55,7 @@ namespace Terminals.Forms.EditFavorite
             string[] availablePlugins = this.protocolOptionsPanel1.Available;
             this.generalPanel1.AssingAvailablePlugins(availablePlugins);
             this.generalPanel1.ProtocolChanged += GenearalPanel1ProtocolChanged;
-            var firstPlugin = availablePlugins[0];
+            string firstPlugin = KnownConnectionConstants.RDP;
             this.GenearalPanel1ProtocolChanged(firstPlugin);
             this.groupsPanel1.BindGroups();
             this.generalPanel1.ServerNameChanged += this.protocolOptionsPanel1.OnServerNameChanged;
@@ -73,7 +74,7 @@ namespace Terminals.Forms.EditFavorite
 
         private void GenearalPanel1ProtocolChanged(string newProtocol)
         {
-            this.ProtocolOptionsNode.Text = string.Format("{0} Options", this.ProtocolText);
+            this.ProtocolOptionsNode.Text = string.Format("{0} Options", newProtocol);
             this.protocolOptionsPanel1.ReloadControls(newProtocol);
             this.UpdateProtocolOptionsNodeIcons(newProtocol);
             this.ReloadProtocolTreeNodes();
