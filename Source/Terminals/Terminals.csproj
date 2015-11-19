@@ -205,6 +205,7 @@
     <Compile Include="Connections\VNC\VncMenuVisitor.cs" />
     <Compile Include="Connections\Web\HttpConnectionPlugin.cs" />
     <Compile Include="Connections\Web\HttpsConnectionPlugin.cs" />
+    <Compile Include="Data\FilePersisted\FavoritesFileSerializer.cs" />
     <Compile Include="Forms\Controls\ProtocolImageListBuilder.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
     <Compile Include="Integration\Export\ITerminalsOptionsExport.cs" />

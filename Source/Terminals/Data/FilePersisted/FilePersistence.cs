@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Terminals.Configuration;
+using Terminals.Data.FilePersisted;
 using Terminals.History;
 using Unified;
 
@@ -70,6 +71,8 @@ namespace Terminals.Data
         private readonly Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.FilePersistence");
         private IDataFileWatcher fileWatcher;
         private bool delaySave;
+
+        private readonly FavoritesFileSerializer serializer = new FavoritesFileSerializer();
 
         internal FilePersistence() : this(new PersistenceSecurity())
         {}
@@ -191,7 +194,7 @@ namespace Terminals.Data
         private FavoritesFile LoadFileContent()
         {
             string fileLocation = this.fileLocations.Favorites;
-            object fileContent = Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile));
+            object fileContent = this.serializer.Deserialize(fileLocation);
             var file = fileContent as FavoritesFile;
             if (file == null)
                 file = new FavoritesFile();
@@ -262,7 +265,7 @@ namespace Terminals.Data
                 this.fileWatcher.StopObservation();
                 FavoritesFile persistenceFile = this.CreatePersistenceFileFromCache();
                 string fileLocation = this.fileLocations.Favorites;
-                Serialize.SerializeXMLToDisk(persistenceFile, fileLocation);
+                this.serializer.SerializeToXml(persistenceFile, fileLocation);
             }
             catch (Exception exception)
             {
