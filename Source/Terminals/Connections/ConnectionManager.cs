@@ -180,5 +180,16 @@ namespace Terminals.Connections
                 .Select(p => p.CreateToolbarExtender(provider))
                 .ToArray();
         }
+
+        public Type[] GetAllKnownProtocolOptionTypes()
+        {
+            List<Type> knownTypes = this.plugins.Values
+                .Select(p => p.GetOptionsType())
+                .ToList();
+
+            knownTypes.Add(typeof(EmptyOptions));
+            return knownTypes.Distinct()
+                .ToArray();
+        }
     }
 }
