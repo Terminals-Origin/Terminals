@@ -264,7 +264,7 @@ namespace Tests.Connections
 
         private IEnumerable<string> GetUniqueProtocols()
         {
-            return connectionManager.GetAvailableProtocols().Distinct();
+            return connectionManager.GetAvailableProtocols();
         }
 
         [TestMethod]
@@ -301,6 +301,22 @@ namespace Tests.Connections
             ITerminalsOptionsExport[] exporters = this.connectionManager.GetTerminalsOptionsExporters();
             bool allPresent = exporters.All(e => expected.Contains(e.GetType()));
             Assert.IsTrue(allPresent, "All supported plugins should cover all options to export.");
+        }
+
+        [TestMethod]
+        public void GetProtocolOptionsTypes_ReturnsAll()
+        {
+            IEnumerable<Type> optionTypes = this.connectionManager.GetAllKnownProtocolOptionTypes()
+                .Distinct();
+            Assert.AreEqual(8, optionTypes.Count(), "To be able serialize all known protocols we have to list all.");
+        }
+        
+        [TestMethod]
+        public void GetProtocolOptionsTypes_ContainsEmptyOptions()
+        {
+            bool containsEmptyOtions = this.connectionManager.GetAllKnownProtocolOptionTypes()
+                .Contains(typeof(EmptyOptions));
+            Assert.IsTrue(containsEmptyOtions, "To support broken protocols and default values, empty options are required.");
         }
     }
 }
