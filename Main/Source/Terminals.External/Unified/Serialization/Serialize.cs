@@ -87,15 +87,33 @@ namespace Unified
 
         public static void SerializeXMLToDisk(object request, string Filename)
         {
+            var xmlSerializer = new XmlSerializer(request.GetType());
+            SerializeXMLToDisk(request, Filename, xmlSerializer);
+        }
+
+        public static void SerializeXMLToDisk(object request, string Filename, XmlAttributeOverrides attributes)
+        {
+            var xmlSerializer = new XmlSerializer(request.GetType(), attributes);
+            SerializeXMLToDisk(request, Filename, xmlSerializer);
+        }
+
+        public static void SerializeXMLToDisk(object request, string Filename, XmlSerializer xmlSerializer)
+        {
             if (System.IO.File.Exists(Filename))
                 System.IO.File.Delete(Filename);
 
-            System.IO.File.WriteAllText(Filename, SerializeXMLAsString(request), Encoding.UTF8);
+            string serialized = SerializeXMLAsString(request, xmlSerializer);
+            System.IO.File.WriteAllText(Filename, serialized, Encoding.UTF8);
         }
 
         public static string SerializeXMLAsString(object request)
         {
-            using (MemoryStream stm = SerializeXML(request))
+            return SerializeXMLAsString(request, new XmlSerializer(request.GetType()));
+        }
+
+        public static string SerializeXMLAsString(object request, XmlSerializer serializer)
+        {
+            using (MemoryStream stm = SerializeXML(request, serializer))
             {
                 return StreamHelper.StreamToString(stm);
             }
@@ -103,7 +121,8 @@ namespace Unified
 
         public static MemoryStream SerializeXML(object request)
         {
-            return SerializeXML(request, request.GetType());
+            var xmlSerializer = new XmlSerializer(request.GetType());
+            return SerializeXML(request, xmlSerializer);
         }
 
         public static MemoryStream SerializeXML(object request, Type type, bool ThrowException)
@@ -127,13 +146,12 @@ namespace Unified
             return memoryStream2;
         }
 
-        public static MemoryStream SerializeXML(object request, Type type)
+        public static MemoryStream SerializeXML(object request, XmlSerializer xmlSerializer)
         {
             MemoryStream memoryStream2;
 
             try
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(type);
                 MemoryStream memoryStream1 = new MemoryStream();
                 xmlSerializer.Serialize(memoryStream1, request);
                 memoryStream2 = memoryStream1;
@@ -148,10 +166,21 @@ namespace Unified
 
         public static object DeserializeXMLFromDisk(string Filename, Type type)
         {
+            return DeserializeXMLFromDisk(Filename, type, new XmlSerializer(type));
+        }
+
+        public static object DeserializeXMLFromDisk(string Filename, Type type, XmlAttributeOverrides attributes)
+        {
+            var xmlSerializer = new XmlSerializer(type, attributes);
+            return DeserializeXMLFromDisk(Filename, type, xmlSerializer);
+        }
+
+        public static object DeserializeXMLFromDisk(string Filename, Type type, XmlSerializer xmlSerializer)
+        {
             if (File.Exists(Filename))
             {
                 string contents = File.ReadAllText(Filename);
-                return DeSerializeXML(contents, type);
+                return DeSerializeXML(contents, xmlSerializer);
             }
 
             return Activator.CreateInstance(type);
@@ -180,10 +209,15 @@ namespace Unified
 
         public static object DeSerializeXML(string envelope, Type type)
         {
+            return DeSerializeXML(envelope, new XmlSerializer(type));
+        }
+
+        public static object DeSerializeXML(string envelope, XmlSerializer xmlSerializer)
+        {
             object local2;
             try
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(type);
+
                 MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(envelope));
                 object local1 = xmlSerializer.Deserialize(memoryStream);
                 memoryStream.Close();
