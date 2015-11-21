@@ -7,9 +7,11 @@ namespace Terminals.Data
     /// Represents xml file persisted favorites data and their groups
     /// </summary>
     [Serializable]
-    [XmlRoot(Namespace = "http://Terminals.codeplex.com")]
+    [XmlRoot(Namespace = SERIALIZATION_DEFAULT_NAMESPACE)]
     public class FavoritesFile
     {
+        public const string SERIALIZATION_DEFAULT_NAMESPACE = "http://Terminals.codeplex.com";
+
         [XmlAttribute]
         public string FileVerion { get; set; }
         public Favorite[] Favorites { get; set; }

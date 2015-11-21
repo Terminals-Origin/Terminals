@@ -154,14 +154,7 @@ namespace Terminals.Data
         /// Because default protocol is RDP, also this properties are RdpOptions by default.
         /// This property should be never null, use EmptyProperties to provide in not necessary case.
         /// </summary>
-        [XmlElement(typeof(RdpOptions))]
-        [XmlElement(typeof(VncOptions))]
-        [XmlElement(typeof(VMRCOptions))]
-        [XmlElement(typeof(SshOptions))]
-        [XmlElement(typeof(ConsoleOptions))]
-        [XmlElement(typeof(ICAOptions))]
-        [XmlElement(typeof(WebOptions))]
-        [XmlElement(typeof(EmptyOptions))]
+        [XmlElement(Namespace = FavoritesFile.SERIALIZATION_DEFAULT_NAMESPACE)]
         public ProtocolOptions ProtocolProperties
         {
             get { return protocolProperties; }
