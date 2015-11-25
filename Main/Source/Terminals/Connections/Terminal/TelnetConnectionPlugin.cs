@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Integration.Export;
+using Terminals.Properties;
 
 namespace Terminals.Connections.Terminal
 {
@@ -13,9 +15,16 @@ namespace Terminals.Connections.Terminal
 
         internal const string TELNET = "Telnet";
 
+        internal static readonly Image TreeIconTelnet = Resources.treeIcon_telnet;
+
         public int Port { get { return TelnetPort; }}
 
         public string PortName { get { return TELNET; } }
+
+        public Image GetIcon()
+        {
+            return TreeIconTelnet;
+        }
 
         public Connection CreateConnection()
         {

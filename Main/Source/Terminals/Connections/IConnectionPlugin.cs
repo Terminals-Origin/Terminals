@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
 
@@ -15,6 +16,8 @@ namespace Terminals.Connections
         /// Gets shortcut name of the protocol.
         /// </summary>
         string PortName { get; }
+
+        Image GetIcon();
 
         /// <summary>
         /// Returns not null, always new instance of not configured, disconnected connection.

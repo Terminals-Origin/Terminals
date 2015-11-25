@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
@@ -43,6 +44,11 @@ namespace Terminals.Connections.VMRC
         public IToolbarExtender CreateToolbarExtender(ICurrenctConnectionProvider provider)
         {
             return new VmrcMenuVisitor(provider);
+        }
+
+        public Image GetIcon()
+        {
+            return ConnectionManager.Terminalsicon;
         }
     }
 }

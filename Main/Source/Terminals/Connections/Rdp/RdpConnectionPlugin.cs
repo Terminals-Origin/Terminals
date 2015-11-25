@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
+using Terminals.Properties;
 
 namespace Terminals.Connections.Rdp
 {
     internal class RdpConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory, IToolbarExtenderFactory
     {
+        internal static readonly Image TreeIconRdp = Resources.treeIcon_rdp;
+
         public int Port { get { return KnownConnectionConstants.RDPPort; } }
 
         public string PortName { get { return KnownConnectionConstants.RDP; } }
@@ -38,6 +42,11 @@ namespace Terminals.Connections.Rdp
         public ProtocolOptions CreateOptions()
         {
             return new RdpOptions();
+        }
+
+        public Image GetIcon()
+        {
+            return TreeIconRdp;
         }
 
         public ITerminalsOptionsExport CreateOptionsExporter()

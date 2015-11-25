@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
@@ -39,6 +40,11 @@ namespace Terminals.Connections.ICA
         public ITerminalsOptionsExport CreateOptionsExporter()
         {
             return new TerminalsIcaExport();
+        }
+
+        public Image GetIcon()
+        {
+            return ConnectionManager.Terminalsicon;
         }
     }
 }

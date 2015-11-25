@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
 
@@ -12,6 +13,11 @@ namespace Terminals.Connections
         public int Port { get { return 0; } }
 
         public string PortName { get { return KnownConnectionConstants.RDP; } }
+
+        public Image GetIcon()
+        {
+            return ConnectionManager.Terminalsicon;
+        }
 
         public Connection CreateConnection()
         {

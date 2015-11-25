@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
+using Terminals.Properties;
 
 namespace Terminals.Connections.Web
 {
     internal class HttpConnectionPlugin: IConnectionPlugin
     {
+        internal static readonly Image TreeIconHttp = Resources.treeIcon_http;
+
         public int Port { get { return KnownConnectionConstants.HTTPPort; } }
 
         public string PortName { get { return KnownConnectionConstants.HTTP; } }
@@ -28,6 +32,11 @@ namespace Terminals.Connections.Web
         public ProtocolOptions CreateOptions()
         {
             return new WebOptions();
+        }
+
+        public Image GetIcon()
+        {
+            return TreeIconHttp;
         }
     }
 }
