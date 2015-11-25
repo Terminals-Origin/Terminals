@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
+using Terminals.Properties;
 
 namespace Terminals.Connections.VNC
 {
     internal class VncConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory, IToolbarExtenderFactory
     {
         internal const string VNC = "VNC";
+
+        internal static readonly Image TreeIconVnc = Resources.treeIcon_vnc;
 
         public int Port { get { return KnownConnectionConstants.VNCVMRCPort; } }
 
@@ -43,6 +47,11 @@ namespace Terminals.Connections.VNC
         public IToolbarExtender CreateToolbarExtender(ICurrenctConnectionProvider provider)
         {
             return new VncMenuVisitor(provider);
+        }
+
+        public Image GetIcon()
+        {
+            return TreeIconVnc;
         }
     }
 }

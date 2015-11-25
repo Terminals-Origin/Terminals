@@ -24,11 +24,6 @@ namespace Terminals.Connections
         private readonly Dictionary<string, IConnectionPlugin> plugins;
 
         // cached images, bad performace, but simplifies check, if the image is known
-        internal static readonly Image TreeIconRdp = Resources.treeIcon_rdp;
-        internal static readonly Image TreeIconHttp = Resources.treeIcon_http;
-        internal static readonly Image TreeIconVnc = Resources.treeIcon_vnc;
-        internal static readonly Image TreeIconTelnet = Resources.treeIcon_telnet;
-        internal static readonly Image TreeIconSsh = Resources.treeIcon_ssh;
         internal static readonly Image Terminalsicon = Resources.terminalsicon;
 
         #region Thread safe singleton with lazy loading
@@ -69,15 +64,7 @@ namespace Terminals.Connections
 
         internal Dictionary<string, Image> GetPluginIcons()
         {
-            return new Dictionary<string, Image>()
-            {
-                {KnownConnectionConstants.RDP, TreeIconRdp },
-                {VncConnectionPlugin.VNC, TreeIconVnc },
-                {SshConnectionPlugin.SSH, TreeIconSsh },
-                {TelnetConnectionPlugin.TELNET, TreeIconTelnet },
-                {KnownConnectionConstants.HTTP, TreeIconHttp },
-                {KnownConnectionConstants.HTTPS, TreeIconHttp }
-            };
+            return this.plugins.Values.ToDictionary(p => p.PortName, p => p.GetIcon());
         }
 
         /// <summary>

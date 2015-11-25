@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
+using Terminals.Properties;
 
 namespace Terminals.Connections.Terminal
 {
@@ -11,6 +13,8 @@ namespace Terminals.Connections.Terminal
         internal const int SSHPort = 22;
 
         internal const string SSH = "SSH";
+
+        internal static readonly Image TreeIconSsh = Resources.treeIcon_ssh;
 
         public int Port { get { return SSHPort; } }
 
@@ -43,6 +47,11 @@ namespace Terminals.Connections.Terminal
         public ITerminalsOptionsExport CreateOptionsExporter()
         {
             return new TerminalsSshExport();
+        }
+
+        public Image GetIcon()
+        {
+            return TreeIconSsh;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
 
@@ -30,6 +31,11 @@ namespace Terminals.Connections.Web
         public ProtocolOptions CreateOptions()
         {
             return new WebOptions();
+        }
+
+        public Image GetIcon()
+        {
+            return HttpConnectionPlugin.TreeIconHttp;
         }
     }
 }

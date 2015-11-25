@@ -6,9 +6,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Terminals.Connections;
 using Terminals.Connections.ICA;
+using Terminals.Connections.Rdp;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
+using Terminals.Connections.Web;
 using Terminals.Data;
 
 namespace Tests.UserInterface
@@ -37,8 +39,8 @@ namespace Tests.UserInterface
                 new Tuple<string, string>(KnownConnectionConstants.HTTPS, "treeIcon_HTTPS"),
 
                 // undefined icons use default icon
-                new Tuple<string, string>(VmrcConnectionPlugin.VMRC, UNKNOWN_ICON_KEY),
-                new Tuple<string, string>(ICAConnectionPlugin.ICA_CITRIX, UNKNOWN_ICON_KEY)     
+                new Tuple<string, string>(VmrcConnectionPlugin.VMRC, "treeIcon_VMRC"),
+                new Tuple<string, string>(ICAConnectionPlugin.ICA_CITRIX, "treeIcon_ICA Citrix")     
             };
 
             bool allEquals = testData.All(this.AssertGetTreeviewImageListKey);
@@ -66,12 +68,12 @@ namespace Tests.UserInterface
         {
             var testData = new[]
             {
-                new Tuple<string, Image>(KnownConnectionConstants.RDP, ConnectionManager.TreeIconRdp),
-                new Tuple<string, Image>(VncConnectionPlugin.VNC, ConnectionManager.TreeIconVnc),
-                new Tuple<string, Image>(SshConnectionPlugin.SSH, ConnectionManager.TreeIconSsh),
-                new Tuple<string, Image>(TelnetConnectionPlugin.TELNET, ConnectionManager.TreeIconTelnet),
-                new Tuple<string, Image>(KnownConnectionConstants.HTTP, ConnectionManager.TreeIconHttp),
-                new Tuple<string, Image>(KnownConnectionConstants.HTTPS, ConnectionManager.TreeIconHttp),
+                new Tuple<string, Image>(KnownConnectionConstants.RDP, RdpConnectionPlugin.TreeIconRdp),
+                new Tuple<string, Image>(VncConnectionPlugin.VNC, VncConnectionPlugin.TreeIconVnc),
+                new Tuple<string, Image>(SshConnectionPlugin.SSH, SshConnectionPlugin.TreeIconSsh),
+                new Tuple<string, Image>(TelnetConnectionPlugin.TELNET, TelnetConnectionPlugin.TreeIconTelnet),
+                new Tuple<string, Image>(KnownConnectionConstants.HTTP, HttpConnectionPlugin.TreeIconHttp),
+                new Tuple<string, Image>(KnownConnectionConstants.HTTPS, HttpConnectionPlugin.TreeIconHttp),
 
                 // undefined icons use default icon
                 new Tuple<string, Image>(ICAConnectionPlugin.ICA_CITRIX, ConnectionManager.Terminalsicon),
