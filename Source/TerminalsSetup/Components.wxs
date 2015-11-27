@@ -8,6 +8,9 @@
       <Component Id="TerminalsExternal" Guid="79CE7381-21AF-4D69-8B2D-1773943ACFE7">
         <File Source="$(var.Terminals.External.TargetPath)" KeyPath="yes" Checksum="yes"/>
       </Component>
+      <Component Id="TerminalsCommon" Guid="E00CC8C9-011E-4627-9ECC-4A842F2511DC">
+        <File Source="$(var.Terminals.Common.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>
       <Component Id="GranadosDll" Guid="9748FD50-3853-4FF5-AC40-4F737F4A261A">
         <File Source="$(var.Granados.TargetPath)" KeyPath="yes" Checksum="yes"/>
       </Component>
