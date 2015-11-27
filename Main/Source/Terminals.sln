@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.External", "Termi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Common", "Terminals.Common\Terminals.Common.csproj", "{1F720FD0-21A5-4BED-90F6-02CDABB8854D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Vnc", "Terminals.Plugins.Vnc\Terminals.Plugins.Vnc.csproj", "{123562C5-8D66-4E30-9676-D47B4C03EE7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -289,6 +291,18 @@ Global
 		{1F720FD0-21A5-4BED-90F6-02CDABB8854D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1F720FD0-21A5-4BED-90F6-02CDABB8854D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1F720FD0-21A5-4BED-90F6-02CDABB8854D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F}.DistributionRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F}.DistributionRelease|Any CPU.Build.0 = Release|Any CPU
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F}.DistributionRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F}.DistributionRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -301,7 +315,7 @@ Global
 		{D775E5FD-DDD7-46AA-8BEF-CC18BA0BB702} = {BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 20
+		SccNumberOfProjects = 21
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
@@ -370,6 +384,9 @@ Global
 		SccProjectUniqueName19 = Terminals.Common\\Terminals.Common.csproj
 		SccProjectName19 = Terminals.Common
 		SccLocalPath19 = Terminals.Common
+		SccProjectUniqueName20 = Terminals.Plugins.Vnc\\Terminals.Plugins.Vnc.csproj
+		SccProjectName20 = Terminals.Plugins.Vnc
+		SccLocalPath20 = Terminals.Plugins.Vnc
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Terminals.vsmdi
