@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Terminals.Connections;
+using Terminals.Common.Connections;
 using Terminals.Connections.ICA;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;

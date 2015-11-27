@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
+using Terminals.Common.Connections;
 using Terminals.Configuration;
-using Terminals.Connections;
 
 namespace Terminals.CommandLine
 {

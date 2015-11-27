@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Xml;
-using Terminals.Connections;
+using Terminals.Common.Connections;
 
 namespace Terminals.Integration.Export
 {

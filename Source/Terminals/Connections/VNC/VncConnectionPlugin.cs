@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;

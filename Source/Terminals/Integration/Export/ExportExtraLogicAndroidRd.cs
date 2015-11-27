@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Terminals.Connections;
+using Terminals.Common.Connections;
 
 namespace Terminals.Integration.Export
 {

@@ -6,7 +6,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Objects;
 using System.Linq;
-using Terminals.Connections;
+using Terminals.Common.Connections;
 
 namespace Terminals.Data.DB
 {

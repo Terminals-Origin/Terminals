@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Terminals.Connections;
+using Terminals.Common.Connections;
 using Terminals.Connections.ICA;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;

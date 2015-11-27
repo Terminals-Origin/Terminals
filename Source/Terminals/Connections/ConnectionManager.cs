@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.Common;
+using Terminals.Common.Connections;
 using Terminals.Connections.ICA;
 using Terminals.Connections.Rdp;
 using Terminals.Connections.Terminal;

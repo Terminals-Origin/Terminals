@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Connections.ICA;
 using Terminals.Connections.Rdp;

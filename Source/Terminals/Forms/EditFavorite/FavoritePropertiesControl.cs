@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Terminals.Connections;
+using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Forms.Controls;
 

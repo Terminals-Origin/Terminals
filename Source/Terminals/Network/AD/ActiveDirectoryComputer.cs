@@ -1,5 +1,6 @@
 ﻿using System;
 using System.DirectoryServices;
+using Terminals.Common.Connections;
 using Terminals.Connections;
 
 namespace Terminals.Network
