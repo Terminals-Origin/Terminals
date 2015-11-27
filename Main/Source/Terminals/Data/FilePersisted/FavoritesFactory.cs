@@ -41,7 +41,7 @@ namespace Terminals.Data
             newFavorite.DomainName = domain;
             newFavorite.Tags = DISCOVERED_CONNECTIONS;
             newFavorite.Port = port;
-            newFavorite.Protocol = ConnectionManager.Instance.GetPortName(port, true);
+            newFavorite.Protocol = ConnectionManager.Instance.GetPortName(port);
             return newFavorite;
         }
 
@@ -68,7 +68,7 @@ namespace Terminals.Data
                 if (IPAddress.TryParse(server, out address))
                     name = Dns.GetHostEntry(address).HostName;
 
-                string portName = ConnectionManager.Instance.GetPortName(port, true);
+                string portName = ConnectionManager.Instance.GetPortName(port);
                 return string.Format("{0}_{1}", name, portName);
             }
             catch // don't log dns lookups!

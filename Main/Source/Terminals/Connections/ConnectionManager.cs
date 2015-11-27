@@ -15,10 +15,8 @@ using Terminals.Properties;
 
 namespace Terminals.Connections
 {
-    internal class ConnectionManager
+    internal class ConnectionManager : IConnectionManager
     {
-        private readonly IConnectionPlugin vmrcPlugin = new VmrcConnectionPlugin();
-        private readonly IConnectionPlugin rdpPlugin = new RdpConnectionPlugin();
         private readonly IConnectionPlugin dummyPlugin = new DummyPlugin();
 
         private readonly Dictionary<string, IConnectionPlugin> plugins;
@@ -51,14 +49,14 @@ namespace Terminals.Connections
             // RAS, // this protocol doesnt fit to the concept and seems to be broken 
             this.plugins = new Dictionary<string, IConnectionPlugin>()
             {
+                { KnownConnectionConstants.RDP, new RdpConnectionPlugin() },
                 { KnownConnectionConstants.HTTP, new HttpConnectionPlugin() },
                 { KnownConnectionConstants.HTTPS, new HttpsConnectionPlugin() },
                 { VncConnectionPlugin.VNC, new VncConnectionPlugin() },
                 { VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin() },
                 { TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin() },
                 { SshConnectionPlugin.SSH, new SshConnectionPlugin() },
-                { ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin() },
-                { KnownConnectionConstants.RDP, this.rdpPlugin }
+                { ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin() }
             };
         }
 
@@ -107,16 +105,36 @@ namespace Terminals.Connections
             return plugin.Port;
         }
 
-        internal string GetPortName(int port, bool isVMRC)
+        /// <summary>
+        /// Returns at least one pluging representing port.
+        /// </summary>
+        public IEnumerable<IConnectionPlugin> GetPluginsByPort(int port)
         {
-            if (isVMRC && this.vmrcPlugin.Port == port)
-                return vmrcPlugin.PortName;
+            var resolvedPlugins = this.plugins.Values.Where(p => PluginIsOnPort(port, p))
+                .ToList();
 
-            var plugin = this.plugins.Values.FirstOrDefault(p => p.Port == port);
+            if (resolvedPlugins.Count > 0)
+                return resolvedPlugins;
+
+            return new List<IConnectionPlugin>() { this.dummyPlugin};
+        }
+
+        /// <summary>
+        /// Resolves first service from known plugins assigned to requested port.
+        /// Returns RDP as default service.
+        /// </summary>
+        internal string GetPortName(int port)
+        {
+            var plugin = this.plugins.Values.FirstOrDefault(p => PluginIsOnPort(port, p));
             if (plugin != null)
                 return plugin.PortName;
 
             return this.dummyPlugin.PortName;
+        }
+
+        private static bool PluginIsOnPort(int port, IConnectionPlugin plugin)
+        {
+            return plugin.Port == port;
         }
 
         /// <summary>

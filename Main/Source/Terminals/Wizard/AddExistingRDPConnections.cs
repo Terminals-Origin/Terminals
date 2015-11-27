@@ -195,7 +195,7 @@ namespace Terminals.Wizard
         {
             try
             {
-                string protocol = ConnectionManager.Instance.GetPortName(endPoint.Port, true);
+                string protocol = ConnectionManager.Instance.GetPortName(endPoint.Port);
                 string serverName = endPoint.Address.ToString();
                 string connectionName = String.Format("{0}_{1}", serverName, protocol);
                 FavoriteConfigurationElement newFavorite =

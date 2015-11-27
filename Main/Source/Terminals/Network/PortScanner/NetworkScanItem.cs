@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography;
 using System.Threading;
 using Terminals.Configuration;
 using Terminals.Connections;
-using VncSharp;
+using Terminals.Network;
 
 namespace Terminals.Scanner
 {
@@ -20,7 +19,7 @@ namespace Terminals.Scanner
         
         private String iPAddress;
         private List<Int32> ports;
-        private static readonly String vncPassword = String.Empty;
+
         private Boolean cancelationPending;
         private Boolean CancelationPending
         {
@@ -131,64 +130,28 @@ namespace Terminals.Scanner
 
             if (socket != null && socket.Connected)
             {
-                Boolean isVMRC = CheckVNCPport(connectionState.Port);
-                FireOnScanHit(connectionState.Port, isVMRC);
+                var detector = new ServiceDetector(ConnectionManager.Instance);
+                var serviceName = detector.ResolveServiceName(this.iPAddress, connectionState.Port);
+                FireOnScanHit(connectionState.Port, serviceName);
             }
             else
-                Debug.WriteLine(String.Format("Port {0} not openend at {1}",
-                                              this.iPAddress, connectionState.Port));
+            {
+                Debug.WriteLine("Port {0} not openend at {1}", this.iPAddress, connectionState.Port);
+            }
 
             connectionState.Done = true;
         }
 
-        private Boolean CheckVNCPport(Int32 port)
-        {
-            if (port == KnownConnectionConstants.VNCVMRCPort)
-            {
-                return !this.IsPortVNC(port);
-            }
-
-            return false;
-        }
-
-        private bool IsPortVNC(Int32 port)
-        {
-            try
-            {
-                RemoteDesktop rd = new RemoteDesktop();
-                rd.VncPort = port;
-                rd.GetPassword = new AuthenticateDelegate(this.GetVNCPassword);
-                rd.Connect(this.iPAddress);
-                rd.Disconnect();
-            }
-            catch (CryptographicException ce)
-            {
-                Logging.Info(string.Empty, ce);
-            }
-            catch (Exception exc)
-            {
-                Logging.Error("VNC Port Scan Failed", exc);
-                return false;
-            }
-
-            return true;
-        }
-        
-        private string GetVNCPassword()
-        {
-            return vncPassword;
-        }
-
-        private void FireOnScanHit(Int32 port, Boolean isVMRC)
+        private void FireOnScanHit(Int32 port, string serviceName)
         {
             if (this.OnScanHit != null)
             {
-                ScanItemEventArgs args = this.CreateNewEventArguments(port, isVMRC);
+                ScanItemEventArgs args = this.CreateNewEventArguments(port, serviceName);
                 this.OnScanHit(args);
             }
         }
 
-        private ScanItemEventArgs CreateNewEventArguments(Int32 port = 0, Boolean isVMRC = false)
+        private ScanItemEventArgs CreateNewEventArguments(Int32 port = 0, string serviceName = "")
         {
             ScanItemEventArgs args = new ScanItemEventArgs();
             args.DateTime = DateTime.Now;
@@ -197,7 +160,7 @@ namespace Terminals.Scanner
                     HostName = this.HostName,
                     IPAddress = this.iPAddress,
                     Port = port,
-                    IsVMRC = isVMRC
+                    ServiceName = serviceName
                 };
 
             return args;

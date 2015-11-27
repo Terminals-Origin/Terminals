@@ -175,7 +175,9 @@
     <Compile Include="Connections\DesktopSizeCalculator.cs" />
     <Compile Include="Connections\DummyPlugin.cs" />
     <Compile Include="Connections\ICA\ICAConnectionPlugin.cs" />
+    <Compile Include="Connections\IConnectionManager.cs" />
     <Compile Include="Connections\IConnectionPlugin.cs" />
+    <Compile Include="Connections\IExtraDetection.cs" />
     <Compile Include="Connections\IToolbarExtenderFactory.cs" />
     <Compile Include="Connections\IOptionsExporterFactory.cs" />
     <Compile Include="Connections\KnownConnectionConstants.cs" />
@@ -216,6 +218,7 @@
     <Compile Include="Connections\Terminal\TerminalsTelnetExport.cs" />
     <Compile Include="Connections\VMRC\TerminalsVmrcExport.cs" />
     <Compile Include="Connections\VNC\TerminalsVncExport.cs" />
+    <Compile Include="Network\PortScanner\ServiceDetector.cs" />
     <Compile Include="Network\Tools\NettworkingTools.cs" />
     <Compile Include="Connections\Rdp\RdpClientErrorMessages.cs" />
     <Compile Include="Converters\TextConverter.cs" />

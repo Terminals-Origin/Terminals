@@ -8,15 +8,7 @@ namespace Terminals.Scanner
         public String IPAddress { get; set; }
         public String HostName { get; set; }
         internal Int32 Port { get; set; }
-        internal Boolean IsVMRC { get; set; }
-
-        public String ServiceName
-        {
-            get
-            {
-                return ConnectionManager.Instance.GetPortName(this.Port, this.IsVMRC);
-            }
-        }
+        public String ServiceName { get; set; }
 
         public override String ToString()
         {
@@ -29,7 +21,7 @@ namespace Terminals.Scanner
             FavoriteConfigurationElement favorite = new FavoriteConfigurationElement();
             favorite.ServerName = this.IPAddress;
             favorite.Port = this.Port;
-            favorite.Protocol = ConnectionManager.Instance.GetPortName(favorite.Port, this.IsVMRC);
+            favorite.Protocol = this.ServiceName;
             if (tags != String.Empty)
                 favorite.Tags = tags;
             favorite.Name = String.Format("{0}_{1}", this.HostName, favorite.Protocol);
