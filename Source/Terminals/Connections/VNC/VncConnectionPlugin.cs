@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Drawing;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
 using Terminals.Properties;
+using VncSharp;
 
 namespace Terminals.Connections.VNC
 {
-    internal class VncConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory, IToolbarExtenderFactory
+    internal class VncConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory,
+        IToolbarExtenderFactory, IExtraDetection
     {
         internal const string VNC = "VNC";
 
@@ -17,6 +20,18 @@ namespace Terminals.Connections.VNC
         public int Port { get { return KnownConnectionConstants.VNCVMRCPort; } }
 
         public string PortName { get { return VNC; } }
+
+        // because there is no interface on Vnc RemoteDesktop to wrapp.
+        private readonly Action<string, int> serviceCheck;
+
+        public VncConnectionPlugin() : this(CheckRealService)
+        {
+        }
+
+        internal VncConnectionPlugin(Action<string, int> serviceCheck)
+        {
+            this.serviceCheck = serviceCheck;
+        }
 
         public Connection CreateConnection()
         {
@@ -52,6 +67,37 @@ namespace Terminals.Connections.VNC
         public Image GetIcon()
         {
             return TreeIconVnc;
+        }
+
+        public bool IsValid(string ipAddress, int port)
+        {
+            try
+            {
+                this.serviceCheck(ipAddress, port);
+                return true;
+            }
+            catch (CryptographicException ce)
+            {
+                // ignore this kind of exception, because of detecting with empty password may fail.
+                Logging.Info(string.Empty, ce);
+                return true;
+            }
+            catch (Exception exc)
+            {
+                Logging.Error("VNC Port Scan Failed", exc);
+                return false;
+            }
+        }
+
+        private static void CheckRealService(string ipAddress, int port)
+        {
+            using (var rd = new RemoteDesktop())
+            {
+                rd.VncPort = port;
+                rd.GetPassword = new AuthenticateDelegate(() => string.Empty);
+                rd.Connect(ipAddress);
+                rd.Disconnect();
+            }
         }
     }
 }

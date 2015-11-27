@@ -7,6 +7,7 @@ using Moq;
 using Terminals;
 using Terminals.Connections;
 using Terminals.Connections.ICA;
+using Terminals.Connections.Rdp;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
@@ -121,7 +122,7 @@ namespace Tests.Connections
         [TestMethod]
         public void UnknownPort_GetPortName_ReturnsRdp()
         {
-            var testData = new Tuple<int, bool, string>(1111, false, KnownConnectionConstants.RDP);
+            var testData = new Tuple<int, string>(1111, KnownConnectionConstants.RDP);
             var allValid = this.AssertPortName(testData);
             Assert.IsTrue(allValid, "We gues RDP for unknonwn default port number.");
         }
@@ -131,31 +132,32 @@ namespace Tests.Connections
         {
             var testData = new[]
             {
-                new Tuple<int, bool, string>(KnownConnectionConstants.RDPPort, false, KnownConnectionConstants.RDP),
-                new Tuple<int, bool, string>(KnownConnectionConstants.VNCVMRCPort, false, VncConnectionPlugin.VNC),
-                new Tuple<int, bool, string>(KnownConnectionConstants.VNCVMRCPort, true, VmrcConnectionPlugin.VMRC),
-                new Tuple<int, bool, string>(TelnetConnectionPlugin.TelnetPort, false, TelnetConnectionPlugin.TELNET),
-                new Tuple<int, bool, string>(SshConnectionPlugin.SSHPort, false, SshConnectionPlugin.SSH),
-                new Tuple<int, bool, string>(KnownConnectionConstants.HTTPPort, false, KnownConnectionConstants.HTTP),
-                new Tuple<int, bool, string>(HttpsConnectionPlugin.HTTPSPort, false, KnownConnectionConstants.HTTPS),
-                new Tuple<int, bool, string>(ICAConnectionPlugin.ICAPort, false, ICAConnectionPlugin.ICA_CITRIX)
+                new Tuple<int, string>(KnownConnectionConstants.RDPPort, KnownConnectionConstants.RDP),
+                new Tuple<int, string>(KnownConnectionConstants.VNCVMRCPort, VncConnectionPlugin.VNC),
+                // imposible to distinquish vnc and vmrc, if both operate on the same port.
+                // new Tuple<int, string>(KnownConnectionConstants.VNCVMRCPort, VmrcConnectionPlugin.VMRC),
+                new Tuple<int, string>(TelnetConnectionPlugin.TelnetPort, TelnetConnectionPlugin.TELNET),
+                new Tuple<int, string>(SshConnectionPlugin.SSHPort, SshConnectionPlugin.SSH),
+                new Tuple<int, string>(KnownConnectionConstants.HTTPPort, KnownConnectionConstants.HTTP),
+                new Tuple<int, string>(HttpsConnectionPlugin.HTTPSPort, KnownConnectionConstants.HTTPS),
+                new Tuple<int, string>(ICAConnectionPlugin.ICAPort, ICAConnectionPlugin.ICA_CITRIX)
             };
 
             var allValid = testData.All(this.AssertPortName);
             Assert.IsTrue(allValid, PORTSMESSAGE);
         }
 
-        private bool AssertPortName(Tuple<int, bool, string> testCase)
+        private bool AssertPortName(Tuple<int, string> testCase)
         {
-            var portName = connectionManager.GetPortName(testCase.Item1, testCase.Item2);
+            var portName = connectionManager.GetPortName(testCase.Item1);
             this.ReportResolvedPort(testCase, portName);
-            return testCase.Item3 == portName;
+            return testCase.Item2 == portName;
         }
 
-        private void ReportResolvedPort(Tuple<int, bool, string> testCase, string portName)
+        private void ReportResolvedPort(Tuple<int, string> testCase, string portName)
         {
-            const string MESSAGE_FORMAT = "Port {0} and isvmrc='{1}' resolved as {2}, expected '{3}'";
-            string message = string.Format(MESSAGE_FORMAT, testCase.Item1, testCase.Item2, portName, testCase.Item3);
+            const string MESSAGE_FORMAT = "Port {0} resolved as {1}, expected '{2}'";
+            string message = string.Format(MESSAGE_FORMAT, testCase.Item1, portName, testCase.Item2);
             this.TestContext.WriteLine(message);
         }
 
@@ -317,6 +319,43 @@ namespace Tests.Connections
             bool containsEmptyOtions = this.connectionManager.GetAllKnownProtocolOptionTypes()
                 .Contains(typeof(EmptyOptions));
             Assert.IsTrue(containsEmptyOtions, "To support broken protocols and default values, empty options are required.");
+        }
+
+        [TestMethod]
+        public void AllKnownPorts_GetPluginsByPort_ReturnExpectedPlugins()
+        {
+            var testCases = new List<Tuple<int, IEnumerable<Type>>>()
+            {
+                new Tuple<int, IEnumerable<Type>>(KnownConnectionConstants.RDPPort, 
+                    new List<Type>() { typeof(RdpConnectionPlugin)}),
+                new Tuple<int, IEnumerable<Type>>(KnownConnectionConstants.VNCVMRCPort, 
+                    new List<Type>() { typeof(VncConnectionPlugin), typeof(VmrcConnectionPlugin)}),
+                new Tuple<int, IEnumerable<Type>>(TelnetConnectionPlugin.TelnetPort, 
+                    new List<Type>() { typeof(TelnetConnectionPlugin)}),
+                new Tuple<int, IEnumerable<Type>>(SshConnectionPlugin.SSHPort, 
+                    new List<Type>() { typeof(SshConnectionPlugin)}),
+                new Tuple<int, IEnumerable<Type>>(KnownConnectionConstants.HTTPPort, 
+                    new List<Type>() { typeof(HttpConnectionPlugin)}),
+                new Tuple<int, IEnumerable<Type>>(HttpsConnectionPlugin.HTTPSPort, 
+                    new List<Type>() { typeof(HttpsConnectionPlugin)}),
+            };
+
+            bool allPortsResolved = testCases.All(this.AssertAllPortPluginsResolved);
+            Assert.IsTrue(allPortsResolved, "Ports have identify their plugins");
+        }
+
+        [TestMethod]
+        public void UnknownPort_GetPluginsByPort_ReturnsDummyPlugin()
+        {
+            var testCase = new Tuple<int, IEnumerable<Type>>(0, new List<Type>() {typeof (DummyPlugin)});
+            var isValid = this.AssertAllPortPluginsResolved(testCase);
+            Assert.IsTrue(isValid, "Unknown protocol has to return some dummy data to represent failed state.");
+        }
+
+        private bool AssertAllPortPluginsResolved(Tuple<int, IEnumerable<Type>> testCase)
+        {
+            IEnumerable<IConnectionPlugin> resolved = this.connectionManager.GetPluginsByPort(testCase.Item1);
+            return resolved.All(plugin => testCase.Item2.Contains(plugin.GetType()));
         }
     }
 }
