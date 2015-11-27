@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
+using Terminals.Common.Connections;
 using Terminals.Connections;
 
 namespace Terminals.Data

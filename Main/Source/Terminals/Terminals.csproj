@@ -180,7 +180,6 @@
     <Compile Include="Connections\IExtraDetection.cs" />
     <Compile Include="Connections\IToolbarExtenderFactory.cs" />
     <Compile Include="Connections\IOptionsExporterFactory.cs" />
-    <Compile Include="Connections\KnownConnectionConstants.cs" />
     <Compile Include="Connections\Rdp\ConnectionStateDetector.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\IConnectionExtra.cs" />
@@ -986,7 +985,6 @@
     <Compile Include="Updates\ReleaseInfo.cs" />
     <Compile Include="Updates\TerminalsUpdates.cs">
       <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Updates\TerminalsUpdates.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -1065,9 +1063,7 @@
     <Compile Include="Network\Tools\Ping\Ping.Designer.cs">
       <DependentUpon>Ping.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\Servers\NetworkManagement.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Network\Servers\NetworkManagement.cs" />
     <Compile Include="Network\Tools\NTP\NetworkTime.cs">
       <SubType>UserControl</SubType>
     </Compile>

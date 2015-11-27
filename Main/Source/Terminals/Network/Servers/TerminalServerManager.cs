@@ -1,6 +1,6 @@
 using System;
 using System.Windows.Forms;
-using Terminals.Connections;
+using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Forms;
 using Terminals.TerminalServices;

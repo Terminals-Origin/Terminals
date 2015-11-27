@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+using Terminals.Common.Connections;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Xml.Serialization;
+using Terminals.Common.Connections;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Converters;

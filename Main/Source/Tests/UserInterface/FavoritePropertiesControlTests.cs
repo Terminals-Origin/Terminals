@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Terminals.Connections;
+using Terminals.Common.Connections;
 using Terminals.Connections.VNC;
 using Terminals.Data;
 using Terminals.Forms;

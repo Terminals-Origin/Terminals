@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using FalafelSoftware.TransPort;
-using Terminals.Connections;
+using Terminals.Common.Connections;
 
 namespace Terminals.Forms.EditFavorite
 {   
