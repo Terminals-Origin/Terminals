@@ -68,7 +68,7 @@ namespace Terminals.Integration.Export
             AppendPropertyLine(fileContent, ImportRDP.FULLADDRES, favorite.ServerName);
             AppendPropertyLine(fileContent, ImportRDP.SERVERPORT, favorite.Port.ToString());
             AppendPropertyLine(fileContent, ImportRDP.USERNAME, favorite.UserName);
-            AppendPropertyLine(fileContent, ImportRDP.DOMAIN, favorite.DomainName);
+            AppendPropertyLine(fileContent, ImportRDP.DOMAIN, favorite.ResolveDomainName());
             AppendPropertyLine(fileContent, ImportRDP.COLORS, ConvertToColorBits(favorite.Colors).ToString());
             AppendPropertyLine(fileContent, ImportRDP.SCREENMODE, ConvertDesktopSize(favorite.DesktopSize));
             AppendPropertyLine(fileContent, ImportRDP.CONNECTTOCONSOLE, ConvertToString(favorite.ConnectToConsole));

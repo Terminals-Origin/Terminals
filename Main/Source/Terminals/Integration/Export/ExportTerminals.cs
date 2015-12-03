@@ -69,7 +69,7 @@ namespace Terminals.Integration.Export
         private static void ExportCredentials(XmlTextWriter w, bool includePassword, FavoriteConfigurationElement favorite)
         {
             w.WriteElementString("credential", favorite.Credential);
-            w.WriteElementString("domainName", favorite.DomainName);
+            w.WriteElementString("domainName", favorite.ResolveDomainName());
 
             if (includePassword)
             {

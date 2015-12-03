@@ -19,13 +19,23 @@ namespace Terminals
         private const string DEFAULT_CURSORCOLOR = "Green";
         private const string DEFAULT_TEXTCOLOR = "White";
 
-        public FavoriteConfigurationElement()
-        {
-        }
+        private readonly PersistenceSecurity persistenceSecurity;
+
+        private readonly ICredentials credentials;
 
         public FavoriteConfigurationElement(String name): this()
         {
             Name = name;
+        }
+
+        public FavoriteConfigurationElement() : this(Persistence.Instance.Security, Persistence.Instance.Credentials)
+        {
+        }
+
+        internal FavoriteConfigurationElement(PersistenceSecurity persistenceSecurity, ICredentials credentials)
+        {
+            this.persistenceSecurity = persistenceSecurity;
+            this.credentials = credentials;
         }
 
         public override String ToString()
@@ -867,17 +877,6 @@ namespace Terminals
             }
         }
 
-        private const string DOMAIN_ELEMENT = "domainName";
-
-        /// <summary>
-        /// Gets the stored domain name without checking for credentials resolution.
-        /// Use for direct upgrades.
-        /// </summary>
-        internal string PlainDomainName
-        {
-            get { return (String)this[DOMAIN_ELEMENT]; }
-        }
-
         [ConfigurationProperty("authMethod", DefaultValue = SSHClient.AuthMethod.Password)]
         public SSHClient.AuthMethod AuthMethod
         {
@@ -1606,11 +1605,11 @@ namespace Terminals
         {
             get
             {
-                return PersistenceSecurity.DecryptPassword(TsgwEncryptedPassword);
+                return this.persistenceSecurity.DecryptPassword(TsgwEncryptedPassword);
             }
             set
             {
-                TsgwEncryptedPassword = PersistenceSecurity.EncryptPassword(value);
+                TsgwEncryptedPassword = this.persistenceSecurity.EncryptPassword(value);
             }
         }
 
@@ -1621,28 +1620,30 @@ namespace Terminals
         {
             get
             {
-                ICredentialSet cred = Persistence.Instance.Credentials[Credential];
+                ICredentialSet cred = this.credentials[Credential];
                 if (cred != null)
                     return cred.Password;
 
-                return PersistenceSecurity.DecryptPassword(EncryptedPassword);
+                return this.persistenceSecurity.DecryptPassword(EncryptedPassword);
             }
             set
             {
-                EncryptedPassword = PersistenceSecurity.EncryptPassword(value);
+                EncryptedPassword = this.persistenceSecurity.EncryptPassword(value);
             }
         }
 
+        private const string DOMAIN_ELEMENT = "domainName";
+
+        /// <summary>
+        /// Gets the stored domain name without checking for credentials resolution.
+        /// Use for direct upgrades.
+        /// </summary>
         [ConfigurationProperty(DOMAIN_ELEMENT, IsRequired = false)]
         public String DomainName
         {
             get
             {
-                ICredentialSet cred = Persistence.Instance.Credentials[Credential];
-                if (cred != null)
-                    return cred.Domain;
-
-                return PlainDomainName;
+                return (String)this[DOMAIN_ELEMENT];
             }
             set
             {
@@ -1655,14 +1656,7 @@ namespace Terminals
         {
             get
             {
-                if (!string.IsNullOrEmpty(Credential))
-                {
-                    ICredentialSet cred = Persistence.Instance.Credentials[Credential];
-                    if (cred != null)
-                        return cred.UserName;
-                }
-
-                return PlainUserName;
+                return ResolveUserName();
             }
             set
             {
@@ -1670,12 +1664,28 @@ namespace Terminals
             }
         }
 
-        private PersistenceSecurity PersistenceSecurity
+        #endregion
+
+        public string ResolveDomainName()
         {
-            get { return Persistence.Instance.Security; }
+            ICredentialSet cred = this.credentials[Credential];
+            if (cred != null)
+                return cred.Domain;
+
+            return DomainName;
         }
 
-        #endregion
+        public string ResolveUserName()
+        {
+            if (!string.IsNullOrEmpty(Credential))
+            {
+                ICredentialSet cred = this.credentials[Credential];
+                if (cred != null)
+                    return cred.UserName;
+            }
+
+            return PlainUserName;
+        }
     }
 }
 

@@ -42,7 +42,7 @@ namespace Terminals.Network {
             fav.ConnectToConsole = Favorite.ConnectToConsole;
             fav.DesktopShare = Favorite.DesktopShare;
             fav.DesktopSize = Favorite.DesktopSize;
-            fav.DomainName = Favorite.DomainName;
+            fav.DomainName = Favorite.ResolveDomainName();
             fav.Name = Favorite.Name;
             fav.Port = Favorite.Port;
             fav.Protocol = Favorite.Protocol;
