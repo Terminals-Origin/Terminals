@@ -66,7 +66,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1408.0717\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -121,6 +123,7 @@
     </Compile>
     <Compile Include="Commands\TestRenameService.cs" />
     <Compile Include="Commands\FavoriteRenameCommandTests.cs" />
+    <Compile Include="Configuration\ConfigurationSettingsTests.cs" />
     <Compile Include="Connections\ConnecitonStateDetectorTests.cs" />
     <Compile Include="Connections\ConnectionTests.cs" />
     <Compile Include="Connections\DesktopSharesTests.cs" />
@@ -143,6 +146,7 @@
     <Compile Include="Network\ServiceDetectorTests.cs" />
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />
     <Compile Include="FilePersisted\SearchEngineTest.cs" />
+    <Compile Include="Configuration\FavoriteConfigurationElementTests.cs" />
     <Compile Include="SqlPersisted\ComparersTest.cs" />
     <Compile Include="SqlPersisted\FavoriteCopiesTest.cs" />
     <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />
@@ -161,7 +165,6 @@
     <Compile Include="SqlPersisted\TestsLab.cs" />
     <Compile Include="SqlPersisted\CredentialsTest.cs" />
     <Compile Include="CustomSetupActionTest.cs" />
-    <Compile Include="ConfigurationSettingsTests.cs" />
     <Compile Include="UserInterface\MenuVisitorSut.cs" />
     <Compile Include="UserInterface\MockChildProtocolControl.cs">
       <SubType>Component</SubType>
