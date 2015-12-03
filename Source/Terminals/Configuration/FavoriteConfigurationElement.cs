@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using Terminals.Configuration;
-using Terminals.Connections;
 using Terminals.Converters;
 using Terminals.Data;
-using Terminals.Network;
 
 namespace Terminals
 {
@@ -871,23 +869,6 @@ namespace Terminals
 
         private const string DOMAIN_ELEMENT = "domainName";
 
-        [ConfigurationProperty(DOMAIN_ELEMENT, IsRequired = false)]
-        public String DomainName
-        {
-            get
-            {
-                ICredentialSet cred = Persistence.Instance.Credentials[Credential];
-                if (cred != null)
-                    return cred.Domain;
-
-                return PlainDomainName;
-            }
-            set
-            {
-                this[DOMAIN_ELEMENT] = value;
-            }
-        }
-
         /// <summary>
         /// Gets the stored domain name without checking for credentials resolution.
         /// Use for direct upgrades.
@@ -925,26 +906,6 @@ namespace Terminals
 
         private const string USERNAME_ELEMENT = "userName";
 
-        [ConfigurationProperty(USERNAME_ELEMENT, IsRequired = false)]
-        public String UserName
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Credential))
-                {
-                    ICredentialSet cred = Persistence.Instance.Credentials[Credential];
-                    if (cred != null)
-                        return cred.UserName;
-                }
-
-                return PlainUserName;
-            }
-            set
-            {
-                this[USERNAME_ELEMENT] = value;
-            }
-        }
-
         /// <summary>
         /// Gets the stored user name without checking for credentials resolution.
         /// Use for direct upgrades.
@@ -965,30 +926,6 @@ namespace Terminals
             {
                 this["encryptedPassword"] = value;
             }
-        }
-
-        /// <summary>
-        /// Gets or sets the password String in not encrypted form
-        /// </summary>
-        internal String Password
-        {
-            get
-            {
-                ICredentialSet cred = Persistence.Instance.Credentials[Credential];
-                if (cred != null)
-                    return cred.Password;
-
-                return PersistenceSecurity.DecryptPassword(EncryptedPassword);
-            }
-            set
-            {
-                EncryptedPassword = PersistenceSecurity.EncryptPassword(value);
-            }
-        }
-
-        private PersistenceSecurity PersistenceSecurity
-        {
-            get { return Persistence.Instance.Security; }
         }
 
         [ConfigurationProperty("vncAutoScale", IsRequired = false, DefaultValue = false)]
@@ -1353,18 +1290,6 @@ namespace Terminals
             }
         }
 
-        internal String TsgwPassword
-        {
-            get
-            {
-                return PersistenceSecurity.DecryptPassword(TsgwEncryptedPassword);
-            }
-            set
-            {
-                TsgwEncryptedPassword = PersistenceSecurity.EncryptPassword(value);
-            }
-        }
-
         [ConfigurationProperty("url", DefaultValue = "http://terminals.codeplex.com")]
         public String Url
         {
@@ -1669,6 +1594,85 @@ namespace Terminals
                     this["tags"] = value;
                 }
             }
+        }
+
+        #endregion
+
+        #region To be extracted
+
+
+
+        internal String TsgwPassword
+        {
+            get
+            {
+                return PersistenceSecurity.DecryptPassword(TsgwEncryptedPassword);
+            }
+            set
+            {
+                TsgwEncryptedPassword = PersistenceSecurity.EncryptPassword(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the password String in not encrypted form
+        /// </summary>
+        internal String Password
+        {
+            get
+            {
+                ICredentialSet cred = Persistence.Instance.Credentials[Credential];
+                if (cred != null)
+                    return cred.Password;
+
+                return PersistenceSecurity.DecryptPassword(EncryptedPassword);
+            }
+            set
+            {
+                EncryptedPassword = PersistenceSecurity.EncryptPassword(value);
+            }
+        }
+
+        [ConfigurationProperty(DOMAIN_ELEMENT, IsRequired = false)]
+        public String DomainName
+        {
+            get
+            {
+                ICredentialSet cred = Persistence.Instance.Credentials[Credential];
+                if (cred != null)
+                    return cred.Domain;
+
+                return PlainDomainName;
+            }
+            set
+            {
+                this[DOMAIN_ELEMENT] = value;
+            }
+        }
+
+        [ConfigurationProperty(USERNAME_ELEMENT, IsRequired = false)]
+        public String UserName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Credential))
+                {
+                    ICredentialSet cred = Persistence.Instance.Credentials[Credential];
+                    if (cred != null)
+                        return cred.UserName;
+                }
+
+                return PlainUserName;
+            }
+            set
+            {
+                this[USERNAME_ELEMENT] = value;
+            }
+        }
+
+        private PersistenceSecurity PersistenceSecurity
+        {
+            get { return Persistence.Instance.Security; }
         }
 
         #endregion
