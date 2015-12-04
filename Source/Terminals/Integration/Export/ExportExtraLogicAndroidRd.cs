@@ -58,7 +58,7 @@ namespace Terminals.Integration.Export
                 // analogic to RDP
                 new XAttribute("full-address", favorite.ServerName),
                 new XAttribute("server-port", favorite.Port),
-                new XAttribute("username", favorite.UserName),
+                new XAttribute("username", favorite.ResolveUserName()),
                 new XAttribute("domain", favorite.ResolveDomainName()),
                 new XAttribute("desktopwidth", favorite.DesktopSizeWidth),
                 new XAttribute("desktopheight", favorite.DesktopSizeHeight),

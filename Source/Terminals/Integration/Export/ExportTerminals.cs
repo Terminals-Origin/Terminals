@@ -73,7 +73,7 @@ namespace Terminals.Integration.Export
 
             if (includePassword)
             {
-                w.WriteElementString("userName", favorite.UserName);
+                w.WriteElementString("userName", favorite.ResolveUserName());
                 w.WriteElementString("password", favorite.Password);
             }
         }

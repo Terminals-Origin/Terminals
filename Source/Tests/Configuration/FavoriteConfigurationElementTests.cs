@@ -69,10 +69,10 @@ namespace Tests.Configuration
         }
 
         [TestMethod]
-        public void WithCredential_SetGetUserName_ReturnsSavedValue()
+        public void WithCredential_SetGetUserName_ReturnsEmpty()
         {
             FavoriteConfigurationElement favorite = CreteFavoriteWithCredential();
-            Assert.AreEqual(EXPECTED_USER, favorite.UserName, MESSAGE);
+            Assert.AreEqual(string.Empty, favorite.UserName, MESSAGE);
         }
 
         [TestMethod]

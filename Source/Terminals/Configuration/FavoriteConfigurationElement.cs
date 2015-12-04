@@ -903,17 +903,6 @@ namespace Terminals
             }
         }
 
-        private const string USERNAME_ELEMENT = "userName";
-
-        /// <summary>
-        /// Gets the stored user name without checking for credentials resolution.
-        /// Use for direct upgrades.
-        /// </summary>
-        internal string PlainUserName
-        {
-            get { return (String)this[USERNAME_ELEMENT]; }
-        }
-
         [ConfigurationProperty("encryptedPassword", IsRequired = false)]
         public String EncryptedPassword
         {
@@ -1595,6 +1584,43 @@ namespace Terminals
             }
         }
 
+        private const string DOMAIN_ELEMENT = "domainName";
+
+        /// <summary>
+        /// Gets the stored domain name without checking for credentials resolution.
+        /// Use for direct upgrades.
+        /// </summary>
+        [ConfigurationProperty(DOMAIN_ELEMENT, IsRequired = false)]
+        public String DomainName
+        {
+            get
+            {
+                return (String)this[DOMAIN_ELEMENT];
+            }
+            set
+            {
+                this[DOMAIN_ELEMENT] = value;
+            }
+        }
+
+        private const string USERNAME_ELEMENT = "userName";
+
+        /// <summary>
+        /// Gets the stored user name without checking for credentials resolution.
+        /// Use for direct upgrades.
+        /// </summary>
+        [ConfigurationProperty(USERNAME_ELEMENT, IsRequired = false)]
+        public String UserName
+        {
+            get
+            {
+                return (String)this[USERNAME_ELEMENT];
+            }
+            set
+            {
+                this[USERNAME_ELEMENT] = value;
+            }
+        }
         #endregion
 
         #region To be extracted
@@ -1632,38 +1658,6 @@ namespace Terminals
             }
         }
 
-        private const string DOMAIN_ELEMENT = "domainName";
-
-        /// <summary>
-        /// Gets the stored domain name without checking for credentials resolution.
-        /// Use for direct upgrades.
-        /// </summary>
-        [ConfigurationProperty(DOMAIN_ELEMENT, IsRequired = false)]
-        public String DomainName
-        {
-            get
-            {
-                return (String)this[DOMAIN_ELEMENT];
-            }
-            set
-            {
-                this[DOMAIN_ELEMENT] = value;
-            }
-        }
-
-        [ConfigurationProperty(USERNAME_ELEMENT, IsRequired = false)]
-        public String UserName
-        {
-            get
-            {
-                return ResolveUserName();
-            }
-            set
-            {
-                this[USERNAME_ELEMENT] = value;
-            }
-        }
-
         #endregion
 
         public string ResolveDomainName()
@@ -1684,7 +1678,7 @@ namespace Terminals
                     return cred.UserName;
             }
 
-            return PlainUserName;
+            return UserName;
         }
     }
 }
