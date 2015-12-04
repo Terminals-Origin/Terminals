@@ -52,8 +52,9 @@
         private void ConvertSecurity(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             ISecurityOptions security = result.Security;
+            // dont use resolution here, because in upgrade th persistence is not initialized.
             security.Domain = sourceFavorite.DomainName;
-            security.UserName = sourceFavorite.PlainUserName;
+            security.UserName = sourceFavorite.UserName;
             // because persistence and application masterpassword may differ,
             // we have to go through encryption without credential resolution
             security.Password = persistence.Security.DecryptPassword(sourceFavorite.EncryptedPassword);
