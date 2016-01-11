@@ -2,12 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Terminals.Configuration;
+using Terminals.Data;
 using Terminals.Integration.Import;
 
 namespace Terminals.Integration.Export
 {
     internal class ExportRdp : IExport
     {
+        private readonly ICredentials credentials;
+
+        public ExportRdp(ICredentials credentials)
+        {
+            this.credentials = credentials;
+        }
+
         #region IExport members
 
         public string Name
@@ -48,7 +57,7 @@ namespace Terminals.Integration.Export
             return Path.Combine(directory, newFileName);
         }
 
-        private static void ExportFavorite(string fileName, FavoriteConfigurationElement favorite)
+        private void ExportFavorite(string fileName, FavoriteConfigurationElement favorite)
         {
             try
             {
@@ -61,14 +70,15 @@ namespace Terminals.Integration.Export
             }
         }
 
-        private static string ExportFileContent(FavoriteConfigurationElement favorite)
+        private string ExportFileContent(FavoriteConfigurationElement favorite)
         {
+            var favoriteSecurity = new FavoriteConfigurationSecurity(this.credentials);
             StringBuilder fileContent = new StringBuilder();
 
             AppendPropertyLine(fileContent, ImportRDP.FULLADDRES, favorite.ServerName);
             AppendPropertyLine(fileContent, ImportRDP.SERVERPORT, favorite.Port.ToString());
             AppendPropertyLine(fileContent, ImportRDP.USERNAME, favorite.ResolveUserName());
-            AppendPropertyLine(fileContent, ImportRDP.DOMAIN, favorite.ResolveDomainName());
+            AppendPropertyLine(fileContent, ImportRDP.DOMAIN, favoriteSecurity.ResolveDomainName(favorite));
             AppendPropertyLine(fileContent, ImportRDP.COLORS, ConvertToColorBits(favorite.Colors).ToString());
             AppendPropertyLine(fileContent, ImportRDP.SCREENMODE, ConvertDesktopSize(favorite.DesktopSize));
             AppendPropertyLine(fileContent, ImportRDP.CONNECTTOCONSOLE, ConvertToString(favorite.ConnectToConsole));

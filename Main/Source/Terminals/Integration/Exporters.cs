@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Terminals.Data;
 using Terminals.Integration.Export;
 using Terminals.Integration.Import;
 
@@ -7,14 +8,21 @@ namespace Terminals.Integration
 {
     internal class Exporters : Integration<IExport>
     {
+        private readonly ICredentials security;
+
+        public Exporters(ICredentials security)
+        {
+            this.security = security;
+        }
+
         protected override void LoadProviders()
         {
             if (providers == null)
             {
                 providers = new Dictionary<string, IExport>();
-                providers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ExportTerminals());
-                providers.Add(ImportRDP.FILE_EXTENSION, new ExportRdp());
-                //providers.Add(GetExtraAndroidProviderKey(), new ExportExtraLogicAndroidRd());
+                providers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ExportTerminals(this.security));
+                providers.Add(ImportRDP.FILE_EXTENSION, new ExportRdp(this.security));
+                providers.Add(GetExtraAndroidProviderKey(), new ExportExtraLogicAndroidRd(this.security));
             }
         }
 

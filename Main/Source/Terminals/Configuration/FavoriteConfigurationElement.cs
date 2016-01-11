@@ -1658,17 +1658,6 @@ namespace Terminals
             }
         }
 
-        #endregion
-
-        public string ResolveDomainName()
-        {
-            ICredentialSet cred = this.credentials[Credential];
-            if (cred != null)
-                return cred.Domain;
-
-            return DomainName;
-        }
-
         public string ResolveUserName()
         {
             if (!string.IsNullOrEmpty(Credential))
@@ -1680,6 +1669,7 @@ namespace Terminals
 
             return UserName;
         }
+
+        #endregion
     }
 }
-

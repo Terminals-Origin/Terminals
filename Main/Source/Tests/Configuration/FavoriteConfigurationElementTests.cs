@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
+using Terminals.Configuration;
 using Terminals.Data;
 using Tests.FilePersisted;
 
@@ -57,7 +58,9 @@ namespace Tests.Configuration
         public void WithCredential_ResolveDomain_ReturnsCredentialDomain()
         {
             FavoriteConfigurationElement favorite = CreteFavoriteWithCredential();
-            Assert.AreEqual(EXPECTED_DOMAIN, favorite.ResolveDomainName(), "Domain is primary resolved from Credential.");
+            var favoriteSecurity = new FavoriteConfigurationSecurity(this.Persistence.Credentials);
+            string resolved = favoriteSecurity.ResolveDomainName(favorite);
+            Assert.AreEqual(EXPECTED_DOMAIN, resolved, "Domain is primary resolved from Credential.");
         }
 
         [TestMethod]

@@ -171,6 +171,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\FavoriteConfigurationSecurity.cs" />
     <Compile Include="Connections\ConnectionManager.cs" />
     <Compile Include="Connections\DesktopSizeCalculator.cs" />
     <Compile Include="Connections\DummyPlugin.cs" />

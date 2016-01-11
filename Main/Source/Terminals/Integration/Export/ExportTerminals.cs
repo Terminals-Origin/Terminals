@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Text;
 using System.Xml;
+using Terminals.Configuration;
 using Terminals.Connections;
+using Terminals.Data;
 using Terminals.Integration.Import;
 
 namespace Terminals.Integration.Export
@@ -11,6 +13,23 @@ namespace Terminals.Integration.Export
     /// </summary>
     internal class ExportTerminals : IExport
     {
+        private readonly ICredentials credentials;
+
+        string IIntegration.Name
+        {
+            get { return ImportTerminals.PROVIDER_NAME; }
+        }
+
+        string IIntegration.KnownExtension
+        {
+            get { return ImportTerminals.TERMINALS_FILEEXTENSION; }
+        }
+
+        public ExportTerminals(ICredentials credentials)
+        {
+            this.credentials = credentials;
+        }
+
         public void Export(ExportOptions options)
         {
             try
@@ -36,7 +55,7 @@ namespace Terminals.Integration.Export
             }
         }
 
-        private static void WriteFavorite(XmlTextWriter w, bool includePassword, FavoriteConfigurationElement favorite)
+        private void WriteFavorite(XmlTextWriter w, bool includePassword, FavoriteConfigurationElement favorite)
         {
             w.WriteStartElement("favorite");
 
@@ -66,10 +85,11 @@ namespace Terminals.Integration.Export
             w.WriteElementString("bitmapPeristence", favorite.Protocol);
         }
 
-        private static void ExportCredentials(XmlTextWriter w, bool includePassword, FavoriteConfigurationElement favorite)
+        private void ExportCredentials(XmlTextWriter w, bool includePassword, FavoriteConfigurationElement favorite)
         {
+            var favoriteSecurity = new FavoriteConfigurationSecurity(this.credentials);
             w.WriteElementString("credential", favorite.Credential);
-            w.WriteElementString("domainName", favorite.ResolveDomainName());
+            w.WriteElementString("domainName", favoriteSecurity.ResolveDomainName(favorite));
 
             if (includePassword)
             {
@@ -88,16 +108,6 @@ namespace Terminals.Integration.Export
                 w.WriteElementString("executeBeforeConnectInitialDirectory", favorite.ExecuteBeforeConnectInitialDirectory);
                 w.WriteElementString("executeBeforeConnectWaitForExit", favorite.ExecuteBeforeConnectWaitForExit.ToString());
             }
-        }
-
-        string IIntegration.Name
-        {
-            get { return ImportTerminals.PROVIDER_NAME; }
-        }
-
-        string IIntegration.KnownExtension
-        {
-            get { return ImportTerminals.TERMINALS_FILEEXTENSION; }
         }
     }
 }

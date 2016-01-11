@@ -61,7 +61,7 @@ namespace Tests.Integrations
             return this.AssertAttribute(testCase);
         }
 
-        private static void ExportFavorite(FavoriteConfigurationElement favoriteElement)
+        private void ExportFavorite(FavoriteConfigurationElement favoriteElement)
         {
             ExportOptions options = new ExportOptions
             {
@@ -71,7 +71,7 @@ namespace Tests.Integrations
                 IncludePasswords = true
             };
 
-            var exporter = new ExportTerminals();
+            var exporter = new ExportTerminals(this.Persistence.Credentials);
             exporter.Export(options);
         }
 
