@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
 using Terminals.Data;
 using Terminals.Forms.Controls;
+using Terminals.Integration;
 using Terminals.Integration.Export;
 using Terminals.Integration.Import;
 using Tests.FilePersisted;
@@ -103,7 +104,9 @@ namespace Tests.Integrations
                     FileName = TEST_FILE,
                     IncludePasswords = true
                 };
-            Terminals.Integration.Integrations.Exporters.Export(options);
+
+            Exporters exporters = Terminals.Integration.Integrations.CreateExporters(persistence);
+            exporters.Export(options);
         }
 
         [TestCategory("NonSql")]

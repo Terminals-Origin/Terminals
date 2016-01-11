@@ -5,16 +5,14 @@ namespace Terminals.Integration
 {
     internal static class Integrations
     {
-        private static readonly Exporters exporters = new Exporters();
-
         internal static Importers CreateImporters(IPersistence persistence)
         {
             return new Importers(persistence);
         }
 
-        internal static Exporters Exporters
+        internal static Exporters CreateExporters(IPersistence persistence)
         {
-            get { return exporters; }
+            return new Exporters(persistence.Credentials);
         }
     }
 }

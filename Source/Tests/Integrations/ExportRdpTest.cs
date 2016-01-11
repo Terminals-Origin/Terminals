@@ -4,11 +4,12 @@ using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
 using Terminals.Integration.Export;
+using Tests.FilePersisted;
 
 namespace Tests.Imports
 {
     [TestClass]
-    public class ExportRdpTest
+    public class ExportRdpTest : FilePersistedTestLab
     {
         private const string FILE_NAME = "ExportRdp"; 
 
@@ -44,7 +45,7 @@ gatewaycredentialssource:i:0
 LoadBalanceInfo:s:
 ";
 
-        private readonly ExportRdp exporter = new ExportRdp();
+        private ExportRdp exporter;
 
         public TestContext TestContext { get; set; }
 
@@ -53,6 +54,7 @@ LoadBalanceInfo:s:
         {
             // because of Persistence singleton usage inside of the FavoriteConfigurationElement
             FilePersisted.FilePersistedTestLab.SetDefaultFileLocations();
+            this.exporter = new ExportRdp(this.Persistence.Credentials);
         }
 
         [TestCategory("NonSql")]

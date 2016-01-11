@@ -76,7 +76,7 @@ namespace Terminals.Network
             foreach (IFavorite favorite in favoritesToShare)
             {
                 FavoriteConfigurationElement configFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, persistence);
-                list.Add(SharedFavorite.ConvertFromFavorite(configFavorite));
+                list.Add(SharedFavorite.ConvertFromFavorite(this.persistence, configFavorite));
             }
             return list;
         }

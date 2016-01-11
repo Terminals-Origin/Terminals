@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Network {
     [Serializable()]
@@ -36,13 +38,14 @@ namespace Terminals.Network {
 
             return fav;
         }
-        public static SharedFavorite ConvertFromFavorite(Terminals.FavoriteConfigurationElement Favorite) {
+        internal static SharedFavorite ConvertFromFavorite(IPersistence persistence, FavoriteConfigurationElement Favorite) {
+            var favoriteSecurity = new FavoriteConfigurationSecurity(persistence.Credentials);
             SharedFavorite fav = new SharedFavorite();
             fav.Colors = Favorite.Colors;
             fav.ConnectToConsole = Favorite.ConnectToConsole;
             fav.DesktopShare = Favorite.DesktopShare;
             fav.DesktopSize = Favorite.DesktopSize;
-            fav.DomainName = Favorite.ResolveDomainName();
+            fav.DomainName = favoriteSecurity.ResolveDomainName(Favorite);
             fav.Name = Favorite.Name;
             fav.Port = Favorite.Port;
             fav.Protocol = Favorite.Protocol;

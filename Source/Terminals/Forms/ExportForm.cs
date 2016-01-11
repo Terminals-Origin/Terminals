@@ -16,6 +16,8 @@ namespace Terminals.Forms
 
         private readonly TreeListNodes rootNodes;
 
+        private readonly Exporters exporters;
+
         public ExportForm(IPersistence persistence)
         {
             this.persistence = persistence;
@@ -23,7 +25,8 @@ namespace Terminals.Forms
 
             this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence);
             this.treeLoader.LoadRootNodes();
-            this.saveFileDialog.Filter = Integrations.Exporters.GetProvidersDialogFilter();
+            this.exporters = Integrations.CreateExporters(this.persistence);
+            this.saveFileDialog.Filter = this.exporters.GetProvidersDialogFilter();
             this.rootNodes = new TreeListNodes(this.favsTree.Nodes);
         }
 
@@ -63,7 +66,7 @@ namespace Terminals.Forms
                     FileName = this.saveFileDialog.FileName,
                     IncludePasswords = this.checkBox1.Checked
                 };
-            Integrations.Exporters.Export(options);
+            this.exporters.Export(options);
         }
 
         private List<FavoriteConfigurationElement> GetFavoritesToExport()

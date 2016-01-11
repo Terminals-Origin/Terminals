@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Terminals.Common.Connections;
+using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Integration.Export
 {
@@ -10,6 +12,13 @@ namespace Terminals.Integration.Export
     /// </summary>
     internal class ExportExtraLogicAndroidRd : IExport
     {
+        private readonly ICredentials credentials;
+
+        public ExportExtraLogicAndroidRd(ICredentials credentials)
+        {
+            this.credentials = credentials;
+        }
+
         internal const string EXTENSION = ".xml";
         internal const string PROVIDER_NAME = "Xtralogic Remote Desktop Client for Android";
 
@@ -37,7 +46,7 @@ namespace Terminals.Integration.Export
             }
         }
 
-        private static void ExportFavorites(XDocument doc, List<FavoriteConfigurationElement> favorites)
+        private void ExportFavorites(XDocument doc, List<FavoriteConfigurationElement> favorites)
         {
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
@@ -48,8 +57,9 @@ namespace Terminals.Integration.Export
             }
         }
 
-        private static XElement ExportFavorite(FavoriteConfigurationElement favorite)
+        private XElement ExportFavorite(FavoriteConfigurationElement favorite)
         {
+            var favoriteSecurity = new FavoriteConfigurationSecurity(credentials);
             int audioMode = ExportRdp.ConvertFromSounds(favorite.Sounds);
             int colorBits = ExportRdp.ConvertToColorBits(favorite.Colors);
 
@@ -59,7 +69,7 @@ namespace Terminals.Integration.Export
                 new XAttribute("full-address", favorite.ServerName),
                 new XAttribute("server-port", favorite.Port),
                 new XAttribute("username", favorite.ResolveUserName()),
-                new XAttribute("domain", favorite.ResolveDomainName()),
+                new XAttribute("domain", favoriteSecurity.ResolveDomainName(favorite)),
                 new XAttribute("desktopwidth", favorite.DesktopSizeWidth),
                 new XAttribute("desktopheight", favorite.DesktopSizeHeight),
                 new XAttribute("session-bpp", colorBits),
