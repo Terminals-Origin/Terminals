@@ -87,13 +87,13 @@ namespace Terminals.Integration.Export
 
         private void ExportCredentials(XmlTextWriter w, bool includePassword, FavoriteConfigurationElement favorite)
         {
-            var favoriteSecurity = new FavoriteConfigurationSecurity(this.credentials);
+            var favoriteSecurity = new FavoriteConfigurationSecurity(this.credentials, favorite);
             w.WriteElementString("credential", favorite.Credential);
-            w.WriteElementString("domainName", favoriteSecurity.ResolveDomainName(favorite));
+            w.WriteElementString("domainName", favoriteSecurity.ResolveDomainName());
 
             if (includePassword)
             {
-                w.WriteElementString("userName", favorite.ResolveUserName());
+                w.WriteElementString("userName", favoriteSecurity.ResolveUserName());
                 w.WriteElementString("password", favorite.Password);
             }
         }

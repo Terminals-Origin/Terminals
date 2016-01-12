@@ -1658,18 +1658,6 @@ namespace Terminals
             }
         }
 
-        public string ResolveUserName()
-        {
-            if (!string.IsNullOrEmpty(Credential))
-            {
-                ICredentialSet cred = this.credentials[Credential];
-                if (cred != null)
-                    return cred.UserName;
-            }
-
-            return UserName;
-        }
-
         #endregion
     }
 }

@@ -72,13 +72,13 @@ namespace Terminals.Integration.Export
 
         private string ExportFileContent(FavoriteConfigurationElement favorite)
         {
-            var favoriteSecurity = new FavoriteConfigurationSecurity(this.credentials);
+            var favoriteSecurity = new FavoriteConfigurationSecurity(this.credentials, favorite);
             StringBuilder fileContent = new StringBuilder();
 
             AppendPropertyLine(fileContent, ImportRDP.FULLADDRES, favorite.ServerName);
             AppendPropertyLine(fileContent, ImportRDP.SERVERPORT, favorite.Port.ToString());
-            AppendPropertyLine(fileContent, ImportRDP.USERNAME, favorite.ResolveUserName());
-            AppendPropertyLine(fileContent, ImportRDP.DOMAIN, favoriteSecurity.ResolveDomainName(favorite));
+            AppendPropertyLine(fileContent, ImportRDP.USERNAME, favoriteSecurity.ResolveUserName());
+            AppendPropertyLine(fileContent, ImportRDP.DOMAIN, favoriteSecurity.ResolveDomainName());
             AppendPropertyLine(fileContent, ImportRDP.COLORS, ConvertToColorBits(favorite.Colors).ToString());
             AppendPropertyLine(fileContent, ImportRDP.SCREENMODE, ConvertDesktopSize(favorite.DesktopSize));
             AppendPropertyLine(fileContent, ImportRDP.CONNECTTOCONSOLE, ConvertToString(favorite.ConnectToConsole));
