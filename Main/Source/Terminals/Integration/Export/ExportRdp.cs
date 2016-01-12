@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Terminals.Configuration;
@@ -10,11 +9,11 @@ namespace Terminals.Integration.Export
 {
     internal class ExportRdp : IExport
     {
-        private readonly ICredentials credentials;
+        private readonly IPersistence persistence;
 
-        public ExportRdp(ICredentials credentials)
+        public ExportRdp(IPersistence persistence)
         {
-            this.credentials = credentials;
+            this.persistence = persistence;
         }
 
         #region IExport members
@@ -72,7 +71,7 @@ namespace Terminals.Integration.Export
 
         private string ExportFileContent(FavoriteConfigurationElement favorite)
         {
-            var favoriteSecurity = new FavoriteConfigurationSecurity(this.credentials, favorite);
+            var favoriteSecurity = new FavoriteConfigurationSecurity(this.persistence, favorite);
             StringBuilder fileContent = new StringBuilder();
 
             AppendPropertyLine(fileContent, ImportRDP.FULLADDRES, favorite.ServerName);

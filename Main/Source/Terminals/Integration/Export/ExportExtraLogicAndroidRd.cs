@@ -12,11 +12,11 @@ namespace Terminals.Integration.Export
     /// </summary>
     internal class ExportExtraLogicAndroidRd : IExport
     {
-        private readonly ICredentials credentials;
+        private readonly IPersistence persistence;
 
-        public ExportExtraLogicAndroidRd(ICredentials credentials)
+        public ExportExtraLogicAndroidRd(IPersistence persistence)
         {
-            this.credentials = credentials;
+            this.persistence = persistence;
         }
 
         internal const string EXTENSION = ".xml";
@@ -59,7 +59,7 @@ namespace Terminals.Integration.Export
 
         private XElement ExportFavorite(FavoriteConfigurationElement favorite)
         {
-            var favoriteSecurity = new FavoriteConfigurationSecurity(this.credentials, favorite);
+            var favoriteSecurity = new FavoriteConfigurationSecurity(this.persistence, favorite);
             int audioMode = ExportRdp.ConvertFromSounds(favorite.Sounds);
             int colorBits = ExportRdp.ConvertToColorBits(favorite.Colors);
 

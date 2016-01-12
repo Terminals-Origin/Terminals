@@ -71,7 +71,7 @@ namespace Tests.Integrations
                 IncludePasswords = true
             };
 
-            var exporter = new ExportTerminals(this.Persistence.Credentials);
+            var exporter = new ExportTerminals(this.Persistence);
             exporter.Export(options);
         }
 

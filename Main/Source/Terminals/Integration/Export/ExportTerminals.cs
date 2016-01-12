@@ -13,7 +13,7 @@ namespace Terminals.Integration.Export
     /// </summary>
     internal class ExportTerminals : IExport
     {
-        private readonly ICredentials credentials;
+        private readonly IPersistence persistence;
 
         string IIntegration.Name
         {
@@ -25,9 +25,9 @@ namespace Terminals.Integration.Export
             get { return ImportTerminals.TERMINALS_FILEEXTENSION; }
         }
 
-        public ExportTerminals(ICredentials credentials)
+        public ExportTerminals(IPersistence persistence)
         {
-            this.credentials = credentials;
+            this.persistence = persistence;
         }
 
         public void Export(ExportOptions options)
@@ -87,7 +87,7 @@ namespace Terminals.Integration.Export
 
         private void ExportCredentials(XmlTextWriter w, bool includePassword, FavoriteConfigurationElement favorite)
         {
-            var favoriteSecurity = new FavoriteConfigurationSecurity(this.credentials, favorite);
+            var favoriteSecurity = new FavoriteConfigurationSecurity(this.persistence, favorite);
             w.WriteElementString("credential", favorite.Credential);
             w.WriteElementString("domainName", favoriteSecurity.ResolveDomainName());
 

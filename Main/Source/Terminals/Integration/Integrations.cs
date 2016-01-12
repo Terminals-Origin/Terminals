@@ -12,7 +12,7 @@ namespace Terminals.Integration
 
         internal static Exporters CreateExporters(IPersistence persistence)
         {
-            return new Exporters(persistence.Credentials);
+            return new Exporters(persistence);
         }
     }
 }

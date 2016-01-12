@@ -54,7 +54,7 @@ LoadBalanceInfo:s:
         {
             // because of Persistence singleton usage inside of the FavoriteConfigurationElement
             FilePersisted.FilePersistedTestLab.SetDefaultFileLocations();
-            this.exporter = new ExportRdp(this.Persistence.Credentials);
+            this.exporter = new ExportRdp(this.Persistence);
         }
 
         [TestCategory("NonSql")]

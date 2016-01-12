@@ -8,11 +8,11 @@ namespace Terminals.Integration
 {
     internal class Exporters : Integration<IExport>
     {
-        private readonly ICredentials security;
+        private readonly IPersistence persistence;
 
-        public Exporters(ICredentials security)
+        public Exporters(IPersistence persistence)
         {
-            this.security = security;
+            this.persistence = persistence;
         }
 
         protected override void LoadProviders()
@@ -20,9 +20,10 @@ namespace Terminals.Integration
             if (providers == null)
             {
                 providers = new Dictionary<string, IExport>();
-                providers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ExportTerminals(this.security));
-                providers.Add(ImportRDP.FILE_EXTENSION, new ExportRdp(this.security));
-                providers.Add(GetExtraAndroidProviderKey(), new ExportExtraLogicAndroidRd(this.security));
+                providers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ExportTerminals(this.persistence));
+                providers.Add(ImportRDP.FILE_EXTENSION, new ExportRdp(this.persistence));
+                var androidExport = new ExportExtraLogicAndroidRd(this.persistence);
+                providers.Add(GetExtraAndroidProviderKey(), androidExport);
             }
         }
 
