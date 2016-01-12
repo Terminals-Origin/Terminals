@@ -39,7 +39,7 @@ namespace Terminals.Network {
             return fav;
         }
         internal static SharedFavorite ConvertFromFavorite(IPersistence persistence, FavoriteConfigurationElement Favorite) {
-            var favoriteSecurity = new FavoriteConfigurationSecurity(persistence.Credentials, Favorite);
+            var favoriteSecurity = new FavoriteConfigurationSecurity(persistence, Favorite);
             SharedFavorite fav = new SharedFavorite();
             fav.Colors = Favorite.Colors;
             fav.ConnectToConsole = Favorite.ConnectToConsole;

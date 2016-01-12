@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Integration.Import
 {
@@ -11,8 +13,8 @@ namespace Terminals.Integration.Import
     {
         internal const string TERMINALS_FILEEXTENSION = ".xml";
         internal const string PROVIDER_NAME = "Terminals favorites";
-        
-        #region IImport members
+
+        private readonly IPersistence persistence;
 
         public string Name
         {
@@ -22,6 +24,11 @@ namespace Terminals.Integration.Import
         public string KnownExtension
         {
             get { return TERMINALS_FILEEXTENSION; }
+        }
+
+        public ImportTerminals(IPersistence persistence)
+        {
+            this.persistence = persistence;
         }
 
         /// <summary>
@@ -41,7 +48,7 @@ namespace Terminals.Integration.Import
             }
         }
 
-        private static List<FavoriteConfigurationElement> TryImport(string filename)
+        private List<FavoriteConfigurationElement> TryImport(string filename)
         {
             var favorites = new List<FavoriteConfigurationElement>();
             // bacause reading more than one property into the same favorite, keep the favorite out of the read property method
@@ -52,16 +59,14 @@ namespace Terminals.Integration.Import
                 var propertyReaded = new PropertyReader(reader);
                 while (propertyReaded.Read())
                 {
-                    favorite = ReadProperty(propertyReaded, favorites, favorite);
+                    favorite = this.ReadProperty(propertyReaded, favorites, favorite);
                 }
             }
 
             return favorites;
         }
 
-        #endregion
-
-        private static FavoriteConfigurationElement ReadProperty(PropertyReader reader,
+        private FavoriteConfigurationElement ReadProperty(PropertyReader reader,
             List<FavoriteConfigurationElement> favorites, FavoriteConfigurationElement favorite)
         {
             switch (reader.NodeType)
@@ -330,7 +335,8 @@ namespace Terminals.Integration.Import
                             favorite.TsgwHostname = reader.ReadString();
                             break;
                         case "tsgwPassword":
-                            favorite.TsgwPassword = reader.ReadString();
+                            var favoriteSecurity = new FavoriteConfigurationSecurity(this.persistence, favorite);
+                            favoriteSecurity.TsgwPassword = reader.ReadString();
                             break;
                         case "tsgwSeparateLogin":
                             favorite.TsgwSeparateLogin = reader.ReadBool();

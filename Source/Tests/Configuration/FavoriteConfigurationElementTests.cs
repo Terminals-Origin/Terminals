@@ -87,7 +87,7 @@ namespace Tests.Configuration
         private FavoriteConfigurationSecurity CreateFavoriteConfigurationSecurity()
         {
             FavoriteConfigurationElement favorite = this.CreteFavoriteWithCredential();
-            return new FavoriteConfigurationSecurity(this.Persistence.Credentials, favorite);
+            return new FavoriteConfigurationSecurity(this.Persistence, favorite);
         }
 
         private FavoriteConfigurationElement CreteFavoriteWithCredential()

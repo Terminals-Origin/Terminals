@@ -77,7 +77,7 @@ namespace Terminals.Integration.Import
             if (providers == null)
             {
                 providers = new Dictionary<string, IImport>();
-                providers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ImportTerminals());
+                providers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ImportTerminals(this.persistence));
                 providers.Add(ImportRDP.FILE_EXTENSION, new ImportRDP());
                 providers.Add(ImportvRD.FILE_EXTENSION, new ImportvRD(this.persistence));
                 providers.Add(ImportMuRD.FILE_EXTENSION, new ImportMuRD());
