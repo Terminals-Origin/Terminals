@@ -57,9 +57,8 @@ namespace Tests.Configuration
         [TestMethod]
         public void WithCredential_ResolveDomain_ReturnsCredentialDomain()
         {
-            FavoriteConfigurationElement favorite = CreteFavoriteWithCredential();
-            var favoriteSecurity = new FavoriteConfigurationSecurity(this.Persistence.Credentials);
-            string resolved = favoriteSecurity.ResolveDomainName(favorite);
+            FavoriteConfigurationSecurity favoriteSecurity = this.CreateFavoriteConfigurationSecurity();
+            string resolved = favoriteSecurity.ResolveDomainName();
             Assert.AreEqual(EXPECTED_DOMAIN, resolved, "Domain is primary resolved from Credential.");
         }
 
@@ -81,8 +80,14 @@ namespace Tests.Configuration
         [TestMethod]
         public void WithCredential_ResolveUserName_ReturnsCredentialUserName()
         {
-            FavoriteConfigurationElement favorite = CreteFavoriteWithCredential();
-            Assert.AreEqual(EXPECTED_USER, favorite.ResolveUserName(), "UserName is primary resolved from Credential.");
+            FavoriteConfigurationSecurity favoriteSecurity = this.CreateFavoriteConfigurationSecurity();
+            Assert.AreEqual(EXPECTED_USER, favoriteSecurity.ResolveUserName(), "UserName is primary resolved from Credential.");
+        }
+
+        private FavoriteConfigurationSecurity CreateFavoriteConfigurationSecurity()
+        {
+            FavoriteConfigurationElement favorite = this.CreteFavoriteWithCredential();
+            return new FavoriteConfigurationSecurity(this.Persistence.Credentials, favorite);
         }
 
         private FavoriteConfigurationElement CreteFavoriteWithCredential()

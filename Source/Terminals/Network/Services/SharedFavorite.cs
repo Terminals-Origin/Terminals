@@ -39,13 +39,13 @@ namespace Terminals.Network {
             return fav;
         }
         internal static SharedFavorite ConvertFromFavorite(IPersistence persistence, FavoriteConfigurationElement Favorite) {
-            var favoriteSecurity = new FavoriteConfigurationSecurity(persistence.Credentials);
+            var favoriteSecurity = new FavoriteConfigurationSecurity(persistence.Credentials, Favorite);
             SharedFavorite fav = new SharedFavorite();
             fav.Colors = Favorite.Colors;
             fav.ConnectToConsole = Favorite.ConnectToConsole;
             fav.DesktopShare = Favorite.DesktopShare;
             fav.DesktopSize = Favorite.DesktopSize;
-            fav.DomainName = favoriteSecurity.ResolveDomainName(Favorite);
+            fav.DomainName = favoriteSecurity.ResolveDomainName();
             fav.Name = Favorite.Name;
             fav.Port = Favorite.Port;
             fav.Protocol = Favorite.Protocol;

@@ -6,18 +6,33 @@ namespace Terminals.Configuration
     {
         private readonly ICredentials credentials;
 
-        internal FavoriteConfigurationSecurity(ICredentials credentials)
+        private readonly FavoriteConfigurationElement favorite;
+
+        internal FavoriteConfigurationSecurity(ICredentials credentials, FavoriteConfigurationElement favorite)
         {
             this.credentials = credentials;
+            this.favorite = favorite;
         }
 
-        internal string ResolveDomainName(FavoriteConfigurationElement favorite)
+        internal string ResolveDomainName()
         {
-            ICredentialSet cred = this.credentials[favorite.Credential];
+            ICredentialSet cred = this.credentials[this.favorite.Credential];
             if (cred != null)
                 return cred.Domain;
 
-            return favorite.DomainName;
+            return this.favorite.DomainName;
+        }
+
+        public string ResolveUserName()
+        {
+            if (!string.IsNullOrEmpty(this.favorite.Credential))
+            {
+                ICredentialSet cred = this.credentials[this.favorite.Credential];
+                if (cred != null)
+                    return cred.UserName;
+            }
+
+            return this.favorite.UserName;
         }
     }
 }

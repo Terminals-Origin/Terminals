@@ -59,7 +59,7 @@ namespace Terminals.Integration.Export
 
         private XElement ExportFavorite(FavoriteConfigurationElement favorite)
         {
-            var favoriteSecurity = new FavoriteConfigurationSecurity(credentials);
+            var favoriteSecurity = new FavoriteConfigurationSecurity(this.credentials, favorite);
             int audioMode = ExportRdp.ConvertFromSounds(favorite.Sounds);
             int colorBits = ExportRdp.ConvertToColorBits(favorite.Colors);
 
@@ -68,8 +68,8 @@ namespace Terminals.Integration.Export
                 // analogic to RDP
                 new XAttribute("full-address", favorite.ServerName),
                 new XAttribute("server-port", favorite.Port),
-                new XAttribute("username", favorite.ResolveUserName()),
-                new XAttribute("domain", favoriteSecurity.ResolveDomainName(favorite)),
+                new XAttribute("username", favoriteSecurity.ResolveUserName()),
+                new XAttribute("domain", favoriteSecurity.ResolveDomainName()),
                 new XAttribute("desktopwidth", favorite.DesktopSizeWidth),
                 new XAttribute("desktopheight", favorite.DesktopSizeHeight),
                 new XAttribute("session-bpp", colorBits),
