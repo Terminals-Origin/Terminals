@@ -1,24 +1,22 @@
-﻿using System.Xml;
-using Terminals.Connections;
-using Terminals.Connections.Terminal;
+﻿using Terminals.Connections.Terminal;
 
 namespace Terminals.Integration.Export
 {
     internal class TerminalsTelnetExport : ITerminalsOptionsExport
     {
-        public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
+        public void ExportOptions(ExportOptionsContext context)
         {
-            if (favorite.Protocol == TelnetConnectionPlugin.TELNET)
+            if (context.Favorite.Protocol == TelnetConnectionPlugin.TELNET)
             {
-                TerminalsConsoleExport.ExportConsoleOptions(w, favorite);
+                TerminalsConsoleExport.ExportConsoleOptions(context, context.Favorite);
 
-                w.WriteElementString("telnet", favorite.Telnet.ToString());
-                w.WriteElementString("telnetRows", favorite.TelnetRows.ToString());
-                w.WriteElementString("telnetCols", favorite.TelnetCols.ToString());
-                w.WriteElementString("telnetFont", favorite.TelnetFont);
-                w.WriteElementString("telnetBackColor", favorite.TelnetBackColor);
-                w.WriteElementString("telnetTextColor", favorite.TelnetTextColor);
-                w.WriteElementString("telnetCursorColor", favorite.TelnetCursorColor);
+                context.WriteElementString("telnet", context.Favorite.Telnet.ToString());
+                context.WriteElementString("telnetRows", context.Favorite.TelnetRows.ToString());
+                context.WriteElementString("telnetCols", context.Favorite.TelnetCols.ToString());
+                context.WriteElementString("telnetFont", context.Favorite.TelnetFont);
+                context.WriteElementString("telnetBackColor", context.Favorite.TelnetBackColor);
+                context.WriteElementString("telnetTextColor", context.Favorite.TelnetTextColor);
+                context.WriteElementString("telnetCursorColor", context.Favorite.TelnetCursorColor);
             }
         }
     }

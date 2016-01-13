@@ -1,21 +1,19 @@
-using System.Xml;
-using Terminals.Connections;
 using Terminals.Connections.Terminal;
 
 namespace Terminals.Integration.Export
 {
     internal class TerminalsSshExport : ITerminalsOptionsExport
     {
-        public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
+        public void ExportOptions(ExportOptionsContext context)
         {
-            if (favorite.Protocol == SshConnectionPlugin.SSH)
+            if (context.Favorite.Protocol == SshConnectionPlugin.SSH)
             {
-                TerminalsConsoleExport.ExportConsoleOptions(w, favorite);
+                TerminalsConsoleExport.ExportConsoleOptions(context, context.Favorite);
 
-                w.WriteElementString("ssh1", favorite.SSH1.ToString());
-                w.WriteElementString("authMethod", favorite.AuthMethod.ToString());
-                w.WriteElementString("keyTag", favorite.KeyTag);
-                w.WriteElementString("SSHKeyFile", favorite.SSHKeyFile);
+                context.WriteElementString("ssh1", context.Favorite.SSH1.ToString());
+                context.WriteElementString("authMethod", context.Favorite.AuthMethod.ToString());
+                context.WriteElementString("keyTag", context.Favorite.KeyTag);
+                context.WriteElementString("SSHKeyFile", context.Favorite.SSHKeyFile);
             }
         }
     }

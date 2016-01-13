@@ -19,9 +19,9 @@ namespace Tests.Configuration
         [TestMethod]
         public void NewValue_SetGetTsgwPassword_ReturnsSavedValue()
         {
-            var favorite = this.CreateFavorite();
-            favorite.TsgwPassword = EXPECTEDPASSWORD;
-            Assert.AreEqual(EXPECTEDPASSWORD, favorite.TsgwPassword, MESSAGE);
+            FavoriteConfigurationSecurity favoriteSecurity = this.CreateFavoriteConfigurationSecurity();
+            favoriteSecurity.TsgwPassword = EXPECTEDPASSWORD;
+            Assert.AreEqual(EXPECTEDPASSWORD, favoriteSecurity.TsgwPassword, MESSAGE);
         }
 
         [TestMethod]

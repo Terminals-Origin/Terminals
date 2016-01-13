@@ -1,17 +1,15 @@
-﻿using System.Xml;
-using Terminals.Connections;
-using Terminals.Connections.VMRC;
+﻿using Terminals.Connections.VMRC;
 
 namespace Terminals.Integration.Export
 {
     internal class TerminalsVmrcExport : ITerminalsOptionsExport
     {
-        public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
+        public void ExportOptions(ExportOptionsContext context)
         {
-            if (favorite.Protocol == VmrcConnectionPlugin.VMRC)
+            if (context.Favorite.Protocol == VmrcConnectionPlugin.VMRC)
             {
-                w.WriteElementString("vmrcadministratormode", favorite.VMRCAdministratorMode.ToString());
-                w.WriteElementString("vmrcreducedcolorsmode", favorite.VMRCReducedColorsMode.ToString());
+                context.WriteElementString("vmrcadministratormode", context.Favorite.VMRCAdministratorMode.ToString());
+                context.WriteElementString("vmrcreducedcolorsmode", context.Favorite.VMRCReducedColorsMode.ToString());
             }
         }
     }
