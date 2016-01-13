@@ -1,17 +1,15 @@
-﻿using System.Xml;
-
-namespace Terminals.Integration.Export
+﻿namespace Terminals.Integration.Export
 {
     internal class TerminalsConsoleExport
     {
-        public static void ExportConsoleOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
+        public static void ExportConsoleOptions(ExportOptionsContext context, FavoriteConfigurationElement favorite)
         {
-            w.WriteElementString("consolerows", favorite.ConsoleRows.ToString());
-            w.WriteElementString("consolecols", favorite.ConsoleCols.ToString());
-            w.WriteElementString("consolefont", favorite.ConsoleFont);
-            w.WriteElementString("consolebackcolor", favorite.ConsoleBackColor);
-            w.WriteElementString("consoletextcolor", favorite.ConsoleTextColor);
-            w.WriteElementString("consolecursorcolor", favorite.ConsoleCursorColor);
+            context.WriteElementString("consolerows", favorite.ConsoleRows.ToString());
+            context.WriteElementString("consolecols", favorite.ConsoleCols.ToString());
+            context.WriteElementString("consolefont", favorite.ConsoleFont);
+            context.WriteElementString("consolebackcolor", favorite.ConsoleBackColor);
+            context.WriteElementString("consoletextcolor", favorite.ConsoleTextColor);
+            context.WriteElementString("consolecursorcolor", favorite.ConsoleCursorColor);
         }
     }
 }

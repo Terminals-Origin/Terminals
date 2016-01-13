@@ -1625,20 +1625,6 @@ namespace Terminals
 
         #region To be extracted
 
-
-
-        internal String TsgwPassword
-        {
-            get
-            {
-                return this.persistenceSecurity.DecryptPassword(TsgwEncryptedPassword);
-            }
-            set
-            {
-                TsgwEncryptedPassword = this.persistenceSecurity.EncryptPassword(value);
-            }
-        }
-
         /// <summary>
         /// Gets or sets the password String in not encrypted form
         /// </summary>

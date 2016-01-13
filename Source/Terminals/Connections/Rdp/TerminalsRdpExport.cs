@@ -6,17 +6,17 @@ namespace Terminals.Integration.Export
 {
     internal class TerminalsRdpExport : ITerminalsOptionsExport
     {
-        public void ExportOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
+        public void ExportOptions(ExportOptionsContext context)
         {
-            if (favorite.Protocol == KnownConnectionConstants.RDP)
+            if (context.Favorite.Protocol == KnownConnectionConstants.RDP)
             {
-                ExportRdpDesktopOptions(w, favorite);
-                ExportRdpUiOptions(w, favorite);
-                ExporRdpLocalResources(w, favorite);
-                ExportRdpExtendedOptions(w, favorite);
-                ExportRdpTimeoutOptions(w, favorite);
-                ExportRdpSecurityOptions(w, favorite);
-                ExportRdpTsgwOptions(w, favorite);
+                ExportRdpDesktopOptions(context.Writer, context.Favorite);
+                ExportRdpUiOptions(context.Writer, context.Favorite);
+                ExporRdpLocalResources(context.Writer, context.Favorite);
+                ExportRdpExtendedOptions(context.Writer, context.Favorite);
+                ExportRdpTimeoutOptions(context.Writer, context.Favorite);
+                ExportRdpSecurityOptions(context.Writer, context.Favorite);
+                ExportRdpTsgwOptions(context, context.Favorite);
             }
         }
 
@@ -115,17 +115,20 @@ namespace Terminals.Integration.Export
             }
         }
 
-        private static void ExportRdpTsgwOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
+        private static void ExportRdpTsgwOptions(ExportOptionsContext context, FavoriteConfigurationElement favorite)
         {
             if (favorite.TsgwUsageMethod != 0)
             {
-                w.WriteElementString("tsgwUsageMethod", favorite.TsgwUsageMethod.ToString());
-                w.WriteElementString("tsgwCredsSource", favorite.TsgwCredsSource.ToString());
-                w.WriteElementString("tsgwDomain", favorite.TsgwDomain);
-                w.WriteElementString("tsgwHostname", favorite.TsgwHostname);
-                w.WriteElementString("tsgwPassword", favorite.TsgwPassword);
-                w.WriteElementString("tsgwSeparateLogin", favorite.TsgwSeparateLogin.ToString());
-                w.WriteElementString("tsgwUsername", favorite.TsgwUsername);
+                context.WriteElementString("tsgwUsageMethod", favorite.TsgwUsageMethod.ToString());
+                context.WriteElementString("tsgwCredsSource", favorite.TsgwCredsSource.ToString());
+                context.WriteElementString("tsgwDomain", favorite.TsgwDomain);
+                context.WriteElementString("tsgwHostname", favorite.TsgwHostname);
+
+                if (context.IncludePasswords)
+                    context.WriteElementString("tsgwPassword", context.TsgwPassword);
+
+                context.WriteElementString("tsgwSeparateLogin", favorite.TsgwSeparateLogin.ToString());
+                context.WriteElementString("tsgwUsername", favorite.TsgwUsername);
             }
         }
     }

@@ -41,7 +41,9 @@ namespace Terminals.Integration.Export
                     w.WriteStartElement("favorites");
                     foreach (FavoriteConfigurationElement favorite in options.Favorites)
                     {
-                        WriteFavorite(w, options.IncludePasswords, favorite);
+                        var favoriteSecurity = new FavoriteConfigurationSecurity(this.persistence, favorite);
+                        var context = new ExportOptionsContext(w, favoriteSecurity, options.IncludePasswords, favorite);
+                        WriteFavorite(context);
                     }
                     w.WriteEndElement();
                     w.WriteEndDocument();
@@ -55,20 +57,20 @@ namespace Terminals.Integration.Export
             }
         }
 
-        private void WriteFavorite(XmlTextWriter w, bool includePassword, FavoriteConfigurationElement favorite)
+        private void WriteFavorite(ExportOptionsContext context)
         {
-            w.WriteStartElement("favorite");
-
-            ExportGeneralOptions(w, favorite);
-            ExportCredentials(w, includePassword, favorite);
-            ExportExecuteBeforeConnect(w, favorite);
+            context.Writer.WriteStartElement("favorite");
+            
+            ExportGeneralOptions(context.Writer, context.Favorite);
+            ExportCredentials(context);
+            ExportExecuteBeforeConnect(context.Writer, context.Favorite);
 
             foreach (ITerminalsOptionsExport optionsExporter in ConnectionManager.Instance.GetTerminalsOptionsExporters())
             {
-                optionsExporter.ExportOptions(w, favorite);
+                optionsExporter.ExportOptions(context);
             }
 
-            w.WriteEndElement();
+            context.Writer.WriteEndElement();
         }
 
         private static void ExportGeneralOptions(XmlTextWriter w, FavoriteConfigurationElement favorite)
@@ -85,16 +87,18 @@ namespace Terminals.Integration.Export
             w.WriteElementString("bitmapPeristence", favorite.Protocol);
         }
 
-        private void ExportCredentials(XmlTextWriter w, bool includePassword, FavoriteConfigurationElement favorite)
+        private void ExportCredentials(ExportOptionsContext context)
         {
-            var favoriteSecurity = new FavoriteConfigurationSecurity(this.persistence, favorite);
-            w.WriteElementString("credential", favorite.Credential);
-            w.WriteElementString("domainName", favoriteSecurity.ResolveDomainName());
+            FavoriteConfigurationElement favorite = context.Favorite;
 
-            if (includePassword)
+            var favoriteSecurity = new FavoriteConfigurationSecurity(this.persistence, favorite);
+            context.WriteElementString("credential", favorite.Credential);
+            context.WriteElementString("domainName", favoriteSecurity.ResolveDomainName());
+
+            if (context.IncludePasswords)
             {
-                w.WriteElementString("userName", favoriteSecurity.ResolveUserName());
-                w.WriteElementString("password", favorite.Password);
+                context.WriteElementString("userName", favoriteSecurity.ResolveUserName());
+                context.WriteElementString("password", favorite.Password);
             }
         }
 
