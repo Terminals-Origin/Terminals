@@ -48,7 +48,7 @@ namespace Tests.Connections
                 new Tuple<string, Type>(KnownConnectionConstants.RDP, typeof(RDPConnection)),
                 new Tuple<string, Type>(VncConnectionPlugin.VNC, typeof(VNCConnection)),
                 // VMRCConnection creation may fail in some test runners.
-                new Tuple<string, Type>(VmrcConnectionPlugin.VMRC, typeof(VMRCConnection)),
+                //new Tuple<string, Type>(VmrcConnectionPlugin.VMRC, typeof(VMRCConnection)),
                 new Tuple<string, Type>(TelnetConnectionPlugin.TELNET, typeof(TerminalConnection)),
                 new Tuple<string, Type>(SshConnectionPlugin.SSH, typeof(TerminalConnection)),
                 new Tuple<string, Type>(KnownConnectionConstants.HTTP, typeof(HTTPConnection)),
