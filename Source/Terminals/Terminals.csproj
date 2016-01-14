@@ -221,6 +221,7 @@
     <Compile Include="Connections\Terminal\TerminalsTelnetExport.cs" />
     <Compile Include="Connections\VMRC\TerminalsVmrcExport.cs" />
     <Compile Include="Connections\VNC\TerminalsVncExport.cs" />
+    <Compile Include="Integration\Import\ImportTerminalsContext.cs" />
     <Compile Include="Network\PortScanner\ServiceDetector.cs" />
     <Compile Include="Network\Tools\NettworkingTools.cs" />
     <Compile Include="Connections\Rdp\RdpClientErrorMessages.cs" />
