@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
-using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Integration.Import
@@ -50,326 +49,318 @@ namespace Terminals.Integration.Import
 
         private List<FavoriteConfigurationElement> TryImport(string filename)
         {
-            var favorites = new List<FavoriteConfigurationElement>();
-            // bacause reading more than one property into the same favorite, keep the favorite out of the read property method
-            FavoriteConfigurationElement favorite = null;
-
             using (var reader = new XmlTextReader(filename))
             {
-                var propertyReaded = new PropertyReader(reader);
-                while (propertyReaded.Read())
+                var propertyReader = new PropertyReader(reader);
+                var context = new ImportTerminalsContext(propertyReader, this.persistence);
+                while (propertyReader.Read())
                 {
-                    favorite = this.ReadProperty(propertyReaded, favorites, favorite);
+                    this.ReadProperty(context);
                 }
-            }
 
-            return favorites;
+                return context.Favorites;
+            }
         }
 
-        private FavoriteConfigurationElement ReadProperty(PropertyReader reader,
-            List<FavoriteConfigurationElement> favorites, FavoriteConfigurationElement favorite)
+        private void ReadProperty(ImportTerminalsContext context)
         {
-            switch (reader.NodeType)
+            switch (context.Reader.NodeType)
             {
                 case XmlNodeType.Element:
-                    switch (reader.NodeName)
+                    switch (context.Reader.NodeName)
                     {
                         case "favorite":
-                            favorite = new FavoriteConfigurationElement();
-                            favorites.Add(favorite);
+                            context.SetNewCurrent();
                             break;
                         case "userName":
-                            favorite.UserName = reader.ReadString();
+                            context.Current.UserName = context.Reader.ReadString();
                             break;
                         case "password":
-                            favorite.Password = reader.ReadString();
+                            context.ReadPassword();
                             break;
 
                         case "acceleratorPassthrough":
-                            favorite.AcceleratorPassthrough = reader.ReadBool();
+                            context.Current.AcceleratorPassthrough = context.Reader.ReadBool();
                             break;
                         case "allowBackgroundInput":
-                            favorite.AllowBackgroundInput = reader.ReadBool();
+                            context.Current.AllowBackgroundInput = context.Reader.ReadBool();
                             break;
                         case "authMethod":
-                            favorite.AuthMethod = reader.ReadAuthMethod();
+                            context.Current.AuthMethod = context.Reader.ReadAuthMethod();
                             break;
                         case "bitmapPeristence":
-                            favorite.BitmapPeristence = reader.ReadBool();
+                            context.Current.BitmapPeristence = context.Reader.ReadBool();
                             break;
                         case "connectionTimeout":
-                            favorite.ConnectionTimeout = reader.ReadInt();
+                            context.Current.ConnectionTimeout = context.Reader.ReadInt();
                             break;
                         case "consolefont":
-                            favorite.ConsoleFont = reader.ReadString();
+                            context.Current.ConsoleFont = context.Reader.ReadString();
                             break;
                         case "consolerows":
-                            favorite.ConsoleRows = reader.ReadInt();
+                            context.Current.ConsoleRows = context.Reader.ReadInt();
                             break;
                         case "consolecols":
-                            favorite.ConsoleCols = reader.ReadInt();
+                            context.Current.ConsoleCols = context.Reader.ReadInt();
                             break;
                         case "consolebackcolor":
-                            favorite.ConsoleBackColor = reader.ReadString();
+                            context.Current.ConsoleBackColor = context.Reader.ReadString();
                             break;
                         case "consoletextcolor":
-                            favorite.ConsoleTextColor = reader.ReadString();
+                            context.Current.ConsoleTextColor = context.Reader.ReadString();
                             break;
                         case "consolecursorcolor":
-                            favorite.ConsoleCursorColor = reader.ReadString();
+                            context.Current.ConsoleCursorColor = context.Reader.ReadString();
                             break;
                         case "connectToConsole":
-                            favorite.ConnectToConsole = reader.ReadBool();
+                            context.Current.ConnectToConsole = context.Reader.ReadBool();
                             break;
                         case "colors":
-                            favorite.Colors = reader.ReadColors();
+                            context.Current.Colors = context.Reader.ReadColors();
                             break;
                         case "credential":
-                            favorite.Credential = reader.ReadString();
+                            context.Current.Credential = context.Reader.ReadString();
                             break;
                         case "disableWindowsKey":
-                            favorite.DisableWindowsKey = reader.ReadBool();
+                            context.Current.DisableWindowsKey = context.Reader.ReadBool();
                             break;
                         case "doubleClickDetect":
-                            favorite.DoubleClickDetect = reader.ReadBool();
+                            context.Current.DoubleClickDetect = context.Reader.ReadBool();
                             break;
                         case "displayConnectionBar":
-                            favorite.DisplayConnectionBar = reader.ReadBool();
+                            context.Current.DisplayConnectionBar = context.Reader.ReadBool();
                             break;
                         case "disableControlAltDelete":
-                            favorite.DisableControlAltDelete = reader.ReadBool();
+                            context.Current.DisableControlAltDelete = context.Reader.ReadBool();
                             break;
                         case "domainName":
-                            favorite.DomainName = reader.ReadString();
+                            context.Current.DomainName = context.Reader.ReadString();
                             break;
                         case "desktopSizeHeight":
-                            favorite.DesktopSizeHeight = reader.ReadInt();
+                            context.Current.DesktopSizeHeight = context.Reader.ReadInt();
                             break;
                         case "desktopSizeWidth":
-                            favorite.DesktopSizeWidth = reader.ReadInt();
+                            context.Current.DesktopSizeWidth = context.Reader.ReadInt();
                             break;
                         case "desktopSize":
-                            favorite.DesktopSize = reader.ReadDesktopSize();
+                            context.Current.DesktopSize = context.Reader.ReadDesktopSize();
                             break;
                         case "desktopShare":
-                            favorite.DesktopShare = reader.ReadString();
+                            context.Current.DesktopShare = context.Reader.ReadString();
                             break;
                         case "disableTheming":
-                            favorite.DisableTheming = reader.ReadBool();
+                            context.Current.DisableTheming = context.Reader.ReadBool();
                             break;
                         case "disableMenuAnimations":
-                            favorite.DisableMenuAnimations = reader.ReadBool();
+                            context.Current.DisableMenuAnimations = context.Reader.ReadBool();
                             break;
                         case "disableFullWindowDrag":
-                            favorite.DisableFullWindowDrag = reader.ReadBool();
+                            context.Current.DisableFullWindowDrag = context.Reader.ReadBool();
                             break;
                         case "disableCursorBlinking":
-                            favorite.DisableCursorBlinking = reader.ReadBool();
+                            context.Current.DisableCursorBlinking = context.Reader.ReadBool();
                             break;
                         case "disableCursorShadow":
-                            favorite.DisableCursorShadow = reader.ReadBool();
+                            context.Current.DisableCursorShadow = context.Reader.ReadBool();
                             break;
                         case "disableWallPaper":
-                            favorite.DisableWallPaper = reader.ReadBool();
+                            context.Current.DisableWallPaper = context.Reader.ReadBool();
                             break;
                         case "executeBeforeConnect":
-                            favorite.ExecuteBeforeConnect = reader.ReadBool();
+                            context.Current.ExecuteBeforeConnect = context.Reader.ReadBool();
                             break;
                         case "executeBeforeConnectCommand":
-                            favorite.ExecuteBeforeConnectCommand = reader.ReadString();
+                            context.Current.ExecuteBeforeConnectCommand = context.Reader.ReadString();
                             break;
                         case "executeBeforeConnectArgs":
-                            favorite.ExecuteBeforeConnectArgs = reader.ReadString();
+                            context.Current.ExecuteBeforeConnectArgs = context.Reader.ReadString();
                             break;
                         case "executeBeforeConnectInitialDirectory":
-                            favorite.ExecuteBeforeConnectInitialDirectory = reader.ReadString();
+                            context.Current.ExecuteBeforeConnectInitialDirectory = context.Reader.ReadString();
                             break;
                         case "executeBeforeConnectWaitForExit":
-                            favorite.ExecuteBeforeConnectWaitForExit = reader.ReadBool();
+                            context.Current.ExecuteBeforeConnectWaitForExit = context.Reader.ReadBool();
                             break;
                         case "enableDesktopComposition":
-                            favorite.EnableDesktopComposition = reader.ReadBool();
+                            context.Current.EnableDesktopComposition = context.Reader.ReadBool();
                             break;
                         case "enableFontSmoothing":
-                            favorite.EnableFontSmoothing = reader.ReadBool();
+                            context.Current.EnableFontSmoothing = context.Reader.ReadBool();
                             break;
                         case "enableSecuritySettings":
-                            favorite.EnableSecuritySettings = reader.ReadBool();
+                            context.Current.EnableSecuritySettings = context.Reader.ReadBool();
                             break;
                         case "enableEncryption":
-                            favorite.EnableEncryption = reader.ReadBool();
+                            context.Current.EnableEncryption = context.Reader.ReadBool();
                             break;
                         case "enableCompression":
-                            favorite.EnableCompression = reader.ReadBool();
+                            context.Current.EnableCompression = context.Reader.ReadBool();
                             break;
                         case "enableTLSAuthentication":
-                            favorite.EnableTLSAuthentication = reader.ReadBool();
+                            context.Current.EnableTLSAuthentication = context.Reader.ReadBool();
                             break;
                         case "enableNLAAuthentication":
-                            favorite.EnableNLAAuthentication = reader.ReadBool();
+                            context.Current.EnableNLAAuthentication = context.Reader.ReadBool();
                             break;
                         case "grabFocusOnConnect":
-                            favorite.GrabFocusOnConnect = reader.ReadBool();
+                            context.Current.GrabFocusOnConnect = context.Reader.ReadBool();
                             break;
                         case "idleTimeout":
-                            favorite.IdleTimeout = reader.ReadInt();
+                            context.Current.IdleTimeout = context.Reader.ReadInt();
                             break;
                         case "icaServerINI":
-                            favorite.IcaServerINI = reader.ReadString();
+                            context.Current.IcaServerINI = context.Reader.ReadString();
                             break;
                         case "icaClientINI":
-                            favorite.IcaClientINI = reader.ReadString();
+                            context.Current.IcaClientINI = context.Reader.ReadString();
                             break;
                         case "icaEncryptionLevel":
-                            favorite.IcaEncryptionLevel = reader.ReadString();
+                            context.Current.IcaEncryptionLevel = context.Reader.ReadString();
                             break;
                         case "iCAApplicationName":
-                            favorite.ICAApplicationName = reader.ReadString();
+                            context.Current.ICAApplicationName = context.Reader.ReadString();
                             break;
                         case "iCAApplicationWorkingFolder":
-                            favorite.ICAApplicationWorkingFolder = reader.ReadString();
+                            context.Current.ICAApplicationWorkingFolder = context.Reader.ReadString();
                             break;
                         case "iCAApplicationPath":
-                            favorite.ICAApplicationPath = reader.ReadString();
+                            context.Current.ICAApplicationPath = context.Reader.ReadString();
                             break;
                         case "icaEnableEncryption":
-                            favorite.IcaEnableEncryption = reader.ReadBool();
+                            context.Current.IcaEnableEncryption = context.Reader.ReadBool();
                             break;
                         case "keyTag":
-                            favorite.KeyTag = reader.ReadString();
+                            context.Current.KeyTag = context.Reader.ReadString();
                             break;
                         case "SSHKeyFile":
-                            favorite.SSHKeyFile = reader.ReadString();
+                            context.Current.SSHKeyFile = context.Reader.ReadString();
                             break;
                         case "newWindow":
-                            favorite.NewWindow = reader.ReadBool();
+                            context.Current.NewWindow = context.Reader.ReadBool();
                             break;
                         case "notes":
-                            favorite.Notes = reader.ReadString();
+                            context.Current.Notes = context.Reader.ReadString();
                             break;
                         case "name":
-                            favorite.Name = reader.ReadString();
+                            context.Current.Name = context.Reader.ReadString();
                             break;
                         case "overallTimeout":
-                            favorite.OverallTimeout = reader.ReadInt();
+                            context.Current.OverallTimeout = context.Reader.ReadInt();
                             break;
                         case "protocol":
-                            favorite.Protocol = reader.ReadString();
+                            context.Current.Protocol = context.Reader.ReadString();
                             break;
                         case "port":
-                            favorite.Port = reader.ReadInt();
+                            context.Current.Port = context.Reader.ReadInt();
                             break;
                         case "redirectedDrives":
-                            favorite.redirectedDrives = reader.ReadString();
+                            context.Current.redirectedDrives = context.Reader.ReadString();
                             break;
                         case "redirectPorts":
-                            favorite.RedirectPorts = reader.ReadBool();
+                            context.Current.RedirectPorts = context.Reader.ReadBool();
                             break;
                         case "redirectPrinters":
-                            favorite.RedirectPrinters = reader.ReadBool();
+                            context.Current.RedirectPrinters = context.Reader.ReadBool();
                             break;
                         case "redirectSmartCards":
-                            favorite.RedirectSmartCards = reader.ReadBool();
+                            context.Current.RedirectSmartCards = context.Reader.ReadBool();
                             break;
                         case "redirectClipboard":
-                            favorite.RedirectClipboard = reader.ReadBool();
+                            context.Current.RedirectClipboard = context.Reader.ReadBool();
                             break;
                         case "redirectDevices":
-                            favorite.RedirectDevices = reader.ReadBool();
+                            context.Current.RedirectDevices = context.Reader.ReadBool();
                             break;
                         case "sounds":
-                            favorite.Sounds = reader.ReadRemoteSounds();
+                            context.Current.Sounds = context.Reader.ReadRemoteSounds();
                             break;
                         case "serverName":
-                            favorite.ServerName = reader.ReadString();
+                            context.Current.ServerName = context.Reader.ReadString();
                             break;
                         case "shutdownTimeout":
-                            favorite.ShutdownTimeout = reader.ReadInt();
+                            context.Current.ShutdownTimeout = context.Reader.ReadInt();
                             break;
                         case "ssh1":
-                            favorite.SSH1 = reader.ReadBool();
+                            context.Current.SSH1 = context.Reader.ReadBool();
                             break;
                         case "securityFullScreen":
-                            favorite.SecurityFullScreen = reader.ReadBool();
+                            context.Current.SecurityFullScreen = context.Reader.ReadBool();
                             break;
                         case "securityStartProgram":
-                            favorite.SecurityStartProgram = reader.ReadString();
+                            context.Current.SecurityStartProgram = context.Reader.ReadString();
                             break;
                         case "securityWorkingFolder":
-                            favorite.SecurityWorkingFolder = reader.ReadString();
+                            context.Current.SecurityWorkingFolder = context.Reader.ReadString();
                             break;
                         case "tags":
-                            favorite.Tags = reader.ReadString();
+                            context.Current.Tags = context.Reader.ReadString();
                             break;
                         case "telnet":
-                            favorite.Telnet = reader.ReadBool();
+                            context.Current.Telnet = context.Reader.ReadBool();
                             break;
                         case "telnetBackColor":
-                            favorite.TelnetBackColor = reader.ReadString();
+                            context.Current.TelnetBackColor = context.Reader.ReadString();
                             break;
                         case "telnetCols":
-                            favorite.TelnetCols = reader.ReadInt();
+                            context.Current.TelnetCols = context.Reader.ReadInt();
                             break;
                         case "telnetCursorColor":
-                            favorite.TelnetCursorColor = reader.ReadString();
+                            context.Current.TelnetCursorColor = context.Reader.ReadString();
                             break;
                         case "telnetFont":
-                            favorite.TelnetFont = reader.ReadString();
+                            context.Current.TelnetFont = context.Reader.ReadString();
                             break;
                         case "telnetRows":
-                            favorite.TelnetRows = reader.ReadInt();
+                            context.Current.TelnetRows = context.Reader.ReadInt();
                             break;
                         case "telnetTextColor":
-                            favorite.TelnetTextColor = reader.ReadString();
+                            context.Current.TelnetTextColor = context.Reader.ReadString();
                             break;
                         case "toolBarIcon":
-                            favorite.ToolBarIcon = reader.ReadString();
+                            context.Current.ToolBarIcon = context.Reader.ReadString();
                             break;
                         case "tsgwCredsSource":
-                            favorite.TsgwCredsSource = reader.ReadInt();
+                            context.Current.TsgwCredsSource = context.Reader.ReadInt();
                             break;
                         case "tsgwDomain":
-                            favorite.TsgwDomain = reader.ReadString();
+                            context.Current.TsgwDomain = context.Reader.ReadString();
                             break;
                         case "tsgwHostname":
-                            favorite.TsgwHostname = reader.ReadString();
+                            context.Current.TsgwHostname = context.Reader.ReadString();
                             break;
                         case "tsgwPassword":
-                            var favoriteSecurity = new FavoriteConfigurationSecurity(this.persistence, favorite);
-                            favoriteSecurity.TsgwPassword = reader.ReadString();
+                            context.ReadTsgwPassword();
                             break;
                         case "tsgwSeparateLogin":
-                            favorite.TsgwSeparateLogin = reader.ReadBool();
+                            context.Current.TsgwSeparateLogin = context.Reader.ReadBool();
                             break;
                         case "tsgwUsageMethod":
-                            favorite.TsgwUsageMethod = reader.ReadInt();
+                            context.Current.TsgwUsageMethod = context.Reader.ReadInt();
                             break;
                         case "tsgwUsername":
-                            favorite.TsgwUsername = reader.ReadString();
+                            context.Current.TsgwUsername = context.Reader.ReadString();
                             break;
                         case "url":
-                            favorite.Url = reader.ReadString();
+                            context.Current.Url = context.Reader.ReadString();
                             break;
                         case "vncAutoScale":
-                            favorite.VncAutoScale = reader.ReadBool();
+                            context.Current.VncAutoScale = context.Reader.ReadBool();
                             break;
                         case "vncViewOnly":
-                            favorite.VncViewOnly = reader.ReadBool();
+                            context.Current.VncViewOnly = context.Reader.ReadBool();
                             break;
                         case "vncDisplayNumber":
-                            favorite.VncDisplayNumber = reader.ReadInt();
+                            context.Current.VncDisplayNumber = context.Reader.ReadInt();
                             break;
                         case "vmrcadministratormode":
-                            favorite.VMRCAdministratorMode = reader.ReadBool();
+                            context.Current.VMRCAdministratorMode = context.Reader.ReadBool();
                             break;
                         case "vmrcreducedcolorsmode":
-                            favorite.VMRCReducedColorsMode = reader.ReadBool();
+                            context.Current.VMRCReducedColorsMode = context.Reader.ReadBool();
                             break;
                     }
                     break;
             }
-
-            return favorite;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Terminals.Configuration;
 
 namespace Terminals.Data
 {
@@ -61,7 +62,8 @@ namespace Terminals.Data
             result.DomainName = security.Domain;
             result.UserName = security.UserName;
             // because persistence and application masterpassword may differ, we have to go through encryption
-            result.Password = security.Password;
+            var resultSecurity = new FavoriteConfigurationSecurity(this.persistence, result);
+            resultSecurity.Password = security.Password;
             
             ICredentialSet credential = this.persistence.Credentials[security.Credential];
             if(credential != null)

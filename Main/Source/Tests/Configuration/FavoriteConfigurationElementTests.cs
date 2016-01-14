@@ -27,16 +27,16 @@ namespace Tests.Configuration
         [TestMethod]
         public void NewValue_SetGetPassword_ReturnsSavedValue()
         {
-            var favorite = this.CreateFavorite();
-            favorite.Password = EXPECTEDPASSWORD;
-            Assert.AreEqual(EXPECTEDPASSWORD, favorite.Password, MESSAGE);
+            var security = this.CreateFavoriteConfigurationSecurity();
+            security.Password = EXPECTEDPASSWORD;
+            Assert.AreEqual(EXPECTEDPASSWORD, security.Password, MESSAGE);
         }
 
         [TestMethod]
         public void WithCredential_GetPassword_ReturnsCredentialPassword()
         {
-            FavoriteConfigurationElement favorite = CreteFavoriteWithCredential();
-            Assert.AreEqual(EXPECTEDPASSWORD, favorite.Password, "Password is primary resolved from Credential.");
+            var security = this.CreateFavoriteConfigurationSecurity();
+            Assert.AreEqual(EXPECTEDPASSWORD, security.Password, "Password is primary resolved from Credential.");
         }
 
         [TestMethod]

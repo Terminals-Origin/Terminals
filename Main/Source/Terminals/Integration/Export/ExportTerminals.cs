@@ -98,7 +98,7 @@ namespace Terminals.Integration.Export
             if (context.IncludePasswords)
             {
                 context.WriteElementString("userName", favoriteSecurity.ResolveUserName());
-                context.WriteElementString("password", favorite.Password);
+                context.WriteElementString("password", favoriteSecurity.Password);
             }
         }
 

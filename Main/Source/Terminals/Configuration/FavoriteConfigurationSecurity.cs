@@ -28,6 +28,25 @@ namespace Terminals.Configuration
             }
         }
 
+        /// <summary>
+        /// Gets or sets the password String in not encrypted form
+        /// </summary>
+        internal String Password
+        {
+            get
+            {
+                ICredentialSet cred = this.credentials[this.favorite.Credential];
+                if (cred != null)
+                    return cred.Password;
+
+                return this.security.DecryptPassword(this.favorite.EncryptedPassword);
+            }
+            set
+            {
+                this.favorite.EncryptedPassword = this.security.EncryptPassword(value);
+            }
+        }
+
         internal string ResolveDomainName()
         {
             ICredentialSet cred = this.credentials[this.favorite.Credential];
