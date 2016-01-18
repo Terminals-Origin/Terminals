@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
+using Terminals.Configuration;
 using Terminals.Integration.Import.RdcMan;
 using Tests.FilePersisted;
 
@@ -96,9 +97,10 @@ namespace Tests.Integrations
         public void ImportFullFile_Server2_ImportsEmptyPassword()
         {
             FavoriteConfigurationElement server2 = this.ImportServer(1);
+            var security = new FavoriteConfigurationSecurity(this.Persistence, server2);
             const string MESSAGE = "Imported password of server2 should be empty string," +
                                    " because we cant import encrypted paswords";
-            Assert.AreEqual(string.Empty, server2.Password, MESSAGE);
+            Assert.AreEqual(string.Empty, security.Password, MESSAGE);
         }
 
         [TestCategory("NonSql")]
@@ -106,8 +108,14 @@ namespace Tests.Integrations
         [TestMethod]
         public void ImportFullFile_Server3_ImportClearTextPassword()
         {
-            FavoriteConfigurationElement server3 = this.ImportServer(2);
-            Assert.AreEqual("UserB", server3.Password, "Imported password of server3 should be UserB");
+            var security = this.ImportServerToSecurity(2);
+            Assert.AreEqual("UserB", security.Password, "Imported password of server3 should be UserB");
+        }
+
+        private FavoriteConfigurationSecurity ImportServerToSecurity(int index)
+        {
+            FavoriteConfigurationElement imported = this.ImportServer(index);
+            return new FavoriteConfigurationSecurity(this.Persistence, imported);
         }
 
         private FavoriteConfigurationElement ImportServer(int index)
