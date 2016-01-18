@@ -81,7 +81,7 @@ namespace Terminals.Integration.Import
                 providers.Add(ImportRDP.FILE_EXTENSION, new ImportRDP());
                 providers.Add(ImportvRD.FILE_EXTENSION, new ImportvRD(this.persistence));
                 providers.Add(ImportMuRD.FILE_EXTENSION, new ImportMuRD());
-                providers.Add(ImportRdcMan.FILE_EXTENSION, new ImportRdcMan());
+                providers.Add(ImportRdcMan.FILE_EXTENSION, new ImportRdcMan(this.persistence));
             }
         }
 

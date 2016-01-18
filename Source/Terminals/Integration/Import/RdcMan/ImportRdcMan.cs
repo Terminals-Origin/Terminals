@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Terminals.Data;
 
 namespace Terminals.Integration.Import.RdcMan
 {
@@ -15,6 +16,12 @@ namespace Terminals.Integration.Import.RdcMan
         private const string NAME = "Microsoft Remote desktop connetion manager 2.2";
 
         internal const string FILE_EXTENSION = ".rdg";
+        private readonly IPersistence persistence;
+
+        public ImportRdcMan(IPersistence persistence)
+        {
+            this.persistence = persistence;
+        }
 
         public string Name { get { return NAME; } }
 
@@ -33,13 +40,13 @@ namespace Terminals.Integration.Import.RdcMan
             }
         }
 
-        private static List<FavoriteConfigurationElement> TryImport(string fileName)
+        private List<FavoriteConfigurationElement> TryImport(string fileName)
         {
             var document = new Document(fileName);
             if (!document.IsVersion22)
                 throw new NotSupportedException("Rdc manager supports only version 2.2 import");
 
-            var context = new ImportContext(document.Groups, document.Servers);
+            var context = new ImportContext(this.persistence, document.Groups, document.Servers);
             context.ImportContent();
             return context.Imported;
         }
