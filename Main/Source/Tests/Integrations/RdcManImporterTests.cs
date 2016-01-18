@@ -24,9 +24,15 @@ namespace Tests.Integrations
 
         private const string SERVER_NAME2 = "ServerName2";
 
-        private readonly ImportRdcMan importer = new ImportRdcMan();
+        private ImportRdcMan importer;
 
         public TestContext TestContext { get; set; }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            this.importer = new ImportRdcMan(this.Persistence);
+        }
 
         [TestCategory("NonSql")]
         [TestMethod]

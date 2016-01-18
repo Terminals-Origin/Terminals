@@ -1,5 +1,7 @@
 using System;
 using System.Drawing;
+using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Integration.Import.RdcMan
 {
@@ -9,9 +11,12 @@ namespace Terminals.Integration.Import.RdcMan
 
         private readonly FavoriteConfigurationElement favorite;
 
-        public FavoriteImporter(Server server)
+        private readonly IPersistence persistence;
+
+        public FavoriteImporter(IPersistence persistence, Server server)
         {
             this.server = server;
+            this.persistence = persistence;
             this.favorite = new FavoriteConfigurationElement();
         }
 
@@ -59,7 +64,8 @@ namespace Terminals.Integration.Import.RdcMan
             LogonCredentials credentials = this.server.LogonCredentials;
             this.favorite.DomainName = credentials.Domain;
             this.favorite.UserName = credentials.UserName;
-            this.favorite.Password = credentials.Password;
+            var favoriteSecurity = new FavoriteConfigurationSecurity(this.persistence, this.favorite);
+            favoriteSecurity.Password = credentials.Password;
         }
 
         private void ImportGatewaySettings()
