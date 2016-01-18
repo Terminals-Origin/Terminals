@@ -1622,28 +1622,5 @@ namespace Terminals
             }
         }
         #endregion
-
-        #region To be extracted
-
-        /// <summary>
-        /// Gets or sets the password String in not encrypted form
-        /// </summary>
-        internal String Password
-        {
-            get
-            {
-                ICredentialSet cred = this.credentials[Credential];
-                if (cred != null)
-                    return cred.Password;
-
-                return this.persistenceSecurity.DecryptPassword(EncryptedPassword);
-            }
-            set
-            {
-                EncryptedPassword = this.persistenceSecurity.EncryptPassword(value);
-            }
-        }
-
-        #endregion
     }
 }

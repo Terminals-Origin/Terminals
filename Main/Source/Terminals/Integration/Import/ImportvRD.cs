@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.IO;
 using System.Xml.Serialization;
+using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Forms;
 using vRdImport;
@@ -176,10 +177,10 @@ namespace Terminals.Integration.Import
             return coll;
         }
 
-        private static FavoriteConfigurationElement ConvertVRDConnectionToLocal(Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials, vRdImport.Connection con)
+        private FavoriteConfigurationElement ConvertVRDConnectionToLocal(Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials, vRdImport.Connection con)
         {
             FavoriteConfigurationElement fav = new FavoriteConfigurationElement();
-
+            var security = new FavoriteConfigurationSecurity(this.persistence, fav);
             fav.ServerName = con.ServerName;
 
             int p = 3389;
@@ -191,7 +192,7 @@ namespace Terminals.Integration.Import
                 fav.Credential = credentials[con.Credentials].Name;
                 fav.UserName = credentials[con.Credentials].UserName;
                 fav.DomainName = credentials[con.Credentials].Domain;
-                fav.Password = credentials[con.Credentials].Password;
+                security.Password = credentials[con.Credentials].Password;
             }
 
             switch (con.ColorDepth)
