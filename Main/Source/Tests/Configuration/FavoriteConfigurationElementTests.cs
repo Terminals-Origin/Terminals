@@ -100,7 +100,7 @@ namespace Tests.Configuration
 
         private FavoriteConfigurationElement CreateFavorite()
         {
-            return new FavoriteConfigurationElement(this.Persistence.Security, this.Persistence.Credentials);
+            return new FavoriteConfigurationElement();
         }
 
         private void CreateCredentialInPersistence()
