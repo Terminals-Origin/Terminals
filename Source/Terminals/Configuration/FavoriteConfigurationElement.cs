@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using Terminals.Configuration;
 using Terminals.Converters;
-using Terminals.Data;
 
 namespace Terminals
 {
@@ -19,23 +18,13 @@ namespace Terminals
         private const string DEFAULT_CURSORCOLOR = "Green";
         private const string DEFAULT_TEXTCOLOR = "White";
 
-        private readonly PersistenceSecurity persistenceSecurity;
-
-        private readonly ICredentials credentials;
-
         public FavoriteConfigurationElement(String name): this()
         {
             Name = name;
         }
 
-        public FavoriteConfigurationElement() : this(Persistence.Instance.Security, Persistence.Instance.Credentials)
+        public FavoriteConfigurationElement()
         {
-        }
-
-        internal FavoriteConfigurationElement(PersistenceSecurity persistenceSecurity, ICredentials credentials)
-        {
-            this.persistenceSecurity = persistenceSecurity;
-            this.credentials = credentials;
         }
 
         public override String ToString()
