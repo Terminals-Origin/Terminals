@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
@@ -52,7 +53,7 @@ namespace Terminals
         {
             this.dataGridFavorites.AutoGenerateColumns = false; // because of designer
             this.bsFavorites.DataSource = ConvertFavoritesToViewModel(PersistedFavorites.ToListOrderedByDefaultSorting());
-            string sortingProperty = FavoriteConfigurationElement.GetDefaultSortPropertyName();
+            string sortingProperty = new FavoriteSorting().GetDefaultSortPropertyName();
             DataGridViewColumn sortedColumn = this.dataGridFavorites.FindColumnByPropertyName(sortingProperty);
             sortedColumn.HeaderCell.SortGlyphDirection = SortOrder.Ascending;
             this.dataGridFavorites.DataSource = this.bsFavorites;

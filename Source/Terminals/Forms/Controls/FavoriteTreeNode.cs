@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Forms.Controls
@@ -25,7 +26,8 @@ namespace Terminals.Forms.Controls
         /// <returns>result of CompareTo method</returns>
         internal int CompareByDefaultFavoriteSorting(IFavorite target)
         {
-            return this.Favorite.CompareByDefaultSorting(target);
+            var sorting = new FavoriteSorting();
+            return sorting.CompareByDefaultSorting(this.Favorite, target);
         }
 
         internal bool HasFavoriteIn(IEnumerable<IFavorite> target)

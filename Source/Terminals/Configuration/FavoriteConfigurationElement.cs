@@ -38,42 +38,6 @@ namespace Terminals
         }
 
         /// <summary>
-        /// Returns text compareto method values selecting property to compare
-        /// depending on Settings default sort property value
-        /// </summary>
-        /// <param name="target">not null favorite to compare with</param>
-        /// <returns>result of String CompareTo method</returns>
-        internal int CompareByDefaultSorting(FavoriteConfigurationElement target)
-        {
-            switch (Settings.Instance.DefaultSortProperty)
-            {
-                case SortProperties.ServerName:
-                    return this.ServerName.CompareTo(target.ServerName);
-                case SortProperties.Protocol:
-                    return this.Protocol.CompareTo(target.Protocol);
-                case SortProperties.ConnectionName:
-                    return this.Name.CompareTo(target.Name);
-                default:
-                    return -1;
-            }
-        }
-
-        internal static string GetDefaultSortPropertyName()
-        {
-            switch (Settings.Instance.DefaultSortProperty)
-            {
-                case SortProperties.ServerName:
-                    return "ServerName";
-                case SortProperties.Protocol:
-                    return "Protocol";
-                case SortProperties.ConnectionName:
-                    return "Name";
-                default:
-                    return String.Empty;
-            }
-        }
-
-        /// <summary>
         /// Gets not null collection of tags obtained from "Tags" property.
         /// </summary>
         public List<String> TagList
