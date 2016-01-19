@@ -5,7 +5,7 @@ namespace Terminals.Data
     /// <summary>
     /// Base user authentication values. These are used when ever stored password is required.
     /// </summary>
-    internal interface ICredentialBase
+    public interface ICredentialBase
     {
         /// <summary>
         /// Gets or sets the user name in not encrypted form. This value isn't stored.
