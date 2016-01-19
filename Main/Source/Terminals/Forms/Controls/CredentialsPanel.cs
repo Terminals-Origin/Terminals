@@ -41,6 +41,7 @@ namespace Terminals.Forms.Controls
         internal CredentialsPanel()
         {
             InitializeComponent();
+            this.revealPwdButton.Click += this.RevealOrHidePwd;
         }
 
         internal void SetUserNameError(ErrorProvider errorProvider, string errroMessage)
@@ -97,10 +98,7 @@ namespace Terminals.Forms.Controls
         private void LoadPassword()
         {
             this.PasswordLoaded = !string.IsNullOrEmpty(this.favoritePassword);
-            if (this.PasswordLoaded)
-                this.txtPassword.Text = HIDDEN_PASSWORD;
-            else
-                this.txtPassword.Text = string.Empty;
+            this.txtPassword.Text = this.favoritePassword;
         }
 
         internal void SaveTo(ICredentialBase security)
@@ -121,6 +119,21 @@ namespace Terminals.Forms.Controls
                 security.Password = this.txtPassword.Text;
             else
                 security.Password = this.favoritePassword;
+        }
+
+        internal void RevealOrHidePwd(object sender, EventArgs e)
+        {
+
+            if (this.revealPwdButton.ImageIndex==1)
+            {
+                this.txtPassword.PasswordChar = '*';
+                this.revealPwdButton.ImageIndex = 0;
+            }
+            else
+            {
+                this.txtPassword.PasswordChar = '\0';
+                this.revealPwdButton.ImageIndex = 1;
+            }
         }
     }
 }
