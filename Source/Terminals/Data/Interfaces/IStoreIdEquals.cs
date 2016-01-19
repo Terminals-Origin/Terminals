@@ -3,7 +3,7 @@ namespace Terminals.Data
     /// <summary>
     /// Allows compare by store Id method
     /// </summary>
-    internal interface IStoreIdEquals<in TItemType>
+    public interface IStoreIdEquals<in TItemType>
     {
         /// <summary>
         /// Because we don't want to replace Equals method (not possible in entity framework),

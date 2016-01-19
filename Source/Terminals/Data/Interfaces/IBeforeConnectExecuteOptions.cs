@@ -2,7 +2,7 @@ using System;
 
 namespace Terminals.Data
 {
-    internal interface IBeforeConnectExecuteOptions
+    public interface IBeforeConnectExecuteOptions
     {
         Boolean Execute { get; set; }
         String Command { get; set; }

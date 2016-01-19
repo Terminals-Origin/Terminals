@@ -7,7 +7,7 @@ namespace Terminals.Data
     /// <summary>
     /// Connection properties persisted for future reuse
     /// </summary>
-    internal interface IFavorite : IStoreIdEquals<IFavorite>, INamedItem
+    public interface IFavorite : IStoreIdEquals<IFavorite>, INamedItem
     {
         /// <summary>
         /// Gets the unique identifier of this instance in associated store

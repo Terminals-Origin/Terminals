@@ -6,7 +6,7 @@ namespace Terminals.Data
     /// <summary>
     /// Container of stored user authentication.
     /// </summary>
-    internal interface ICredentialSet : ICredentialBase
+    public interface ICredentialSet : ICredentialBase
     {
         /// <summary>
         /// Gets or sets the unique identifier of this instance. This value should be unique.

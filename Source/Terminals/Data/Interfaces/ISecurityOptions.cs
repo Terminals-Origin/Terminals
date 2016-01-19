@@ -2,7 +2,7 @@ using System;
 
 namespace Terminals.Data
 {
-    internal interface ISecurityOptions : ICredentialBase
+    public interface ISecurityOptions : ICredentialBase
     {
         Guid Credential { get; set; }
 
