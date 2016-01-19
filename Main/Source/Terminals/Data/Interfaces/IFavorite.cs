@@ -96,13 +96,5 @@ namespace Terminals.Data
         /// Gets label, which represents this instance detail information.
         /// </summary>
         string GetToolTipText();
-
-        /// <summary>
-        /// Returns text compare to method values selecting property to compare
-        /// depending on Settings default sort property value
-        /// </summary>
-        /// <param name="target">not null favorite to compare with</param>
-        /// <returns>result of String CompareTo method</returns>
-        int CompareByDefaultSorting(IFavorite target);
     }
 }

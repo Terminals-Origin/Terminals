@@ -230,11 +230,6 @@ namespace Terminals.Data.DB
             return Favorite.GetToolTipText(this);
         }
 
-        public int CompareByDefaultSorting(IFavorite target)
-        {
-            return Favorite.CompareByDefaultSorting(this, target);
-        }
-
         bool IStoreIdEquals<IFavorite>.StoreIdEquals(IFavorite oponent)
         {
             var oponentFavorite = oponent as DbFavorite;

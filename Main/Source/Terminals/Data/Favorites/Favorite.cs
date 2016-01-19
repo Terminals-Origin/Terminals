@@ -279,32 +279,6 @@ namespace Terminals.Data
         }
 
         /// <summary>
-        /// Returns text compare to method values selecting property to compare
-        /// depending on Settings default sort property value
-        /// </summary>
-        /// <param name="target">not null favorite to compare with</param>
-        /// <returns>result of String CompareTo method</returns>
-        int IFavorite.CompareByDefaultSorting(IFavorite target)
-        {
-            return CompareByDefaultSorting(this, target);
-        }
-
-        internal static int CompareByDefaultSorting(IFavorite source, IFavorite target)
-        {
-            switch (Settings.Instance.DefaultSortProperty)
-            {
-                case SortProperties.ServerName:
-                    return source.ServerName.CompareTo(target.ServerName);
-                case SortProperties.Protocol:
-                    return source.Protocol.CompareTo(target.Protocol);
-                case SortProperties.ConnectionName:
-                    return source.Name.CompareTo(target.Name);
-                default:
-                    return -1;
-            }
-        }
-
-        /// <summary>
         /// Replaces stored password by new one created from newKeyMaterial in underlying store.
         /// </summary>
         /// <param name="newKeyMaterial">New shared key used to encrypt passwords in the store</param>

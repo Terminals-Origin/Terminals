@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using Terminals.Configuration;
 
 namespace Terminals
 {
@@ -114,37 +111,6 @@ namespace Terminals
             }
 
             return favorites;
-        }
-
-        internal SortableList<FavoriteConfigurationElement> ToListOrderedByDefaultSorting()
-        {
-            var source = this.ToList();
-            return OrderByDefaultSorting(source);
-        }
-
-        internal static SortableList<FavoriteConfigurationElement> OrderByDefaultSorting(
-            List<FavoriteConfigurationElement> source)
-        {
-            IOrderedEnumerable<FavoriteConfigurationElement> sorted;
-            switch (Settings.Instance.DefaultSortProperty)
-            {
-                case SortProperties.ServerName:
-                    sorted = source.OrderBy(favorite => favorite.ServerName)
-                        .ThenBy(favorite => favorite.Name);
-                    break;
-
-                case SortProperties.Protocol:
-                    sorted = source.OrderBy(favorite => favorite.Protocol)
-                        .ThenBy(favorite => favorite.Name);
-                    break;
-                case SortProperties.ConnectionName:
-                    sorted = source.OrderBy(favorite => favorite.Name);
-                    break;
-                default:
-                   return new SortableList<FavoriteConfigurationElement>(source);
-            }
-
-            return new SortableList<FavoriteConfigurationElement>(sorted);
         }
     }
 }
