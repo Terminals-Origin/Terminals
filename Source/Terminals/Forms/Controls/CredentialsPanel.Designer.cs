@@ -28,12 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CredentialsPanel));
             this.cmbUsers = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbDomains = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
+            this.revealPwdButtonImages = new System.Windows.Forms.ImageList(this.components);
+            this.revealPwdButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cmbUsers
@@ -91,13 +95,34 @@
             this.txtPassword.Location = new System.Drawing.Point(132, 69);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(351, 20);
+            this.txtPassword.Size = new System.Drawing.Size(327, 20);
             this.txtPassword.TabIndex = 11;
+            // 
+            // revealPwdButtonImages
+            // 
+            this.revealPwdButtonImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("revealPwdButtonImages.ImageStream")));
+            this.revealPwdButtonImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.revealPwdButtonImages.Images.SetKeyName(0, "eye_hide.png");
+            this.revealPwdButtonImages.Images.SetKeyName(1, "eye_reveal.png");
+            // 
+            // revealPwdButton
+            // 
+            this.revealPwdButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.revealPwdButton.FlatAppearance.BorderSize = 0;
+            this.revealPwdButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.revealPwdButton.ImageIndex = 0;
+            this.revealPwdButton.ImageList = this.revealPwdButtonImages;
+            this.revealPwdButton.Location = new System.Drawing.Point(458, 64);
+            this.revealPwdButton.Name = "revealPwdButton";
+            this.revealPwdButton.Size = new System.Drawing.Size(25, 30);
+            this.revealPwdButton.TabIndex = 12;
+            this.revealPwdButton.UseVisualStyleBackColor = false;
             // 
             // CredentialsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.revealPwdButton);
             this.Controls.Add(this.cmbUsers);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmbDomains);
@@ -119,5 +144,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.ImageList revealPwdButtonImages;
+        private System.Windows.Forms.Button revealPwdButton;
     }
 }
