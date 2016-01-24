@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SysConfig = System.Configuration;
 using System.Linq;
+using Terminals.Converters;
 
 namespace Terminals.Configuration
 {
@@ -39,7 +40,7 @@ namespace Terminals.Configuration
         private void AddTagToSettings(String tag)
         {
             if (AutoCaseTags)
-                tag = ToTitleCase(tag);
+                tag = TextConverter.ToTitleCase(tag);
             if (Tags.Contains(tag))
                 return;
 
@@ -72,7 +73,7 @@ namespace Terminals.Configuration
         private String DeleteTagFromSettings(String tagToDelete)
         {
             if (AutoCaseTags)
-                tagToDelete = ToTitleCase(tagToDelete);
+                tagToDelete = TextConverter.ToTitleCase(tagToDelete);
             GetSection().Tags.DeleteByName(tagToDelete);
             SaveImmediatelyIfRequested();
             return tagToDelete;
