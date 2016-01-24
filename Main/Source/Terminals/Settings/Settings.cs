@@ -979,11 +979,6 @@ namespace Terminals.Configuration
 
         #region Public
 
-        public static string ToTitleCase(string name)
-        {
-            return Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
-        }
-
         public void AddServerMRUItem(string name)
         {
             GetSection().ServersMRU.AddByName(name);

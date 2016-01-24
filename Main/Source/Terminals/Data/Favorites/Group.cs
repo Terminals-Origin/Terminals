@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using Terminals.Configuration;
+using Terminals.Converters;
 
 namespace Terminals.Data
 {
@@ -55,7 +56,7 @@ namespace Terminals.Data
             set
             {
                 if (Settings.Instance.AutoCaseTags)
-                    name = Settings.ToTitleCase(value);
+                    name = TextConverter.ToTitleCase(value);
                 name = value;
             }
         }

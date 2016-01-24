@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 
 namespace Terminals.Converters
 {
     internal static class TextConverter
     {
+        public static string ToTitleCase(string name)
+        {
+            return Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
+        }
+
         internal static String EncodeTo64(String toEncode)
         {
             if (String.IsNullOrEmpty(toEncode))

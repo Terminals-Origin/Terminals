@@ -1528,7 +1528,7 @@ namespace Terminals
             {
                 if (Settings.Instance.AutoCaseTags)
                 {
-                    this["tags"] = Settings.ToTitleCase(value);
+                    this["tags"] = TextConverter.ToTitleCase(value);
                 }
                 else
                 {
