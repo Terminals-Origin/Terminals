@@ -15,6 +15,28 @@ namespace Tests.Configuration
         private const string EXPECTEDPASSWORD = "EXPECTEDPASSWORD";
         const string CREDENTIAL_NAME = "CREDENTIAL_NAME";
         private const string EXPECTED_DOMAIN = "EXPECTED_DOMAIN";
+        private const string LOWER_CASE_TAGS = "TagA,TagB";
+
+        [TestMethod]
+        public void UpperCaseTagsWithoutAutoCase_SetTags_ReadsLowerCase()
+        {
+            Settings.Instance.AutoCaseTags = false;
+            this.AssertTagsWriteRead(LOWER_CASE_TAGS, LOWER_CASE_TAGS, "Without autocase setting, the tags arent otherwise affected.");
+        }
+
+        [TestMethod]
+        public void UpperCaseTagsWithAutoCase_SetTags_ReadsTitleLowerCase()
+        {
+            Settings.Instance.AutoCaseTags = true;
+            this.AssertTagsWriteRead(LOWER_CASE_TAGS, "Taga,Tagb", "With autocase setting, the tags have to reflect the setting.");
+        }
+
+        private void AssertTagsWriteRead(string tagsToAssign, string expectedTags, string assertMessage)
+        {
+            var favorite = this.CreateFavorite();
+            favorite.Tags = tagsToAssign;
+            Assert.AreEqual(expectedTags, favorite.Tags, assertMessage);
+        }
 
         [TestMethod]
         public void NewValue_SetGetTsgwPassword_ReturnsSavedValue()
