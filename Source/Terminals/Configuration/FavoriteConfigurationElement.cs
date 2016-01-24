@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using Terminals.Configuration;
 using Terminals.Converters;
 
 namespace Terminals
@@ -35,27 +34,6 @@ namespace Terminals
 
             return String.Format(@"Favorite:{0}({1})={2}{3}:{4}",
                 this.Name, this.Protocol, domain, this.ServerName, this.Port);
-        }
-
-        /// <summary>
-        /// Gets not null collection of tags obtained from "Tags" property.
-        /// </summary>
-        public List<String> TagList
-        {
-            get
-            {
-                List<String> tagList = new List<String>();
-                String[] splittedTags = Tags.Split(',');
-                if (!((splittedTags.Length == 1) && (String.IsNullOrEmpty(splittedTags[0]))))
-                {
-                    foreach (String tag in splittedTags)
-                    {
-                        tagList.Add(tag);
-                    }
-                }
-
-                return tagList;
-            }
         }
 
         public Int32 PerformanceFlags
@@ -1526,14 +1504,7 @@ namespace Terminals
             }
             set
             {
-                if (Settings.Instance.AutoCaseTags)
-                {
-                    this["tags"] = TextConverter.ToTitleCase(value);
-                }
-                else
-                {
-                    this["tags"] = value;
-                }
+                this["tags"] = value;
             }
         }
 

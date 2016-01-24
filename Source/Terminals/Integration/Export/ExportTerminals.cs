@@ -3,6 +3,7 @@ using System.Text;
 using System.Xml;
 using Terminals.Configuration;
 using Terminals.Connections;
+using Terminals.Converters;
 using Terminals.Data;
 using Terminals.Integration.Import;
 
@@ -81,7 +82,8 @@ namespace Terminals.Integration.Export
             w.WriteElementString("url", favorite.Url);
             w.WriteElementString("name", favorite.Name);
             w.WriteElementString("notes", favorite.Notes);
-            w.WriteElementString("tags", favorite.Tags);
+            var tagsConverter = new TagsConverter();
+            w.WriteElementString("tags", tagsConverter.ResolveTags(favorite));
             w.WriteElementString("newWindow", favorite.NewWindow.ToString());
             w.WriteElementString("toolBarIcon", favorite.ToolBarIcon);
             w.WriteElementString("bitmapPeristence", favorite.Protocol);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.Converters;
 using Terminals.Data;
 using Terminals.Data.Validation;
 
@@ -120,7 +121,9 @@ namespace Terminals.Forms.Controls
         private IEnumerable<string> SelectValidGroupNames(FavoriteConfigurationElement toImport)
         {
             var validator = new GroupNameValidator(this.persistence);
-            return toImport.TagList.Where(groupName => string.IsNullOrEmpty(validator.ValidateNameValue(groupName)));
+            var tagsConverter = new TagsConverter();
+            return tagsConverter.ResolveTagsList(toImport)
+                .Where(groupName => string.IsNullOrEmpty(validator.ValidateNameValue(groupName)));
         }
 
         internal static void AddFavoriteIntoGroups(IPersistence persistence, IFavorite toPerisist, IEnumerable<string> validGroupNames)
