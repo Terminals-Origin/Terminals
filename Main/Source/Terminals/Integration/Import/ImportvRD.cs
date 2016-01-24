@@ -8,6 +8,7 @@ using System.Security.Principal;
 using System.IO;
 using System.Xml.Serialization;
 using Terminals.Configuration;
+using Terminals.Converters;
 using Terminals.Data;
 using Terminals.Forms;
 using vRdImport;
@@ -142,6 +143,7 @@ namespace Terminals.Integration.Import
             vRDConfigurationFileConnectionsFolderFolder[] subFolders, String connectionTag,
             Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials)
         {
+            var tagsConverter = new TagsConverter();
             List<FavoriteConfigurationElement> coll = new List<FavoriteConfigurationElement>();
             //covert vrd connection
             if (connections != null && connections.Length > 0)
@@ -149,9 +151,8 @@ namespace Terminals.Integration.Import
                 foreach (Connection con in connections)
                 {
                     FavoriteConfigurationElement fav = ConvertVRDConnectionToLocal(credentials, con);
-                    if (connectionTag != null && connectionTag != String.Empty && !fav.TagList.Contains(connectionTag))
+                    if (connectionTag != null && connectionTag != String.Empty && !tagsConverter.ResolveTagsList(fav).Contains(connectionTag))
                     {
-                        fav.TagList.Add(connectionTag);
                         fav.Tags = connectionTag;
                     }
                     coll.Add(fav);

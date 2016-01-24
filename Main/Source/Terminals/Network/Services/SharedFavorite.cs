@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Terminals.Configuration;
+using Terminals.Converters;
 using Terminals.Data;
 
 namespace Terminals.Network {
@@ -58,7 +59,8 @@ namespace Terminals.Network {
             fav.ServerName = Favorite.ServerName;
             fav.DisableWallPaper = Favorite.DisableWallPaper;
             fav.Sounds = Favorite.Sounds;
-            fav.Tags = Favorite.Tags;
+            var tagsConverter = new TagsConverter();
+            fav.Tags = tagsConverter.ResolveTags(Favorite);
             fav.ConsoleBackColor = Favorite.ConsoleBackColor;
             fav.ConsoleCols = Favorite.ConsoleCols;
             fav.ConsoleCursorColor = Favorite.ConsoleCursorColor;

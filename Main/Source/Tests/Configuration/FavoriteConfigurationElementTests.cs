@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
 using Terminals.Configuration;
+using Terminals.Converters;
 using Terminals.Data;
 using Tests.FilePersisted;
 
@@ -35,7 +36,9 @@ namespace Tests.Configuration
         {
             var favorite = this.CreateFavorite();
             favorite.Tags = tagsToAssign;
-            Assert.AreEqual(expectedTags, favorite.Tags, assertMessage);
+            var converter = new TagsConverter();
+            string current = converter.ResolveTags(favorite);
+            Assert.AreEqual(expectedTags, current, assertMessage);
         }
 
         [TestMethod]

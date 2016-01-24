@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Terminals.Converters;
 using SysConfig = System.Configuration;
 
 namespace Terminals.Configuration
@@ -18,11 +19,14 @@ namespace Terminals.Configuration
         {
             List<FavoriteConfigurationElement> favorites = GetFavorites().ToList();
             List<string> deletedTags = new List<string>();
+            var tagsConverter = new TagsConverter();
             StartDelayedUpdate();
+
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
                 DeleteFavoriteFromSettings(favorite.Name);
-                List<string> difference = DeleteTagsFromSettings(favorite.TagList);
+                var tagList = tagsConverter.ResolveTagsList(favorite);
+                List<string> difference = DeleteTagsFromSettings(tagList);
                 deletedTags.AddRange(difference);
             }
 
@@ -38,7 +42,8 @@ namespace Terminals.Configuration
         private void AddFavorite(FavoriteConfigurationElement favorite)
         {
             AddFavoriteToSettings(favorite);
-            AddTagsToSettings(favorite.TagList);
+            var tagsConverter = new TagsConverter();
+            AddTagsToSettings(tagsConverter.ResolveTagsList(favorite));
         }
 
         /// <summary>
