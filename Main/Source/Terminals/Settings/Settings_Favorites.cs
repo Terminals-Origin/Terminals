@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Terminals.Converters;
-using SysConfig = System.Configuration;
 
 namespace Terminals.Configuration
 {
     internal partial class Settings
     {
+        private readonly TagsConverter tagsConverter = new TagsConverter();
+
         /// <summary>
         /// "Since version 2. only for updates. Use new persistence instead."
         /// </summary>
@@ -19,7 +20,7 @@ namespace Terminals.Configuration
         {
             List<FavoriteConfigurationElement> favorites = GetFavorites().ToList();
             List<string> deletedTags = new List<string>();
-            var tagsConverter = new TagsConverter();
+            
             StartDelayedUpdate();
 
             foreach (FavoriteConfigurationElement favorite in favorites)
@@ -42,7 +43,6 @@ namespace Terminals.Configuration
         private void AddFavorite(FavoriteConfigurationElement favorite)
         {
             AddFavoriteToSettings(favorite);
-            var tagsConverter = new TagsConverter();
             AddTagsToSettings(tagsConverter.ResolveTagsList(favorite));
         }
 
