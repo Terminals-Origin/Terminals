@@ -24,9 +24,8 @@ using IMsTscAxEvents_OnWarningEventHandler = AxMSTSCLib.IMsTscAxEvents_OnWarning
 
 namespace Terminals.Connections
 {
-    internal class RDPConnection : Connection, IConnectionExtra
+    internal class RDPConnection : Connection, IConnectionExtra, ISettingsConsumer
     {
-        private readonly Settings settings = Settings.Instance;
         private readonly ReconnectingControl reconecting = new ReconnectingControl();
         private readonly ConnectionStateDetector connectionStateDetector = new ConnectionStateDetector();
 
@@ -38,6 +37,8 @@ namespace Terminals.Connections
         public TerminalServer Server { get{ return this.service.Server; } }
 
         public bool IsTerminalServer { get { return this.service.IsTerminalServer; } }
+
+        public IConnectionSettings Settings { get; set; }
 
         #region IConnectionExtra
 
@@ -273,7 +274,7 @@ namespace Terminals.Connections
             this.connectionStateDetector.Stop();
             this.reconecting.Hide();
             if (this.reconecting.Disable)
-                this.settings.AskToReconnect = false;
+                this.Settings.AskToReconnect = false;
         }
 
         public override void ChangeDesktopSize(DesktopSize desktopSize)
@@ -656,7 +657,7 @@ namespace Terminals.Connections
             if (e.discReason != 2308 && e.discReason != 2)
                 return false;
 
-            return this.settings.AskToReconnect;
+            return this.Settings.AskToReconnect;
         }
 
         private void TryReconnect()

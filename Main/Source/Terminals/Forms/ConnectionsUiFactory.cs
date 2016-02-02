@@ -231,10 +231,15 @@ namespace Terminals.Forms
             }
         }
 
-        private static Connection CreateConnection(IFavorite favorite, TerminalTabControlItem terminalTabPage, MainForm parentForm)
+        private Connection CreateConnection(IFavorite favorite, TerminalTabControlItem terminalTabPage, MainForm parentForm)
         {
             Connection conn = ConnectionManager.Instance.CreateConnection(favorite);
             conn.Favorite = favorite;
+
+            var consumer = conn as ISettingsConsumer;
+            if (consumer != null)
+                consumer.Settings = this.settings;
+
             AssignControls(conn, terminalTabPage, parentForm);
             return conn;
         }
