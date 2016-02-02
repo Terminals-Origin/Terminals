@@ -7,7 +7,7 @@ using Terminals.Security;
 
 namespace Terminals.Configuration
 {
-    internal partial class Settings
+    internal partial class Settings : IConnectionSettings
     {
         public Version ConfigVersion
         {
@@ -1082,7 +1082,7 @@ namespace Terminals.Configuration
 
         #endregion
 
-        internal bool AskToReconnect
+        public bool AskToReconnect
         {
             get
             {
