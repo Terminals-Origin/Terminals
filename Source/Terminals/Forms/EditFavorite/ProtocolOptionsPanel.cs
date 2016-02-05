@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
+using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
 
@@ -118,6 +119,10 @@ namespace Terminals.Forms.EditFavorite
         {
             foreach (var protocolControl in this.Controls.OfType<IProtocolOptionsControl>())
             {
+                var consumer = protocolControl as ISettingsConsumer;
+                if (consumer != null)
+                    consumer.Settings = Settings.Instance;
+
                 protocolControl.LoadFrom(favorite);
             }
         }

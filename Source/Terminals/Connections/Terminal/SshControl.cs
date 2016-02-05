@@ -4,8 +4,10 @@ using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    internal partial class SshControl : UserControl, IProtocolOptionsControl
+    internal partial class SshControl : UserControl, IProtocolOptionsControl, ISettingsConsumer
     {
+        public IConnectionSettings Settings { get; set; }
+
         public SshControl()
         {
             InitializeComponent();
@@ -43,7 +45,7 @@ namespace Terminals.Forms.EditFavorite
         {
             try
             {
-                this.SSHPreferences.Keys = Settings.Instance.SSHKeys;
+                this.SSHPreferences.Keys = Settings.SSHKeys;
             }
             catch (System.Security.Cryptography.CryptographicException)
             {
@@ -51,5 +53,6 @@ namespace Terminals.Forms.EditFavorite
                     "A CryptographicException occured on decrypting SSH keys. Favorite credentials possibly encrypted by another user. Ignore and continue.");
             }
         }
+
     }
 }

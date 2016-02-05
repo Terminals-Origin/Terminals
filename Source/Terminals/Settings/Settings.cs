@@ -1055,13 +1055,6 @@ namespace Terminals.Configuration
 
                 return keys;
             }
-
-            ////set
-            ////{
-            ////    Configuration configuration = Config;
-            ////    configuration.Sections["SSH"] = value;
-            ////    if(!DelayConfigurationSave) configuration.Save();
-            ////}
         }
 
         internal FormsSection Forms
