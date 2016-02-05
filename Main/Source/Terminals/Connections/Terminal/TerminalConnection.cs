@@ -8,12 +8,14 @@ using WalburySoftware;
 
 namespace Terminals.Connections
 {
-    internal class TerminalConnection : Connection
+    internal class TerminalConnection : Connection, ISettingsConsumer
     {
         private Boolean connected = false;
         private TerminalEmulator term;
         private Socket client;
         private SSHClient.Protocol sshProtocol;
+
+        public IConnectionSettings Settings { get; set; }
 
         public override Boolean Connected
         {
@@ -119,7 +121,7 @@ namespace Terminals.Connections
 
             String key = String.Empty;
             var options = this.Favorite.ProtocolProperties as SshOptions;
-            SSHClient.KeyConfigElement keyConfigElement = Settings.Instance.SSHKeys.Keys[options.CertificateKey];
+            SSHClient.KeyConfigElement keyConfigElement = this.Settings.SSHKeys.Keys[options.CertificateKey];
 
             if (keyConfigElement != null)
                 key = keyConfigElement.Key;
