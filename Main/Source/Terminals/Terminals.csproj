@@ -227,7 +227,6 @@
     <Compile Include="Network\PortScanner\ServiceDetector.cs" />
     <Compile Include="Network\Tools\NettworkingTools.cs" />
     <Compile Include="Connections\Rdp\RdpClientErrorMessages.cs" />
-    <Compile Include="Converters\TextConverter.cs" />
     <Compile Include="Data\DataErrorEventArgs.cs" />
     <Compile Include="Data\DB\ApplyValueParams.cs" />
     <Compile Include="Data\DB\ByIdComparer.cs" />
@@ -636,15 +635,10 @@
     <Compile Include="Network\Services\CommandLineServer.cs" />
     <Compile Include="Network\Services\CommandLineService.cs" />
     <Compile Include="CommandLine\CommandLineArgs.cs" />
-    <Compile Include="Configuration\Colors.cs" />
-    <Compile Include="Configuration\DesktopSize.cs" />
-    <Compile Include="Configuration\RemoteSounds.cs" />
-    <Compile Include="Configuration\PerfomanceOptions.cs" />
     <Compile Include="Configuration\SpecialCommandConfigurationElement.cs" />
     <Compile Include="Configuration\SpecialCommandConfigurationElementCollection.cs" />
     <Compile Include="Configuration\FavoriteAliasConfigurationElement.cs" />
     <Compile Include="Configuration\FavoriteAliasConfigurationElementCollection.cs" />
-    <Compile Include="Configuration\FavoriteConfigurationElement.cs" />
     <Compile Include="Configuration\FavoriteConfigurationElementCollection.cs" />
     <Compile Include="Configuration\GroupConfigurationElement.cs" />
     <Compile Include="Configuration\GroupConfigurationElementCollection.cs" />
@@ -1033,7 +1027,6 @@
     <Compile Include="Wizard\FirstRunWizard.Designer.cs">
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
     </Compile>
-    <Compile Include="Converters\FontParser.cs" />
     <Compile Include="Forms\FormSettings.cs" />
     <Compile Include="Forms\InputBox.cs">
       <SubType>Form</SubType>

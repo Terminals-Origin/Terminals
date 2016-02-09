@@ -36,7 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,8 +50,21 @@
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Common.AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\Colors.cs" />
     <Compile Include="Connections\KnownConnectionConstants.cs" />
+    <Compile Include="Configuration\FavoriteConfigurationElement.cs" />
+    <Compile Include="Converters\FontParser.cs" />
+    <Compile Include="Configuration\PerfomanceOptions.cs" />
+    <Compile Include="Configuration\DesktopSize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Converters\TextConverter.cs" />
+    <Compile Include="Configuration\RemoteSounds.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SSHClient\SSHClient.csproj">
+      <Project>{6f218f20-ae4b-4966-a821-4bde214b8bff}</Project>
+      <Name>SSHClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
