@@ -8,23 +8,23 @@ namespace Terminals.Converters
     /// Converts font to string and vice versa in example form:
     /// "[Font: Name=Microsoft Sans Serif, Size=8.25, Units=3, GdiCharSet=0, GdiVerticalFont=False]"
     /// </summary>
-    internal class FontParser
+    public class FontParser
     {
         /// <summary>
         /// Gets the font used for new values. The values is regular "Courier New" with Size 10.
         /// </summary>
-        internal const String DEFAULT_FONT = "[Font: Name=Courier New, Size=10, Units=3, GdiCharSet=0, GdiVerticalFont=False, Style=0]";
+        public const String DEFAULT_FONT = "[Font: Name=Courier New, Size=10, Units=3, GdiCharSet=0, GdiVerticalFont=False, Style=0]";
 
         private const String FONT_FORMAT = "[Font: Name={0}, Size={1}, Units={2}, GdiCharSet={3}, GdiVerticalFont={4}, Style={5}]";
 
-        internal static String ToString(Font source)
+        public static String ToString(Font source)
         {
             String size = source.Size.ToString(CultureInfo.InvariantCulture); // to force always use dot, culture independent
             return String.Format(FONT_FORMAT, source.Name, size,
             (Byte)source.Unit, source.GdiCharSet, source.GdiVerticalFont, (Byte)source.Style);
         }
 
-        internal static Font FromString(String source)
+        public static Font FromString(String source)
         {
             Int32 sizeIndex = source.IndexOf("Size=", 0);
             String name = ParseName(source, sizeIndex);

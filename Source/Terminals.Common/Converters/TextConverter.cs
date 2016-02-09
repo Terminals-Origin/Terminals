@@ -4,14 +4,14 @@ using System.Threading;
 
 namespace Terminals.Converters
 {
-    internal static class TextConverter
+    public static class TextConverter
     {
         public static string ToTitleCase(string name)
         {
             return Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
         }
 
-        internal static String EncodeTo64(String toEncode)
+        public static String EncodeTo64(String toEncode)
         {
             if (String.IsNullOrEmpty(toEncode))
                 return null;
@@ -21,7 +21,7 @@ namespace Terminals.Converters
             return returnValue;
         }
 
-        internal static String DecodeFrom64(String encodedData)
+        public static String DecodeFrom64(String encodedData)
         {
             try
             {
