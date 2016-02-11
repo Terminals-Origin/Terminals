@@ -585,7 +585,6 @@
     <Compile Include="Data\Favorites\SecurityOptions.cs" />
     <Compile Include="Connections\Terminal\SshOptions.cs" />
     <Compile Include="Connections\VMRC\VMRCOptions.cs" />
-    <Compile Include="Connections\VNC\VncOptions.cs" />
     <Compile Include="Data\FilePersisted\FilePersistence.cs" />
     <Compile Include="Data\Interfaces\IFavorites.cs" />
     <Compile Include="Data\Interfaces\IGroups.cs" />
@@ -1817,6 +1816,10 @@
     <ProjectReference Include="..\Terminals.External\Terminals.External.csproj">
       <Project>{fcd4beca-9923-4bb0-bf57-8e8bcd0f784c}</Project>
       <Name>Terminals.External</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Vnc\Terminals.Plugins.Vnc.csproj">
+      <Project>{123562C5-8D66-4E30-9676-D47B4C03EE7F}</Project>
+      <Name>Terminals.Plugins.Vnc</Name>
     </ProjectReference>
     <ProjectReference Include="..\VncSharp\VncSharp.csproj">
       <Project>{E0DED53A-C3E1-441D-9AD2-766E49EAD417}</Project>
