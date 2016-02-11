@@ -1,13 +1,8 @@
-﻿using System.Xml;
+using System.Xml;
 
 namespace Terminals.Integration.Export
 {
-    internal interface ITerminalsOptionsExport
-    {
-        void ExportOptions(IExportOptionsContext context);
-    }
-
-    internal interface IExportOptionsContext
+    public interface IExportOptionsContext
     {
         FavoriteConfigurationElement Favorite { get; }
 
