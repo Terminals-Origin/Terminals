@@ -38,6 +38,12 @@
       <Component Id="VncSharpDll" Guid="C15DFED3-F776-43BE-90BE-483DE2D2E86E">
         <File Source="$(var.VncSharp.TargetPath)" KeyPath="yes" Checksum="yes"/>
       </Component>
+      <Component Id="PluginVnc" Guid="81889492-DDE0-4E9A-9F9F-08352410992D">
+        <File Source="$(var.Terminals.Plugins.Vnc.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="PluginWeb" Guid="5AB65AB2-1CD3-4A65-8021-BF758CC7725A">
+        <File Source="$(var.Terminals.Plugins.Web.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>
       <Component Id="zlibNetDll" Guid="3D6ADB9B-B6B1-4D4D-964D-6EE4B261720A">
         <File Source="$(var.zlib.net.TargetPath)" KeyPath="yes" Checksum="yes"/>
       </Component>

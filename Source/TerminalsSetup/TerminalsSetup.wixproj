@@ -119,6 +119,22 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Vnc\Terminals.Plugins.Vnc.csproj">
+      <Name>Terminals.Plugins.Vnc</Name>
+      <Project>{123562c5-8d66-4e30-9676-d47b4c03ee7f}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Web\Terminals.Plugins.Web.csproj">
+      <Name>Terminals.Plugins.Web</Name>
+      <Project>{278face8-1579-4c13-ae59-1b24a7091cfc}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Terminals\Terminals.csproj">
       <Name>Terminals</Name>
       <Project>{9ecb9fef-89d1-4144-bad4-5f3218545b2b}</Project>
