@@ -3,7 +3,7 @@ using Terminals.Configuration;
 
 namespace Terminals.Integration.Export
 {
-    public class ExportOptionsContext
+    public class ExportOptionsContext : IExportOptionsContext
     {
         private readonly FavoriteConfigurationSecurity favoriteSecurity;
 

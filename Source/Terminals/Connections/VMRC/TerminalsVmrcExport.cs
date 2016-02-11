@@ -4,7 +4,7 @@ namespace Terminals.Integration.Export
 {
     internal class TerminalsVmrcExport : ITerminalsOptionsExport
     {
-        public void ExportOptions(ExportOptionsContext context)
+        public void ExportOptions(IExportOptionsContext context)
         {
             if (context.Favorite.Protocol == VmrcConnectionPlugin.VMRC)
             {
