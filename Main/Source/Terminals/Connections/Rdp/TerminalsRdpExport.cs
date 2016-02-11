@@ -6,7 +6,7 @@ namespace Terminals.Integration.Export
 {
     internal class TerminalsRdpExport : ITerminalsOptionsExport
     {
-        public void ExportOptions(ExportOptionsContext context)
+        public void ExportOptions(IExportOptionsContext context)
         {
             if (context.Favorite.Protocol == KnownConnectionConstants.RDP)
             {
@@ -115,7 +115,7 @@ namespace Terminals.Integration.Export
             }
         }
 
-        private static void ExportRdpTsgwOptions(ExportOptionsContext context, FavoriteConfigurationElement favorite)
+        private static void ExportRdpTsgwOptions(IExportOptionsContext context, FavoriteConfigurationElement favorite)
         {
             if (favorite.TsgwUsageMethod != 0)
             {

@@ -2,7 +2,7 @@
 {
     internal class TerminalsConsoleExport
     {
-        public static void ExportConsoleOptions(ExportOptionsContext context, FavoriteConfigurationElement favorite)
+        public static void ExportConsoleOptions(IExportOptionsContext context, FavoriteConfigurationElement favorite)
         {
             context.WriteElementString("consolerows", favorite.ConsoleRows.ToString());
             context.WriteElementString("consolecols", favorite.ConsoleCols.ToString());
