@@ -230,6 +230,10 @@
       <Project>{1f720fd0-21a5-4bed-90f6-02cdabb8854d}</Project>
       <Name>Terminals.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Vnc\Terminals.Plugins.Vnc.csproj">
+      <Project>{123562C5-8D66-4E30-9676-D47B4C03EE7F}</Project>
+      <Name>Terminals.Plugins.Vnc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Terminals\Terminals.csproj">
       <Project>{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}</Project>
       <Name>Terminals</Name>
