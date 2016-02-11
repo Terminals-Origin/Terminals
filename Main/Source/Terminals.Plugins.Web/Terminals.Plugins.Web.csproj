@@ -36,17 +36,52 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="HTTPConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HttpConnectionPlugin.cs" />
+    <Compile Include="HttpsConnectionPlugin.cs" />
+    <Compile Include="MiniBrowser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MiniBrowser.Designer.cs">
+      <DependentUpon>MiniBrowser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WebOptions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HTTPConnection.resx">
+      <DependentUpon>HTTPConnection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MiniBrowser.resx">
+      <DependentUpon>MiniBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">
+      <Project>{1f720fd0-21a5-4bed-90f6-02cdabb8854d}</Project>
+      <Name>Terminals.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\treeIcon_http.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

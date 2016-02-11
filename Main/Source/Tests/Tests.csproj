@@ -234,6 +234,10 @@
       <Project>{123562C5-8D66-4E30-9676-D47B4C03EE7F}</Project>
       <Name>Terminals.Plugins.Vnc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Web\Terminals.Plugins.Web.csproj">
+      <Project>{278face8-1579-4c13-ae59-1b24a7091cfc}</Project>
+      <Name>Terminals.Plugins.Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Terminals\Terminals.csproj">
       <Project>{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}</Project>
       <Name>Terminals</Name>

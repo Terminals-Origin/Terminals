@@ -63,6 +63,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Vnc", "Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Web", "Terminals.Plugins.Web\Terminals.Plugins.Web.csproj", "{278FACE8-1579-4C13-AE59-1B24A7091CFC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -327,6 +329,8 @@ Global
 		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
 		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8} = {BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}
 		{D775E5FD-DDD7-46AA-8BEF-CC18BA0BB702} = {BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
+		{278FACE8-1579-4C13-AE59-1B24A7091CFC} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 22
@@ -399,9 +403,11 @@ Global
 		SccProjectName19 = Terminals.Common
 		SccLocalPath19 = Terminals.Common
 		SccProjectUniqueName20 = Terminals.Plugins.Vnc\\Terminals.Plugins.Vnc.csproj
+		SccProjectTopLevelParentUniqueName20 = Terminals.sln
 		SccProjectName20 = Terminals.Plugins.Vnc
 		SccLocalPath20 = Terminals.Plugins.Vnc
 		SccProjectUniqueName21 = Terminals.Plugins.Web\\Terminals.Plugins.Web.csproj
+		SccProjectTopLevelParentUniqueName21 = Terminals.sln
 		SccProjectName21 = Terminals.Plugins.Web
 		SccLocalPath21 = Terminals.Plugins.Web
 	EndGlobalSection

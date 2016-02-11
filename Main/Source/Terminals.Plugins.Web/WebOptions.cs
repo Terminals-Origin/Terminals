@@ -88,7 +88,7 @@ namespace Terminals.Data
             }
             catch (Exception ex)
             {
-                Logging.Error("Web URL Parse Failed", ex);
+                //Logging.Error("Web URL Parse Failed", ex);
                 return null;
             }
         }

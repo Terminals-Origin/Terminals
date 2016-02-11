@@ -198,8 +198,6 @@
     </Compile>
     <Compile Include="Connections\VMRC\VmrcConnectionPlugin.cs" />
     <Compile Include="Connections\VMRC\VmrcMenuVisitor.cs" />
-    <Compile Include="Connections\Web\HttpConnectionPlugin.cs" />
-    <Compile Include="Connections\Web\HttpsConnectionPlugin.cs" />
     <Compile Include="Data\FilePersisted\FavoritesFileSerializer.cs" />
     <Compile Include="Forms\Controls\ProtocolImageListBuilder.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
@@ -539,7 +537,6 @@
     <Compile Include="Data\Favorites\EmptyOptions.cs" />
     <Compile Include="Data\History\HistoryIntervals.cs" />
     <Compile Include="Data\History\HistoryInterval.cs" />
-    <Compile Include="Connections\Web\WebOptions.cs" />
     <Compile Include="Data\Interfaces\IConnectionHistory.cs" />
     <Compile Include="Data\Interfaces\IHistoryItem.cs" />
     <Compile Include="Data\Interfaces\ICredentials.cs" />
@@ -613,15 +610,6 @@
     <Compile Include="Configuration\MRUItemConfigurationElement.cs" />
     <Compile Include="Configuration\MRUItemConfigurationElementCollection.cs" />
     <Compile Include="Configuration\TerminalsConfigurationSection.cs" />
-    <Compile Include="Connections\Web\HTTPConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Connections\Web\MiniBrowser.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Connections\Web\MiniBrowser.Designer.cs">
-      <DependentUpon>MiniBrowser.cs</DependentUpon>
-    </Compile>
     <Compile Include="Connections\ICA\ICAConnection.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1130,10 +1118,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>AddConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Web\MiniBrowser.resx">
-      <DependentUpon>MiniBrowser.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Network\Tools\NetworkingToolsLayout.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkingToolsLayout.cs</DependentUpon>
@@ -1564,10 +1548,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>CaptureManagerLayout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Web\HTTPConnection.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>HTTPConnection.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Connections\Terminal\ConsolePreferences.resx">
       <DependentUpon>ConsolePreferences.cs</DependentUpon>
     </EmbeddedResource>
@@ -1786,6 +1766,10 @@
       <Project>{123562C5-8D66-4E30-9676-D47B4C03EE7F}</Project>
       <Name>Terminals.Plugins.Vnc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Web\Terminals.Plugins.Web.csproj">
+      <Project>{278face8-1579-4c13-ae59-1b24a7091cfc}</Project>
+      <Name>Terminals.Plugins.Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VncSharp\VncSharp.csproj">
       <Project>{E0DED53A-C3E1-441D-9AD2-766E49EAD417}</Project>
       <Name>VncSharp</Name>
@@ -1841,6 +1825,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Connections\VNC\" />
+    <Folder Include="Connections\Web\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
