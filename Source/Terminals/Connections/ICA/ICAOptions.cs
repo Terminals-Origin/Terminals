@@ -13,7 +13,7 @@ namespace Terminals.Data
         public bool EnableEncryption { get; set; }
         public string EncryptionLevel { get; set; }
 
-        internal override ProtocolOptions Copy()
+        public override ProtocolOptions Copy()
         {
             return new ICAOptions
                 {
@@ -27,7 +27,7 @@ namespace Terminals.Data
                 };
         }
 
-        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
+        public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
             this.ApplicationName = source.ICAApplicationName;
             this.ApplicationPath = source.ICAApplicationPath;
@@ -38,7 +38,7 @@ namespace Terminals.Data
             this.EncryptionLevel = source.IcaEncryptionLevel;
         }
 
-        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
+        public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
             destination.ICAApplicationName = this.ApplicationName;
             destination.ICAApplicationPath = this.ApplicationPath;

@@ -8,17 +8,17 @@ namespace Terminals.Data
     [Serializable]
     public class EmptyOptions : ProtocolOptions
     {
-        internal override ProtocolOptions Copy()
+        public override ProtocolOptions Copy()
         {
             return new EmptyOptions();
         }
 
-        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
+        public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
             // nothing to do
         }
 
-        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
+        public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
             // nothing to do
         }

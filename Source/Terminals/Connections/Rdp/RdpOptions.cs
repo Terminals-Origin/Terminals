@@ -44,7 +44,7 @@ namespace Terminals.Data
             set { this.tsGateway = value; }
         }
 
-        internal override ProtocolOptions Copy()
+        public override ProtocolOptions Copy()
         {
             return new RdpOptions
                 {
@@ -59,7 +59,7 @@ namespace Terminals.Data
                 };
         }
 
-        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
+        public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
             this.ConnectToConsole = source.ConnectToConsole;
             this.FullScreen = source.SecurityFullScreen;
@@ -72,7 +72,7 @@ namespace Terminals.Data
             this.UserInterface.FromConfigFavorite(source);
         }
 
-        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
+        public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
             destination.ConnectToConsole = this.ConnectToConsole;
             destination.SecurityFullScreen = this.FullScreen;
