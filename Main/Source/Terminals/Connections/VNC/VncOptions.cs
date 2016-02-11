@@ -9,7 +9,7 @@ namespace Terminals.Data
         public Boolean ViewOnly { get; set; }
         public Int32 DisplayNumber { get; set; }
 
-        internal override ProtocolOptions Copy()
+        public override ProtocolOptions Copy()
         {
             return new VncOptions
                 {
@@ -19,14 +19,14 @@ namespace Terminals.Data
                 };
         }
 
-        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
+        public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
             this.AutoScale = source.VncAutoScale;
             this.DisplayNumber = source.VncDisplayNumber;
             this.ViewOnly = source.VncViewOnly;
         }
 
-        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
+        public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
             destination.VncAutoScale = this.AutoScale;
             destination.VncDisplayNumber = this.DisplayNumber;

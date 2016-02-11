@@ -84,7 +84,7 @@ namespace Terminals.Data
             set { this.cursorColor  = value; }
         }
 
-        internal override ProtocolOptions Copy()
+        public override ProtocolOptions Copy()
         {
             return Copy2();
         }
@@ -102,7 +102,7 @@ namespace Terminals.Data
             };
         }
 
-        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
+        public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
             this.BackColor = source.ConsoleBackColor;
             this.TextColor = source.ConsoleTextColor;
@@ -112,7 +112,7 @@ namespace Terminals.Data
             this.Font = source.ConsoleFont;
         }
 
-        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
+        public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
             destination.ConsoleBackColor = this.BackColor;
             destination.ConsoleTextColor = this.TextColor;

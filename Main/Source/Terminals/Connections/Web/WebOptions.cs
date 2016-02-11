@@ -16,7 +16,7 @@ namespace Terminals.Data
         /// </summary>
         public string RelativeUrl { get; set; }
 
-        internal override ProtocolOptions Copy()
+        public override ProtocolOptions Copy()
         {
             return new WebOptions
                 {
@@ -24,12 +24,12 @@ namespace Terminals.Data
                 };
         }
 
-        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
+        public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
             UpdateMyFavoriteUrl(destination, source.Url);
         }
 
-        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
+        public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
             destination.Url = ExtractAbsoluteUrl(source);
         }

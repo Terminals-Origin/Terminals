@@ -56,9 +56,19 @@
     <Compile Include="Converters\FontParser.cs" />
     <Compile Include="Configuration\PerfomanceOptions.cs" />
     <Compile Include="Configuration\DesktopSize.cs" />
+    <Compile Include="Data\Interfaces\IBeforeConnectExecuteOptions.cs" />
+    <Compile Include="Data\Interfaces\ICredentialBase.cs" />
+    <Compile Include="Data\Interfaces\ICredentialSet.cs" />
+    <Compile Include="Data\Interfaces\IDisplayOptions.cs" />
+    <Compile Include="Data\Interfaces\IFavorite.cs" />
+    <Compile Include="Data\Interfaces\IGroup.cs" />
+    <Compile Include="Data\Interfaces\INamedItem.cs" />
+    <Compile Include="Data\Interfaces\ISecurityOptions.cs" />
+    <Compile Include="Data\Interfaces\IStoreIdEquals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Converters\TextConverter.cs" />
     <Compile Include="Configuration\RemoteSounds.cs" />
+    <Compile Include="Data\Favorites\ProtocolOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SSHClient\SSHClient.csproj">

@@ -42,7 +42,7 @@ namespace Terminals.Data
             set { this.console = value; }
         }
 
-        internal override ProtocolOptions Copy()
+        public override ProtocolOptions Copy()
         {
             return new SshOptions
                 {
@@ -54,7 +54,7 @@ namespace Terminals.Data
                 };
         }
 
-        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
+        public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
             this.SSH1 = source.SSH1;
             this.AuthMethod = source.AuthMethod;
@@ -62,7 +62,7 @@ namespace Terminals.Data
             this.SSHKeyFile = source.SSHKeyFile;
         }
 
-        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
+        public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
             destination.SSH1 = this.SSH1;
             destination.AuthMethod = this.AuthMethod;

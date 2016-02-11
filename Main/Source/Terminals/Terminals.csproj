@@ -235,7 +235,6 @@
     <Compile Include="Data\DB\ServerInstancesSearcher.cs" />
     <Compile Include="Data\FilePersisted\IFavoriteGroups.cs" />
     <Compile Include="Data\IDataFileWatcher.cs" />
-    <Compile Include="Data\Interfaces\INamedItem.cs" />
     <Compile Include="Data\Validation\CredentialSetMetadata.cs" />
     <Compile Include="Data\Validation\CustomValidationRules.cs" />
     <Compile Include="Data\Validation\DbBeforeConnectExecuteMetadata.cs" />
@@ -515,7 +514,6 @@
     <Compile Include="Data\History\Moment.cs" />
     <Compile Include="Data\History\IDateService.cs" />
     <Compile Include="Data\Interfaces\IPersistedSecurity.cs" />
-    <Compile Include="Data\Interfaces\IStoreIdEquals.cs" />
     <Compile Include="Data\PersistenceSecurity.cs" />
     <Compile Include="Data\DB\SqlPersistenceSecurity.cs" />
     <Compile Include="Forms\AboutForm.cs">
@@ -562,20 +560,12 @@
     <Compile Include="Data\Favorites\EmptyOptions.cs" />
     <Compile Include="Data\History\HistoryIntervals.cs" />
     <Compile Include="Data\History\HistoryInterval.cs" />
-    <Compile Include="Data\Interfaces\IBeforeConnectExecuteOptions.cs" />
-    <Compile Include="Data\Interfaces\IDisplayOptions.cs" />
-    <Compile Include="Data\Interfaces\ISecurityOptions.cs" />
-    <Compile Include="Data\Favorites\ProtocolOptions.cs" />
     <Compile Include="Connections\Web\WebOptions.cs" />
     <Compile Include="Data\Interfaces\IConnectionHistory.cs" />
-    <Compile Include="Data\Interfaces\ICredentialBase.cs" />
     <Compile Include="Data\Interfaces\IHistoryItem.cs" />
     <Compile Include="Data\Interfaces\ICredentials.cs" />
-    <Compile Include="Data\Interfaces\ICredentialSet.cs" />
     <Compile Include="Data\FilePersisted\FavoritesFactory.cs" />
     <Compile Include="Data\Interfaces\IFactory.cs" />
-    <Compile Include="Data\Interfaces\IFavorite.cs" />
-    <Compile Include="Data\Interfaces\IGroup.cs" />
     <Compile Include="Data\ModelConverterV1ToV2.cs" />
     <Compile Include="Data\ModelConverterV2ToV1.cs" />
     <Compile Include="Connections\Terminal\ConsoleOptions.cs" />
