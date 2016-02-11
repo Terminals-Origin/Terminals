@@ -1,6 +1,6 @@
 namespace Terminals.Connections
 {
-    internal interface IExtraDetection
+    public interface IExtraDetection
     {
         /// <summary>
         /// Returns true, if extra detection is valid service on the target ipAddress and port;

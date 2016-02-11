@@ -181,14 +181,9 @@
     <Compile Include="Connections\DummyPlugin.cs" />
     <Compile Include="Connections\ICA\ICAConnectionPlugin.cs" />
     <Compile Include="Connections\IConnectionManager.cs" />
-    <Compile Include="Connections\IConnectionPlugin.cs" />
-    <Compile Include="Connections\IExtraDetection.cs" />
-    <Compile Include="Connections\IToolbarExtenderFactory.cs" />
-    <Compile Include="Connections\IOptionsExporterFactory.cs" />
     <Compile Include="Connections\Rdp\ConnectionStateDetector.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\IConnectionExtra.cs" />
-    <Compile Include="Connections\IConnectionMainView.cs" />
     <Compile Include="Integration\Export\ExportOptionsContext.cs" />
     <Compile Include="Connections\Rdp\FakeRdpConnection.cs">
       <SubType>Component</SubType>
@@ -201,15 +196,8 @@
     <Compile Include="Connections\VMRC\FakeVmrcConnection.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Connections\VMRC\ICurrenctConnectionProvider.cs" />
-    <Compile Include="Connections\VMRC\IToolbarExtender.cs" />
     <Compile Include="Connections\VMRC\VmrcConnectionPlugin.cs" />
     <Compile Include="Connections\VMRC\VmrcMenuVisitor.cs" />
-    <Compile Include="Connections\VNC\FakeVNCConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Connections\VNC\VncConnectionPlugin.cs" />
-    <Compile Include="Connections\VNC\VncMenuVisitor.cs" />
     <Compile Include="Connections\Web\HttpConnectionPlugin.cs" />
     <Compile Include="Connections\Web\HttpsConnectionPlugin.cs" />
     <Compile Include="Data\FilePersisted\FavoritesFileSerializer.cs" />
@@ -221,7 +209,6 @@
     <Compile Include="Connections\Terminal\TerminalsSshExport.cs" />
     <Compile Include="Connections\Terminal\TerminalsTelnetExport.cs" />
     <Compile Include="Connections\VMRC\TerminalsVmrcExport.cs" />
-    <Compile Include="Connections\VNC\TerminalsVncExport.cs" />
     <Compile Include="Integration\Import\ImportTerminalsContext.cs" />
     <Compile Include="Network\PortScanner\ServiceDetector.cs" />
     <Compile Include="Network\Tools\NettworkingTools.cs" />
@@ -343,7 +330,6 @@
       <DependentUpon>GroupsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\EditFavorite\IProtocolObserver.cs" />
-    <Compile Include="Forms\EditFavorite\IProtocolOptionsControl.cs" />
     <Compile Include="Forms\EditFavorite\IRdpLocalResourcesControl.cs" />
     <Compile Include="Forms\EditFavorite\IValidatedProtocolControl.cs" />
     <Compile Include="Forms\EditFavorite\NotesControl.cs">
@@ -406,12 +392,6 @@
     </Compile>
     <Compile Include="Connections\VMRC\VmrcControl.Designer.cs">
       <DependentUpon>VmrcControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Connections\VNC\VncControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Connections\VNC\VncControl.Designer.cs">
-      <DependentUpon>VncControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Data\Validation\GroupNameValidator.cs" />
@@ -633,9 +613,6 @@
     <Compile Include="Configuration\MRUItemConfigurationElement.cs" />
     <Compile Include="Configuration\MRUItemConfigurationElementCollection.cs" />
     <Compile Include="Configuration\TerminalsConfigurationSection.cs" />
-    <Compile Include="Connections\Connection.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Connections\Web\HTTPConnection.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -648,7 +625,6 @@
     <Compile Include="Connections\ICA\ICAConnection.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Connections\IConnection.cs" />
     <Compile Include="Network\Tools\NetworkingToolsLayout.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -677,9 +653,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\VMRC\VMRCConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Connections\VNC\VNCConnection.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Data\DataFileWatcher.cs" />
@@ -1157,10 +1130,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>AddConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Connection.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>Connection.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Connections\Web\MiniBrowser.resx">
       <DependentUpon>MiniBrowser.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -1245,9 +1214,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Connections\VMRC\VmrcControl.resx">
       <DependentUpon>VmrcControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Connections\VNC\VncControl.resx">
-      <DependentUpon>VncControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\DefaultPasswordOptionPanel.resx">
       <DependentUpon>DefaultPasswordOptionPanel.cs</DependentUpon>
@@ -1873,7 +1839,9 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Connections\VNC\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

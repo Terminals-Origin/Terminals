@@ -6,7 +6,7 @@ using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
-using Terminals.Properties;
+using Terminals.Plugins.Vnc.Properties;
 using VncSharp;
 
 namespace Terminals.Connections.VNC
@@ -80,12 +80,12 @@ namespace Terminals.Connections.VNC
             catch (CryptographicException ce)
             {
                 // ignore this kind of exception, because of detecting with empty password may fail.
-                Logging.Info(string.Empty, ce);
+               // Logging.Info(string.Empty, ce);
                 return true;
             }
             catch (Exception exc)
             {
-                Logging.Error("VNC Port Scan Failed", exc);
+                //Logging.Error("VNC Port Scan Failed", exc);
                 return false;
             }
         }

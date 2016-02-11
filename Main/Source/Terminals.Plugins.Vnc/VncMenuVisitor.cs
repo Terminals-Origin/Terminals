@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Terminals.Plugins.Vnc.Properties;
 
 namespace Terminals.Connections
 {
@@ -63,7 +64,7 @@ namespace Terminals.Connections
                 this.sendCTRLESCKeysToolStripMenuItem,
                 this.sentCTRLALTDELETEKeysToolStripMenuItem
             });
-            this.vncActionButton.Image = Properties.Resources.vnc;
+            this.vncActionButton.Image = Resources.vnc;
             this.vncActionButton.ImageTransparentColor = Color.Magenta;
             this.vncActionButton.Name = VNC_ACTION_BUTTON_NAME;
             this.vncActionButton.Size = new Size(29, 22);

@@ -9,7 +9,7 @@ namespace Terminals.Connections
     /// Instead we close the current connection and create new instance.
     /// So there is no oposit to Connect method.
     /// </summary>
-    internal interface IConnection : IDisposable
+    public interface IConnection : IDisposable
     {
         IFavorite Favorite { get; }
 
