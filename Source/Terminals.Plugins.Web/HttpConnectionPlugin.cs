@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Terminals.Common;
 using Terminals.Common.Connections;
 using Terminals.Data;
-using Terminals.Properties;
+using Terminals.Plugins.Web.Properties;
 
 namespace Terminals.Connections.Web
 {
