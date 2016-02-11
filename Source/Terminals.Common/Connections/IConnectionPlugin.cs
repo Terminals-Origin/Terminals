@@ -5,7 +5,7 @@ using Terminals.Data;
 
 namespace Terminals.Connections
 {
-    internal interface IConnectionPlugin
+    public interface IConnectionPlugin
     {
         /// <summary>
         /// Gets valid network port number.

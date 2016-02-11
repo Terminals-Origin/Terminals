@@ -2,7 +2,7 @@ using System.Windows.Forms;
 
 namespace Terminals.Connections
 {
-    internal interface IToolbarExtender
+    public interface IToolbarExtender
     {
         /// <summary>
         /// Allowes customize toolbar buttons

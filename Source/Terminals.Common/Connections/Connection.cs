@@ -3,7 +3,7 @@ using Terminals.Data;
 
 namespace Terminals.Connections
 {
-    internal class Connection : Control, IConnection
+    public class Connection : Control, IConnection
     {
         public delegate void LogHandler(string entry);
 

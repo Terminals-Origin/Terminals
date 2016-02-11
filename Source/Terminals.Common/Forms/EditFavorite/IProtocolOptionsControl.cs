@@ -5,7 +5,7 @@ namespace Terminals.Forms.EditFavorite
     /// <summary>
     /// General contract for all protocol controls
     /// </summary>
-    internal interface IProtocolOptionsControl
+    public interface IProtocolOptionsControl
     {
         void LoadFrom(IFavorite favorite);
 

@@ -1,6 +1,6 @@
 namespace Terminals.Connections
 {
-    internal interface IToolbarExtenderFactory
+    public interface IToolbarExtenderFactory
     {
         IToolbarExtender CreateToolbarExtender(ICurrenctConnectionProvider provider);
     }

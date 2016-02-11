@@ -2,7 +2,7 @@ using Terminals.Integration.Export;
 
 namespace Terminals.Connections
 {
-    internal interface IOptionsExporterFactory
+    public interface IOptionsExporterFactory
     {
         ITerminalsOptionsExport CreateOptionsExporter();
     }

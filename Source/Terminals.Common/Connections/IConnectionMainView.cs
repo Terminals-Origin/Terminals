@@ -3,7 +3,7 @@ namespace Terminals.Connections
     /// <summary>
     /// Required interation by Connections
     /// </summary>
-    internal interface IConnectionMainView
+    public interface IConnectionMainView
     {
         string GetDesktopShare();
 
