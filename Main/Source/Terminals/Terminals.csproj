@@ -215,7 +215,6 @@
     <Compile Include="Data\FilePersisted\FavoritesFileSerializer.cs" />
     <Compile Include="Forms\Controls\ProtocolImageListBuilder.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
-    <Compile Include="Integration\Export\ITerminalsOptionsExport.cs" />
     <Compile Include="Integration\Export\TerminalsConsoleExport.cs" />
     <Compile Include="Connections\ICA\TerminalsIcaExport.cs" />
     <Compile Include="Connections\Rdp\TerminalsRdpExport.cs" />
