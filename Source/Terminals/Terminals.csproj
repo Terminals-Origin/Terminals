@@ -179,7 +179,6 @@
     <Compile Include="Connections\ConnectionManager.cs" />
     <Compile Include="Connections\DesktopSizeCalculator.cs" />
     <Compile Include="Connections\DummyPlugin.cs" />
-    <Compile Include="Connections\ICA\ICAConnectionPlugin.cs" />
     <Compile Include="Connections\IConnectionManager.cs" />
     <Compile Include="Connections\Rdp\ConnectionStateDetector.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
@@ -202,7 +201,6 @@
     <Compile Include="Forms\Controls\ProtocolImageListBuilder.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
     <Compile Include="Integration\Export\TerminalsConsoleExport.cs" />
-    <Compile Include="Connections\ICA\TerminalsIcaExport.cs" />
     <Compile Include="Connections\Rdp\TerminalsRdpExport.cs" />
     <Compile Include="Connections\Terminal\TerminalsSshExport.cs" />
     <Compile Include="Connections\Terminal\TerminalsTelnetExport.cs" />
@@ -297,12 +295,6 @@
     </Compile>
     <Compile Include="Forms\Controls\TreeViewDragDrop.cs" />
     <Compile Include="Forms\CopyFavoriteCommand.cs" />
-    <Compile Include="Connections\ICA\CitrixControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Connections\ICA\CitrixControl.Designer.cs">
-      <DependentUpon>CitrixControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\EditFavorite\ExecuteControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -551,7 +543,6 @@
     <Compile Include="Data\FilePersisted\FavoritesFile.cs" />
     <Compile Include="Data\FilePersisted\FavoritesInGroup.cs" />
     <Compile Include="Data\Favorites\Group.cs" />
-    <Compile Include="Connections\ICA\ICAOptions.cs" />
     <Compile Include="Connections\Rdp\RdpOptions.cs" />
     <Compile Include="Connections\Rdp\RdpSecurityOptions.cs" />
     <Compile Include="Connections\Rdp\RdpTimeOutOptions.cs" />
@@ -594,7 +585,6 @@
     <Compile Include="Forms\SqlConnectionForm.Designer.cs">
       <DependentUpon>SqlConnectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Native\Wow.cs" />
     <Compile Include="Network\HelperFunctions.cs" />
     <Compile Include="Network\WindowsUserIdentifiers.cs" />
     <Compile Include="Network\Services\CommandLineServer.cs" />
@@ -610,9 +600,6 @@
     <Compile Include="Configuration\MRUItemConfigurationElement.cs" />
     <Compile Include="Configuration\MRUItemConfigurationElementCollection.cs" />
     <Compile Include="Configuration\TerminalsConfigurationSection.cs" />
-    <Compile Include="Connections\ICA\ICAConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Network\Tools\NetworkingToolsLayout.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -796,9 +783,6 @@
       <DependentUpon>LocalizedValues.resx</DependentUpon>
     </Compile>
     <Compile Include="Logging\Log.cs" />
-    <Compile Include="Native\Enums.cs" />
-    <Compile Include="Native\Methods.cs" />
-    <Compile Include="Native\Structs.cs" />
     <Compile Include="Network\AD\ActiveDirectoryClient.cs" />
     <Compile Include="Network\AD\ActiveDirectoryComputer.cs" />
     <Compile Include="Network\Tools\DNS\Adapter.cs" />
@@ -1154,9 +1138,6 @@
     <EmbeddedResource Include="Forms\Controls\SecurityPanel.resx">
       <DependentUpon>SecurityPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Connections\ICA\CitrixControl.resx">
-      <DependentUpon>CitrixControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditFavorite\ExecuteControl.resx">
       <DependentUpon>ExecuteControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -1334,7 +1315,6 @@
       <DependentUpon>RequestPassword.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings\Settings.cs" />
-    <Compile Include="Connections\SHFileOperationWrapper.cs" />
     <Compile Include="SingleInstanceApplication.cs" />
     <Compile Include="TerminalServices\Client.cs" />
     <Compile Include="TerminalServices\ConnectionStates.cs" />
@@ -1762,6 +1742,10 @@
       <Project>{fcd4beca-9923-4bb0-bf57-8e8bcd0f784c}</Project>
       <Name>Terminals.External</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Ica\Terminals.Plugins.Ica.csproj">
+      <Project>{bb4a4cc7-c449-4f81-8395-7806cc1bdfa8}</Project>
+      <Name>Terminals.Plugins.Ica</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Terminals.Plugins.Vnc\Terminals.Plugins.Vnc.csproj">
       <Project>{123562C5-8D66-4E30-9676-D47B4C03EE7F}</Project>
       <Name>Terminals.Plugins.Vnc</Name>
@@ -1824,8 +1808,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Connections\ICA\" />
     <Folder Include="Connections\VNC\" />
     <Folder Include="Connections\Web\" />
+    <Folder Include="Native\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

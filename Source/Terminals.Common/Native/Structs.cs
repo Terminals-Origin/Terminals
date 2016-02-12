@@ -7,7 +7,7 @@ namespace Terminals.Native
     #region Structs
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct RECT
+    public struct RECT
     {
         public int left;
         public int top;
@@ -39,7 +39,7 @@ namespace Terminals.Native
     }
 
     [Serializable, StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    internal struct TEXTMETRIC
+    public struct TEXTMETRIC
     {
         public int tmHeight;
         public int tmAscent;
@@ -63,12 +63,12 @@ namespace Terminals.Native
         public byte tmCharSet;
     }
 
-    internal delegate Int32 BrowseCallbackProc(IntPtr hwnd, UInt32 uMsg, Int32 lParam, Int32 lpData);
+    public delegate Int32 BrowseCallbackProc(IntPtr hwnd, UInt32 uMsg, Int32 lParam, Int32 lpData);
 
     // Contains parameters for the SHBrowseForFolder function and receives information about the folder selected 
     // by the user.
     [StructLayout(LayoutKind.Sequential)]
-    internal struct BROWSEINFO
+    public struct BROWSEINFO
     {
         public IntPtr hwndOwner;				// Handle to the owner window for the dialog box.
 
@@ -93,7 +93,7 @@ namespace Terminals.Native
     }
 
     [StructLayout(LayoutKind.Explicit)]
-    internal struct STRRET
+    public struct STRRET
     {
         [FieldOffset(0)]
         public UInt32 uType;						// One of the STRRET_* values
@@ -113,7 +113,7 @@ namespace Terminals.Native
 
     // Contains information used by ShellExecuteEx
     [StructLayout(LayoutKind.Sequential)]
-    internal struct SHELLEXECUTEINFO
+    public struct SHELLEXECUTEINFO
     {
         public UInt32 cbSize;					// Size of the structure, in bytes. 
         public UInt32 fMask;					// Array of flags that indicate the content and validity of the 
@@ -151,7 +151,7 @@ namespace Terminals.Native
 
     // Contains information that the SHFileOperation function uses to perform file operations. 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    internal struct SHFILEOPSTRUCT
+    public struct SHFILEOPSTRUCT
     {
         public IntPtr hwnd;						// Window handle to the dialog box to display information about the 
         // status of the file operation. 

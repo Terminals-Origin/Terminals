@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
-      <Link>Common.AssemblyInfo.cs</Link>
+      <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="FakeVNCConnection.cs">
       <SubType>Component</SubType>

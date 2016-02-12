@@ -34,25 +34,43 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AxWFICALib">
+      <HintPath>..\..\Resources\Libraries\Citrix\AxWFICALib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
-      <Link>Common.AssemblyInfo.cs</Link>
+      <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CitrixControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CitrixControl.Designer.cs">
+      <DependentUpon>CitrixControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ICAConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ICAConnectionPlugin.cs" />
+    <Compile Include="ICAOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TerminalsIcaExport.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">
       <Project>{1f720fd0-21a5-4bed-90f6-02cdabb8854d}</Project>
       <Name>Terminals.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CitrixControl.resx">
+      <DependentUpon>CitrixControl.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

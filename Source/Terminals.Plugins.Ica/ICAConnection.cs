@@ -102,14 +102,14 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Fatal("Connecting to ICA", exc);
+                //TODO Logging.Fatal("Connecting to ICA", exc);
                 return false;
             }
         }
 
         private void iIcaClient_OnDisconnect(object sender, EventArgs e)
         {
-            Logging.Fatal("ICA Connection Lost" + this.Favorite.Name);
+            //TODO Logging.Fatal("ICA Connection Lost" + this.Favorite.Name);
             this.connected = false;
             this.FireDisconnected();
         }
@@ -166,7 +166,7 @@ namespace Terminals.Connections
             }
             catch (Exception e)
             {
-                Logging.Error("Error on Disconnect", e);
+                //TODO Logging.Error("Error on Disconnect", e);
             }
         }
 

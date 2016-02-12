@@ -44,7 +44,7 @@ namespace Terminals.Connections.ICA
 
         public Image GetIcon()
         {
-            return ConnectionManager.Terminalsicon;
+            return null; // TODO ConnectionManager.Terminalsicon;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Terminals.Native
 {
     [SuppressUnmanagedCodeSecurity()]
     [ComVisible(false)]
-    internal class Methods
+    public class Methods
     {
         #region User32.dll
 
