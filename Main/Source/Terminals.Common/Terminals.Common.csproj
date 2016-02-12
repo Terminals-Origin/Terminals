@@ -65,6 +65,7 @@
     <Compile Include="Connections\IToolbarExtenderFactory.cs" />
     <Compile Include="Connections\KnownConnectionConstants.cs" />
     <Compile Include="Configuration\FavoriteConfigurationElement.cs" />
+    <Compile Include="Connections\SHFileOperationWrapper.cs" />
     <Compile Include="Converters\FontParser.cs" />
     <Compile Include="Configuration\PerfomanceOptions.cs" />
     <Compile Include="Configuration\DesktopSize.cs" />
@@ -77,13 +78,17 @@
     <Compile Include="Data\Interfaces\INamedItem.cs" />
     <Compile Include="Data\Interfaces\ISecurityOptions.cs" />
     <Compile Include="Data\Interfaces\IStoreIdEquals.cs" />
+    <Compile Include="Native\Enums.cs" />
     <Compile Include="Integration\Export\IExportOptionsContext.cs" />
     <Compile Include="Integration\Export\ITerminalsOptionsExport.cs" />
     <Compile Include="Forms\EditFavorite\IProtocolOptionsControl.cs" />
+    <Compile Include="Native\Methods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Converters\TextConverter.cs" />
     <Compile Include="Configuration\RemoteSounds.cs" />
     <Compile Include="Data\Favorites\ProtocolOptions.cs" />
+    <Compile Include="Native\Structs.cs" />
+    <Compile Include="Native\Wow.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SSHClient\SSHClient.csproj">
@@ -96,6 +101,7 @@
       <DependentUpon>Connection.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
