@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
-using Terminals.Properties;
+using Terminals.Plugins.Terminal.Properties;
 
 namespace Terminals.Connections.Terminal
 {
