@@ -17,7 +17,7 @@ namespace Terminals.Connections
 
         public Image GetIcon()
         {
-            return ConnectionManager.Terminalsicon;
+            return Connection.Terminalsicon;
         }
 
         public Connection CreateConnection()

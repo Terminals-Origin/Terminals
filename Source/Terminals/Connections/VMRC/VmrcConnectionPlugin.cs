@@ -49,7 +49,7 @@ namespace Terminals.Connections.VMRC
 
         public Image GetIcon()
         {
-            return ConnectionManager.Terminalsicon;
+            return Connection.Terminalsicon;
         }
     }
 }
