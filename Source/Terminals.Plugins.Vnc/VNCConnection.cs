@@ -50,14 +50,14 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                //Logging.Error("Connecting to VNC", exc);
+                //TODO Logging.Error("Connecting to VNC", exc);
                 return false;
             }
         }
 
         private void rd_ConnectionLost(object sender, EventArgs e)
         {
-            //Terminals.Logging.Log.Fatal("VNC Connection Lost" + this.Favorite.Name);
+            //TODO Terminals.Logging.Log.Fatal("VNC Connection Lost" + this.Favorite.Name);
             this.connected = false;
             this.FireDisconnected();
         }
@@ -82,7 +82,7 @@ namespace Terminals.Connections
             }
             catch (Exception Exc)
             {
-                //Logging.Error("ConnectComplete to VNC", Exc);
+                //TODO Logging.Error("ConnectComplete to VNC", Exc);
             }
             // Change the Form's title to match desktop name
         }
