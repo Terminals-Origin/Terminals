@@ -77,8 +77,8 @@ namespace Tests.UserInterface
                 new Tuple<string, Image>(KnownConnectionConstants.HTTPS, HttpConnectionPlugin.TreeIconHttp),
 
                 // undefined icons use default icon
-                new Tuple<string, Image>(ICAConnectionPlugin.ICA_CITRIX, ConnectionManager.Terminalsicon),
-                new Tuple<string, Image>(VmrcConnectionPlugin.VMRC, ConnectionManager.Terminalsicon)
+                new Tuple<string, Image>(ICAConnectionPlugin.ICA_CITRIX, Connection.Terminalsicon),
+                new Tuple<string, Image>(VmrcConnectionPlugin.VMRC, Connection.Terminalsicon)
             };
 
             bool iconsEquals = testData.All(this.AssertGetFavoriteIcon);
@@ -88,7 +88,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void UnKnownProtocols_GetFavoriteIcon_ReturnDefaultIcon()
         {
-            var testCase = new Tuple<string, Image>(UNKNOWNPROTOCOL, ConnectionManager.Terminalsicon);
+            var testCase = new Tuple<string, Image>(UNKNOWNPROTOCOL, Connection.Terminalsicon);
             bool keyEquals = this.AssertGetFavoriteIcon(testCase);
             Assert.IsTrue(keyEquals, UNKNOWN_PROTOCOL_DEFUULT_ICON_MESSAGE);
         }

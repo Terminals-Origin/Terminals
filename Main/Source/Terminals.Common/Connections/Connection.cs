@@ -1,10 +1,15 @@
+using System.Drawing;
 using System.Windows.Forms;
+using Terminals.Common.Properties;
 using Terminals.Data;
 
 namespace Terminals.Connections
 {
     public class Connection : Control, IConnection
     {
+        // cached images, bad performace, but simplifies check, if the image is known
+        public static readonly Image Terminalsicon = Resources.terminalsicon;
+
         public delegate void LogHandler(string entry);
 
         public event LogHandler OnLog;

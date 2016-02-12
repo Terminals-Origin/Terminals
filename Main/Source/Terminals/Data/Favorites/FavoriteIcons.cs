@@ -34,7 +34,7 @@ namespace Terminals.Data
         internal static IDictionary<string, Image> GetProtocolIcons()
         {
             Dictionary<string, Image> uiIcons = pluginIcons.ToDictionary(k => CreateIconKey(k.Key), v => v.Value);
-            uiIcons.Add(DEFAULT_ICONKEY, ConnectionManager.Terminalsicon);
+            uiIcons.Add(DEFAULT_ICONKEY, Connection.Terminalsicon);
             return uiIcons;
         }
 
@@ -62,7 +62,7 @@ namespace Terminals.Data
             if (pluginIcons.ContainsKey(favorite.Protocol))
                 return pluginIcons[favorite.Protocol];
              
-            return ConnectionManager.Terminalsicon;
+            return Connection.Terminalsicon;
         }
 
         internal static Image GetFavoriteIcon(IFavorite favorite)
@@ -172,7 +172,7 @@ namespace Terminals.Data
 
         internal static bool IsDefaultProtocolImage(Image image)
         {
-            return ConnectionManager.Terminalsicon == image || pluginIcons.ContainsValue(image);
+            return Connection.Terminalsicon == image || pluginIcons.ContainsValue(image);
         }
     }
 }

@@ -13,7 +13,6 @@ using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
 using Terminals.Data;
 using Terminals.Integration.Export;
-using Terminals.Properties;
 
 namespace Terminals.Connections
 {
@@ -22,9 +21,6 @@ namespace Terminals.Connections
         private readonly IConnectionPlugin dummyPlugin = new DummyPlugin();
 
         private readonly Dictionary<string, IConnectionPlugin> plugins;
-
-        // cached images, bad performace, but simplifies check, if the image is known
-        internal static readonly Image Terminalsicon = Resources.terminalsicon;
 
         #region Thread safe singleton with lazy loading
 
