@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Integration.Export;
-using Terminals.Properties;
+using Terminals.Plugins.Terminal.Properties;
 
 namespace Terminals.Connections.Terminal
 {

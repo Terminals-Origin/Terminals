@@ -6,9 +6,9 @@ namespace Terminals.Converters
     /// <summary>
     /// Encapsulates Color text representation conversions
     /// </summary>
-    internal static class ColorParser
+    public static class ColorParser
     {
-        internal static Color FromString(string color)
+        public static Color FromString(string color)
         {
             Color knownColor = Color.FromName(color);
             if (knownColor.IsKnownColor)
@@ -48,7 +48,7 @@ namespace Terminals.Converters
             return Convert.ToInt32(part, 16);
         }
 
-        internal static string ToString(Color color)
+        public static string ToString(Color color)
         {
             return color.Name;
         }

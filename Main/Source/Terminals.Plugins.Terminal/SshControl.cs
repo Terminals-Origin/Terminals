@@ -49,8 +49,8 @@ namespace Terminals.Forms.EditFavorite
             }
             catch (System.Security.Cryptography.CryptographicException)
             {
-                Logging.Error(
-                    "A CryptographicException occured on decrypting SSH keys. Favorite credentials possibly encrypted by another user. Ignore and continue.");
+                // TODO Logging.Error(
+                //    "A CryptographicException occured on decrypting SSH keys. Favorite credentials possibly encrypted by another user. Ignore and continue.");
             }
         }
 

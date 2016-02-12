@@ -51,6 +51,7 @@
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Common.AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Converters\ColorParser.cs" />
     <Compile Include="Configuration\Colors.cs" />
     <Compile Include="Connections\Connection.cs">
       <SubType>Component</SubType>
@@ -79,6 +80,8 @@
     <Compile Include="Data\Interfaces\INamedItem.cs" />
     <Compile Include="Data\Interfaces\ISecurityOptions.cs" />
     <Compile Include="Data\Interfaces\IStoreIdEquals.cs" />
+    <Compile Include="IConnectionSettings.cs" />
+    <Compile Include="ISettingsConsumer.cs" />
     <Compile Include="Native\Enums.cs" />
     <Compile Include="Integration\Export\IExportOptionsContext.cs" />
     <Compile Include="Integration\Export\ITerminalsOptionsExport.cs" />

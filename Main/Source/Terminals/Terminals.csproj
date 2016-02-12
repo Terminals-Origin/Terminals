@@ -189,15 +189,10 @@
     <Compile Include="Connections\Rdp\RdpConnectionPlugin.cs" />
     <Compile Include="Connections\Rdp\RdpMenuVisitor.cs" />
     <Compile Include="Connections\Rdp\RdpService.cs" />
-    <Compile Include="Connections\Terminal\SshConnectionPlugin.cs" />
-    <Compile Include="Connections\Terminal\TelnetConnectionPlugin.cs" />
     <Compile Include="Data\FilePersisted\FavoritesFileSerializer.cs" />
     <Compile Include="Forms\Controls\ProtocolImageListBuilder.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
-    <Compile Include="Integration\Export\TerminalsConsoleExport.cs" />
     <Compile Include="Connections\Rdp\TerminalsRdpExport.cs" />
-    <Compile Include="Connections\Terminal\TerminalsSshExport.cs" />
-    <Compile Include="Connections\Terminal\TerminalsTelnetExport.cs" />
     <Compile Include="Integration\Import\ImportTerminalsContext.cs" />
     <Compile Include="Network\PortScanner\ServiceDetector.cs" />
     <Compile Include="Network\Tools\NettworkingTools.cs" />
@@ -364,12 +359,6 @@
     <Compile Include="Connections\Rdp\RdpTsGatewayControl.Designer.cs">
       <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Connections\Terminal\SshControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Connections\Terminal\SshControl.Designer.cs">
-      <DependentUpon>SshControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Data\Validation\GroupNameValidator.cs" />
     <Compile Include="Forms\INewTerminalForm.cs" />
@@ -523,7 +512,6 @@
     <Compile Include="Data\Interfaces\IFactory.cs" />
     <Compile Include="Data\ModelConverterV1ToV2.cs" />
     <Compile Include="Data\ModelConverterV2ToV1.cs" />
-    <Compile Include="Connections\Terminal\ConsoleOptions.cs" />
     <Compile Include="Data\Favorites\DisplayOptions.cs" />
     <Compile Include="Data\Favorites\BeforeConnectExecuteOptions.cs" />
     <Compile Include="Data\Favorites\Favorite.cs" />
@@ -537,7 +525,6 @@
     <Compile Include="Connections\Rdp\RdpRedirectOptions.cs" />
     <Compile Include="Connections\Rdp\TsGwOptions.cs" />
     <Compile Include="Data\Favorites\SecurityOptions.cs" />
-    <Compile Include="Connections\Terminal\SshOptions.cs" />
     <Compile Include="Data\FilePersisted\FilePersistence.cs" />
     <Compile Include="Data\Interfaces\IFavorites.cs" />
     <Compile Include="Data\Interfaces\IGroups.cs" />
@@ -610,9 +597,6 @@
     <Compile Include="Network\Tools\TabbedTools.Designer.cs">
       <DependentUpon>TabbedTools.cs</DependentUpon>
     </Compile>
-    <Compile Include="Connections\Terminal\TerminalConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Data\DataFileWatcher.cs" />
     <Compile Include="Data\History\HistoryRecordedEventArgs.cs" />
     <Compile Include="Integration\Exporters.cs" />
@@ -640,13 +624,6 @@
     <Compile Include="Forms\OptionPanels\ConnectionsOptionPanel.Designer.cs">
       <DependentUpon>ConnectionsOptionPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Connections\Terminal\ConsolePreferences.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Connections\Terminal\ConsolePreferences.Designer.cs">
-      <DependentUpon>ConsolePreferences.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Converters\ColorParser.cs" />
     <Compile Include="Credentials\ManageCredentialForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -863,8 +840,6 @@
     </Compile>
     <Compile Include="ProgramInfo.cs" />
     <Compile Include="Security\PasswordFunctions2.cs" />
-    <Compile Include="Settings\IConnectionSettings.cs" />
-    <Compile Include="Settings\ISettingsConsumer.cs" />
     <Compile Include="Settings\SettingsInstance.cs" />
     <Compile Include="TerminalServices\GatewayCredentialsSources.cs" />
     <Compile Include="Data\SerializableDictionary.cs" />
@@ -892,9 +867,6 @@
     <Compile Include="Forms\Controls\SortableUnboundGrid.Designer.cs">
       <DependentUpon>SortableUnboundGrid.cs</DependentUpon>
     </Compile>
-    <Compile Include="Connections\Terminal\TcpProtocol.cs" />
-    <Compile Include="Connections\Terminal\TelnetProtocol.cs" />
-    <Compile Include="Connections\Terminal\TelnetStream.cs" />
     <Compile Include="Forms\Controls\TerminalTabControlItem.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1156,9 +1128,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Connections\Rdp\RdpTsGatewayControl.resx">
       <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Terminal\SshControl.resx">
-      <DependentUpon>SshControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\DefaultPasswordOptionPanel.resx">
       <DependentUpon>DefaultPasswordOptionPanel.cs</DependentUpon>
@@ -1508,9 +1477,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>CaptureManagerLayout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Terminal\ConsolePreferences.resx">
-      <DependentUpon>ConsolePreferences.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Credentials\CredentialManager.resx">
       <DependentUpon>CredentialManager.cs</DependentUpon>
     </EmbeddedResource>
@@ -1797,6 +1763,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Connections\ICA\" />
+    <Folder Include="Connections\Terminal\" />
     <Folder Include="Connections\VMRC\" />
     <Folder Include="Connections\VNC\" />
     <Folder Include="Connections\Web\" />

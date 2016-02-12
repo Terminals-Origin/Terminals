@@ -2,7 +2,7 @@ using SSHClient;
 
 namespace Terminals.Configuration
 {
-    internal interface IConnectionSettings
+    public interface IConnectionSettings
     {
         bool AskToReconnect { get; set; }
 
