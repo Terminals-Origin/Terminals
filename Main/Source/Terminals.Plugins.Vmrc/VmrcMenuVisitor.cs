@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Terminals.Plugins.Vmrc.Properties;
 
 namespace Terminals.Connections
 {
@@ -40,7 +41,7 @@ namespace Terminals.Connections
         {
             this.adminSwitchButton = new ToolStripButton();
             this.adminSwitchButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this.adminSwitchButton.Image = Properties.Resources.server_administrator_icon;
+            this.adminSwitchButton.Image = Resources.server_administrator_icon;
             this.adminSwitchButton.ImageTransparentColor = Color.Magenta;
             this.adminSwitchButton.Name = VMRCADMINSWITCHBUTTON;
             this.adminSwitchButton.Size = new Size(23, 22);
@@ -53,7 +54,7 @@ namespace Terminals.Connections
         {
             this.viewOnlyButton = new ToolStripButton();
             this.viewOnlyButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this.viewOnlyButton.Image = Properties.Resources.polarized_glasses;
+            this.viewOnlyButton.Image = Resources.polarized_glasses;
             this.viewOnlyButton.ImageTransparentColor = Color.White;
             this.viewOnlyButton.Name = VMRCVIEWONLYBUTTON;
             this.viewOnlyButton.Size = new Size(23, 22);

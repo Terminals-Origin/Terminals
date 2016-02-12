@@ -234,6 +234,10 @@
       <Project>{bb4a4cc7-c449-4f81-8395-7806cc1bdfa8}</Project>
       <Name>Terminals.Plugins.Ica</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Vmrc\Terminals.Plugins.Vmrc.csproj">
+      <Project>{c841ccf6-4793-41b7-835e-f749e2525963}</Project>
+      <Name>Terminals.Plugins.Vmrc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Terminals.Plugins.Vnc\Terminals.Plugins.Vnc.csproj">
       <Project>{123562C5-8D66-4E30-9676-D47B4C03EE7F}</Project>
       <Name>Terminals.Plugins.Vnc</Name>
