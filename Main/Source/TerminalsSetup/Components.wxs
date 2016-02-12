@@ -50,6 +50,9 @@
       <Component Id="PluginVmrc" Guid="5486A465-AB4D-42D6-B1ED-B6C56F281429">
         <File Source="$(var.Terminals.Plugins.Vmrc.TargetPath)" KeyPath="yes" Checksum="yes"/>
       </Component>
+      <Component Id="PluginTerminal" Guid="7DDA8745-FDCC-4A03-9860-0858ED3A759A">
+        <File Source="$(var.Terminals.Plugins.Terminal.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>
       <Component Id="zlibNetDll" Guid="3D6ADB9B-B6B1-4D4D-964D-6EE4B261720A">
         <File Source="$(var.zlib.net.TargetPath)" KeyPath="yes" Checksum="yes"/>
       </Component>
