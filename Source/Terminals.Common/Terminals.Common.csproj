@@ -55,6 +55,7 @@
     <Compile Include="Connections\Connection.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Connections\DesktopSizeCalculator.cs" />
     <Compile Include="Connections\IConnection.cs" />
     <Compile Include="Connections\IConnectionMainView.cs" />
     <Compile Include="Connections\IConnectionPlugin.cs" />

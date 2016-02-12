@@ -177,7 +177,6 @@
     <Compile Include="Converters\TagsConverter.cs" />
     <Compile Include="Forms\FavoriteSorting.cs" />
     <Compile Include="Connections\ConnectionManager.cs" />
-    <Compile Include="Connections\DesktopSizeCalculator.cs" />
     <Compile Include="Connections\DummyPlugin.cs" />
     <Compile Include="Connections\IConnectionManager.cs" />
     <Compile Include="Connections\Rdp\ConnectionStateDetector.cs" />
@@ -192,11 +191,6 @@
     <Compile Include="Connections\Rdp\RdpService.cs" />
     <Compile Include="Connections\Terminal\SshConnectionPlugin.cs" />
     <Compile Include="Connections\Terminal\TelnetConnectionPlugin.cs" />
-    <Compile Include="Connections\VMRC\FakeVmrcConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Connections\VMRC\VmrcConnectionPlugin.cs" />
-    <Compile Include="Connections\VMRC\VmrcMenuVisitor.cs" />
     <Compile Include="Data\FilePersisted\FavoritesFileSerializer.cs" />
     <Compile Include="Forms\Controls\ProtocolImageListBuilder.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
@@ -204,7 +198,6 @@
     <Compile Include="Connections\Rdp\TerminalsRdpExport.cs" />
     <Compile Include="Connections\Terminal\TerminalsSshExport.cs" />
     <Compile Include="Connections\Terminal\TerminalsTelnetExport.cs" />
-    <Compile Include="Connections\VMRC\TerminalsVmrcExport.cs" />
     <Compile Include="Integration\Import\ImportTerminalsContext.cs" />
     <Compile Include="Network\PortScanner\ServiceDetector.cs" />
     <Compile Include="Network\Tools\NettworkingTools.cs" />
@@ -377,12 +370,6 @@
     <Compile Include="Connections\Terminal\SshControl.Designer.cs">
       <DependentUpon>SshControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Connections\VMRC\VmrcControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Connections\VMRC\VmrcControl.Designer.cs">
-      <DependentUpon>VmrcControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Data\Validation\GroupNameValidator.cs" />
     <Compile Include="Forms\INewTerminalForm.cs" />
@@ -551,7 +538,6 @@
     <Compile Include="Connections\Rdp\TsGwOptions.cs" />
     <Compile Include="Data\Favorites\SecurityOptions.cs" />
     <Compile Include="Connections\Terminal\SshOptions.cs" />
-    <Compile Include="Connections\VMRC\VMRCOptions.cs" />
     <Compile Include="Data\FilePersisted\FilePersistence.cs" />
     <Compile Include="Data\Interfaces\IFavorites.cs" />
     <Compile Include="Data\Interfaces\IGroups.cs" />
@@ -625,9 +611,6 @@
       <DependentUpon>TabbedTools.cs</DependentUpon>
     </Compile>
     <Compile Include="Connections\Terminal\TerminalConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Connections\VMRC\VMRCConnection.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Data\DataFileWatcher.cs" />
@@ -1176,9 +1159,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Connections\Terminal\SshControl.resx">
       <DependentUpon>SshControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Connections\VMRC\VmrcControl.resx">
-      <DependentUpon>VmrcControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\DefaultPasswordOptionPanel.resx">
       <DependentUpon>DefaultPasswordOptionPanel.cs</DependentUpon>
@@ -1746,6 +1726,10 @@
       <Project>{bb4a4cc7-c449-4f81-8395-7806cc1bdfa8}</Project>
       <Name>Terminals.Plugins.Ica</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Vmrc\Terminals.Plugins.Vmrc.csproj">
+      <Project>{c841ccf6-4793-41b7-835e-f749e2525963}</Project>
+      <Name>Terminals.Plugins.Vmrc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Terminals.Plugins.Vnc\Terminals.Plugins.Vnc.csproj">
       <Project>{123562C5-8D66-4E30-9676-D47B4C03EE7F}</Project>
       <Name>Terminals.Plugins.Vnc</Name>
@@ -1809,6 +1793,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Connections\ICA\" />
+    <Folder Include="Connections\VMRC\" />
     <Folder Include="Connections\VNC\" />
     <Folder Include="Connections\Web\" />
     <Folder Include="Native\" />
