@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Vmrc", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Terminal", "Terminals.Plugins.Terminal\Terminals.Plugins.Terminal.csproj", "{8E972A0C-57E2-4E5C-9EF5-D7CD681188C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Rdp", "Terminals.Plugins.Rdp\Terminals.Plugins.Rdp.csproj", "{F0C60ED2-9A47-4364-AF57-505BC3E953D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -361,6 +363,18 @@ Global
 		{8E972A0C-57E2-4E5C-9EF5-D7CD681188C5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E972A0C-57E2-4E5C-9EF5-D7CD681188C5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8E972A0C-57E2-4E5C-9EF5-D7CD681188C5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5}.DistributionRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5}.DistributionRelease|Any CPU.Build.0 = Release|Any CPU
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5}.DistributionRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5}.DistributionRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -376,9 +390,10 @@ Global
 		{BB4A4CC7-C449-4F81-8395-7806CC1BDFA8} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
 		{C841CCF6-4793-41B7-835E-F749E2525963} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
 		{8E972A0C-57E2-4E5C-9EF5-D7CD681188C5} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
+		{F0C60ED2-9A47-4364-AF57-505BC3E953D5} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 25
+		SccNumberOfProjects = 26
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
@@ -467,6 +482,10 @@ Global
 		SccProjectTopLevelParentUniqueName24 = Terminals.sln
 		SccProjectName24 = Terminals.Plugins.Terminal
 		SccLocalPath24 = Terminals.Plugins.Terminal
+		SccProjectUniqueName25 = Terminals.Plugins.Rdp\\Terminals.Plugins.Rdp.csproj
+		SccProjectTopLevelParentUniqueName25 = Terminals.sln
+		SccProjectName25 = Terminals.Plugins.Rdp
+		SccLocalPath25 = Terminals.Plugins.Rdp
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Terminals.vsmdi
