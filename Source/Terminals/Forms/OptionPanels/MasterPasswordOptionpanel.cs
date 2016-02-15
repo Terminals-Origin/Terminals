@@ -28,7 +28,7 @@ namespace Terminals.Forms
         public MasterPasswordOptionPanel()
         {
             InitializeComponent();
-
+            this.revealPwdButton.Click += this.RevealOrHidePwd;
             this.lblPasswordsMatch.Text = string.Empty;
         }
 
@@ -77,6 +77,9 @@ namespace Terminals.Forms
             this.PasswordTextbox.Enabled = this.chkPasswordProtectTerminals.Checked;
             this.ConfirmPasswordTextBox.Enabled = this.chkPasswordProtectTerminals.Checked;
             this.lblPasswordsMatch.Visible = this.chkPasswordProtectTerminals.Checked;
+            this.revealPwdButton.Enabled = this.chkPasswordProtectTerminals.Checked;
+            this.HidePassword();
+            
             this.lblPasswordsMatch.Text = String.Empty;
         }
 
@@ -105,6 +108,27 @@ namespace Terminals.Forms
                     this.lblPasswordsMatch.ForeColor = Color.Red;
                 }
             }
+        }
+
+        private void RevealOrHidePwd(object sender, EventArgs e)
+        {
+
+            if (this.revealPwdButton.ImageIndex == 1)
+            {
+                this.HidePassword();
+            }
+            else
+            {
+                this.PasswordTextbox.PasswordChar = '\0';
+                this.ConfirmPasswordTextBox.PasswordChar = '\0';
+                this.revealPwdButton.ImageIndex = 1;
+            }
+        }
+
+        private void HidePassword() {
+            this.PasswordTextbox.PasswordChar = '*';
+            this.ConfirmPasswordTextBox.PasswordChar = '*';
+            this.revealPwdButton.ImageIndex = 0;
         }
     }
 }
