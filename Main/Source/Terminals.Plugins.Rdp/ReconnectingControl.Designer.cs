@@ -49,7 +49,7 @@
             // progressPictureBox
             // 
             this.progressPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.progressPictureBox.Image = global::Terminals.Properties.Resources.Progress;
+            this.progressPictureBox.Image = global::Terminals.Plugins.Rdp.Properties.Resources.Progress;
             this.progressPictureBox.Location = new System.Drawing.Point(18, 12);
             this.progressPictureBox.Name = "progressPictureBox";
             this.progressPictureBox.Size = new System.Drawing.Size(31, 31);

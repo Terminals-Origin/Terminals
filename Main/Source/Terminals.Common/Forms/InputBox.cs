@@ -8,7 +8,7 @@ namespace Terminals.Forms
     /// Form used for prompts user to enter simple text value.
     /// Not thread safe.
     /// </summary>
-    internal partial class InputBox : Form
+    public partial class InputBox : Form
     {
         private static InputBox frmInputDialog = new InputBox();
         
@@ -136,7 +136,7 @@ namespace Terminals.Forms
             return OutputResponse;
         }
 
-        internal static InputBoxResult Show(String prompt, String title, Char passwordChar)
+        public static InputBoxResult Show(String prompt, String title, Char passwordChar)
         {
             LoadForm(title, prompt, string.Empty);
             frmInputDialog.AssignPasswordChar(passwordChar);
@@ -144,7 +144,7 @@ namespace Terminals.Forms
             return OutputResponse;
         }
 
-        internal static InputBoxResult Show(String prompt, String title)
+        public static InputBoxResult Show(String prompt, String title)
         {
             LoadForm(title, prompt, string.Empty);
             frmInputDialog.ShowDialog();

@@ -1,6 +1,6 @@
 namespace Terminals.TerminalServices
 {
-    internal enum ConnectionStates
+    public enum ConnectionStates
     {
         WTSActive,
         WTSConnected,

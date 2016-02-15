@@ -34,25 +34,136 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AxInterop.MSTSCLib">
+      <HintPath>..\..\Resources\Libraries\mstsc\AxInterop.MSTSCLib.dll</HintPath>
+    </Reference>
+    <Reference Include="MSTSCLib">
+      <HintPath>..\..\Resources\Libraries\mstsc\MSTSCLib.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ConnectionStateDetector.cs" />
+    <Compile Include="DiskDrivesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DiskDrivesForm.Designer.cs">
+      <DependentUpon>DiskDrivesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FakeRdpConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IRdpLocalResourcesControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RdpClientErrorMessages.cs" />
+    <Compile Include="RDPConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RdpConnectionPlugin.cs" />
+    <Compile Include="RdpDisplayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RdpDisplayControl.Designer.cs">
+      <DependentUpon>RdpDisplayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RdpExtendedSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RdpExtendedSettingsControl.Designer.cs">
+      <DependentUpon>RdpExtendedSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RdpLocalResourcesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RdpLocalResourcesControl.Designer.cs">
+      <DependentUpon>RdpLocalResourcesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RdpMenuVisitor.cs" />
+    <Compile Include="RdpOptions.cs" />
+    <Compile Include="RdpRedirectOptions.cs" />
+    <Compile Include="RdpSecurityControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RdpSecurityControl.Designer.cs">
+      <DependentUpon>RdpSecurityControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RdpSecurityOptions.cs" />
+    <Compile Include="RdpService.cs" />
+    <Compile Include="RdpTimeOutOptions.cs" />
+    <Compile Include="RdpTsGatewayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RdpTsGatewayControl.Designer.cs">
+      <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RdpUserInterfaceOptions.cs" />
+    <Compile Include="ReconnectingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ReconnectingControl.Designer.cs">
+      <DependentUpon>ReconnectingControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TerminalsRdpExport.cs" />
+    <Compile Include="TsGwOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">
       <Project>{1f720fd0-21a5-4bed-90f6-02cdabb8854d}</Project>
       <Name>Terminals.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DiskDrivesForm.resx">
+      <DependentUpon>DiskDrivesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RdpDisplayControl.resx">
+      <DependentUpon>RdpDisplayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RdpExtendedSettingsControl.resx">
+      <DependentUpon>RdpExtendedSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RdpLocalResourcesControl.resx">
+      <DependentUpon>RdpLocalResourcesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RdpSecurityControl.resx">
+      <DependentUpon>RdpSecurityControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RdpTsGatewayControl.resx">
+      <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReconnectingControl.resx">
+      <DependentUpon>ReconnectingControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\treeIcon_rdp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\server_network.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Progress.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

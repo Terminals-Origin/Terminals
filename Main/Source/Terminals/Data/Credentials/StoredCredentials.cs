@@ -100,7 +100,7 @@ namespace Terminals.Data
             var loadedItems = loadedObj as List<CredentialSet>;
             foreach (CredentialSet credentialSet in loadedItems)
             {
-                credentialSet.AssignStore(this.persistenceSecurity);
+               // TODO credentialSet.AssignStore(this.persistenceSecurity);
             }
 
             return loadedItems.Cast<ICredentialSet>().ToList();

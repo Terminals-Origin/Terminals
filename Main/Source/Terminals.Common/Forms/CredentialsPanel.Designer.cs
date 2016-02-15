@@ -1,6 +1,6 @@
 ﻿namespace Terminals.Forms.Controls
 {
-    partial class CredentialsPanel
+    public partial class CredentialsPanel
     {
         /// <summary> 
         /// Required designer variable.

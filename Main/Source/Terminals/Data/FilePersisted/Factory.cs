@@ -37,7 +37,7 @@ namespace Terminals
         public ICredentialSet CreateCredentialSet()
         {
             var newCredentials = new CredentialSet();
-            newCredentials.AssignStore(persistenceSecurity);
+            // todo newCredentials.AssignStore(persistenceSecurity);
             return newCredentials;
         }
     }

@@ -179,24 +179,14 @@
     <Compile Include="Connections\ConnectionManager.cs" />
     <Compile Include="Connections\DummyPlugin.cs" />
     <Compile Include="Connections\IConnectionManager.cs" />
-    <Compile Include="Connections\Rdp\ConnectionStateDetector.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
-    <Compile Include="Connections\IConnectionExtra.cs" />
     <Compile Include="Integration\Export\ExportOptionsContext.cs" />
-    <Compile Include="Connections\Rdp\FakeRdpConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Connections\Rdp\RdpConnectionPlugin.cs" />
-    <Compile Include="Connections\Rdp\RdpMenuVisitor.cs" />
-    <Compile Include="Connections\Rdp\RdpService.cs" />
     <Compile Include="Data\FilePersisted\FavoritesFileSerializer.cs" />
     <Compile Include="Forms\Controls\ProtocolImageListBuilder.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
-    <Compile Include="Connections\Rdp\TerminalsRdpExport.cs" />
     <Compile Include="Integration\Import\ImportTerminalsContext.cs" />
     <Compile Include="Network\PortScanner\ServiceDetector.cs" />
     <Compile Include="Network\Tools\NettworkingTools.cs" />
-    <Compile Include="Connections\Rdp\RdpClientErrorMessages.cs" />
     <Compile Include="Data\DataErrorEventArgs.cs" />
     <Compile Include="Data\DB\ApplyValueParams.cs" />
     <Compile Include="Data\DB\ByIdComparer.cs" />
@@ -221,12 +211,6 @@
     <Compile Include="Data\Validation\ValidationStates.cs" />
     <Compile Include="Forms\ConnectionDefinition.cs" />
     <Compile Include="Forms\ConnectionsUiFactory.cs" />
-    <Compile Include="Forms\Controls\CredentialsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\CredentialsPanel.Designer.cs">
-      <DependentUpon>CredentialsPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Controls\FavoritesFoundEventArgs.cs" />
     <Compile Include="Forms\Controls\FavoritesSearchBox.cs">
       <SubType>UserControl</SubType>
@@ -241,12 +225,6 @@
     <Compile Include="Forms\Controls\IKeyModifiers.cs" />
     <Compile Include="Forms\Controls\ImportContext.cs" />
     <Compile Include="Forms\Controls\KeyModifiers.cs" />
-    <Compile Include="Forms\Controls\ReconnectingControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\ReconnectingControl.Designer.cs">
-      <DependentUpon>ReconnectingControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Controls\FavoritesSearch.cs" />
     <Compile Include="Forms\Controls\SearchEventArgs.cs" />
     <Compile Include="Forms\Controls\SearchPanel.cs">
@@ -307,9 +285,6 @@
     <Compile Include="Forms\EditFavorite\GroupsControl.Designer.cs">
       <DependentUpon>GroupsControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditFavorite\IProtocolObserver.cs" />
-    <Compile Include="Forms\EditFavorite\IRdpLocalResourcesControl.cs" />
-    <Compile Include="Forms\EditFavorite\IValidatedProtocolControl.cs" />
     <Compile Include="Forms\EditFavorite\NotesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -328,36 +303,6 @@
     </Compile>
     <Compile Include="Connections\Ras\RasControl.Designer.cs">
       <DependentUpon>RasControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Connections\Rdp\RdpDisplayControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Connections\Rdp\RdpDisplayControl.Designer.cs">
-      <DependentUpon>RdpDisplayControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Connections\Rdp\RdpExtendedSettingsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Connections\Rdp\RdpExtendedSettingsControl.Designer.cs">
-      <DependentUpon>RdpExtendedSettingsControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Connections\Rdp\RdpLocalResourcesControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Connections\Rdp\RdpLocalResourcesControl.Designer.cs">
-      <DependentUpon>RdpLocalResourcesControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Connections\Rdp\RdpSecurityControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Connections\Rdp\RdpSecurityControl.Designer.cs">
-      <DependentUpon>RdpSecurityControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Connections\Rdp\RdpTsGatewayControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Connections\Rdp\RdpTsGatewayControl.Designer.cs">
-      <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Data\Validation\GroupNameValidator.cs" />
@@ -486,7 +431,6 @@
     <Compile Include="CaptureManager\ImageFormatHandler.cs" />
     <Compile Include="CaptureManager\ImageFormatTypes.cs" />
     <Compile Include="Configuration\FileLocations.cs" />
-    <Compile Include="Data\Credentials\CredentialBase.cs" />
     <Compile Include="Data\DB\BeforeConnectExecuteLogic.cs" />
     <Compile Include="Data\DB\CredentialBaseLogic.cs" />
     <Compile Include="Data\DB\CredentialSetLogic.cs" />
@@ -518,13 +462,6 @@
     <Compile Include="Data\FilePersisted\FavoritesFile.cs" />
     <Compile Include="Data\FilePersisted\FavoritesInGroup.cs" />
     <Compile Include="Data\Favorites\Group.cs" />
-    <Compile Include="Connections\Rdp\RdpOptions.cs" />
-    <Compile Include="Connections\Rdp\RdpSecurityOptions.cs" />
-    <Compile Include="Connections\Rdp\RdpTimeOutOptions.cs" />
-    <Compile Include="Connections\Rdp\RdpUserInterfaceOptions.cs" />
-    <Compile Include="Connections\Rdp\RdpRedirectOptions.cs" />
-    <Compile Include="Connections\Rdp\TsGwOptions.cs" />
-    <Compile Include="Data\Favorites\SecurityOptions.cs" />
     <Compile Include="Data\FilePersisted\FilePersistence.cs" />
     <Compile Include="Data\Interfaces\IFavorites.cs" />
     <Compile Include="Data\Interfaces\IGroups.cs" />
@@ -542,10 +479,6 @@
     <Compile Include="Forms\Controls\UntagedMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\InputBox.Designer.cs">
-      <DependentUpon>InputBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\InputBoxResult.cs" />
     <Compile Include="Forms\OptionPanels\PersistenceOptionPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -587,9 +520,6 @@
     </Compile>
     <Compile Include="Connections\Ras\RASProperties.Designer.cs">
       <DependentUpon>RASProperties.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Connections\Rdp\RDPConnection.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Network\Tools\TabbedTools.cs">
       <SubType>UserControl</SubType>
@@ -650,12 +580,6 @@
     </Compile>
     <Compile Include="Data\ListsHelper.cs" />
     <Compile Include="Data\GroupsChangedArgs.cs" />
-    <Compile Include="Connections\Rdp\DiskDrivesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Connections\Rdp\DiskDrivesForm.Designer.cs">
-      <DependentUpon>DiskDrivesForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\ExportForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -841,7 +765,6 @@
     <Compile Include="ProgramInfo.cs" />
     <Compile Include="Security\PasswordFunctions2.cs" />
     <Compile Include="Settings\SettingsInstance.cs" />
-    <Compile Include="TerminalServices\GatewayCredentialsSources.cs" />
     <Compile Include="Data\SerializableDictionary.cs" />
     <Compile Include="Data\SerializableSortedDictionary.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -916,9 +839,6 @@
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormSettings.cs" />
-    <Compile Include="Forms\InputBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Integration\Import\ImportRDP.cs" />
     <Compile Include="Integration\Import\IImport.cs" />
     <Compile Include="Integration\Import\ImportMuRD.cs" />
@@ -1072,14 +992,8 @@
     <EmbeddedResource Include="Forms\ChangePassword.resx">
       <DependentUpon>ChangePassword.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\CredentialsPanel.resx">
-      <DependentUpon>CredentialsPanel.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Controls\FavoritesSearchBox.resx">
       <DependentUpon>FavoritesSearchBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\ReconnectingControl.resx">
-      <DependentUpon>ReconnectingControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Controls\SearchPanel.resx">
       <DependentUpon>SearchPanel.cs</DependentUpon>
@@ -1114,21 +1028,6 @@
     <EmbeddedResource Include="Connections\Ras\RasControl.resx">
       <DependentUpon>RasControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Rdp\RdpDisplayControl.resx">
-      <DependentUpon>RdpDisplayControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Rdp\RdpExtendedSettingsControl.resx">
-      <DependentUpon>RdpExtendedSettingsControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Rdp\RdpLocalResourcesControl.resx">
-      <DependentUpon>RdpLocalResourcesControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Rdp\RdpSecurityControl.resx">
-      <DependentUpon>RdpSecurityControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Rdp\RdpTsGatewayControl.resx">
-      <DependentUpon>RdpTsGatewayControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\DefaultPasswordOptionPanel.resx">
       <DependentUpon>DefaultPasswordOptionPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -1137,9 +1036,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UnhandledTerminationForm.resx">
       <DependentUpon>UnhandledTerminationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\InputBox.resx">
-      <DependentUpon>InputBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\AmazonOptionPanel.resx">
       <DependentUpon>AmazonOptionPanel.cs</DependentUpon>
@@ -1265,12 +1161,6 @@
     </Compile>
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="SingleInstanceApplication.cs" />
-    <Compile Include="TerminalServices\Client.cs" />
-    <Compile Include="TerminalServices\ConnectionStates.cs" />
-    <Compile Include="TerminalServices\Session.cs" />
-    <Compile Include="TerminalServices\SessionProcess.cs" />
-    <Compile Include="TerminalServices\TerminalServicesAPI.cs" />
-    <Compile Include="TerminalServices\TerminalServer.cs" />
     <Compile Include="TerminalServices\TSManager.cs" />
     <Compile Include="Wizard\AddExistingRDPConnections.cs">
       <SubType>UserControl</SubType>
@@ -1486,10 +1376,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Credentials\ConnectExtraForm.resx">
       <DependentUpon>ConnectExtraForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Rdp\DiskDrivesForm.resx">
-      <DependentUpon>DiskDrivesForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ExportForm.resx">
       <DependentUpon>ExportForm.cs</DependentUpon>
@@ -1767,6 +1653,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Connections\ICA\" />
+    <Folder Include="Connections\Rdp\" />
     <Folder Include="Connections\Terminal\" />
     <Folder Include="Connections\VMRC\" />
     <Folder Include="Connections\VNC\" />

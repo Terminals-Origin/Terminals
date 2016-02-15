@@ -5,7 +5,7 @@ using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
-using Terminals.Properties;
+using Terminals.Plugins.Rdp.Properties;
 
 namespace Terminals.Connections.Rdp
 {

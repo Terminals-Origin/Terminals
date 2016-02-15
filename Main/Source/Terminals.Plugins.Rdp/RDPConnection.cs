@@ -171,7 +171,7 @@ namespace Terminals.Connections
                 }
                 catch (Exception exc)
                 {
-                    Logging.Info("There was an exception setting an RDP Value.", exc);
+                    // TODO Logging.Info("There was an exception setting an RDP Value.", exc);
                 }
                 // if next line fails on Protected memory access exception,
                 // some string property is set to null, which leads to this exception
@@ -182,7 +182,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Fatal("Connecting to RDP", exc);
+                // TODO Logging.Fatal("Connecting to RDP", exc);
                 return false;
             }
         }
@@ -196,7 +196,7 @@ namespace Terminals.Connections
             catch (Exception exception)
             {
                 string message = "Please update your RDP client to at least version 6.";
-                Logging.Info(message, exception);
+                // TODO Logging.Info(message, exception);
                 MessageBox.Show(message);
                 return false;
             }
@@ -299,7 +299,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Error("Error trying to set the desktop dimensions", exc);
+                // TODO Logging.Error("Error trying to set the desktop dimensions", exc);
             }
         }
 
@@ -467,7 +467,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Error("Error when trying to set timeout values.", exc);
+                // TODO Logging.Error("Error when trying to set timeout values.", exc);
             }
         }
 
@@ -533,7 +533,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Error("Error when trying to set the ClearTextPassword on the nonScriptable mstsc object", exc);
+                //TODO Logging.Error("Error when trying to set the ClearTextPassword on the nonScriptable mstsc object", exc);
             }
         }
 
@@ -675,7 +675,7 @@ namespace Terminals.Connections
             if (!String.IsNullOrEmpty(error))
             {
                 string message = String.Format("Error connecting to {0}\n\n{1}", this.client.Server, error);
-                MessageBox.Show(this, message, Program.Info.TitleVersion, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(this, message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -685,7 +685,7 @@ namespace Terminals.Connections
             string message = RdpClientErrorMessages.ToFatalErrorMessage(errorCode);
             string finalMsg = String.Format("There was a fatal error returned from the RDP Connection, details:\n\nError Code:{0}\n\nError Description:{1}", errorCode, message);
             MessageBox.Show(finalMsg);
-            Logging.Fatal(finalMsg);
+            // TODO Logging.Fatal(finalMsg);
         }
 
         private void client_OnWarning(object sender, IMsTscAxEvents_OnWarningEvent e)
@@ -693,7 +693,7 @@ namespace Terminals.Connections
             int warningCode = e.warningCode;
             string message = RdpClientErrorMessages.ToWarningMessage(warningCode);
             string finalMsg = String.Format("There was a warning returned from the RDP Connection, details:\n\nWarning Code:{0}\n\nWarning Description:{1}", warningCode, message);
-            Logging.Warn(finalMsg);
+            // TODO Logging.Warn(finalMsg);
         }
 
         private void client_OnLogonError(object sender, IMsTscAxEvents_OnLogonErrorEvent e)
@@ -701,7 +701,7 @@ namespace Terminals.Connections
             int errorCode = e.lError;
             string message = RdpClientErrorMessages.ToLogonMessage(errorCode);
             string finalMsg = String.Format("There was a logon error returned from the RDP Connection, details:\n\nLogon Code:{0}\n\nLogon Description:{1}", errorCode, message);
-            Logging.Error(finalMsg);
+            // TODO Logging.Error(finalMsg);
         }
 
         #endregion

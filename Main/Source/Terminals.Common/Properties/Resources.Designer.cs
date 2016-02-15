@@ -61,6 +61,24 @@ namespace Terminals.Common.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Message from your Administrator.
+        /// </summary>
+        internal static string MessagefromyourAdministrator {
+            get {
+                return ResourceManager.GetString("MessagefromyourAdministrator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the message to send:.
+        /// </summary>
+        internal static string Pleaseenterthemessagetosend {
+            get {
+                return ResourceManager.GetString("Pleaseenterthemessagetosend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap terminalsicon {

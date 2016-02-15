@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Alphabetical" xml:space="preserve">
     <value>Alphabetical</value>
@@ -123,20 +123,8 @@
   <data name="Areyousurethatyouwanttodisconnectfromtheactiveterminal" xml:space="preserve">
     <value>Are you sure that you want to disconnect from the active terminal?</value>
   </data>
-  <data name="Areyousureyouwanttologthissessionoff" xml:space="preserve">
-    <value>Are you sure you want to log this session off?</value>
-  </data>
-  <data name="Areyousureyouwanttorebootthismachine" xml:space="preserve">
-    <value>Are you sure you want to reboot this machine?</value>
-  </data>
-  <data name="Areyousureyouwanttoshutthismachineoff" xml:space="preserve">
-    <value>Are you sure you want to shut this machine off?</value>
-  </data>
   <data name="Computer" xml:space="preserve">
     <value>Computer</value>
-  </data>
-  <data name="Confirmation" xml:space="preserve">
-    <value>Confirmation</value>
   </data>
   <data name="ConnectionInformation" xml:space="preserve">
     <value>Connection Information</value>
@@ -162,14 +150,8 @@
   <data name="Inordertochangethetoolbarsyoumustfirstunlockthem" xml:space="preserve">
     <value>In order to change the toolbars, you must first unlock them.</value>
   </data>
-  <data name="Logoff" xml:space="preserve">
-    <value>Logoff</value>
-  </data>
   <data name="Management" xml:space="preserve">
     <value>Management</value>
-  </data>
-  <data name="MessagefromyourAdministrator" xml:space="preserve">
-    <value>Message from your Administrator</value>
   </data>
   <data name="Minimize" xml:space="preserve">
     <value>Minimize</value>
@@ -192,14 +174,8 @@
   <data name="Other" xml:space="preserve">
     <value>Other</value>
   </data>
-  <data name="Pleaseenterthemessagetosend" xml:space="preserve">
-    <value>Please enter the message to send:</value>
-  </data>
   <data name="Port" xml:space="preserve">
     <value>Port</value>
-  </data>
-  <data name="Reboot" xml:space="preserve">
-    <value>Reboot</value>
   </data>
   <data name="Restore" xml:space="preserve">
     <value>Restore</value>
@@ -210,20 +186,8 @@
   <data name="ScreenCaptureManager" xml:space="preserve">
     <value>Screen Capture Manager</value>
   </data>
-  <data name="SendMessage" xml:space="preserve">
-    <value>Send Message</value>
-  </data>
-  <data name="Server" xml:space="preserve">
-    <value>Server</value>
-  </data>
-  <data name="Sessions" xml:space="preserve">
-    <value>Sessions</value>
-  </data>
   <data name="ShowMenu" xml:space="preserve">
     <value>Show/Hide Menu</value>
-  </data>
-  <data name="Shutdown" xml:space="preserve">
-    <value>Shutdown</value>
   </data>
   <data name="SorryTerminalswasunabletoconnecttotheremotemachineTryagainorcheckthelogformoreinformation" xml:space="preserve">
     <value>Sorry, Terminals was unable to connect to the remote machine.  Try again, or check the log for more information.</value>

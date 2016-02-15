@@ -49,8 +49,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
-      <Link>Common.AssemblyInfo.cs</Link>
+      <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Data\Favorites\CredentialBase.cs" />
+    <Compile Include="Data\Favorites\SecurityOptions.cs" />
+    <Compile Include="Forms\CredentialsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CredentialsPanel.Designer.cs">
+      <DependentUpon>CredentialsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InputBox.Designer.cs">
+      <DependentUpon>InputBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InputBoxResult.cs" />
+    <Compile Include="IMRUSettings.cs" />
+    <Compile Include="TerminalsServices\Client.cs" />
+    <Compile Include="TerminalsServices\ConnectionStates.cs" />
+    <Compile Include="Connections\IConnectionExtra.cs" />
     <Compile Include="Converters\ColorParser.cs" />
     <Compile Include="Configuration\Colors.cs" />
     <Compile Include="Connections\Connection.cs">
@@ -80,6 +99,8 @@
     <Compile Include="Data\Interfaces\INamedItem.cs" />
     <Compile Include="Data\Interfaces\ISecurityOptions.cs" />
     <Compile Include="Data\Interfaces\IStoreIdEquals.cs" />
+    <Compile Include="Forms\EditFavorite\IProtocolObserver.cs" />
+    <Compile Include="Forms\EditFavorite\IValidatedProtocolControl.cs" />
     <Compile Include="IConnectionSettings.cs" />
     <Compile Include="ISettingsConsumer.cs" />
     <Compile Include="Native\Enums.cs" />
@@ -98,6 +119,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TerminalsServices\GatewayCredentialsSources.cs" />
+    <Compile Include="TerminalsServices\Session.cs" />
+    <Compile Include="TerminalsServices\SessionProcess.cs" />
+    <Compile Include="TerminalsServices\TerminalServer.cs" />
+    <Compile Include="TerminalsServices\TerminalServicesAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SSHClient\SSHClient.csproj">
@@ -108,6 +134,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Connections\Connection.resx">
       <DependentUpon>Connection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CredentialsPanel.resx">
+      <DependentUpon>CredentialsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InputBox.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

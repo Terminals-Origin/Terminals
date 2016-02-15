@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Terminals.TerminalServices
 {
-    internal class Session
+    public class Session
     {
         private bool isTheActiveSession;
 

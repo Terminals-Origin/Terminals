@@ -119,22 +119,7 @@ namespace Terminals.Network.Servers
 
         private void SendMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SendMessageToSession(this.selectedSession);
-        }
-
-        internal static void SendMessageToSession(Session session)
-        {
-            if (session != null)
-            {
-                string prompt = Program.Resources.GetString("Pleaseenterthemessagetosend");
-                InputBoxResult result = InputBox.Show(prompt, "Send network message");
-                if (result.ReturnCode == DialogResult.OK && !string.IsNullOrEmpty(result.Text))
-                {
-                    string meessageText = result.Text.Trim();
-                    string messageHeader = Program.Resources.GetString("MessagefromyourAdministrator");
-                    TerminalServicesAPI.SendMessage(session, messageHeader, meessageText, 0, 10, false);
-                }
-            }
+            TerminalServer.SendMessageToSession(this.selectedSession);
         }
 
         private void LogoffSessionToolStripMenuItem_Click(object sender, EventArgs e)

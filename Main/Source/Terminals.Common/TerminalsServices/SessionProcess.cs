@@ -1,6 +1,6 @@
 namespace Terminals.TerminalServices
 {
-    internal class SessionProcess
+    public class SessionProcess
     {
         private int sessionID;
         public int SessionID

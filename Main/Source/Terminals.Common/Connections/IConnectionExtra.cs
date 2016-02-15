@@ -3,7 +3,7 @@
     /// <summary>
     /// In reality this is Rdp client facade to isolate the reference to direct usage of the COM class.
     /// </summary>
-    interface IConnectionExtra
+    public interface IConnectionExtra
     {
         bool FullScreen { get; set; }
 

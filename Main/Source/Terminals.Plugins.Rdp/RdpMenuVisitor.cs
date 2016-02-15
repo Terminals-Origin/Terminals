@@ -1,7 +1,8 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Terminals.Network.Servers;
+using Terminals.Plugins.Rdp.Properties;
+using Terminals.TerminalServices;
 
 namespace Terminals.Connections
 {
@@ -36,7 +37,7 @@ namespace Terminals.Connections
         {
             this.TerminalServerMenuButton = new ToolStripDropDownButton();
             this.TerminalServerMenuButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this.TerminalServerMenuButton.Image = Properties.Resources.server_network;
+            this.TerminalServerMenuButton.Image = Resources.server_network;
             this.TerminalServerMenuButton.ImageTransparentColor = Color.Magenta;
             this.TerminalServerMenuButton.Name = TERMINAL_SERVER_MENU_BUTTON_NAME;
             this.TerminalServerMenuButton.Size = new Size(29, 22);
@@ -51,17 +52,17 @@ namespace Terminals.Connections
             var currentConnection = this.connectionProvider.CurrentConnection as RDPConnection;
             if (currentConnection != null && currentConnection.IsTerminalServer)
             {
-                var sessions = new ToolStripMenuItem(Program.Resources.GetString("Sessions"));
+                var sessions = new ToolStripMenuItem(Resources.Sessions);
                 sessions.Tag = currentConnection.Server;
                 TerminalServerMenuButton.DropDownItems.Add(sessions);
-                var svr = new ToolStripMenuItem(Program.Resources.GetString("Server"));
+                var svr = new ToolStripMenuItem(Resources.Server);
                 svr.Tag = currentConnection.Server;
                 TerminalServerMenuButton.DropDownItems.Add(svr);
-                var sd = new ToolStripMenuItem(Program.Resources.GetString("Shutdown"));
+                var sd = new ToolStripMenuItem(Resources.Shutdown);
                 sd.Click += new EventHandler(sd_Click);
                 sd.Tag = currentConnection.Server;
                 svr.DropDownItems.Add(sd);
-                var rb = new ToolStripMenuItem(Program.Resources.GetString("Reboot"));
+                var rb = new ToolStripMenuItem(Resources.Reboot);
                 rb.Click += new EventHandler(sd_Click);
                 rb.Tag = currentConnection.Server;
                 svr.DropDownItems.Add(rb);
@@ -75,19 +76,19 @@ namespace Terminals.Connections
                             var sess = new ToolStripMenuItem(String.Format("{1} - {2} ({0})", session.State.ToString().Replace("WTS", ""), session.Client.ClientName, session.Client.UserName));
                             sess.Tag = session;
                             sessions.DropDownItems.Add(sess);
-                            var msg = new ToolStripMenuItem(Program.Resources.GetString("SendMessage"));
+                            var msg = new ToolStripMenuItem(Resources.SendMessage);
                             msg.Click += new EventHandler(sd_Click);
                             msg.Tag = session;
                             sess.DropDownItems.Add(msg);
 
-                            var lo = new ToolStripMenuItem(Program.Resources.GetString("Logoff"));
+                            var lo = new ToolStripMenuItem(Resources.Logoff);
                             lo.Click += new EventHandler(sd_Click);
                             lo.Tag = session;
                             sess.DropDownItems.Add(lo);
 
                             if (session.IsTheActiveSession)
                             {
-                                var lo1 = new ToolStripMenuItem(Program.Resources.GetString("Logoff"));
+                                var lo1 = new ToolStripMenuItem(Resources.Logoff);
                                 lo1.Click += new EventHandler(sd_Click);
                                 lo1.Tag = session;
                                 svr.DropDownItems.Add(lo1);
@@ -107,28 +108,28 @@ namespace Terminals.Connections
             var menu = sender as ToolStripMenuItem;
             if (menu != null)
             {
-                if (menu.Text == Program.Resources.GetString("Shutdown"))
+                if (menu.Text == Resources.Shutdown)
                 {
-                    var server = menu.Tag as TerminalServices.TerminalServer;
-                    if (server != null && MessageBox.Show(Program.Resources.GetString("Areyousureyouwanttoshutthismachineoff"), Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
-                        TerminalServices.TerminalServicesAPI.ShutdownSystem(server, false);
+                    var server = menu.Tag as TerminalServer;
+                    if (server != null && MessageBox.Show(Resources.Areyousureyouwanttoshutthismachineoff, Resources.Confirmation, MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        TerminalServicesAPI.ShutdownSystem(server, false);
                 }
-                else if (menu.Text == Program.Resources.GetString("Reboot"))
+                else if (menu.Text == Resources.Reboot)
                 {
-                    var server = menu.Tag as TerminalServices.TerminalServer;
-                    if (server != null && MessageBox.Show(Program.Resources.GetString("Areyousureyouwanttorebootthismachine"), Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
-                        TerminalServices.TerminalServicesAPI.ShutdownSystem(server, true);
+                    var server = menu.Tag as TerminalServer;
+                    if (server != null && MessageBox.Show(Resources.Areyousureyouwanttorebootthismachine, Resources.Confirmation, MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        TerminalServicesAPI.ShutdownSystem(server, true);
                 }
-                else if (menu.Text == Program.Resources.GetString("Logoff"))
+                else if (menu.Text == Resources.Logoff)
                 {
-                    var session = menu.Tag as TerminalServices.Session;
-                    if (session != null && MessageBox.Show(Program.Resources.GetString("Areyousureyouwanttologthissessionoff"), Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
-                        TerminalServices.TerminalServicesAPI.LogOffSession(session, false);
+                    var session = menu.Tag as Session;
+                    if (session != null && MessageBox.Show(Resources.Areyousureyouwanttologthissessionoff, Resources.Confirmation, MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        TerminalServicesAPI.LogOffSession(session, false);
                 }
-                else if (menu.Text == Program.Resources.GetString("SendMessage"))
+                else if (menu.Text == Resources.SendMessage)
                 {
-                    var session = menu.Tag as TerminalServices.Session;
-                    TerminalServerManager.SendMessageToSession(session);
+                    var session = menu.Tag as Session;
+                    TerminalServer.SendMessageToSession(session);
                 }
             }
         }
