@@ -33,6 +33,7 @@ namespace Terminals.Wizard
             this.EnableMasterPassword.Checked = true;
             this.EnableMasterPassword.Enabled = true;
             this.panel1.Enabled = true;
+            this.revealPwdButton.Click += this.RevealOrHidePwd;
         }
 
         private void ConfirmTextBox_TextChanged(object sender, EventArgs e)
@@ -65,6 +66,7 @@ namespace Terminals.Wizard
         private void EnableMasterPassword_CheckedChanged(object sender, EventArgs e)
         {
             panel1.Enabled = EnableMasterPassword.Checked;
+            this.HidePassword();
         }
 
         public void AssignPersistence(IPersistence persistence)
@@ -75,6 +77,28 @@ namespace Terminals.Wizard
                 this.EnableMasterPassword.Enabled = false;
                 this.panel1.Enabled = false;
             }
+        }
+
+        private void RevealOrHidePwd(object sender, EventArgs e)
+        {
+
+            if (this.revealPwdButton.ImageIndex == 1)
+            {
+                this.HidePassword();
+            }
+            else
+            {
+                this.masterPasswordTextbox.PasswordChar = '\0';
+                this.confirmTextBox.PasswordChar = '\0';
+                this.revealPwdButton.ImageIndex = 1;
+            }
+        }
+
+        private void HidePassword()
+        {
+            this.masterPasswordTextbox.PasswordChar = '*';
+            this.confirmTextBox.PasswordChar = '*';
+            this.revealPwdButton.ImageIndex = 0;
         }
     }
 }

@@ -28,6 +28,8 @@ namespace Terminals.Wizard
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EnterPassword));
             this.confirmTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.masterPasswordTextbox = new System.Windows.Forms.TextBox();
@@ -36,6 +38,8 @@ namespace Terminals.Wizard
             this.ErrorLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.revealPwdButton = new System.Windows.Forms.Button();
+            this.hideRevealButtonImages = new System.Windows.Forms.ImageList(this.components);
             this.EnableMasterPassword = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -102,6 +106,7 @@ namespace Terminals.Wizard
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.revealPwdButton);
             this.panel1.Controls.Add(this.masterPasswordTextbox);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.label3);
@@ -111,8 +116,29 @@ namespace Terminals.Wizard
             this.panel1.Controls.Add(this.confirmTextBox);
             this.panel1.Location = new System.Drawing.Point(3, 26);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(293, 92);
+            this.panel1.Size = new System.Drawing.Size(317, 92);
             this.panel1.TabIndex = 16;
+            // 
+            // revealPwdButton
+            // 
+            this.revealPwdButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.revealPwdButton.BackColor = System.Drawing.Color.Transparent;
+            this.revealPwdButton.FlatAppearance.BorderSize = 0;
+            this.revealPwdButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.revealPwdButton.ImageIndex = 0;
+            this.revealPwdButton.ImageList = this.hideRevealButtonImages;
+            this.revealPwdButton.Location = new System.Drawing.Point(285, -3);
+            this.revealPwdButton.Name = "revealPwdButton";
+            this.revealPwdButton.Size = new System.Drawing.Size(25, 30);
+            this.revealPwdButton.TabIndex = 16;
+            this.revealPwdButton.UseVisualStyleBackColor = false;
+            // 
+            // hideRevealButtonImages
+            // 
+            this.hideRevealButtonImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("hideRevealButtonImages.ImageStream")));
+            this.hideRevealButtonImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.hideRevealButtonImages.Images.SetKeyName(0, "eye_hide.png");
+            this.hideRevealButtonImages.Images.SetKeyName(1, "eye_reveal.png");
             // 
             // EnableMasterPassword
             // 
@@ -132,7 +158,7 @@ namespace Terminals.Wizard
             this.Controls.Add(this.EnableMasterPassword);
             this.Controls.Add(this.panel1);
             this.Name = "EnterPassword";
-            this.Size = new System.Drawing.Size(298, 120);
+            this.Size = new System.Drawing.Size(323, 120);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -151,5 +177,7 @@ namespace Terminals.Wizard
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox EnableMasterPassword;
+        private System.Windows.Forms.Button revealPwdButton;
+        private System.Windows.Forms.ImageList hideRevealButtonImages;
     }
 }

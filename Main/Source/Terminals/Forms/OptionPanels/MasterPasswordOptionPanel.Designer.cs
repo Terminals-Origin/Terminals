@@ -32,6 +32,8 @@ namespace Terminals.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MasterPasswordOptionPanel));
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lblPasswordsMatch = new System.Windows.Forms.Label();
@@ -40,6 +42,8 @@ namespace Terminals.Forms
             this.PasswordTextbox = new System.Windows.Forms.TextBox();
             this.lblConfirm = new System.Windows.Forms.Label();
             this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
+            this.revealPwdButton = new System.Windows.Forms.Button();
+            this.hideRevealButtonImages = new System.Windows.Forms.ImageList(this.components);
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
@@ -55,6 +59,7 @@ namespace Terminals.Forms
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.revealPwdButton);
             this.groupBox3.Controls.Add(this.lblPasswordsMatch);
             this.groupBox3.Controls.Add(this.chkPasswordProtectTerminals);
             this.groupBox3.Controls.Add(this.lblPassword);
@@ -73,7 +78,7 @@ namespace Terminals.Forms
             this.lblPasswordsMatch.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblPasswordsMatch.Location = new System.Drawing.Point(251, 81);
             this.lblPasswordsMatch.Name = "lblPasswordsMatch";
-            this.lblPasswordsMatch.Size = new System.Drawing.Size(150, 17);
+            this.lblPasswordsMatch.Size = new System.Drawing.Size(115, 13);
             this.lblPasswordsMatch.TabIndex = 6;
             this.lblPasswordsMatch.Text = "Password Match Label";
             // 
@@ -82,7 +87,7 @@ namespace Terminals.Forms
             this.chkPasswordProtectTerminals.AutoSize = true;
             this.chkPasswordProtectTerminals.Location = new System.Drawing.Point(13, 20);
             this.chkPasswordProtectTerminals.Name = "chkPasswordProtectTerminals";
-            this.chkPasswordProtectTerminals.Size = new System.Drawing.Size(140, 21);
+            this.chkPasswordProtectTerminals.Size = new System.Drawing.Size(109, 17);
             this.chkPasswordProtectTerminals.TabIndex = 0;
             this.chkPasswordProtectTerminals.Text = "Password Protect";
             this.chkPasswordProtectTerminals.UseVisualStyleBackColor = true;
@@ -93,7 +98,7 @@ namespace Terminals.Forms
             this.lblPassword.AutoSize = true;
             this.lblPassword.Location = new System.Drawing.Point(13, 53);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(73, 17);
+            this.lblPassword.Size = new System.Drawing.Size(56, 13);
             this.lblPassword.TabIndex = 3;
             this.lblPassword.Text = "Password:";
             // 
@@ -103,7 +108,7 @@ namespace Terminals.Forms
             this.PasswordTextbox.Location = new System.Drawing.Point(98, 50);
             this.PasswordTextbox.Name = "PasswordTextbox";
             this.PasswordTextbox.PasswordChar = '*';
-            this.PasswordTextbox.Size = new System.Drawing.Size(147, 22);
+            this.PasswordTextbox.Size = new System.Drawing.Size(147, 20);
             this.PasswordTextbox.TabIndex = 1;
             this.PasswordTextbox.TextChanged += new System.EventHandler(this.PasswordTextbox_TextChanged);
             // 
@@ -112,7 +117,7 @@ namespace Terminals.Forms
             this.lblConfirm.AutoSize = true;
             this.lblConfirm.Location = new System.Drawing.Point(13, 81);
             this.lblConfirm.Name = "lblConfirm";
-            this.lblConfirm.Size = new System.Drawing.Size(60, 17);
+            this.lblConfirm.Size = new System.Drawing.Size(45, 13);
             this.lblConfirm.TabIndex = 4;
             this.lblConfirm.Text = "Confirm:";
             // 
@@ -122,9 +127,30 @@ namespace Terminals.Forms
             this.ConfirmPasswordTextBox.Location = new System.Drawing.Point(98, 78);
             this.ConfirmPasswordTextBox.Name = "ConfirmPasswordTextBox";
             this.ConfirmPasswordTextBox.PasswordChar = '*';
-            this.ConfirmPasswordTextBox.Size = new System.Drawing.Size(147, 22);
+            this.ConfirmPasswordTextBox.Size = new System.Drawing.Size(147, 20);
             this.ConfirmPasswordTextBox.TabIndex = 2;
             this.ConfirmPasswordTextBox.TextChanged += new System.EventHandler(this.ConfirmPasswordTextBox_TextChanged);
+            // 
+            // revealPwdButton
+            // 
+            this.revealPwdButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.revealPwdButton.Enabled = false;
+            this.revealPwdButton.FlatAppearance.BorderSize = 0;
+            this.revealPwdButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.revealPwdButton.ImageIndex = 0;
+            this.revealPwdButton.ImageList = this.hideRevealButtonImages;
+            this.revealPwdButton.Location = new System.Drawing.Point(251, 44);
+            this.revealPwdButton.Name = "revealPwdButton";
+            this.revealPwdButton.Size = new System.Drawing.Size(25, 30);
+            this.revealPwdButton.TabIndex = 7;
+            this.revealPwdButton.UseVisualStyleBackColor = false;
+            // 
+            // hideRevealButtonImages
+            // 
+            this.hideRevealButtonImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("hideRevealButtonImages.ImageStream")));
+            this.hideRevealButtonImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.hideRevealButtonImages.Images.SetKeyName(0, "eye_hide.png");
+            this.hideRevealButtonImages.Images.SetKeyName(1, "eye_reveal.png");
             // 
             // MasterPasswordOptionPanel
             // 
@@ -148,5 +174,7 @@ namespace Terminals.Forms
         private TextBox PasswordTextbox;
         private Label lblConfirm;
         private TextBox ConfirmPasswordTextBox;
+        private Button revealPwdButton;
+        private ImageList hideRevealButtonImages;
     }
 }
