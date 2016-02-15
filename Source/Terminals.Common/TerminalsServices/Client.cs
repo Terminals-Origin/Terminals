@@ -2,7 +2,7 @@ using System;
 
 namespace Terminals.TerminalServices
 {
-    internal class Client
+    public class Client
     {
         private bool status;
 
@@ -65,7 +65,7 @@ namespace Terminals.TerminalServices
                 }
                 catch (Exception exc)
                 {
-                    Logging.Error("IP Address", exc);
+                    //TODO Logging.Error("IP Address", exc);
                 }
                 return new System.Net.IPAddress(0);
             }

@@ -31,7 +31,7 @@ namespace Terminals.Connections
                 string message =
                     String.Format("Checked to see if {0} is a terminal server. {0} is not a terminal server",
                         favorite.ServerName);
-                Logging.Error(message, exception);
+                // TODO Logging.Error(message, exception);
             }
         }
     }

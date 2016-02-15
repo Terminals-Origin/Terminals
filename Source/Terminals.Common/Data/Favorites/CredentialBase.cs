@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Terminals.Security;
+//using Terminals.Security;
 
 namespace Terminals.Data
 {
@@ -33,8 +33,8 @@ namespace Terminals.Data
             {
                 if (string.IsNullOrEmpty(value))
                     this.EncryptedUserName = String.Empty;
-                else
-                    this.EncryptedUserName = persistenceSecurity.EncryptPersistencePassword(value);
+                //else
+                // todo   this.EncryptedUserName = persistenceSecurity.EncryptPersistencePassword(value);
             }
         }
 
@@ -48,7 +48,7 @@ namespace Terminals.Data
         }
         
         [XmlIgnore]
-        internal string Domain
+        public string Domain
         {
             get
             {
@@ -58,8 +58,8 @@ namespace Terminals.Data
             {
                 if (string.IsNullOrEmpty(value))
                     this.EncryptedDomain = String.Empty;
-                else
-                    this.EncryptedDomain = persistenceSecurity.EncryptPersistencePassword(value);
+                //else
+                // todo    this.EncryptedDomain = persistenceSecurity.EncryptPersistencePassword(value);
             }
         }
         
@@ -76,7 +76,7 @@ namespace Terminals.Data
         }
 
         [XmlIgnore]
-        internal String Password
+        public String Password
         {
             get
             {
@@ -86,66 +86,66 @@ namespace Terminals.Data
             {
                 if (string.IsNullOrEmpty(value))
                     this.EncryptedPassword = String.Empty;
-                else
-                    this.EncryptedPassword = persistenceSecurity.EncryptPersistencePassword(value);
+                //else
+                // todo    this.EncryptedPassword = persistenceSecurity.EncryptPersistencePassword(value);
             }
         }
 
-        private PersistenceSecurity persistenceSecurity;
+       // private PersistenceSecurity persistenceSecurity;
 
         protected void UpdateFrom(CredentialBase source)
         {
             this.EncryptedUserName = source.EncryptedUserName;
             this.EncryptedDomain = source.EncryptedDomain;
             this.EncryptedPassword = source.EncryptedPassword;
-            this.persistenceSecurity = source.persistenceSecurity;
+            //this.persistenceSecurity = source.persistenceSecurity;
         }
 
-        internal void AssignStore(PersistenceSecurity persistenceSecurity)
-        {
-            this.persistenceSecurity = persistenceSecurity;
-        }
+        // todo internal void AssignStore(PersistenceSecurity persistenceSecurity)
+        //{
+        //    this.persistenceSecurity = persistenceSecurity;
+        //}
 
         void ICredentialBase.UpdatePasswordByNewKeyMaterial(string newKeymaterial)
         {
             UpdatePasswordByNewKeyMaterial(newKeymaterial);
         }
 
-        internal void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
+        public void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
         {
-            string userName = this.GetDecryptedUserName();
-            if (!string.IsNullOrEmpty(userName))
-                this.EncryptedUserName = PasswordFunctions2.EncryptPassword(userName, newKeymaterial);
+            // todo string userName = this.GetDecryptedUserName();
+            //if (!string.IsNullOrEmpty(userName))
+            //    this.EncryptedUserName = PasswordFunctions2.EncryptPassword(userName, newKeymaterial);
 
-            string domain = this.GetDecryptedDomain();
-            if (!string.IsNullOrEmpty(domain))
-                this.EncryptedDomain = PasswordFunctions2.EncryptPassword(domain, newKeymaterial);
+            //string domain = this.GetDecryptedDomain();
+            //if (!string.IsNullOrEmpty(domain))
+            //    this.EncryptedDomain = PasswordFunctions2.EncryptPassword(domain, newKeymaterial);
 
-            string secret = this.GetDecryptedPassword();
-            if (!string.IsNullOrEmpty(secret))
-                this.EncryptedPassword = PasswordFunctions2.EncryptPassword(secret, newKeymaterial);
+            //string secret = this.GetDecryptedPassword();
+            //if (!string.IsNullOrEmpty(secret))
+            //    this.EncryptedPassword = PasswordFunctions2.EncryptPassword(secret, newKeymaterial);
         }
 
         private string GetDecryptedUserName()
         {
-            if (!string.IsNullOrEmpty(this.EncryptedUserName))
-                return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedUserName);
+            // todo if (!string.IsNullOrEmpty(this.EncryptedUserName))
+            //    return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedUserName);
 
             return String.Empty;
         }
 
         private string GetDecryptedDomain()
         {
-            if (!string.IsNullOrEmpty(this.EncryptedDomain))
-                return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedDomain);
+            // todo if (!string.IsNullOrEmpty(this.EncryptedDomain))
+            //    return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedDomain);
 
             return String.Empty;
         }
 
         private string GetDecryptedPassword()
         {
-            if (!string.IsNullOrEmpty(this.EncryptedPassword))
-                return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedPassword);
+            // todo if (!string.IsNullOrEmpty(this.EncryptedPassword))
+            //    return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedPassword);
 
             return String.Empty;
         }

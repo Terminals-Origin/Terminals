@@ -133,7 +133,7 @@ namespace Tests.Configuration
             // because of internal usage in Favorite we have to reference the singleton
             var persistence = this.Persistence;
             var credential = new CredentialSet();
-            credential.AssignStore(persistence.Security);
+            // todo credential.AssignStore(persistence.Security);
             credential.Name = CREDENTIAL_NAME;
             credential.Password = EXPECTEDPASSWORD;
             credential.Domain = EXPECTED_DOMAIN;

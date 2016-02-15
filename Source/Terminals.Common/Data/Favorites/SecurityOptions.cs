@@ -40,7 +40,7 @@ namespace Terminals.Data
         {
         }
 
-        internal SecurityOptions Copy()
+        public SecurityOptions Copy()
         {
             var copy = new SecurityOptions{ Credential = this.Credential };
             copy.UpdateFrom(this);
@@ -63,14 +63,14 @@ namespace Terminals.Data
             UpdateFromCredential(source, this);
         }
 
-        internal static void ResolveCredentials(ISecurityOptions result, Guid credentialId)
+        public static void ResolveCredentials(ISecurityOptions result, Guid credentialId)
         {
-            ICredentialSet source = Persistence.Instance.Credentials[credentialId];
+            ICredentialSet source = null; //todo Persistence.Instance.Credentials[credentialId];
             result.UpdateFromCredential(source);
             UpdateFromDefaultValues(result);
         }
 
-        internal static void UpdateFromCredential(ICredentialSet source, ISecurityOptions target)
+        public static void UpdateFromCredential(ICredentialSet source, ISecurityOptions target)
         {
             if (source != null)
             {
@@ -83,16 +83,16 @@ namespace Terminals.Data
 
         private static void UpdateFromDefaultValues(ICredentialBase target)
         {
-            Settings settings = Settings.Instance;
+            // todo Settings settings = Settings.Instance;
 
-            if (string.IsNullOrEmpty(target.Domain))
-                target.Domain = settings.DefaultDomain;
+            //if (string.IsNullOrEmpty(target.Domain))
+            //    target.Domain = settings.DefaultDomain;
 
-            if (string.IsNullOrEmpty(target.UserName))
-                target.UserName = settings.DefaultUsername;
+            //if (string.IsNullOrEmpty(target.UserName))
+            //    target.UserName = settings.DefaultUsername;
 
-            if (string.IsNullOrEmpty(target.Password))
-                target.Password = settings.DefaultPassword;
+            //if (string.IsNullOrEmpty(target.Password))
+            //    target.Password = settings.DefaultPassword;
         }
 
         public override string ToString()

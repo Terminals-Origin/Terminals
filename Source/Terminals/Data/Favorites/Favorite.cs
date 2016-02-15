@@ -293,8 +293,8 @@ namespace Terminals.Data
             RdpOptions rdpOptions = protocolProperties as RdpOptions;
             if (rdpOptions != null)
             {
-                SecurityOptions tsGatewaySecurity = rdpOptions.TsGateway.Security;
-                tsGatewaySecurity.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+                //TODO SecurityOptions tsGatewaySecurity = rdpOptions.TsGateway.Security;
+                //tsGatewaySecurity.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             }
         }
 
@@ -316,7 +316,7 @@ namespace Terminals.Data
         {
             this.persistenceSecurity = persistenceSecurity;
             this.groups = groups;
-            this.Security.AssignStore(persistenceSecurity);
+            // todo this.Security.AssignStore(persistenceSecurity);
             AssignStoreToRdpOptions(this.ProtocolProperties, persistenceSecurity);
         }
 
@@ -325,7 +325,7 @@ namespace Terminals.Data
             var rdpOptions = protocolOptions as RdpOptions;
             if (rdpOptions != null)
             {
-                rdpOptions.AssignStore(persistenceSecurity);
+                // TODO rdpOptions.AssignStore(persistenceSecurity);
             }
         }
 

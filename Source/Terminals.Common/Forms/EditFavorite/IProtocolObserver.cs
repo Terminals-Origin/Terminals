@@ -1,6 +1,6 @@
 namespace Terminals.Forms.EditFavorite
 {
-    internal interface IProtocolObserver
+    public interface IProtocolObserver
     {
         /// <summary>
         /// Used to inform protocol controls, that server name was changed by general properties control.

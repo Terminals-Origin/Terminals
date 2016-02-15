@@ -7,7 +7,7 @@ using Terminals.Security;
 
 namespace Terminals.Configuration
 {
-    internal partial class Settings : IConnectionSettings
+    internal partial class Settings : IConnectionSettings, IMRUSettings
     {
         public Version ConfigVersion
         {

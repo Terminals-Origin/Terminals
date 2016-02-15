@@ -85,9 +85,9 @@ namespace Terminals.Data
             this.UserInterface.ToConfigFavorite(destination);
         }
 
-        internal void AssignStore(PersistenceSecurity persistenceSecurity)
-        {
-            this.TsGateway.Security.AssignStore(persistenceSecurity);
-        }
+        //TODO internal void AssignStore(PersistenceSecurity persistenceSecurity)
+        //{
+        //    this.TsGateway.Security.AssignStore(persistenceSecurity);
+        //}
     }
 }

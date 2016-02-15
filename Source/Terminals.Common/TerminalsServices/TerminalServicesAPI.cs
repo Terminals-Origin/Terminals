@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Terminals.TerminalServices
 {
-    internal class TerminalServicesAPI
+    public class TerminalServicesAPI
     {
 
         [DllImport("WtsApi32.dll", EntryPoint = "WTSQuerySessionInformationW", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
@@ -173,13 +173,13 @@ namespace Terminals.TerminalServices
                 }
                 catch(Exception ex)
                 {
-                    Logging.Error("Get Sessions Inner", ex);
+                    // TODO Logging.Error("Get Sessions Inner", ex);
                     Data.Errors.Add(ex.Message + "\r\n" + System.Runtime.InteropServices.Marshal.GetLastWin32Error());
                 }
             }
             catch(Exception ex)
             {
-                Logging.Info("Get Sessions Outer", ex);
+                // TODO Logging.Info("Get Sessions Outer", ex);
                 Data.Errors.Add(ex.Message + "\r\n" + System.Runtime.InteropServices.Marshal.GetLastWin32Error());
             }
 

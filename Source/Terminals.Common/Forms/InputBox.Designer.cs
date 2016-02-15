@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Terminals.Forms
 {
-    internal partial class InputBox : Form
+    public partial class InputBox : Form
     {
         /// <summary>
         /// Required designer variable.

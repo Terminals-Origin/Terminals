@@ -117,14 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MessagefromyourAdministrator" xml:space="preserve">
-    <value>Message from your Administrator</value>
+  <data name="Areyousureyouwanttologthissessionoff" xml:space="preserve">
+    <value>Are you sure you want to log this session off?</value>
   </data>
-  <data name="Pleaseenterthemessagetosend" xml:space="preserve">
-    <value>Please enter the message to send:</value>
+  <data name="Areyousureyouwanttorebootthismachine" xml:space="preserve">
+    <value>Are you sure you want to reboot this machine?</value>
+  </data>
+  <data name="Areyousureyouwanttoshutthismachineoff" xml:space="preserve">
+    <value>Are you sure you want to shut this machine off?</value>
+  </data>
+  <data name="Confirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="Logoff" xml:space="preserve">
+    <value>Logoff</value>
+  </data>
+  <data name="Reboot" xml:space="preserve">
+    <value>Reboot</value>
+  </data>
+  <data name="SendMessage" xml:space="preserve">
+    <value>Send Message</value>
+  </data>
+  <data name="Server" xml:space="preserve">
+    <value>Server</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="terminalsicon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\terminalsicon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="server_network" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\server_network.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sessions" xml:space="preserve">
+    <value>Sessions</value>
+  </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>Shutdown</value>
+  </data>
+  <data name="treeIcon_rdp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\treeIcon_rdp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Progress" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Progress.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="folder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\folder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

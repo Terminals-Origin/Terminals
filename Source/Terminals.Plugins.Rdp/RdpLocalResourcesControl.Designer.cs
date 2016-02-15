@@ -106,7 +106,7 @@
             // 
             // btnBrowseShare
             // 
-            this.btnBrowseShare.Image = global::Terminals.Properties.Resources.folder;
+            this.btnBrowseShare.Image = global::Terminals.Plugins.Rdp.Properties.Resources.folder;
             this.btnBrowseShare.Location = new System.Drawing.Point(420, 157);
             this.btnBrowseShare.Name = "btnBrowseShare";
             this.btnBrowseShare.Size = new System.Drawing.Size(30, 24);

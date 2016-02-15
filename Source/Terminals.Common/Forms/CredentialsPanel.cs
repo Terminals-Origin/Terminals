@@ -5,16 +5,17 @@ using Terminals.Data;
 
 namespace Terminals.Forms.Controls
 {
-    internal partial class CredentialsPanel : UserControl
+    public partial class CredentialsPanel : UserControl
     {
-        private readonly Settings settings = Settings.Instance;
+       //TODO  private readonly IMRUSettings settings = Settings.Instance;
 
         private String favoritePassword = string.Empty;
-        internal const String HIDDEN_PASSWORD = "****************";
 
-        internal bool PasswordLoaded { get; private set; }
+        public const String HIDDEN_PASSWORD = "****************";
 
-        internal event EventHandler PasswordChanged
+        public bool PasswordLoaded { get; private set; }
+
+        public event EventHandler PasswordChanged
         {
             add { this.txtPassword.TextChanged += value; }
             remove { this.txtPassword.TextChanged -= value; }
@@ -38,38 +39,38 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        internal CredentialsPanel()
+        public CredentialsPanel()
         {
             InitializeComponent();
             this.revealPwdButton.Click += this.RevealOrHidePwd;
         }
 
-        internal void SetUserNameError(ErrorProvider errorProvider, string errroMessage)
+        public void SetUserNameError(ErrorProvider errorProvider, string errroMessage)
         {
             errorProvider.SetIconAlignment(this.cmbUsers, ErrorIconAlignment.MiddleRight);
             errorProvider.SetError(this.cmbUsers, errroMessage);
         }
 
-        internal void LoadMRUs()
+        public void LoadMRUs()
         {
-            this.cmbDomains.Items.AddRange(settings.MRUDomainNames);
-            this.cmbUsers.Items.AddRange(settings.MRUUserNames);
+            //TODO this.cmbDomains.Items.AddRange(settings.MRUDomainNames);
+            //this.cmbUsers.Items.AddRange(settings.MRUUserNames);
         }
 
-        internal void SaveMRUs()
+        public void SaveMRUs()
         {
-            settings.AddDomainMRUItem(cmbDomains.Text);
-            settings.AddUserMRUItem(cmbUsers.Text);
+            //TODO settings.AddDomainMRUItem(cmbDomains.Text);
+            //settings.AddUserMRUItem(cmbUsers.Text);
         }
 
-        internal void LoadDirectlyFrom(ICredentialBase security)
+        public void LoadDirectlyFrom(ICredentialBase security)
         {
             this.LoadDomainAndUser(security);
             // here dont affect stored password
             this.txtPassword.Text = security.Password;
         }
 
-        internal void LoadFrom(ICredentialBase security)
+        public void LoadFrom(ICredentialBase security)
         {
             this.LoadDomainAndUser(security);
             this.favoritePassword = security.Password;
@@ -101,19 +102,19 @@ namespace Terminals.Forms.Controls
             this.txtPassword.Text = this.favoritePassword;
         }
 
-        internal void SaveTo(ICredentialBase security)
+        public void SaveTo(ICredentialBase security)
         {
             this.SaveUserAndDomain(security);
             this.SavePassword(security);
         }
 
-        internal void SaveUserAndDomain(ICredentialBase security)
+        public void SaveUserAndDomain(ICredentialBase security)
         {
             security.Domain = this.cmbDomains.Text;
             security.UserName = this.cmbUsers.Text;
         }
 
-        internal void SavePassword(ICredentialBase security)
+        public void SavePassword(ICredentialBase security)
         {
             if (this.txtPassword.Text != HIDDEN_PASSWORD)
                 security.Password = this.txtPassword.Text;
