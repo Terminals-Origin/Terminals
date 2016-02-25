@@ -131,10 +131,6 @@
       <HintPath>..\..\Resources\Libraries\VMRC\Interop.VMRCClientControlLib.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="MSTSCLib">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Resources\Libraries\mstsc\MSTSCLib.dll</HintPath>
@@ -666,7 +662,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalizedValues.resx</DependentUpon>
     </Compile>
-    <Compile Include="Logging\Log.cs" />
     <Compile Include="Network\AD\ActiveDirectoryClient.cs" />
     <Compile Include="Network\AD\ActiveDirectoryComputer.cs" />
     <Compile Include="Network\Tools\DNS\Adapter.cs" />
@@ -1658,6 +1653,7 @@
     <Folder Include="Connections\VMRC\" />
     <Folder Include="Connections\VNC\" />
     <Folder Include="Connections\Web\" />
+    <Folder Include="Logging\" />
     <Folder Include="Native\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

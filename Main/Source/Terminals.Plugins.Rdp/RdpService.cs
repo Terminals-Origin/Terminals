@@ -28,10 +28,9 @@ namespace Terminals.Connections
             }
             catch (Exception exception)
             {
-                string message =
-                    String.Format("Checked to see if {0} is a terminal server. {0} is not a terminal server",
-                        favorite.ServerName);
-                // TODO Logging.Error(message, exception);
+                const string MESSAGE = "Checked to see if {0} is a terminal server. {0} is not a terminal server";
+                string message = String.Format(MESSAGE, favorite.ServerName);
+                Logging.Error(message, exception);
             }
         }
     }
