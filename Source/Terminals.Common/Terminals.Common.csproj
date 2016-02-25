@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -67,6 +71,7 @@
     </Compile>
     <Compile Include="Forms\InputBoxResult.cs" />
     <Compile Include="IMRUSettings.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="TerminalsServices\Client.cs" />
     <Compile Include="TerminalsServices\ConnectionStates.cs" />
     <Compile Include="Connections\IConnectionExtra.cs" />
@@ -147,6 +152,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\terminalsicon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

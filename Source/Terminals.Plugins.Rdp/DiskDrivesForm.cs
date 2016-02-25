@@ -52,7 +52,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                // TODO Logging.Error("Failed to load Disk Drive devices.", exc);
+                Logging.Error("Failed to load Disk Drive devices.", exc);
             }
         }
 
@@ -70,7 +70,7 @@ namespace Terminals
             }
             catch (Exception e)
             {
-                // TODO Logging.Error("Error loading a drive into the tree", e);
+                Logging.Error("Error loading a drive into the tree", e);
             }
         }
 

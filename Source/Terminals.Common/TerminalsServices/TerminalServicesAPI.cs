@@ -173,13 +173,13 @@ namespace Terminals.TerminalServices
                 }
                 catch(Exception ex)
                 {
-                    // TODO Logging.Error("Get Sessions Inner", ex);
+                    Logging.Error("Get Sessions Inner", ex);
                     Data.Errors.Add(ex.Message + "\r\n" + System.Runtime.InteropServices.Marshal.GetLastWin32Error());
                 }
             }
             catch(Exception ex)
             {
-                // TODO Logging.Info("Get Sessions Outer", ex);
+                Logging.Info("Get Sessions Outer", ex);
                 Data.Errors.Add(ex.Message + "\r\n" + System.Runtime.InteropServices.Marshal.GetLastWin32Error());
             }
 

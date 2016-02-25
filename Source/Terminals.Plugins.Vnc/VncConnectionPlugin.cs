@@ -80,12 +80,12 @@ namespace Terminals.Connections.VNC
             catch (CryptographicException ce)
             {
                 // ignore this kind of exception, because of detecting with empty password may fail.
-               // TODO Logging.Info(string.Empty, ce);
+                Logging.Info(string.Empty, ce);
                 return true;
             }
             catch (Exception exc)
             {
-                //TODO Logging.Error("VNC Port Scan Failed", exc);
+                Logging.Error("VNC Port Scan Failed", exc);
                 return false;
             }
         }

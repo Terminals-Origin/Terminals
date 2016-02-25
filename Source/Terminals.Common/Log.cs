@@ -9,11 +9,11 @@ namespace Terminals
     /// <summary>
     /// 1:1 adapter of logging provider
     /// </summary>
-    internal class Logging
+    public class Logging
     {
         private static readonly ILog log = LogManager.GetLogger("Terminals");
 
-        internal static string LogDirectory
+        public static string LogDirectory
         {
             get
             {
@@ -33,52 +33,52 @@ namespace Terminals
                                                           .FirstOrDefault();
         }
 
-        internal static void Fatal(string message)
+        public static void Fatal(string message)
         {
             log.Fatal(message);
         }
 
-        internal static void Fatal(object message)
+        public static void Fatal(object message)
         {
             log.Fatal(message);
         }
 
-        internal static void FatalFormat(string format, string message)
+        public static void FatalFormat(string format, string message)
         {
             log.FatalFormat(format, message);
         }
 
-        internal static void Fatal(string message, Exception exception)
+        public static void Fatal(string message, Exception exception)
         {
             log.Fatal(message, exception);
         }
 
-        internal static void Error(string message)
+        public static void Error(string message)
         {
             log.Error(message);
         }
 
-        internal static void Error(string message, Exception exception)
+        public static void Error(string message, Exception exception)
         {
             log.Error(message, exception);
         }
 
-        internal static void Warn(string message)
+        public static void Warn(string message)
         {
             log.Warn(message);
         }
 
-        internal static void Info(string message)
+        public static void Info(string message)
         {
             log.Info(message);
         }
 
-        internal static void Info(Exception exception)
+        public static void Info(Exception exception)
         {
             log.Info(exception);
         }
 
-        internal static void Info(string message, Exception exception)
+        public static void Info(string message, Exception exception)
         {
             log.Error(message, exception);
         }
