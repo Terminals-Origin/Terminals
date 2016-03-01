@@ -5,9 +5,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
 using Terminals.Configuration;
-using SysConfig = System.Configuration;
 using System.IO;
 using System.Linq;
+using Terminals.Data.Credentials;
 using Unified;
 
 namespace Terminals.Data
@@ -163,7 +163,8 @@ namespace Terminals.Data
         {
             foreach (ICredentialSet credentials in cache)
             {
-                credentials.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+                var guarded = new GuardedCredential(credentials, this.persistenceSecurity);
+                guarded.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             }
 
             Save();

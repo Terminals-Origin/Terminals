@@ -28,10 +28,8 @@ namespace Terminals.Data
         [XmlIgnore]
         string Password { get; set; }
 
-        /// <summary>
-        /// Replaces stored encrypted password by new one using newKeymaterial
-        /// </summary>
-        /// <param name="newKeymaterial">key created from master password hash</param>
-        void UpdatePasswordByNewKeyMaterial(string newKeymaterial);
+        string EncryptedUserName { get; set; }
+
+        string EncryptedDomain { get; set; }
     }
 }

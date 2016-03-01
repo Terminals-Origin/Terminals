@@ -284,7 +284,7 @@ namespace Terminals.Data
         /// <param name="newKeyMaterial">New shared key used to encrypt passwords in the store</param>
         internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
-            this.security.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+            // todo this.security.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             UpdatePasswordsInProtocolProperties(this.protocolProperties, newKeyMaterial);
         }
 
