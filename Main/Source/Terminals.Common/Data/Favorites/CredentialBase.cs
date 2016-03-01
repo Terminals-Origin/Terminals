@@ -106,26 +106,6 @@ namespace Terminals.Data
         //    this.persistenceSecurity = persistenceSecurity;
         //}
 
-        void ICredentialBase.UpdatePasswordByNewKeyMaterial(string newKeymaterial)
-        {
-            UpdatePasswordByNewKeyMaterial(newKeymaterial);
-        }
-
-        public void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
-        {
-            // todo string userName = this.GetDecryptedUserName();
-            //if (!string.IsNullOrEmpty(userName))
-            //    this.EncryptedUserName = PasswordFunctions2.EncryptPassword(userName, newKeymaterial);
-
-            //string domain = this.GetDecryptedDomain();
-            //if (!string.IsNullOrEmpty(domain))
-            //    this.EncryptedDomain = PasswordFunctions2.EncryptPassword(domain, newKeymaterial);
-
-            //string secret = this.GetDecryptedPassword();
-            //if (!string.IsNullOrEmpty(secret))
-            //    this.EncryptedPassword = PasswordFunctions2.EncryptPassword(secret, newKeymaterial);
-        }
-
         private string GetDecryptedUserName()
         {
             // todo if (!string.IsNullOrEmpty(this.EncryptedUserName))
