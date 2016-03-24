@@ -38,7 +38,7 @@ namespace Terminals.Forms.EditFavorite
             this.credentialsPanel1.SaveMRUs();
             TsGwOptions tsgwOptions = rdpOptions.TsGateway;
             tsgwOptions.HostName = this.txtTSGWServer.Text;
-            this.credentialsPanel1.SaveTo(tsgwOptions.Security);
+            // todo this.credentialsPanel1.SaveTo(tsgwOptions.Security);
             tsgwOptions.SeparateLogin = this.chkTSGWlogin.Checked;
             tsgwOptions.CredentialSource = this.cmbTSGWLogonMethod.SelectedIndex;
             if (tsgwOptions.CredentialSource == 2)
@@ -98,8 +98,8 @@ namespace Terminals.Forms.EditFavorite
             this.chkTSGWlogin.Checked = tsGateway.SeparateLogin;
             this.credentialsPanel1.Enabled = tsGateway.SeparateLogin;
 
-            if (tsGateway.SeparateLogin)
-                this.credentialsPanel1.LoadFrom(tsGateway.Security);
+            //if (tsGateway.SeparateLogin)
+            //  todo  this.credentialsPanel1.LoadFrom(tsGateway.Security);
             
             if (tsGateway.CredentialSource == 4)
                 this.cmbTSGWLogonMethod.SelectedIndex = 2;

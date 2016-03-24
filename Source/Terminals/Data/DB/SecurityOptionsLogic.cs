@@ -51,7 +51,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        string ICredentialBase.UserName
+        public string UserName
         {
             get
             {
@@ -217,18 +217,6 @@ namespace Terminals.Data.DB
                 this.NewCachedCredentials = true;
             }
         }
-
-        public ISecurityOptions GetResolvedCredentials()
-        {
-            DbSecurityOptions result = this.Copy();
-            SecurityOptions.ResolveCredentials(result, this.Credential);
-            return result;
-        }
-
-        public void UpdateFromCredential(ICredentialSet source)
-        {
-            SecurityOptions.UpdateFromCredential(source, this);
-        } 
         
         public void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
         {
@@ -290,7 +278,7 @@ namespace Terminals.Data.DB
             if (this.CachedCredentials == null)
                 return "SecurityOptions:Empty";
             var security = this as ICredentialBase;
-            return string.Format("SecurityOptions:User='{0}',Domain='{1}'", security.UserName, security.Domain);
+            return string.Format("SecurityOptions:User='{0}',Domain='{1}'", this.UserName, security.Domain);
         }
 
         /// <summary>

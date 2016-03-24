@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Terminals.Security;
 using Terminals.Updates;
 
@@ -84,7 +85,8 @@ namespace Tests.Passwords
             Assert.AreEqual(PasswordTests.USERPASSWORD, favoritePassword, "Upgrade favorite password failed.");
 
             ICredentialSet credential = persistence.Credentials.First();
-            Assert.AreEqual(TEST_PASSWORD, credential.UserName, "Credential user name upgrade failed.");
+            var guarded = new GuardedCredential(credential, persistence.Security);
+            Assert.AreEqual(TEST_PASSWORD, guarded.UserName, "Credential user name upgrade failed.");
             Assert.AreEqual(TEST_PASSWORD, credential.Password, "Credential password upgrade failed.");
         }
 

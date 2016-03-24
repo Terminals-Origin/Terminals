@@ -26,7 +26,7 @@ namespace Terminals.Connections
                 rd = new VncSharp.RemoteDesktop();
                 Controls.Add(rd);
 
-                string pass = this.Favorite.Security.GetResolvedCredentials().Password;
+                string pass = this.ResolveFavoriteCredentials().Password;
                 this.vncPassword = pass;
 
                 if (string.IsNullOrEmpty(vncPassword)) return false;

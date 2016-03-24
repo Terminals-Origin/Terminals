@@ -260,8 +260,9 @@ namespace Terminals
             favorite.Name = String.Empty;
             favorite.ServerName = String.Empty;
             favorite.Notes = String.Empty;
+            // to reset we dont need to go through encryption
             favorite.Security.Domain = String.Empty;
-            favorite.Security.UserName = String.Empty;
+            favorite.Security.EncryptedUserName = String.Empty;
             favorite.Security.Password = String.Empty;
 
             var rdpOptions = favorite.ProtocolProperties as RdpOptions;

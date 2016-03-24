@@ -14,7 +14,7 @@ namespace Tests.UserInterface
 
         private readonly CredentialsPanel credentialPanel = new CredentialsPanel();
 
-        private ISecurityOptions security;
+        private IGuardedCredential security;
 
         [TestInitialize]
         public void Setup()
@@ -30,7 +30,7 @@ namespace Tests.UserInterface
         public void Domain_LoadDirectlyAndSave_ReturnsOriginalValue()
         {
             this.credentialPanel.LoadDirectlyFrom(this.security);
-            ISecurityOptions result = CreateSecurity();
+            var result = CreateSecurity();
             this.credentialPanel.SaveUserAndDomain(result);
             Assert.AreEqual(EXPECTED_DOMAIN, result.Domain, "Loaded domain has to be saved back in Save");
         }
@@ -39,7 +39,7 @@ namespace Tests.UserInterface
         public void UserName_LoadDirectlyAndSave_ReturnsOriginalValue()
         {
             this.credentialPanel.LoadDirectlyFrom(this.security);
-            ISecurityOptions result = CreateSecurity();
+            var result = CreateSecurity();
             this.credentialPanel.SaveUserAndDomain(result);
             Assert.AreEqual(EXPECTED_USER_NAME, result.UserName, "Loaded username has to be saved back in Save");
         }
@@ -48,14 +48,14 @@ namespace Tests.UserInterface
         public void ValidPassword_LoadfromSavePassword_ReturnsOriginalValue()
         {
             this.credentialPanel.LoadFrom(this.security);
-            ISecurityOptions result = CreateSecurity();
+            var result = CreateSecurity();
             this.credentialPanel.SavePassword(result);
             Assert.AreEqual(EXPECTED_PASSWORD, result.Password, "Loaded valid password has to be saved back in Save");
         }
 
-        private ISecurityOptions CreateSecurity()
+        private IGuardedCredential CreateSecurity()
         {
-            var mockSecurity = new Mock<ISecurityOptions>();
+            var mockSecurity = new Mock<IGuardedCredential>();
             mockSecurity.SetupAllProperties();
             return mockSecurity.Object;
         }

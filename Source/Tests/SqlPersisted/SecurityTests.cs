@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Terminals.Data.DB;
 
 namespace Tests.SqlPersisted
@@ -44,7 +45,8 @@ namespace Tests.SqlPersisted
 
         private void UpdateWithNewSecuredValue(IFavorite testFavorite, string newValue)
         {
-            testFavorite.Security.UserName = newValue;
+            var guarded = new GuardedSecurity(this.PrimaryPersistence.Security, testFavorite.Security);
+            guarded.UserName = newValue;
             testFavorite.Security.Password = newValue;
             testFavorite.Security.Domain = newValue;
             this.PrimaryFavorites.Update(testFavorite);
@@ -57,10 +59,11 @@ namespace Tests.SqlPersisted
             AssertSecurityValues(resultFavorite, expectedValue);
         }
 
-        private static void AssertSecurityValues(IFavorite testFavorite, string expectedValue)
+        private void AssertSecurityValues(IFavorite testFavorite, string expectedValue)
         {
+            var guarded = new GuardedSecurity(this.PrimaryPersistence.Security, testFavorite.Security);
             Assert.AreEqual(expectedValue, testFavorite.Security.Password, "Favorite password doesn't match after update.");
-            Assert.AreEqual(expectedValue, testFavorite.Security.UserName, "Favorite user name doesn't match after update.");
+            Assert.AreEqual(expectedValue, guarded.UserName, "Favorite user name doesn't match after update.");
             Assert.AreEqual(expectedValue, testFavorite.Security.Domain, "Favorite user name doesn't match after update.");
         }
 

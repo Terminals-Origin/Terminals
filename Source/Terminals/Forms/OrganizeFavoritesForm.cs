@@ -61,8 +61,7 @@ namespace Terminals
 
         private SortableList<FavoriteViewModel> ConvertFavoritesToViewModel(SortableList<IFavorite> source)
         {
-            ICredentials storedCredentials = this.persistence.Credentials;
-            IEnumerable<FavoriteViewModel> sortedFavorites = source.Select(favorite => new FavoriteViewModel(favorite, storedCredentials));
+            IEnumerable<FavoriteViewModel> sortedFavorites = source.Select(favorite => new FavoriteViewModel(favorite, this.persistence));
             return new SortableList<FavoriteViewModel>(sortedFavorites);
         }
 

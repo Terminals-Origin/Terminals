@@ -497,16 +497,18 @@ namespace Terminals.Connections
             this.client.TransportSettings.GatewayHostname = rdpOptions.TsGateway.HostName;
             this.client.TransportSettings2.GatewayDomain = rdpOptions.TsGateway.Security.Domain;
             this.client.TransportSettings2.GatewayProfileUsageMethod = 1;
+            var security = this.ResolveTransportGatewayCredentials(rdpOptions);
+            IGuardedSecurity guarded = this.CredentialFactory.CreateSecurityOptoins(security);
+            this.client.TransportSettings2.GatewayUsername = guarded.UserName;
+            this.client.TransportSettings2.GatewayPassword = security.Password;
+        }
+
+        private ISecurityOptions ResolveTransportGatewayCredentials(RdpOptions rdpOptions)
+        {
             if (rdpOptions.TsGateway.SeparateLogin)
-            {
-                this.client.TransportSettings2.GatewayUsername = rdpOptions.TsGateway.Security.UserName;
-                this.client.TransportSettings2.GatewayPassword = rdpOptions.TsGateway.Security.Password;
-            }
-            else
-            {
-                this.client.TransportSettings2.GatewayUsername = this.Favorite.Security.UserName;
-                this.client.TransportSettings2.GatewayPassword = this.Favorite.Security.Password;
-            }
+                return rdpOptions.TsGateway.Security;
+
+            return this.Favorite.Security;
         }
 
         private void ConfigureSecurity(RdpOptions rdpOptions)
@@ -519,7 +521,7 @@ namespace Terminals.Connections
             var audioMode = (int)rdpOptions.Redirect.Sounds;
             this.client.SecuredSettings2.AudioRedirectionMode = (audioMode >= 0 && audioMode <= 2) ? audioMode : 0;
 
-            ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
+            IGuardedSecurity security = this.ResolveFavoriteCredentials();
 
             this.client.UserName = security.UserName;
             this.client.Domain = security.Domain;

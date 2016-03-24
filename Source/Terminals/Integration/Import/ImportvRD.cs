@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using Terminals.Configuration;
 using Terminals.Converters;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Terminals.Forms;
 using vRdImport;
 
@@ -130,13 +131,14 @@ namespace Terminals.Integration.Import
             }
         }
 
-        private static void UpdateFromvrDCredentials(vRDConfigurationFileCredentialsFolderCredentials source,
+        private void UpdateFromvrDCredentials(vRDConfigurationFileCredentialsFolderCredentials source,
                                                      ICredentialSet target)
         {
+            var guarded = new GuardedCredential(target, this.persistence.Security);
             target.Domain = source.Domain;
             target.Name = source.Name;
             target.Password = source.Password;
-            target.UserName = source.UserName;
+            guarded.UserName = source.UserName;
         }
 
         private List<FavoriteConfigurationElement> ConvertVRDConnectionCollectionToLocal(Connection[] connections, vRDConfigurationFileConnectionsFolder[] folders,

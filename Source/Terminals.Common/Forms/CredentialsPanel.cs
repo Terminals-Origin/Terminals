@@ -63,14 +63,14 @@ namespace Terminals.Forms.Controls
             //settings.AddUserMRUItem(cmbUsers.Text);
         }
 
-        public void LoadDirectlyFrom(ICredentialBase security)
+        public void LoadDirectlyFrom(IGuardedCredential security)
         {
             this.LoadDomainAndUser(security);
             // here dont affect stored password
             this.txtPassword.Text = security.Password;
         }
 
-        public void LoadFrom(ICredentialBase security)
+        public void LoadFrom(IGuardedCredential security)
         {
             this.LoadDomainAndUser(security);
             this.favoritePassword = security.Password;
@@ -78,13 +78,13 @@ namespace Terminals.Forms.Controls
             this.LoadPassword();
         }
 
-        private void LoadDomainAndUser(ICredentialBase security)
+        private void LoadDomainAndUser(IGuardedCredential security)
         {
             this.cmbDomains.Text = security.Domain;
             this.cmbUsers.Text = security.UserName;
         }
 
-        private void CheckEncryptedPassword(ICredentialBase security)
+        private void CheckEncryptedPassword(IGuardedCredential security)
         {
             if (!string.IsNullOrEmpty(this.favoritePassword) || string.IsNullOrEmpty(security.EncryptedPassword))
                 return;
@@ -102,19 +102,19 @@ namespace Terminals.Forms.Controls
             this.txtPassword.Text = this.favoritePassword;
         }
 
-        public void SaveTo(ICredentialBase security)
+        public void SaveTo(IGuardedCredential security)
         {
             this.SaveUserAndDomain(security);
             this.SavePassword(security);
         }
 
-        public void SaveUserAndDomain(ICredentialBase security)
+        public void SaveUserAndDomain(IGuardedCredential security)
         {
             security.Domain = this.cmbDomains.Text;
             security.UserName = this.cmbUsers.Text;
         }
 
-        public void SavePassword(ICredentialBase security)
+        public void SavePassword(IGuardedCredential security)
         {
             if (this.txtPassword.Text != HIDDEN_PASSWORD)
                 security.Password = this.txtPassword.Text;

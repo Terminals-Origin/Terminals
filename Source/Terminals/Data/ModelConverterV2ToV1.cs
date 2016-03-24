@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Terminals.Configuration;
+using Terminals.Data.Credentials;
 
 namespace Terminals.Data
 {
@@ -58,9 +59,10 @@ namespace Terminals.Data
 
         private void ConvertSecurity(FavoriteConfigurationElement result, IFavorite sourceFavorite)
         {
-            ISecurityOptions security = sourceFavorite.Security;
+            var security = sourceFavorite.Security;
+            var guarded = new GuardedSecurity(this.persistence.Security, security);
             result.DomainName = security.Domain;
-            result.UserName = security.UserName;
+            result.UserName = guarded.UserName;
             // because persistence and application masterpassword may differ, we have to go through encryption
             var resultSecurity = new FavoriteConfigurationSecurity(this.persistence, result);
             resultSecurity.Password = security.Password;

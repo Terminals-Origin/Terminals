@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Connections;
 using Terminals.Connections.VNC;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Terminals.Data.DB;
 
 namespace Tests.SqlPersisted
@@ -114,16 +115,17 @@ namespace Tests.SqlPersisted
             // first time change nothing to ensure, that dummy update doesn't fail.
             // EF Security.CachedCredentials property is still null.
             this.PrimaryFavorites.Update(favorite);
+            var guarded = new GuardedSecurity(this.PrimaryPersistence.Security, favorite.Security);
 
             // now assign new values to security and commit it as newly added, should not fail
-            favorite.Security.UserName = VALIDATION_VALUE;
+            guarded.UserName = VALIDATION_VALUE;
             this.PrimaryFavorites.Update(favorite);
             // try again to ensure, that second update also doesn't fail.
-            favorite.Security.UserName = VALIDATION_VALUE_B;
+            guarded.UserName = VALIDATION_VALUE_B;
             this.PrimaryFavorites.Update(favorite);
 
             IFavorite target = this.SecondaryFavorites.FirstOrDefault();
-            Assert.AreEqual(VALIDATION_VALUE_B, target.Security.UserName, "Protocol properties weren't updated");
+            Assert.AreEqual(VALIDATION_VALUE_B, guarded.UserName, "Protocol properties weren't updated");
             Assert.AreEqual(3, this.updatedCount, "Event wasn't delivered");
         }
 

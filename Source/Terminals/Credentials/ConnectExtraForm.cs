@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 
 namespace Terminals.Credentials
 {
@@ -28,7 +29,8 @@ namespace Terminals.Credentials
                 if (!this.IsCustomSelected)
                     return this.credentialsComboBox.SelectedItem as ICredentialSet;
 
-                this.customCredentials.UserName = this.userTextBox.Text;
+                var guarded = new GuardedCredential(this.customCredentials, this.persistence.Security);
+                guarded.UserName = this.userTextBox.Text;
                 this.customCredentials.Password = this.passwordTextBox.Text;
                 this.customCredentials.Domain = this.domainTextBox.Text;
                 return this.customCredentials;

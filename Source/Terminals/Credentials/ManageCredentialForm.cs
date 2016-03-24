@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Terminals.Data.Validation;
 
 namespace Terminals.Credentials
@@ -31,7 +32,8 @@ namespace Terminals.Credentials
         {
             if (this.editedCredential != null)
             {
-                this.credentialsPanel1.LoadFrom(this.editedCredential);
+                var guarded = new GuardedCredential(this.editedCredential, this.persistence.Security);
+                this.credentialsPanel1.LoadFrom(guarded);
                 this.NameTextbox.Text = editedCredential.Name;
                 this.editedCredentialName = editedCredential.Name;
             }
@@ -114,7 +116,8 @@ namespace Terminals.Credentials
         private void UpdateFromControls(ICredentialSet toUpdate)
         {
             toUpdate.Name = this.NameTextbox.Text;
-            this.credentialsPanel1.SaveTo(toUpdate);
+            var guarded = new GuardedCredential(this.editedCredential, this.persistence.Security);
+            this.credentialsPanel1.SaveTo(guarded);
         }
 
         private ICredentialSet CreateNewCredential()

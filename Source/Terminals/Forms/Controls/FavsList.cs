@@ -10,6 +10,7 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Terminals.Data.Validation;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
@@ -185,12 +186,13 @@ namespace Terminals
             MessageBox.Show(shutdownTask.Result, "Remote action result", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private static string TryPerformRemoteShutdown(object state)
+        private string TryPerformRemoteShutdown(object state)
         {
             try
             {
                 var options = state as Tuple<ShutdownCommands, IFavorite>;
-                if (options != null && RemoteManagement.ForceShutdown(options.Item2, options.Item1))
+
+                if (options != null && RemoteManagement.ForceShutdown(this.Persistence.Security, options.Item2, options.Item1))
                     return "Terminals successfully sent the shutdown command.";
 
                 return shutdownFailMessage;
