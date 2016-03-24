@@ -3,6 +3,7 @@ using Terminals;
 using Terminals.Configuration;
 using Terminals.Converters;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Tests.FilePersisted;
 
 namespace Tests.Configuration
@@ -133,11 +134,11 @@ namespace Tests.Configuration
             // because of internal usage in Favorite we have to reference the singleton
             var persistence = this.Persistence;
             var credential = new CredentialSet();
-            // todo credential.AssignStore(persistence.Security);
+            var guarded = new GuardedCredential(credential, this.Persistence.Security);
             credential.Name = CREDENTIAL_NAME;
             credential.Password = EXPECTEDPASSWORD;
             credential.Domain = EXPECTED_DOMAIN;
-            credential.UserName = EXPECTED_USER;
+            guarded.UserName = EXPECTED_USER;
             persistence.Credentials.Add(credential);
         }
     }

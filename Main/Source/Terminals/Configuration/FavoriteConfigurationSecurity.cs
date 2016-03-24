@@ -1,5 +1,6 @@
 ﻿using System;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 
 namespace Terminals.Configuration
 {
@@ -61,8 +62,12 @@ namespace Terminals.Configuration
             if (!string.IsNullOrEmpty(this.favorite.Credential))
             {
                 ICredentialSet cred = this.credentials[this.favorite.Credential];
+                
                 if (cred != null)
-                    return cred.UserName;
+                {
+                    var guarded = new GuardedCredential(cred, this.security);
+                    return guarded.UserName;
+                }
             }
 
             return this.favorite.UserName;

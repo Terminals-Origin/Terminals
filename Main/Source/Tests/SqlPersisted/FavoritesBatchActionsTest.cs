@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
 using System.Collections.Generic;
+using Terminals.Data.Credentials;
 using Terminals.Data.DB;
 
 namespace Tests.SqlPersisted
@@ -45,8 +46,8 @@ namespace Tests.SqlPersisted
 
             foreach (IFavorite secondaryFavorite in SecondaryFavorites)
             {
-                string finalUserName = secondaryFavorite.Security.UserName;
-                Assert.AreEqual(VALIDATION_VALUE, finalUserName, "User name was not set properly to all favorites");
+                var guarded = new GuardedSecurity(this.PrimaryPersistence.Security, secondaryFavorite.Security);
+                Assert.AreEqual(VALIDATION_VALUE, guarded.UserName, "User name was not set properly to all favorites");
             }
         }
 

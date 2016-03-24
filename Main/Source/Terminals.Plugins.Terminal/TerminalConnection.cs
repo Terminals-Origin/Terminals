@@ -49,7 +49,7 @@ namespace Terminals.Connections
                 this.client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 this.client.Connect(Favorite.ServerName, Favorite.Port);
 
-                ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
+                IGuardedSecurity security = this.ResolveFavoriteCredentials();
                 switch (Favorite.Protocol)
                 {
                     case TelnetConnectionPlugin.TELNET:
@@ -94,7 +94,7 @@ namespace Terminals.Connections
             return null;
         }
 
-        private string ConfigureTelnetConnection(ISecurityOptions security)
+        private string ConfigureTelnetConnection(IGuardedSecurity security)
         {
             TcpProtocol tcpProtocol = new TcpProtocol(new NetworkStream(this.client));
             TelnetProtocol p = new TelnetProtocol();
@@ -111,7 +111,7 @@ namespace Terminals.Connections
             return TelnetConnectionPlugin.TELNET;
         }
 
-        private string ConfigureSshConnection(ISecurityOptions security)
+        private string ConfigureSshConnection(IGuardedSecurity security)
         {
             this.sshProtocol = new SSHClient.Protocol();
             this.sshProtocol.setTerminalParams(term.TerminalType, term.Rows, term.Columns);

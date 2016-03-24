@@ -12,32 +12,6 @@ namespace Terminals.Data
     {
         public string EncryptedUserName { get; set; }
 
-        [XmlIgnore]
-        String ICredentialBase.UserName
-        {
-            get { return UserName; }
-            set { UserName = value; }
-        }
-
-        // Not everything is access using interface, e.g. TSGW options inside RdpOptions,
-        // so we encapsulate the internal properties UserName, Domain and Password
-        // this property needs to be public, because it is required by the validation
-        [XmlIgnore]
-        public string UserName
-        {
-            get
-            {
-                return this.GetDecryptedUserName();
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    this.EncryptedUserName = String.Empty;
-                //else
-                // todo   this.EncryptedUserName = persistenceSecurity.EncryptPersistencePassword(value);
-            }
-        }
-
         public string EncryptedDomain { get; set; }
 
         [XmlIgnore]

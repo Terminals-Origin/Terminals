@@ -1,18 +1,44 @@
 ﻿using System;
+using Terminals.Configuration;
 using Terminals.Security;
 
 namespace Terminals.Data.Credentials
 {
-    internal class GuardedCredential
+    internal class GuardedCredential : IGuardedCredential
     {
         private readonly ICredentialBase credential;
 
-        private readonly PersistenceSecurity persistenceSecurity;
+        protected PersistenceSecurity PersistenceSecurity { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the user name in not encrypted form. This value isn't stored.
+        /// this property needs to be public, because it is required by the validation.
+        /// </summary>
+        public string UserName
+        {
+            get
+            {
+                return this.GetDecryptedUserName();
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    this.credential.EncryptedUserName = String.Empty;
+                else
+                    this.credential.EncryptedUserName = this.PersistenceSecurity.EncryptPersistencePassword(value);
+            }
+        }
+
+        public string Domain { get; set; }
+
+        public string Password { get; set; }
+
+        public string EncryptedPassword { get; set; }
 
         internal GuardedCredential(ICredentialBase credential, PersistenceSecurity persistenceSecurity)
         {
             this.credential = credential;
-            this.persistenceSecurity = persistenceSecurity;
+            this.PersistenceSecurity = persistenceSecurity;
         }
 
         /// <summary>
@@ -37,7 +63,7 @@ namespace Terminals.Data.Credentials
         private string GetDecryptedUserName()
         {
             if (!string.IsNullOrEmpty(this.credential.EncryptedUserName))
-                return this.persistenceSecurity.DecryptPersistencePassword(this.credential.EncryptedUserName);
+                return this.PersistenceSecurity.DecryptPersistencePassword(this.credential.EncryptedUserName);
 
             return String.Empty;
         }
@@ -45,7 +71,7 @@ namespace Terminals.Data.Credentials
         private string GetDecryptedDomain()
         {
             if (!string.IsNullOrEmpty(this.credential.EncryptedDomain))
-                return this.persistenceSecurity.DecryptPersistencePassword(this.credential.EncryptedDomain);
+                return this.PersistenceSecurity.DecryptPersistencePassword(this.credential.EncryptedDomain);
 
             return String.Empty;
         }
@@ -53,9 +79,21 @@ namespace Terminals.Data.Credentials
         private string GetDecryptedPassword()
         {
             if (!string.IsNullOrEmpty(this.credential.EncryptedPassword))
-                return this.persistenceSecurity.DecryptPersistencePassword(this.credential.EncryptedPassword);
+                return this.PersistenceSecurity.DecryptPersistencePassword(this.credential.EncryptedPassword);
 
             return String.Empty;
+        }
+
+        public static void UpdateFromCredential(ICredentialSet source, ISecurityOptions target, PersistenceSecurity persistenceSecurity)
+        {
+            if (source != null)
+            {
+                target.Credential = source.Id;
+                var guarded = new GuardedCredential(target, persistenceSecurity);
+                target.Domain = source.Domain;
+                guarded.UserName = guarded.UserName;
+                target.EncryptedPassword = source.EncryptedPassword;
+            }
         }
     }
 }

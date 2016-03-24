@@ -217,7 +217,7 @@ namespace Terminals.Data
 
         internal static String GetToolTipText(IFavorite selected)
         {
-            string userDisplayName = HelperFunctions.UserDisplayName(selected.Security.Domain, selected.Security.UserName);
+            string userDisplayName = string.Empty; // todo HelperFunctions.UserDisplayName(selected.Security.Domain, selected.Security.UserName);
             String toolTip = String.Format("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
                 Environment.NewLine, selected.ServerName, selected.Port, userDisplayName);
 

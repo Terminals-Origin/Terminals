@@ -313,7 +313,7 @@ namespace Terminals.Data
         {
             foreach (IFavorite favorite in selectedFavorites)
             {
-                favorite.Security.UserName = newUserName;
+                // todo favorite.Security.UserName = newUserName;
             }
         }
 

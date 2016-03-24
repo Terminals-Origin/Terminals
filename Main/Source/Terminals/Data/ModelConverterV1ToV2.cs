@@ -1,4 +1,6 @@
-﻿namespace Terminals.Data
+﻿using Terminals.Data.Credentials;
+
+namespace Terminals.Data
 {
     /// <summary>
     /// Converts favorites from data model used in version 1.X (FavoriteConfigurationElement)
@@ -51,10 +53,11 @@
 
         private void ConvertSecurity(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
-            ISecurityOptions security = result.Security;
-            // dont use resolution here, because in upgrade th persistence is not initialized.
+            var security = result.Security;
+            var guarded = new GuardedSecurity(this.persistence.Security, security);
+            // dont use resolution here, because in upgrade the persistence is not initialized.
             security.Domain = sourceFavorite.DomainName;
-            security.UserName = sourceFavorite.UserName;
+            guarded.UserName = sourceFavorite.UserName;
             // because persistence and application masterpassword may differ,
             // we have to go through encryption without credential resolution
             security.Password = persistence.Security.DecryptPassword(sourceFavorite.EncryptedPassword);

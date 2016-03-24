@@ -37,7 +37,7 @@ namespace Terminals.Connections
                 ras.ConnectionChanged += new ConnectionChangedEventHandler(ras_ConnectionChanged);
                 ras.EntryName = Favorite.ServerName;
 
-                ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
+                var security = this.ResolveFavoriteCredentials();
                 RasError error;
                 if (!string.IsNullOrEmpty(security.UserName) && !string.IsNullOrEmpty(security.Password))
                 {

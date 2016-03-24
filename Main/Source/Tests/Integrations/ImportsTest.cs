@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Terminals.Forms.Controls;
 using Terminals.Integration;
 using Terminals.Integration.Export;
@@ -75,7 +76,8 @@ namespace Tests.Integrations
             // persisted favorites are empty, strategy doesnt matter
             InvokeTheImport(toImport, persistence, rename);
             var importedSecurity = persistence.Favorites.First().Security;
-            Assert.AreEqual(TEST_USERNAME, importedSecurity.UserName);
+            var guarded = new GuardedSecurity(persistence.Security, importedSecurity);
+            Assert.AreEqual(TEST_USERNAME, guarded.UserName);
             Assert.AreEqual(TEST_DOMAIN, importedSecurity.Domain);
             Assert.AreEqual(TEST_PASSWORD, importedSecurity.Password);
         }
@@ -86,7 +88,8 @@ namespace Tests.Integrations
             favorite.Name = "testFavorite";
             favorite.ServerName = favorite.Name;
             var security = favorite.Security;
-            security.UserName = TEST_USERNAME;
+            var guarded = new GuardedSecurity(persistence.Security, security);
+            guarded.UserName = TEST_USERNAME;
             security.Domain = TEST_DOMAIN;
             security.Password = TEST_PASSWORD;
             persistence.Favorites.Add(favorite);

@@ -3,6 +3,7 @@ using System.Management;
 using System.Net;
 using Microsoft.Win32;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 
 namespace Terminals.Network
 {
@@ -23,9 +24,10 @@ namespace Terminals.Network
     /// </summary>
     internal static class RemoteManagement
     {
-        internal static bool ForceShutdown(IFavorite favorite, ShutdownCommands shutdownCommand)
+        internal static bool ForceShutdown(PersistenceSecurity persistenceSecurity, IFavorite favorite, ShutdownCommands shutdownCommand)
         {
-            ISecurityOptions security = favorite.Security.GetResolvedCredentials();
+            var guarded = new GuardedSecurity(persistenceSecurity, favorite.Security);
+            var security = guarded.GetResolvedCredentials();
             var credentials = new NetworkCredential(security.UserName, security.Password, security.Domain);
             return ForceShutdown(favorite.ServerName, shutdownCommand, credentials) == 0;
         }

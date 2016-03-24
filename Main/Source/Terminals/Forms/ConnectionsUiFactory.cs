@@ -7,6 +7,7 @@ using Terminals.CaptureManager;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Terminals.Network;
 
 namespace Terminals.Forms
@@ -23,11 +24,14 @@ namespace Terminals.Forms
 
         private readonly Settings settings = Settings.Instance;
 
+        private readonly GuardedCredentialFactory guardedCredentialFactory;
+
         internal ConnectionsUiFactory(MainForm mainForm, TerminalTabsSelectionControler terminalsControler, IPersistence persistence)
         {
             this.mainForm = mainForm;
             this.terminalsControler = terminalsControler;
             this.persistence = persistence;
+            this.guardedCredentialFactory = new GuardedCredentialFactory(this.persistence.Security);
         }
 
         internal void CreateCaptureManagerTab()
@@ -123,7 +127,7 @@ namespace Terminals.Forms
             if (definition.ForceNewWindow.HasValue)
                 favoriteCopy.NewWindow = definition.ForceNewWindow.Value;
             
-            favoriteCopy.Security.UpdateFromCredential(definition.Credentials);
+            // todo favoriteCopy.Security.UpdateFromCredential(definition.Credentials);
             return favoriteCopy;
         }
 
@@ -201,7 +205,7 @@ namespace Terminals.Forms
             String terminalTabTitle = favorite.Name;
             if (settings.ShowUserNameInTitle)
             {
-                var security = favorite.Security;
+                var security = this.guardedCredentialFactory.CreateCredential(favorite.Security);
                 string title = HelperFunctions.UserDisplayName(security.Domain, security.UserName);
                 terminalTabTitle += String.Format(" ({0})", title);
             }
@@ -244,11 +248,12 @@ namespace Terminals.Forms
             return conn;
         }
 
-        private static void AssignControls(Connection conn, TerminalTabControlItem terminalTabPage, MainForm parentForm)
+        private void AssignControls(Connection conn, TerminalTabControlItem terminalTabPage, MainForm parentForm)
         {
             terminalTabPage.Connection = conn;
             conn.Parent = terminalTabPage;
             conn.ParentForm = parentForm;
+            conn.CredentialFactory = this.guardedCredentialFactory;
             conn.OnDisconnected += parentForm.OnDisconnected;
         }
 

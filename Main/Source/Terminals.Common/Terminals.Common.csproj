@@ -58,6 +58,9 @@
     </Compile>
     <Compile Include="Data\Favorites\CredentialBase.cs" />
     <Compile Include="Data\Favorites\SecurityOptions.cs" />
+    <Compile Include="Data\Interfaces\IGuardedCredential.cs" />
+    <Compile Include="Data\Interfaces\IGuardedCredentialFactory.cs" />
+    <Compile Include="Data\Interfaces\IGuardedSecurity.cs" />
     <Compile Include="Forms\CredentialsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

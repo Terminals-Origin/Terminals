@@ -33,6 +33,8 @@ namespace Terminals.Connections
 
         public IConnectionMainView ParentForm { get; set; }
 
+        public IGuardedCredentialFactory CredentialFactory { get; set; }
+
         /// <summary>
         /// Create this control doesnt mean to open the connection.
         /// Use explicit call instead. Because there may be related resources, 
@@ -68,6 +70,12 @@ namespace Terminals.Connections
         {
             if (this.OnDisconnected != null)
                 this.OnDisconnected(this);
+        }
+
+        protected IGuardedSecurity ResolveFavoriteCredentials()
+        {
+            IGuardedSecurity security = this.CredentialFactory.CreateSecurityOptoins(this.Favorite.Security);
+            return security.GetResolvedCredentials();
         }
     }
 }

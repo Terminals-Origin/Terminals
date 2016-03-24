@@ -33,7 +33,7 @@ namespace Terminals.Connections
             {
                 this.Dock = DockStyle.Fill;
                 string url = WebOptions.ExtractAbsoluteUrl(this.Favorite);
-                ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
+                IGuardedSecurity security = this.ResolveFavoriteCredentials();
 
                 if (!String.IsNullOrEmpty(security.UserName) && !String.IsNullOrEmpty(security.Password))
                 {

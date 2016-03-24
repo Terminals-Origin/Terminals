@@ -1,4 +1,5 @@
 ﻿using Terminals.Data;
+using Terminals.Data.Credentials;
 
 namespace Terminals.Forms
 {
@@ -9,7 +10,9 @@ namespace Terminals.Forms
     /// </summary>
     internal class FavoriteViewModel
     {
-        private ICredentials storedCredentials;
+        private readonly ICredentials storedCredentials;
+
+        private readonly GuardedSecurity guarded;
 
         internal IFavorite Favorite { get; private set; }
         
@@ -31,7 +34,7 @@ namespace Terminals.Forms
 
         public string UserName
         {
-            get { return this.Favorite.Security.UserName; }
+            get { return this.guarded.UserName; }
         }
 
         public string Credential
@@ -56,10 +59,11 @@ namespace Terminals.Forms
             get { return this.Favorite.Notes; }
         }
 
-        internal FavoriteViewModel(IFavorite favorite, ICredentials storedCredentials)
+        internal FavoriteViewModel(IFavorite favorite, IPersistence persistence)
         {
             this.Favorite = favorite;
-            this.storedCredentials = storedCredentials;
+            this.storedCredentials = persistence.Credentials;
+            this.guarded = new GuardedSecurity(persistence.Security, favorite.Security);
         }
     }
 }

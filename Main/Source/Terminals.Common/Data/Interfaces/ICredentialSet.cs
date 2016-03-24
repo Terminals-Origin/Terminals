@@ -19,8 +19,7 @@ namespace Terminals.Data
         /// </summary>
         string Name { get; set; }
 
-        // next two properties are required to be shown in GridControls, see implementation
-        new string UserName { get; set; }
+        // todo test, if the properties are still shown in grid: next two properties are required to be shown in GridControls, see implementation
         new string Domain { get; set; }
     }
 }

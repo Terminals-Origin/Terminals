@@ -66,7 +66,7 @@ namespace Terminals.Data
 
             this.Security.Domain = favorite.TsgwDomain;
             this.Security.EncryptedPassword = favorite.TsgwEncryptedPassword;
-            this.Security.UserName = favorite.TsgwUsername;
+            // todo this.Security.UserName = favorite.TsgwUsername;
         }
 
         internal void FoConfigFavorite(FavoriteConfigurationElement favorite)
@@ -78,7 +78,7 @@ namespace Terminals.Data
 
             favorite.TsgwDomain = this.Security.Domain;
             favorite.TsgwEncryptedPassword = this.Security.EncryptedPassword;
-            favorite.TsgwUsername = this.Security.UserName;
+            // todo favorite.TsgwUsername = this.Security.UserName;
         }
     }
 }

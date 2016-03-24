@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Credentials;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 
 namespace Terminals.Forms.Controls
 {
@@ -34,9 +35,12 @@ namespace Terminals.Forms.Controls
         {
             var set = this.credentialDropdown.SelectedItem as ICredentialSet;
             bool hasSelectedCredential = set != null;
-           
+
             if (hasSelectedCredential)
-                this.credentialsPanel1.LoadDirectlyFrom(set);
+            {
+                var guarded = new GuardedCredential(set, this.persistence.Security);
+                this.credentialsPanel1.LoadDirectlyFrom(guarded);
+            }
             
             this.credentialsPanel1.Enabled = !hasSelectedCredential;
             this.FireSelectedCredentialChanged(hasSelectedCredential);
@@ -52,10 +56,11 @@ namespace Terminals.Forms.Controls
         {
             ICredentialSet selectedCredential = this.credentialDropdown.SelectedItem as ICredentialSet;
             security.Credential = selectedCredential == null ? Guid.Empty : selectedCredential.Id;
-            this.credentialsPanel1.SaveUserAndDomain(security);
+            var guarded = new GuardedSecurity(this.persistence.Security, security);
+            this.credentialsPanel1.SaveUserAndDomain(guarded);
 
             if (savePassword)
-                this.credentialsPanel1.SavePassword(security);
+                this.credentialsPanel1.SavePassword(guarded);
             else
                 security.Password = String.Empty;
         }
@@ -106,7 +111,8 @@ namespace Terminals.Forms.Controls
 
         internal void LoadFrom(ISecurityOptions security)
         {
-            this.credentialsPanel1.LoadFrom(security);
+            var guarded = new GuardedSecurity(this.persistence.Security, security);
+            this.credentialsPanel1.LoadFrom(guarded);
         }
     }
 }
