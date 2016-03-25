@@ -64,7 +64,7 @@ namespace Terminals.Data
             this.SeparateLogin = favorite.TsgwSeparateLogin;
             this.UsageMethod = favorite.TsgwUsageMethod;
 
-            this.Security.Domain = favorite.TsgwDomain;
+            // todo this.Security.Domain = favorite.TsgwDomain;
             this.Security.EncryptedPassword = favorite.TsgwEncryptedPassword;
             // todo this.Security.UserName = favorite.TsgwUsername;
         }
@@ -76,7 +76,7 @@ namespace Terminals.Data
             favorite.TsgwSeparateLogin = this.SeparateLogin;
             favorite.TsgwUsageMethod = this.UsageMethod;
 
-            favorite.TsgwDomain = this.Security.Domain;
+            // todo favorite.TsgwDomain = this.Security.Domain;
             favorite.TsgwEncryptedPassword = this.Security.EncryptedPassword;
             // todo favorite.TsgwUsername = this.Security.UserName;
         }

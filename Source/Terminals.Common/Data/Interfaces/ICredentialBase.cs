@@ -8,11 +8,6 @@ namespace Terminals.Data
     public interface ICredentialBase
     {
         /// <summary>
-        /// Gets or sets the domain in not encrypted form. This value isn't stored.
-        /// </summary>
-        string Domain { get; set; }
-
-        /// <summary>
         /// Gets or sets the encrypted password. Depends on the master password key.
         /// </summary>
         string EncryptedPassword { get; set; }

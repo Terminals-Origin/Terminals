@@ -75,8 +75,8 @@ namespace Tests.SqlPersisted
 
             foreach (IFavorite secondaryFavorite in SecondaryFavorites)
             {
-                string finalDomain = secondaryFavorite.Security.Domain;
-                Assert.AreEqual(VALIDATION_VALUE, finalDomain, "Domain name was not set properly to all favorites");
+                var guarded = new GuardedSecurity(this.SecondaryPersistence.Security, secondaryFavorite.Security);
+                Assert.AreEqual(VALIDATION_VALUE, guarded.Domain, "Domain name was not set properly to all favorites");
             }
         }
 

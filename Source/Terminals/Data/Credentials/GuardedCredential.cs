@@ -29,7 +29,23 @@ namespace Terminals.Data.Credentials
             }
         }
 
-        public string Domain { get; set; }
+        public string Domain
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(this.credential.EncryptedDomain))
+                    return this.PersistenceSecurity.DecryptPersistencePassword(this.credential.EncryptedDomain);
+
+                return String.Empty;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    this.credential.EncryptedDomain = String.Empty;
+                else
+                    this.credential.EncryptedDomain = this.PersistenceSecurity.EncryptPersistencePassword(value);
+            }
+        }
 
         public string Password { get; set; }
 
@@ -89,9 +105,11 @@ namespace Terminals.Data.Credentials
             if (source != null)
             {
                 target.Credential = source.Id;
-                var guarded = new GuardedCredential(target, persistenceSecurity);
-                target.Domain = source.Domain;
-                guarded.UserName = guarded.UserName;
+                var guardedSource = new GuardedCredential(source, persistenceSecurity);
+                var guardedTarget = new GuardedCredential(target, persistenceSecurity);
+                guardedTarget.Domain = guardedSource.Domain;
+                guardedTarget.UserName = guardedSource.UserName;
+                // todo is it OK to directly assign unencrypted password and avoid encryption
                 target.EncryptedPassword = source.EncryptedPassword;
             }
         }

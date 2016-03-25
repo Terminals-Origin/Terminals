@@ -9,6 +9,7 @@ using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Terminals.Forms;
 using Terminals.Forms.EditFavorite;
 using Tests.FilePersisted;
@@ -25,6 +26,7 @@ namespace Tests.UserInterface
     {
         private const int EXPECTED_NUMBER = 5;
         private const string PROTOCOL_MESSAGE = "Protocol Roundtrip has to preserve the property value";
+        private static readonly PersistenceSecurity persistenceSecurity = new PersistenceSecurity();
 
         private readonly ProtocolOptionsPanel protocolPanel = new ProtocolOptionsPanel();
         private readonly MockChildProtocolControl childProtocolControlMock = new MockChildProtocolControl();
@@ -87,14 +89,21 @@ namespace Tests.UserInterface
         {
             this.AssertExpectedPropertyValue<RdpOptions, string>(KnownConnectionConstants.RDP,
                   ConfigureTsGateway,
-                  options => options.TsGateway.Security.Domain,
+                  GetDomain,
                   "TsGwDomain");
         }
 
-        private void ConfigureTsGateway(RdpOptions options, string newValue)
+        private static string GetDomain(RdpOptions options)
+        {
+            var guarded = new GuardedSecurity(persistenceSecurity, options.TsGateway.Security);
+            return guarded.Domain;
+        }
+
+        private static void ConfigureTsGateway(RdpOptions options, string newValue)
         {
             options.TsGateway.SeparateLogin = true;
-            options.TsGateway.Security.Domain = newValue;
+            var guarded = new GuardedSecurity(persistenceSecurity, options.TsGateway.Security);
+            guarded.Domain = newValue;
         }
 
         [TestMethod]
@@ -245,7 +254,7 @@ namespace Tests.UserInterface
             var favoriteGroupsStub = new Mock<IFavoriteGroups>();
             favoriteGroupsStub.Setup(fg => fg.GetGroupsContainingFavorite(It.IsAny<Guid>())).Returns(groups);
             var favorite = new Favorite();
-            favorite.AssignStores(new PersistenceSecurity(), favoriteGroupsStub.Object);
+            favorite.AssignStores(persistenceSecurity, favoriteGroupsStub.Object);
             return favorite;
         }
     }

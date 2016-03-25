@@ -36,13 +36,8 @@ namespace Terminals.Data
             }
         }
 
-        // todo: next two properties are only to simplify presentation in grids using SortableList
+        // todo: UserName and Domain properties are only to simplify presentation in grids using SortableList
         // otherwise sorting fails, see ICredentialSet
-        string ICredentialSet.Domain
-        {
-            get { return this.Domain; }
-            set { this.Domain = value; }
-        }
 
         public override string ToString()
         {

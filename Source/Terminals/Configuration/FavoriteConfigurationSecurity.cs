@@ -51,8 +51,12 @@ namespace Terminals.Configuration
         internal string ResolveDomainName()
         {
             ICredentialSet cred = this.credentials[this.favorite.Credential];
+
             if (cred != null)
-                return cred.Domain;
+            {
+                var guarded = new GuardedCredential(cred, this.security);
+                return guarded.Domain;
+            }
 
             return this.favorite.DomainName;
         }

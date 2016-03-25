@@ -336,12 +336,8 @@ namespace Terminals.Data
 
         internal static string ToString(IFavorite favorite)
         {
-            string domain = favorite.Security.Domain;
-            if (!String.IsNullOrEmpty(domain))
-                domain += "\\";
-
-            return String.Format(@"Favorite:{0}({1})={2}{3}:{4}",
-                favorite.Name, favorite.Protocol, domain, favorite.ServerName, favorite.Port);
+            return String.Format(@"Favorite:{0}({1})={2}:{3}",
+                favorite.Name, favorite.Protocol, favorite.ServerName, favorite.Port);
         }
     }
 }

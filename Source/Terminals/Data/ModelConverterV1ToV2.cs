@@ -55,8 +55,8 @@ namespace Terminals.Data
         {
             var security = result.Security;
             var guarded = new GuardedSecurity(this.persistence.Security, security);
-            // dont use resolution here, because in upgrade the persistence is not initialized.
-            security.Domain = sourceFavorite.DomainName;
+            // todo validate: dont use resolution here, because in upgrade the persistence is not initialized.
+            guarded.Domain = sourceFavorite.DomainName;
             guarded.UserName = sourceFavorite.UserName;
             // because persistence and application masterpassword may differ,
             // we have to go through encryption without credential resolution

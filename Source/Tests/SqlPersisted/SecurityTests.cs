@@ -48,7 +48,7 @@ namespace Tests.SqlPersisted
             var guarded = new GuardedSecurity(this.PrimaryPersistence.Security, testFavorite.Security);
             guarded.UserName = newValue;
             testFavorite.Security.Password = newValue;
-            testFavorite.Security.Domain = newValue;
+            guarded.Domain = newValue;
             this.PrimaryFavorites.Update(testFavorite);
         }
 
@@ -64,7 +64,7 @@ namespace Tests.SqlPersisted
             var guarded = new GuardedSecurity(this.PrimaryPersistence.Security, testFavorite.Security);
             Assert.AreEqual(expectedValue, testFavorite.Security.Password, "Favorite password doesn't match after update.");
             Assert.AreEqual(expectedValue, guarded.UserName, "Favorite user name doesn't match after update.");
-            Assert.AreEqual(expectedValue, testFavorite.Security.Domain, "Favorite user name doesn't match after update.");
+            Assert.AreEqual(expectedValue, guarded.Domain, "Favorite user name doesn't match after update.");
         }
 
         [TestMethod]

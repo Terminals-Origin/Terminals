@@ -51,24 +51,6 @@ namespace Terminals.Data.DB
             }
         }
 
-        public string UserName
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(this.EncryptedUserName))
-                    return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedUserName);
-
-                return String.Empty;
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    this.EncryptedUserName = String.Empty;
-                else
-                    this.EncryptedUserName = this.persistenceSecurity.EncryptPersistencePassword(value);
-            }
-        }
-
         public string EncryptedDomain
         {
             get
@@ -85,24 +67,6 @@ namespace Terminals.Data.DB
                     this.EnsureCredentialBase();
                     this.CachedCredentials.EncryptedDomain = value;
                 }
-            }
-        }
-
-        string ICredentialBase.Domain
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(this.EncryptedDomain))
-                    return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedDomain);
-
-                return String.Empty;
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    this.EncryptedDomain = String.Empty;
-                else
-                    this.EncryptedDomain = this.persistenceSecurity.EncryptPersistencePassword(value);
             }
         }
 
@@ -277,8 +241,8 @@ namespace Terminals.Data.DB
         {
             if (this.CachedCredentials == null)
                 return "SecurityOptions:Empty";
-            var security = this as ICredentialBase;
-            return string.Format("SecurityOptions:User='{0}',Domain='{1}'", this.UserName, security.Domain);
+
+            return string.Format("SecurityOptions:Credential={0}", this.Credential);
         }
 
         /// <summary>
