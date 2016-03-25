@@ -261,7 +261,7 @@ namespace Terminals
             favorite.ServerName = String.Empty;
             favorite.Notes = String.Empty;
             // to reset we dont need to go through encryption
-            favorite.Security.Domain = String.Empty;
+            favorite.Security.EncryptedDomain = String.Empty;
             favorite.Security.EncryptedUserName = String.Empty;
             favorite.Security.Password = String.Empty;
 

@@ -31,11 +31,11 @@ namespace Terminals.Data.Credentials
         private static void UpdateFromDefaultValues(ICredentialBase target)
         {
             Settings settings = Settings.Instance;
-
-            if (string.IsNullOrEmpty(target.Domain))
-                target.Domain = settings.DefaultDomain;
-
             var guarded = new GuardedCredential(target, Persistence.Instance.Security);
+
+            if (string.IsNullOrEmpty(guarded.Domain))
+                guarded.Domain = settings.DefaultDomain;
+            
             if (string.IsNullOrEmpty(guarded.UserName))
                 guarded.UserName = settings.DefaultUsername;
 

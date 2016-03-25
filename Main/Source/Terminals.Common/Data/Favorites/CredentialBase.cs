@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Xml.Serialization;
-//using Terminals.Security;
 
 namespace Terminals.Data
 {
@@ -13,30 +12,7 @@ namespace Terminals.Data
         public string EncryptedUserName { get; set; }
 
         public string EncryptedDomain { get; set; }
-
-        [XmlIgnore]
-        String ICredentialBase.Domain
-        {
-            get { return Domain; }
-            set { Domain = value; }
-        }
-        
-        [XmlIgnore]
-        public string Domain
-        {
-            get
-            {
-                return this.GetDecryptedDomain();
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    this.EncryptedDomain = String.Empty;
-                //else
-                // todo    this.EncryptedDomain = persistenceSecurity.EncryptPersistencePassword(value);
-            }
-        }
-        
+                
         public string EncryptedPassword { get; set; }
 
         /// <summary>
@@ -65,35 +41,11 @@ namespace Terminals.Data
             }
         }
 
-       // private PersistenceSecurity persistenceSecurity;
-
         protected void UpdateFrom(CredentialBase source)
         {
             this.EncryptedUserName = source.EncryptedUserName;
             this.EncryptedDomain = source.EncryptedDomain;
             this.EncryptedPassword = source.EncryptedPassword;
-            //this.persistenceSecurity = source.persistenceSecurity;
-        }
-
-        // todo internal void AssignStore(PersistenceSecurity persistenceSecurity)
-        //{
-        //    this.persistenceSecurity = persistenceSecurity;
-        //}
-
-        private string GetDecryptedUserName()
-        {
-            // todo if (!string.IsNullOrEmpty(this.EncryptedUserName))
-            //    return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedUserName);
-
-            return String.Empty;
-        }
-
-        private string GetDecryptedDomain()
-        {
-            // todo if (!string.IsNullOrEmpty(this.EncryptedDomain))
-            //    return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedDomain);
-
-            return String.Empty;
         }
 
         private string GetDecryptedPassword()

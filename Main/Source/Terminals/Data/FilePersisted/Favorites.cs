@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using Terminals.Configuration;
+using Terminals.Data.FilePersisted;
 
 namespace Terminals.Data
 {
@@ -13,12 +14,15 @@ namespace Terminals.Data
         private readonly Groups groups;
         private readonly Dictionary<Guid, IFavorite> cache;
 
+        private readonly FavoriteBatchUpdates batchUpdates;
+
         internal Favorites(FilePersistence persistence)
         {
             this.persistence = persistence;
             this.dispatcher = persistence.Dispatcher;
             this.groups = this.persistence.GroupsStore;
             this.cache = new Dictionary<Guid,IFavorite>();
+            this.batchUpdates = new FavoriteBatchUpdates(persistence.Security);
         }
 
         private bool AddToCache(IFavorite favorite)
@@ -277,44 +281,20 @@ namespace Terminals.Data
 
         public void SetPasswordToAllFavorites(List<IFavorite> selectedFavorites, string newPassword)
         {
-            SetPasswordToFavorites(selectedFavorites, newPassword);
+            this.batchUpdates.SetPasswordToFavorites(selectedFavorites, newPassword);
             this.SaveAndReportFavoritesUpdate(selectedFavorites);
-        }
-
-        internal static void SetPasswordToFavorites(List<IFavorite> selectedFavorites, string newPassword)
-        {
-            foreach (IFavorite favorite in selectedFavorites)
-            {
-                favorite.Security.Password = newPassword;
-            }
         }
 
         public void ApplyDomainNameToAllFavorites(List<IFavorite> selectedFavorites, string newDomainName)
         {
-            ApplyDomainNameToFavorites(selectedFavorites, newDomainName);
+            this.batchUpdates.ApplyDomainNameToFavorites(selectedFavorites, newDomainName);
             this.SaveAndReportFavoritesUpdate(selectedFavorites);
-        }
-
-        internal static void ApplyDomainNameToFavorites(List<IFavorite> selectedFavorites, string newDomainName)
-        {
-            foreach (IFavorite favorite in selectedFavorites)
-            {
-                favorite.Security.Domain = newDomainName;
-            }
         }
 
         public void ApplyUserNameToAllFavorites(List<IFavorite> selectedFavorites, string newUserName)
         {
-            ApplyUserNameToFavorites(selectedFavorites, newUserName);
+            this.batchUpdates.ApplyUserNameToFavorites(selectedFavorites, newUserName);
             this.SaveAndReportFavoritesUpdate(selectedFavorites);
-        }
-
-        internal static void ApplyUserNameToFavorites(List<IFavorite> selectedFavorites, string newUserName)
-        {
-            foreach (IFavorite favorite in selectedFavorites)
-            {
-                // todo favorite.Security.UserName = newUserName;
-            }
         }
 
         #endregion

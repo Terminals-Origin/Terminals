@@ -61,7 +61,7 @@ namespace Terminals.Data
         {
             var security = sourceFavorite.Security;
             var guarded = new GuardedSecurity(this.persistence.Security, security);
-            result.DomainName = security.Domain;
+            result.DomainName = guarded.Domain;
             result.UserName = guarded.UserName;
             // because persistence and application masterpassword may differ, we have to go through encryption
             var resultSecurity = new FavoriteConfigurationSecurity(this.persistence, result);

@@ -38,7 +38,7 @@ namespace Terminals.Data.DB
             this.credentials = credentials;
             this.persistenceSecurity = persistenceSecurity;
             this.dispatcher = dispatcher;
-            this.batchActions = new FavoritesBatchActions(this, this.cache, this.dispatcher);
+            this.batchActions = new FavoritesBatchActions(this, this.cache, this.dispatcher, persistenceSecurity);
         }
 
         IFavorite IFavorites.this[Guid favoriteId]
@@ -295,23 +295,17 @@ namespace Terminals.Data.DB
 
         public void SetPasswordToAllFavorites(List<IFavorite> selectedFavorites, string newPassword)
         {
-            var values = new ApplyValueParams(Data.Favorites.SetPasswordToFavorites,
-                                                      selectedFavorites, newPassword, "Password");
-            this.batchActions.ApplyValue(values);
+            this.batchActions.SetPasswordToFavorites(selectedFavorites, newPassword);
         }
 
         public void ApplyDomainNameToAllFavorites(List<IFavorite> selectedFavorites, string newDomainName)
         {
-            var values = new ApplyValueParams(Data.Favorites.ApplyDomainNameToFavorites,
-                                                      selectedFavorites, newDomainName, "DomainName");
-            this.batchActions.ApplyValue(values);
+            this.batchActions.ApplyDomainNameToFavorites(selectedFavorites, newDomainName);
         }
 
         public void ApplyUserNameToAllFavorites(List<IFavorite> selectedFavorites, string newUserName)
         {
-            var values = new ApplyValueParams(Data.Favorites.ApplyUserNameToFavorites,
-                                                      selectedFavorites, newUserName, "UserName");
-            this.batchActions.ApplyValue(values);
+            this.batchActions.ApplyUserNameToFavorites(selectedFavorites, newUserName);
         }
 
         private void EnsureCache()

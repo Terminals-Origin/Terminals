@@ -2,26 +2,50 @@
 using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using Terminals.Data.FilePersisted;
 
 namespace Terminals.Data.DB
 {
     /// <summary>
     /// Does required action on group of favorites
     /// </summary>
-    internal class FavoritesBatchActions
+    internal class FavoritesBatchActions : FavoriteBatchUpdates
     {
         private readonly Favorites favorites;
         private readonly EntitiesCache<DbFavorite> cache;
         private readonly DataDispatcher dispatcher;
 
-        internal FavoritesBatchActions(Favorites favorites, EntitiesCache<DbFavorite> cache, DataDispatcher dispatcher)
+        internal FavoritesBatchActions(Favorites favorites, EntitiesCache<DbFavorite> cache,
+            DataDispatcher dispatcher, PersistenceSecurity persistenceSecurity)
+            : base(persistenceSecurity)
         {
             this.favorites = favorites;
             this.cache = cache;
             this.dispatcher = dispatcher;
         }
 
-        internal void ApplyValue(ApplyValueParams applyParams)
+        internal override void ApplyUserNameToFavorites(List<IFavorite> selectedFavorites, string newUserName)
+        {
+            var values = new ApplyValueParams(base.ApplyUserNameToFavorites,
+                                          selectedFavorites, newUserName, "UserName");
+            this.ApplyValue(values);
+        }
+
+        internal override void ApplyDomainNameToFavorites(List<IFavorite> selectedFavorites, string newDomainName)
+        {
+            var values = new ApplyValueParams(base.ApplyDomainNameToFavorites,
+                                          selectedFavorites, newDomainName, "DomainName");
+            this.ApplyValue(values);
+        }
+
+        internal override void SetPasswordToFavorites(List<IFavorite> selectedFavorites, string newPassword)
+        {
+            var values = new ApplyValueParams(base.SetPasswordToFavorites,
+                                          selectedFavorites, newPassword, "Password");
+            this.ApplyValue(values);
+        }
+
+        private void ApplyValue(ApplyValueParams applyParams)
         {
             try
             {
