@@ -65,7 +65,7 @@ namespace Terminals.Data
             result.UserName = guarded.UserName;
             // because persistence and application masterpassword may differ, we have to go through encryption
             var resultSecurity = new FavoriteConfigurationSecurity(this.persistence, result);
-            resultSecurity.Password = security.Password;
+            resultSecurity.Password = guarded.Password;
             
             ICredentialSet credential = this.persistence.Credentials[security.Credential];
             if(credential != null)

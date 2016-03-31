@@ -79,7 +79,7 @@ namespace Tests.Integrations
             var guarded = new GuardedSecurity(persistence.Security, importedSecurity);
             Assert.AreEqual(TEST_USERNAME, guarded.UserName);
             Assert.AreEqual(TEST_DOMAIN, guarded.Domain);
-            Assert.AreEqual(TEST_PASSWORD, importedSecurity.Password);
+            Assert.AreEqual(TEST_PASSWORD, guarded.Password);
         }
 
         private static IFavorite CreateTestFavorite(IPersistence persistence)
@@ -91,7 +91,7 @@ namespace Tests.Integrations
             var guarded = new GuardedSecurity(persistence.Security, security);
             guarded.UserName = TEST_USERNAME;
             guarded.Domain = TEST_DOMAIN;
-            security.Password = TEST_PASSWORD;
+            guarded.Password = TEST_PASSWORD;
             persistence.Favorites.Add(favorite);
             return favorite;
         }

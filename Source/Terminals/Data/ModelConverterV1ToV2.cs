@@ -60,7 +60,7 @@ namespace Terminals.Data
             guarded.UserName = sourceFavorite.UserName;
             // because persistence and application masterpassword may differ,
             // we have to go through encryption without credential resolution
-            security.Password = persistence.Security.DecryptPassword(sourceFavorite.EncryptedPassword);
+            guarded.Password = persistence.Security.DecryptPassword(sourceFavorite.EncryptedPassword);
             
             ICredentialSet credential = persistence.Credentials[sourceFavorite.Credential];
             if (credential != null)

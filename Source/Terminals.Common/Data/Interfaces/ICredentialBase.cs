@@ -12,12 +12,6 @@ namespace Terminals.Data
         /// </summary>
         string EncryptedPassword { get; set; }
 
-        /// <summary>
-        /// Gets or sets the password in not encrypted form. This value isn't stored.
-        /// </summary>
-        [XmlIgnore]
-        string Password { get; set; }
-
         string EncryptedUserName { get; set; }
 
         string EncryptedDomain { get; set; }

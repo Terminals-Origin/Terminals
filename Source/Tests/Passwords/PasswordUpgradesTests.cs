@@ -81,13 +81,13 @@ namespace Tests.Passwords
         {
             // we don't have to authenticate, because it was already done by upgrade
             IFavorite favorite = persistence.Favorites.First();
-            String favoritePassword = favorite.Security.Password;
-            Assert.AreEqual(PasswordTests.USERPASSWORD, favoritePassword, "Upgrade favorite password failed.");
+            var guardedSecurity = new GuardedSecurity(persistence.Security, favorite.Security);
+            Assert.AreEqual(PasswordTests.USERPASSWORD, guardedSecurity.Password, "Upgrade favorite password failed.");
 
             ICredentialSet credential = persistence.Credentials.First();
             var guarded = new GuardedCredential(credential, persistence.Security);
             Assert.AreEqual(TEST_PASSWORD, guarded.UserName, "Credential user name upgrade failed.");
-            Assert.AreEqual(TEST_PASSWORD, credential.Password, "Credential password upgrade failed.");
+            Assert.AreEqual(TEST_PASSWORD, guarded.Password, "Credential password upgrade failed.");
         }
 
         private static void AssertFavoriteCredentialSet(IPersistence persistence)

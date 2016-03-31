@@ -39,8 +39,8 @@ namespace Terminals.Data.Credentials
             if (string.IsNullOrEmpty(guarded.UserName))
                 guarded.UserName = settings.DefaultUsername;
 
-            if (string.IsNullOrEmpty(target.Password))
-                target.Password = settings.DefaultPassword;
+            if (string.IsNullOrEmpty(guarded.Password))
+                guarded.Password = settings.DefaultPassword;
         }
     }
 }

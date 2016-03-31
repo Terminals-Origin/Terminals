@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Common.Connections;
 using Terminals.Connections.VNC;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 
 namespace Tests.FilePersisted
 {
@@ -48,18 +49,19 @@ namespace Tests.FilePersisted
             // now it has RdpOptions
             favorite.Protocol = VncConnectionPlugin.VNC;
             this.Persistence.Favorites.Update(favorite);
-            AssertRdpSecurity(favorite);
+            AssertRdpSecurity(this.Persistence.Security, favorite);
         }
 
         /// <summary>
         /// Checks, if Gateway has still assigned persistence security, to be able work with passwords.
         /// </summary>
-        internal static void AssertRdpSecurity(IFavorite favorite)
+        internal static void AssertRdpSecurity(PersistenceSecurity persistenceSecurity, IFavorite favorite)
         {
             favorite.Protocol = KnownConnectionConstants.RDP;
             var rdpOptions = favorite.ProtocolProperties as RdpOptions;
-            // next line shouldn't fail
-            rdpOptions.TsGateway.Security.Password = "aaa";
+            
+            var guarded = new GuardedSecurity(persistenceSecurity, rdpOptions.TsGateway.Security);
+            guarded.Password = "aaa"; // shouldn't fail
         }
 
         /// <summary>

@@ -136,7 +136,7 @@ namespace Tests.Configuration
             var credential = new CredentialSet();
             var guarded = new GuardedCredential(credential, this.Persistence.Security);
             credential.Name = CREDENTIAL_NAME;
-            credential.Password = EXPECTEDPASSWORD;
+            guarded.Password = EXPECTEDPASSWORD;
             guarded.Domain = EXPECTED_DOMAIN;
             guarded.UserName = EXPECTED_USER;
             persistence.Credentials.Add(credential);
