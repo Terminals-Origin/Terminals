@@ -89,24 +89,6 @@ namespace Terminals.Data.DB
             }
         }
 
-        string ICredentialBase.Password
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(this.EncryptedPassword))
-                    return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedPassword);
-
-                return String.Empty;
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    this.EncryptedPassword = String.Empty;
-                else
-                    this.EncryptedPassword = this.persistenceSecurity.EncryptPersistencePassword(value);
-            }
-        }
-
         public Guid Credential
         {
             get 

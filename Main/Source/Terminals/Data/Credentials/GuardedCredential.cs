@@ -33,10 +33,7 @@ namespace Terminals.Data.Credentials
         {
             get
             {
-                if (!string.IsNullOrEmpty(this.credential.EncryptedDomain))
-                    return this.PersistenceSecurity.DecryptPersistencePassword(this.credential.EncryptedDomain);
-
-                return String.Empty;
+                return this.GetDecryptedDomain();
             }
             set
             {
@@ -47,9 +44,26 @@ namespace Terminals.Data.Credentials
             }
         }
 
-        public string Password { get; set; }
+        public String Password
+        {
+            get
+            {
+                return this.GetDecryptedPassword();
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    this.credential.EncryptedPassword = String.Empty;
+                else
+                   this.credential.EncryptedPassword = this.PersistenceSecurity.EncryptPersistencePassword(value);
+            }
+        }
 
-        public string EncryptedPassword { get; set; }
+        public string EncryptedPassword
+        {
+            get { return this.credential.EncryptedPassword; }
+            set { this.credential.EncryptedPassword = value; }
+        }
 
         internal GuardedCredential(ICredentialBase credential, PersistenceSecurity persistenceSecurity)
         {

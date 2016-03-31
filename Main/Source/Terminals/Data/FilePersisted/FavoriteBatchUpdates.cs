@@ -15,10 +15,8 @@ namespace Terminals.Data.FilePersisted
 
         internal virtual void SetPasswordToFavorites(List<IFavorite> selectedFavorites, string newPassword)
         {
-            foreach (IFavorite favorite in selectedFavorites)
-            {
-                favorite.Security.Password = newPassword;
-            }
+            Action<IGuardedSecurity, string> applyValue = (g, v) => g.Password = v;
+            this.ApplyValueToAllFavorites(selectedFavorites, newPassword, applyValue);
         }
 
         internal virtual void ApplyUserNameToFavorites(List<IFavorite> selectedFavorites, string newUserName)

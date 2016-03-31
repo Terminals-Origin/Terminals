@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Terminals.Data.DB;
 
 namespace Tests.SqlPersisted
@@ -48,7 +49,8 @@ namespace Tests.SqlPersisted
             credentials.Name = "TestCredentialName";
             credentials.Domain = "TestDomain";
             credentials.UserName = "TestUserName";
-            ((ICredentialSet)credentials).Password = VALIDATION_VALUE;
+            var guarded = new GuardedCredential(credentials, this.PrimaryPersistence.Security);
+            guarded.Password = VALIDATION_VALUE;
             return credentials;
         }
 
@@ -58,9 +60,9 @@ namespace Tests.SqlPersisted
             this.AddTestCredentialsToDatabase();
 
             var checkCredentialSet = this.SecondaryPersistence.Credentials.FirstOrDefault() as DbCredentialSet;
-
+            string resolvedPassword = this.ResolveVerifiedPassword(checkCredentialSet);
             Assert.IsNotNull(checkCredentialSet, "Credential didn't reach the database");
-            Assert.AreEqual(VALIDATION_VALUE, ((ICredentialSet)checkCredentialSet).Password, "Password doesn't match");
+            Assert.AreEqual(VALIDATION_VALUE, resolvedPassword, "Password doesn't match");
         }
 
         [TestMethod]
@@ -100,7 +102,14 @@ namespace Tests.SqlPersisted
             this.PrimaryPersistence.Security.UpdateMasterPassword(VALIDATION_VALUE_B);
 
             ICredentialSet checkCredentials = this.SecondaryPersistence.Credentials.FirstOrDefault();
-            Assert.AreEqual(VALIDATION_VALUE, checkCredentials.Password, "Password lost after update of key material");
+            string resolvedPassword = this.ResolveVerifiedPassword(checkCredentials);
+            Assert.AreEqual(VALIDATION_VALUE, resolvedPassword, "Password lost after update of key material");
+        }
+
+        private string ResolveVerifiedPassword(ICredentialSet checkCredentialSet)
+        {
+            var guarded = new GuardedCredential(checkCredentialSet, this.SecondaryPersistence.Security);
+            return guarded.Password;
         }
     }
 }

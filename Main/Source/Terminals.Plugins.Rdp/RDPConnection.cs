@@ -500,7 +500,7 @@ namespace Terminals.Connections
             var security = this.ResolveTransportGatewayCredentials(rdpOptions);
             IGuardedSecurity guarded = this.CredentialFactory.CreateSecurityOptoins(security);
             this.client.TransportSettings2.GatewayUsername = guarded.UserName;
-            this.client.TransportSettings2.GatewayPassword = security.Password;
+            this.client.TransportSettings2.GatewayPassword = guarded.Password;
         }
 
         private ISecurityOptions ResolveTransportGatewayCredentials(RdpOptions rdpOptions)

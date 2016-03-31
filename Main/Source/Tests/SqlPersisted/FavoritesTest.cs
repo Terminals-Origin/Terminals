@@ -188,7 +188,7 @@ namespace Tests.SqlPersisted
             // now it has RdpOptions
             favorite.Protocol = VncConnectionPlugin.VNC;
             this.PrimaryFavorites.Update(favorite);
-            FilePersisted.FavoritesTest.AssertRdpSecurity(favorite);
+            FilePersisted.FavoritesTest.AssertRdpSecurity(this.PrimaryPersistence.Security, favorite);
         }
     }
 }

@@ -137,7 +137,7 @@ namespace Terminals.Integration.Import
             var guarded = new GuardedCredential(target, this.persistence.Security);
             guarded.Domain = source.Domain;
             target.Name = source.Name;
-            target.Password = source.Password;
+            guarded.Password = source.Password;
             guarded.UserName = source.UserName;
         }
 

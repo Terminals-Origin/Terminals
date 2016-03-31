@@ -263,7 +263,7 @@ namespace Terminals
             // to reset we dont need to go through encryption
             favorite.Security.EncryptedDomain = String.Empty;
             favorite.Security.EncryptedUserName = String.Empty;
-            favorite.Security.Password = String.Empty;
+            favorite.Security.EncryptedPassword = String.Empty;
 
             var rdpOptions = favorite.ProtocolProperties as RdpOptions;
             if (rdpOptions != null)

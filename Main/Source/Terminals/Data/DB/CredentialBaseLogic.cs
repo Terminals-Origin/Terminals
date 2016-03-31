@@ -5,6 +5,7 @@ namespace Terminals.Data.DB
 {
     internal partial class DbCredentialBase : ICredentialBase
     {
+        // todo remove all the duplicit code
         private PersistenceSecurity persistenceSecurity;
 
         public string UserName
@@ -37,7 +38,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        string ICredentialBase.Password
+        public string Password
         {
             get
             {

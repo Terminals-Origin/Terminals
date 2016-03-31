@@ -62,7 +62,7 @@ namespace Terminals.Forms.Controls
             if (savePassword)
                 this.credentialsPanel1.SavePassword(guarded);
             else
-                security.Password = String.Empty;
+                security.EncryptedPassword = String.Empty;
         }
 
         private void CredentialManagerPicturebox_Click(object sender, EventArgs e)

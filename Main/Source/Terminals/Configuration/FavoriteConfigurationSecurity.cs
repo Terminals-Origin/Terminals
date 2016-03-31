@@ -38,7 +38,10 @@ namespace Terminals.Configuration
             {
                 ICredentialSet cred = this.credentials[this.favorite.Credential];
                 if (cred != null)
-                    return cred.Password;
+                {
+                    var guarded = new GuardedCredential(cred, this.security);
+                    return guarded.Password;
+                }
 
                 return this.security.DecryptPassword(this.favorite.EncryptedPassword);
             }

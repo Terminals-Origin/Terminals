@@ -31,7 +31,7 @@ namespace Terminals.Credentials
 
                 var guarded = new GuardedCredential(this.customCredentials, this.persistence.Security);
                 guarded.UserName = this.userTextBox.Text;
-                this.customCredentials.Password = this.passwordTextBox.Text;
+                guarded.Password = this.passwordTextBox.Text;
                 guarded.Domain = this.domainTextBox.Text;
                 return this.customCredentials;
             }
