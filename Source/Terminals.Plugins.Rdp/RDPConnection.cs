@@ -495,7 +495,8 @@ namespace Terminals.Connections
             this.client.TransportSettings.GatewayUsageMethod = (uint)rdpOptions.TsGateway.UsageMethod;
             this.client.TransportSettings.GatewayCredsSource = (uint)rdpOptions.TsGateway.CredentialSource;
             this.client.TransportSettings.GatewayHostname = rdpOptions.TsGateway.HostName;
-            // todo this.client.TransportSettings2.GatewayDomain = rdpOptions.TsGateway.Security.Domain;
+            var tsgwGuarded = this.CredentialFactory.CreateCredential(rdpOptions.TsGateway.Security);
+            this.client.TransportSettings2.GatewayDomain = tsgwGuarded.Domain;
             this.client.TransportSettings2.GatewayProfileUsageMethod = 1;
             var security = this.ResolveTransportGatewayCredentials(rdpOptions);
             IGuardedSecurity guarded = this.CredentialFactory.CreateSecurityOptoins(security);
