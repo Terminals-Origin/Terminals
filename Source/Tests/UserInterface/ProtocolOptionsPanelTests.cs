@@ -38,6 +38,7 @@ namespace Tests.UserInterface
             var irelevantForm = new Mock<INewTerminalForm>().Object;
             var validator = new NewTerminalFormValidator(irelevantPersistence, irelevantForm);
             protocolPanel.RegisterValidations(validator);
+            this.protocolPanel.CredentialsFactory = new GuardedCredentialFactory(persistenceSecurity);
         }
 
         // Rdp has 5 controls, so test separate roundtrip for selected property in each of them

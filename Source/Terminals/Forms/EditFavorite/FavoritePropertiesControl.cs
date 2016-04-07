@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Terminals.Forms.Controls;
 
 namespace Terminals.Forms.EditFavorite
@@ -52,7 +53,7 @@ namespace Terminals.Forms.EditFavorite
             this.DockAllPanels();
             this.HideAllPanels();
 
-            string[] availablePlugins = this.protocolOptionsPanel1.Available;
+            string[] availablePlugins = this.protocolOptionsPanel1.AvailableProtocols;
             this.generalPanel1.AssingAvailablePlugins(availablePlugins);
             this.generalPanel1.ProtocolChanged += GenearalPanel1ProtocolChanged;
             string firstPlugin = KnownConnectionConstants.RDP;
@@ -184,6 +185,7 @@ namespace Terminals.Forms.EditFavorite
         {
             this.generalPanel1.AssignPersistence(persistence);
             this.groupsPanel1.AssignPersistence(persistence);
+            this.protocolOptionsPanel1.CredentialsFactory = new GuardedCredentialFactory(persistence.Security);
         }
 
         internal void SetErrorProviderIconsAlignment(ErrorProvider errorProvider)
