@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Windows.Forms;
+using Terminals.Common.Forms.EditFavorite;
 using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    internal partial class RdpTsGatewayControl : UserControl, IProtocolOptionsControl
+    internal partial class RdpTsGatewayControl : UserControl, IProtocolOptionsControl, ISupportsSecurityControl
     {
+        public IGuardedCredentialFactory CredentialFactory { get; set; }
+
         public RdpTsGatewayControl()
         {
             InitializeComponent();
@@ -38,7 +41,8 @@ namespace Terminals.Forms.EditFavorite
             this.credentialsPanel1.SaveMRUs();
             TsGwOptions tsgwOptions = rdpOptions.TsGateway;
             tsgwOptions.HostName = this.txtTSGWServer.Text;
-            // todo this.credentialsPanel1.SaveTo(tsgwOptions.Security);
+            var guarded = this.CredentialFactory.CreateCredential(tsgwOptions.Security);
+            this.credentialsPanel1.SaveTo(guarded);
             tsgwOptions.SeparateLogin = this.chkTSGWlogin.Checked;
             tsgwOptions.CredentialSource = this.cmbTSGWLogonMethod.SelectedIndex;
             if (tsgwOptions.CredentialSource == 2)
@@ -73,38 +77,47 @@ namespace Terminals.Forms.EditFavorite
         {
             this.credentialsPanel1.LoadMRUs();
             TsGwOptions tsGateway = rdpOptions.TsGateway;
-
-            switch (tsGateway.UsageMethod)
-            {
-                case 0:
-                    this.radTSGWdisable.Checked = true;
-                    this.chkTSGWlocalBypass.Checked = false;
-                    break;
-                case 1:
-                    this.radTSGWenable.Checked = true;
-                    this.chkTSGWlocalBypass.Checked = false;
-                    break;
-                case 2:
-                    this.radTSGWenable.Checked = true;
-                    this.chkTSGWlocalBypass.Checked = true;
-                    break;
-                case 4:
-                    this.radTSGWdisable.Checked = true;
-                    this.chkTSGWlocalBypass.Checked = true;
-                    break;
-            }
-
+            this.ApplyUsageMethod(tsGateway.UsageMethod);
             this.txtTSGWServer.Text = tsGateway.HostName;
             this.chkTSGWlogin.Checked = tsGateway.SeparateLogin;
             this.credentialsPanel1.Enabled = tsGateway.SeparateLogin;
 
-            //if (tsGateway.SeparateLogin)
-            //  todo  this.credentialsPanel1.LoadFrom(tsGateway.Security);
-            
+            if (tsGateway.SeparateLogin)
+            {
+                var guarded = this.CredentialFactory.CreateCredential(tsGateway.Security);
+                this.credentialsPanel1.LoadFrom(guarded);
+            }
+
             if (tsGateway.CredentialSource == 4)
                 this.cmbTSGWLogonMethod.SelectedIndex = 2;
             else
                 this.cmbTSGWLogonMethod.SelectedIndex = tsGateway.CredentialSource;
+        }
+
+        private void ApplyUsageMethod(int usageMethod)
+        {
+            switch (usageMethod)
+            {
+                case 0:
+                    this.ApplyUsageMethod(false, false);
+                    break;
+                case 1:
+                    this.ApplyUsageMethod(true, false);
+                    break;
+                case 2:
+                    this.ApplyUsageMethod(true, true);
+                    break;
+                case 4: // this setup doesnt make sence, keeping because of historical reasons
+                    this.ApplyUsageMethod(false, true);
+                    break;
+            }
+        }
+
+        private void ApplyUsageMethod(bool tsgwEnabled, bool localBypasEnabled)
+        {
+            this.radTSGWdisable.Checked = !tsgwEnabled;
+            this.radTSGWenable.Checked = tsgwEnabled;
+            this.chkTSGWlocalBypass.Checked = localBypasEnabled;
         }
     }
 }

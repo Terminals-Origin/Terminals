@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
+using Terminals.Common.Forms.EditFavorite;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
@@ -10,12 +11,7 @@ namespace Terminals.Forms.EditFavorite
     {
         private NewTerminalFormValidator validator;
 
-        public ProtocolOptionsPanel()
-        {
-            this.InitializeComponent();
-        }
-
-        internal string[] Available
+        internal string[] AvailableProtocols
         {
             get
             {
@@ -23,16 +19,18 @@ namespace Terminals.Forms.EditFavorite
             }
         }
 
+        public IGuardedCredentialFactory CredentialsFactory { get; set; }
+
+        public ProtocolOptionsPanel()
+        {
+            this.InitializeComponent();
+        }
+
         internal void ReloadControls(string newProtocol)
         {
             Control[] newControls = ConnectionManager.Instance.CreateControls(newProtocol);
-            this.ReloadControls(newControls);
-        }
-
-        private void ReloadControls(Control[] toAssign)
-        {
             this.RemoveCurrentControls();
-            this.AddControls(toAssign);
+            this.AddControls(newControls);
         }
 
         private void RemoveCurrentControls()
@@ -58,6 +56,16 @@ namespace Terminals.Forms.EditFavorite
             protocolControl.Dock = DockStyle.Fill;
             this.Controls.Add(protocolControl);
             this.RegisterIntegerValidation(protocolControl);
+            this.AssignCredentialsFactory(protocolControl);
+        }
+
+        private void AssignCredentialsFactory(Control protocolControl)
+        {
+            var control = protocolControl as ISupportsSecurityControl;
+            if (control != null)
+            {
+                control.CredentialFactory = this.CredentialsFactory;
+            }
         }
 
         private void RegisterIntegerValidation(Control protocolControl)
