@@ -94,6 +94,7 @@
     </Compile>
     <Compile Include="RdpMenuVisitor.cs" />
     <Compile Include="RdpOptions.cs" />
+    <Compile Include="RdpOptionsConverter.cs" />
     <Compile Include="RdpRedirectOptions.cs" />
     <Compile Include="RdpSecurityControl.cs">
       <SubType>UserControl</SubType>

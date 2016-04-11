@@ -5,11 +5,13 @@ using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
+using Terminals.Plugins.Rdp;
 using Terminals.Plugins.Rdp.Properties;
 
 namespace Terminals.Connections.Rdp
 {
-    internal class RdpConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory, IToolbarExtenderFactory
+    internal class RdpConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory, IToolbarExtenderFactory, 
+        IOptionsConverterFactory
     {
         internal static readonly Image TreeIconRdp = Resources.treeIcon_rdp;
 
@@ -58,6 +60,11 @@ namespace Terminals.Connections.Rdp
         public IToolbarExtender CreateToolbarExtender(ICurrenctConnectionProvider provider)
         {
             return new RdpMenuVisitor(provider);
+        }
+
+        public IOptionsConverter CreatOptionsConverter()
+        {
+            return new RdpOptionsConverter();
         }
     }
 }
