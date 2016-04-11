@@ -360,29 +360,31 @@ namespace Tests.Connections
         }
 
         [TestMethod]
-        public void UnknownProtocol_GetOptionsConverterFactory_ReturnsNull()
+        public void UnknownProtocol_GetOptionsConverterFactory_ReturnsDummyPlugin()
         {
             IOptionsConverterFactory converterFactory = this.connectionManager.GetOptionsConverterFactory(UNKNOWN_PROTOCOL);
-            Assert.IsNull(converterFactory, "Resolution of unknonw protocol cant fail.");
+            Assert.IsInstanceOfType(converterFactory,typeof(DummyPlugin), "Resolution of unknonw protocol cant fail.");
         }
 
         [TestMethod]
         public void AllKnownProtocol_GetOptionsConverterFactory_ReturnInstance()
         {
             string[] protocols = this.connectionManager.GetAvailableProtocols();
-            var notAvailableConverters = protocols.Where(p => this.connectionManager.GetOptionsConverterFactory(p) == null)
+            var converterPlugins = protocols.Select(p => new Tuple<string, IOptionsConverterFactory>(p,
+                this.connectionManager.GetOptionsConverterFactory(p)))
                 .ToArray();
 
-            ReportNoAvailableConverters(notAvailableConverters);
+            ReportNoAvailableConverters(converterPlugins);
+            bool allResolved = !converterPlugins.Any(p => p.Item2 is DummyPlugin);
             const string Message = "Till supported, all plugins have to be able convert their options to support lagacy import.";
-            Assert.AreEqual(0, notAvailableConverters.Length, Message);
+            Assert.IsTrue(allResolved, Message);
         }
 
-        private static void ReportNoAvailableConverters(string[] notAvailableConverters)
+        private static void ReportNoAvailableConverters(Tuple<string, IOptionsConverterFactory>[] converterPlugins)
         {
-            foreach (string notAvailableConverter in notAvailableConverters)
+            foreach (Tuple<string, IOptionsConverterFactory> resolved in converterPlugins)
             {
-                Console.WriteLine("Converter not available for '{0}'.", notAvailableConverter);
+                Console.WriteLine("Converter for '{0}':{1}.", resolved.Item1, resolved.Item2.GetType());
             }
         }
     }
