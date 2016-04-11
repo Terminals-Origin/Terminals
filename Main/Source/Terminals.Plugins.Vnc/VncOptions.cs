@@ -21,16 +21,12 @@ namespace Terminals.Data
 
         public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
-            this.AutoScale = source.VncAutoScale;
-            this.DisplayNumber = source.VncDisplayNumber;
-            this.ViewOnly = source.VncViewOnly;
+            throw new NotImplementedException("moved to converter");
         }
 
         public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
-            destination.VncAutoScale = this.AutoScale;
-            destination.VncDisplayNumber = this.DisplayNumber;
-            destination.VncViewOnly = this.ViewOnly;
+            throw new NotImplementedException("moved to converter");
         }
     }
 }
