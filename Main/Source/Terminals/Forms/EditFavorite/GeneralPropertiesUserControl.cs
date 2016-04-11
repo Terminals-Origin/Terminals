@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
+using Terminals.Common.Converters;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
@@ -251,7 +252,7 @@ namespace Terminals.Forms.EditFavorite
             if (!newUrlText.StartsWith(KnownConnectionConstants.HTTP.ToLower()) &&
                 !newUrlText.StartsWith(KnownConnectionConstants.HTTPS.ToLower()))
                 newUrlText = String.Format("{0}://{1}", protocolPrefix, newUrlText);
-            return WebOptions.TryParseUrl(newUrlText);
+            return UrlConverter.TryParseUrl(newUrlText);
         }
 
         public void SaveTo(IFavorite favorite)
@@ -275,7 +276,7 @@ namespace Terminals.Forms.EditFavorite
             Int32 port;
             Int32.TryParse(this.PortText, out port);
             favorite.Port = port;
-            WebOptions.UpdateFavoriteUrl(favorite, this.httpUrlTextBox.Text);
+            UrlConverter.UpdateFavoriteUrl(favorite, this.httpUrlTextBox.Text);
         }
 
         internal void FillCredentialsCombobox(Guid credentialGuid)
@@ -298,7 +299,7 @@ namespace Terminals.Forms.EditFavorite
             this.cmbServers.Text = favorite.ServerName;
             this.ProtocolComboBox.SelectedItem = favorite.Protocol;
             this.txtPort.Text = favorite.Port.ToString(CultureInfo.InvariantCulture);
-            this.httpUrlTextBox.Text = WebOptions.ExtractAbsoluteUrl(favorite);
+            this.httpUrlTextBox.Text = UrlConverter.ExtractAbsoluteUrl(favorite);
         }
 
         private void FillDescriptionPropertiesControls(IFavorite favorite)

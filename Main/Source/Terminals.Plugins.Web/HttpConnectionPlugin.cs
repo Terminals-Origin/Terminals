@@ -3,11 +3,12 @@ using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Data;
+using Terminals.Plugins.Web;
 using Terminals.Plugins.Web.Properties;
 
 namespace Terminals.Connections.Web
 {
-    internal class HttpConnectionPlugin: IConnectionPlugin
+    internal class HttpConnectionPlugin: IConnectionPlugin, IOptionsConverterFactory
     {
         internal static readonly Image TreeIconHttp = Resources.treeIcon_http;
 
@@ -38,6 +39,11 @@ namespace Terminals.Connections.Web
         public Image GetIcon()
         {
             return TreeIconHttp;
+        }
+
+        public IOptionsConverter CreatOptionsConverter()
+        {
+            return new WebOptionsConverter();
         }
     }
 }

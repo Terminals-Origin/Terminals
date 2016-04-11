@@ -1,4 +1,5 @@
 ﻿using System;
+using Terminals.Common.Converters;
 
 namespace Terminals.Data
 {
@@ -8,89 +9,26 @@ namespace Terminals.Data
     /// Favorite_Protocol://Favorite_ServerName:Favorite_Port/WebOptions_RelativeUrl
     /// </summary>
     [Serializable]
-    public class WebOptions : ProtocolOptions
+    public class WebOptions : ProtocolOptions, IRelativeUrlProvider
     {
-        /// <summary>
-        /// Gets or sets the Url relative part of Url defined for web based connections.
-        /// Null by default, to obtain full path use static method.
-        /// </summary>
         public string RelativeUrl { get; set; }
 
         public override ProtocolOptions Copy()
         {
             return new WebOptions
-                {
-                    RelativeUrl = this.RelativeUrl
-                };
+            {
+                RelativeUrl = this.RelativeUrl
+            };
         }
 
         public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
-            UpdateMyFavoriteUrl(destination, source.Url);
+            throw new NotImplementedException("moved to converter");
         }
 
         public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
-            destination.Url = ExtractAbsoluteUrl(source);
-        }
-
-        internal static string ExtractAbsoluteUrl(IFavorite source)
-        {
-          try
-          {
-            return TryFormatAbsoluteUrl(source);
-          }
-          catch // UriBuilder fails on at least ICA Citrix as unknown service, use stupid URI formatting in this case
-          {
-            return string.Format(@"{0}://{1}:{2}/", source.Protocol, source.ServerName, source.Port);
-          }
-        }
-
-      private static string TryFormatAbsoluteUrl(IFavorite source)
-      {
-        var webOptions = source.ProtocolProperties as WebOptions;
-        string relativeUrl = string.Empty;
-        if (webOptions != null)
-          relativeUrl = webOptions.RelativeUrl;
-
-        string protocol = source.Protocol.ToLower();
-        var uriBuilder = new UriBuilder(protocol, source.ServerName, source.Port);
-        // using relative url in uriBuilder constructor encodes ? character. So we have to make an workaround
-        return uriBuilder + relativeUrl;
-      }
-
-      internal static void UpdateFavoriteUrl(IFavorite destination, string newAbsoluteUrl)
-        {
-            var webOptions = destination.ProtocolProperties as WebOptions;
-            if (webOptions != null)
-            {
-                webOptions.UpdateMyFavoriteUrl(destination, newAbsoluteUrl);
-            }
-        }
-
-        private void UpdateMyFavoriteUrl(IFavorite destination, string newAbsoluteUrl)
-        {
-            Uri url = TryParseUrl(newAbsoluteUrl);
-            if (url == null)
-                return;
-
-            destination.ServerName = url.Host;
-            destination.Port = url.Port; // would also manage default port for us
-            string pathAndQuery = url.PathAndQuery.Equals(@"/") ? string.Empty : url.PathAndQuery;
-            this.RelativeUrl = pathAndQuery;
-        }
-
-        internal static Uri TryParseUrl(string url)
-        {
-            try
-            {
-                return new Uri(url);
-            }
-            catch (Exception ex)
-            {
-                Logging.Error("Web URL Parse Failed", ex);
-                return null;
-            }
+            throw new NotImplementedException("moved to converter");
         }
     }
 }

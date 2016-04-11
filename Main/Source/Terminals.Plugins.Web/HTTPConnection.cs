@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Windows.Forms;
+using Terminals.Common.Converters;
 using Terminals.Data;
 
 namespace Terminals.Connections
@@ -32,7 +33,7 @@ namespace Terminals.Connections
             try
             {
                 this.Dock = DockStyle.Fill;
-                string url = WebOptions.ExtractAbsoluteUrl(this.Favorite);
+                string url = UrlConverter.ExtractAbsoluteUrl(this.Favorite);
                 IGuardedSecurity security = this.ResolveFavoriteCredentials();
 
                 if (!String.IsNullOrEmpty(security.UserName) && !String.IsNullOrEmpty(security.Password))
