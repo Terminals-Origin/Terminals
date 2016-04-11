@@ -57,16 +57,31 @@ namespace Tests.Integrations
 
         [TestCategory("NonSql")]
         [TestMethod]
-        public void ExportImportFavoriteTest()
+        public void ExportImportFavorite_ImportsFavoriteSecurity()
         {
-            IPersistence persistence = this.Persistence;
-            ExportImportFavorite(persistence, this.TestContext.DeploymentDirectory);
+            ExportImportFavorite(this.Persistence, this.TestContext.DeploymentDirectory);
+        }
+
+        [TestCategory("NonSql")]
+        [TestMethod]
+        public void ExportImportFavorite_ImportsTsgwOptionsSecurity()
+        {
+            string path = this.TestContext.DeploymentDirectory;
+            IFavorite importedFavorite = PerformImportExportFavorite(this.Persistence, path);
+            TsGwOptions tsgwOptions = ((RdpOptions)importedFavorite.ProtocolProperties).TsGateway;
+            AssertSecurityImported(this.Persistence, tsgwOptions.Security);
         }
 
         /// <summary>
         /// More regression test than unit test
         /// </summary>
         internal static void ExportImportFavorite(IPersistence persistence, string path)
+        {
+            IFavorite importedFavorite = PerformImportExportFavorite(persistence, path);
+            AssertSecurityImported(persistence, importedFavorite.Security);
+        }
+
+        private static IFavorite PerformImportExportFavorite(IPersistence persistence, string path)
         {
             IFavorite favorite = CreateTestFavorite(persistence);
             ExportFavorite(favorite, persistence);
@@ -75,8 +90,12 @@ namespace Tests.Integrations
             List<FavoriteConfigurationElement> toImport = ImportItemsFromFile(persistence, path, TEST_FILE);
             // persisted favorites are empty, strategy doesnt matter
             InvokeTheImport(toImport, persistence, rename);
-            var importedSecurity = persistence.Favorites.First().Security;
-            var guarded = new GuardedSecurity(persistence.Security, importedSecurity);
+            return persistence.Favorites.First();
+        }
+
+        private static void AssertSecurityImported(IPersistence persistence, ISecurityOptions security)
+        {
+            var guarded = new GuardedSecurity(persistence.Security, security);
             Assert.AreEqual(TEST_USERNAME, guarded.UserName);
             Assert.AreEqual(TEST_DOMAIN, guarded.Domain);
             Assert.AreEqual(TEST_PASSWORD, guarded.Password);
@@ -87,13 +106,19 @@ namespace Tests.Integrations
             IFavorite favorite = persistence.Factory.CreateFavorite();
             favorite.Name = "testFavorite";
             favorite.ServerName = favorite.Name;
-            var security = favorite.Security;
+            SetupSecurityValues(persistence, favorite.Security);
+            TsGwOptions tsgwOptions = ((RdpOptions)favorite.ProtocolProperties).TsGateway;
+            SetupSecurityValues(persistence, tsgwOptions.Security);
+            persistence.Favorites.Add(favorite);
+            return favorite;
+        }
+
+        private static void SetupSecurityValues(IPersistence persistence, ISecurityOptions security)
+        {
             var guarded = new GuardedSecurity(persistence.Security, security);
             guarded.UserName = TEST_USERNAME;
             guarded.Domain = TEST_DOMAIN;
             guarded.Password = TEST_PASSWORD;
-            persistence.Favorites.Add(favorite);
-            return favorite;
         }
 
         private static void ExportFavorite(IFavorite favorite, IPersistence persistence)
