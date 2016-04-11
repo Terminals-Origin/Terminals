@@ -56,6 +56,9 @@
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Connections\IOptionsConverter.cs" />
+    <Compile Include="Connections\IOptionsConverterFactory.cs" />
+    <Compile Include="Connections\OptionsConversionContext.cs" />
     <Compile Include="Data\Favorites\CredentialBase.cs" />
     <Compile Include="Data\Favorites\SecurityOptions.cs" />
     <Compile Include="Data\Interfaces\IGuardedCredential.cs" />

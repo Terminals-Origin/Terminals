@@ -358,5 +358,32 @@ namespace Tests.Connections
             IEnumerable<IConnectionPlugin> resolved = this.connectionManager.GetPluginsByPort(testCase.Item1);
             return resolved.All(plugin => testCase.Item2.Contains(plugin.GetType()));
         }
+
+        [TestMethod]
+        public void UnknownProtocol_GetOptionsConverterFactory_ReturnsNull()
+        {
+            IOptionsConverterFactory converterFactory = this.connectionManager.GetOptionsConverterFactory(UNKNOWN_PROTOCOL);
+            Assert.IsNull(converterFactory, "Resolution of unknonw protocol cant fail.");
+        }
+
+        [TestMethod]
+        public void AllKnownProtocol_GetOptionsConverterFactory_ReturnInstance()
+        {
+            string[] protocols = this.connectionManager.GetAvailableProtocols();
+            var notAvailableConverters = protocols.Where(p => this.connectionManager.GetOptionsConverterFactory(p) == null)
+                .ToArray();
+
+            ReportNoAvailableConverters(notAvailableConverters);
+            const string Message = "Till supported, all plugins have to be able convert their options to support lagacy import.";
+            Assert.AreEqual(0, notAvailableConverters.Length, Message);
+        }
+
+        private static void ReportNoAvailableConverters(string[] notAvailableConverters)
+        {
+            foreach (string notAvailableConverter in notAvailableConverters)
+            {
+                Console.WriteLine("Converter not available for '{0}'.", notAvailableConverter);
+            }
+        }
     }
 }

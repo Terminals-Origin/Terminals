@@ -194,5 +194,11 @@ namespace Terminals.Connections
             return knownTypes.Distinct()
                 .ToArray();
         }
+
+        public IOptionsConverterFactory GetOptionsConverterFactory(string protocolName)
+        {
+            IConnectionPlugin protocolPlugin = this.FindPlugin(protocolName);
+            return protocolPlugin as IOptionsConverterFactory;
+        }
     }
 }
