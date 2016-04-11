@@ -6,13 +6,14 @@ using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
+using Terminals.Plugins.Vnc;
 using Terminals.Plugins.Vnc.Properties;
 using VncSharp;
 
 namespace Terminals.Connections.VNC
 {
     internal class VncConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory,
-        IToolbarExtenderFactory, IExtraDetection
+        IToolbarExtenderFactory, IExtraDetection, IOptionsConverterFactory
     {
         internal const string VNC = "VNC";
 
@@ -99,6 +100,11 @@ namespace Terminals.Connections.VNC
                 rd.Connect(ipAddress);
                 rd.Disconnect();
             }
+        }
+
+        public IOptionsConverter CreatOptionsConverter()
+        {
+            return new VncOptionsConverter();
         }
     }
 }

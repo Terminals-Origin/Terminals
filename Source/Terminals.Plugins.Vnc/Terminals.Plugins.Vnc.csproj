@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="VncMenuVisitor.cs" />
     <Compile Include="VncOptions.cs" />
+    <Compile Include="VncOptionsConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">
