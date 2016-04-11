@@ -49,25 +49,5 @@ namespace Terminals.Data
                     StartProgram = this.StartProgram
                 };
         }
-
-        internal void FromConfigFavorite(FavoriteConfigurationElement favorite)
-        {
-            this.EnableEncryption = favorite.EnableEncryption;
-            this.EnableNLAAuthentication = favorite.EnableNLAAuthentication;
-            this.Enabled = favorite.EnableSecuritySettings;
-            this.EnableTLSAuthentication = favorite.EnableTLSAuthentication;
-            this.StartProgram = favorite.SecurityStartProgram;
-            this.WorkingFolder = favorite.SecurityWorkingFolder;
-        }
-
-        internal void ToConfigFavorite(FavoriteConfigurationElement favorite)
-        {
-            favorite.EnableEncryption = this.EnableEncryption;
-            favorite.EnableNLAAuthentication = this.EnableNLAAuthentication;
-            favorite.EnableSecuritySettings = this.Enabled;
-            favorite.EnableTLSAuthentication = this.EnableTLSAuthentication;
-            favorite.SecurityStartProgram = this.StartProgram;
-            favorite.SecurityWorkingFolder = this.WorkingFolder;
-        }
     }
 }

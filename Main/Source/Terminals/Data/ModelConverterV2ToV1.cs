@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Terminals.Common.Connections;
 using Terminals.Configuration;
 using Terminals.Data.Credentials;
 
@@ -10,13 +11,10 @@ namespace Terminals.Data
     /// Temporary used also to support imports and export using old data model, 
     /// before they will be updated.
     /// </summary>
-    internal class ModelConverterV2ToV1
+    internal class ModelConverterV2ToV1 : ModelConvertersTemplate
     {
-        private readonly IPersistence persistence;
-
-        private ModelConverterV2ToV1(IPersistence persistence)
+        private ModelConverterV2ToV1(IPersistence persistence) : base(persistence)
         {
-            this.persistence = persistence;
         }
 
         internal static FavoriteConfigurationElement ConvertToFavorite(IFavorite sourceFavorite, IPersistence persistence)
@@ -32,8 +30,11 @@ namespace Terminals.Data
             this.ConvertSecurity(result, sourceFavorite);
             ConvertBeforeConnetExecute(result, sourceFavorite);
             ConvertDisplay(result, sourceFavorite);
-            sourceFavorite.ProtocolProperties.ToConfigFavorite(sourceFavorite, result);
             ConvertGroups(result, sourceFavorite);
+
+            IOptionsConverter converter = this.CreateOptionsConverter(result.Protocol);
+            var context = new OptionsConversionContext(this.CredentialFactory, sourceFavorite, result);
+            converter.ToConfigFavorite(context);
             return result;
         }
 
@@ -60,14 +61,14 @@ namespace Terminals.Data
         private void ConvertSecurity(FavoriteConfigurationElement result, IFavorite sourceFavorite)
         {
             var security = sourceFavorite.Security;
-            var guarded = new GuardedSecurity(this.persistence.Security, security);
+            var guarded = new GuardedSecurity(this.Persistence.Security, security);
             result.DomainName = guarded.Domain;
             result.UserName = guarded.UserName;
             // because persistence and application masterpassword may differ, we have to go through encryption
-            var resultSecurity = new FavoriteConfigurationSecurity(this.persistence, result);
+            var resultSecurity = new FavoriteConfigurationSecurity(this.Persistence, result);
             resultSecurity.Password = guarded.Password;
             
-            ICredentialSet credential = this.persistence.Credentials[security.Credential];
+            ICredentialSet credential = this.Persistence.Credentials[security.Credential];
             if(credential != null)
                 result.Credential = credential.Name;
         }
