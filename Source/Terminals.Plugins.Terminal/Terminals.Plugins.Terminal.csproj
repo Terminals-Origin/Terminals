@@ -50,6 +50,7 @@
       <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ConsoleOptions.cs" />
+    <Compile Include="ConsoleOptionsConverter.cs" />
     <Compile Include="ConsolePreferences.cs">
       <SubType>UserControl</SubType>
     </Compile>

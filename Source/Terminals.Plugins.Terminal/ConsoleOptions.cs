@@ -104,22 +104,12 @@ namespace Terminals.Data
 
         public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
-            this.BackColor = source.ConsoleBackColor;
-            this.TextColor = source.ConsoleTextColor;
-            this.CursorColor = source.ConsoleCursorColor;
-            this.Columns = source.ConsoleCols;
-            this.Rows = source.ConsoleRows;
-            this.Font = source.ConsoleFont;
+            throw new NotImplementedException("moved to converter");
         }
 
         public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
-            destination.ConsoleBackColor = this.BackColor;
-            destination.ConsoleTextColor = this.TextColor;
-            destination.ConsoleCursorColor = this.CursorColor;
-            destination.ConsoleCols = this.Columns;
-            destination.ConsoleRows = this.Rows;
-            destination.ConsoleFont = this.Font;
+            throw new NotImplementedException("moved to converter");
         }
     }
 }
