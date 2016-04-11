@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Terminals.Common.Connections;
+using Terminals.Common.Converters;
 using Terminals.Configuration;
 using Terminals.Data.Credentials;
 
@@ -50,7 +51,7 @@ namespace Terminals.Data
             result.Protocol = sourceFavorite.Protocol;
             result.Port = sourceFavorite.Port;
             result.ServerName = sourceFavorite.ServerName;
-            result.Url = WebOptions.ExtractAbsoluteUrl(sourceFavorite);
+            result.Url = UrlConverter.ExtractAbsoluteUrl(sourceFavorite);
 
             result.ToolBarIcon = sourceFavorite.ToolBarIconFile;
             result.NewWindow = sourceFavorite.NewWindow;
