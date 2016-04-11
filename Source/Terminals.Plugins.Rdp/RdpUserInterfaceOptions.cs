@@ -67,47 +67,5 @@ namespace Terminals.Data
                     LoadBalanceInfo = this.LoadBalanceInfo,
                 };
         }
-
-        internal void FromConfigFavorite(FavoriteConfigurationElement favorite)
-        {
-            this.AcceleratorPassthrough = favorite.AcceleratorPassthrough;
-            this.AllowBackgroundInput = favorite.AllowBackgroundInput;
-            this.BitmapPeristence = favorite.BitmapPeristence;
-            this.DisableControlAltDelete = favorite.DisableControlAltDelete;
-            this.DisableCursorBlinking = favorite.DisableCursorBlinking;
-            this.DisableCursorShadow = favorite.DisableCursorShadow;
-            this.DisableFullWindowDrag = favorite.DisableFullWindowDrag;
-            this.DisableMenuAnimations = favorite.DisableMenuAnimations;
-            this.DisableTheming = favorite.DisableTheming;
-            this.DisableWallPaper = favorite.DisableWallPaper;
-            this.DisableWindowsKey = favorite.DisableWindowsKey;
-            this.DisplayConnectionBar = favorite.DisplayConnectionBar;
-            this.DoubleClickDetect = favorite.DoubleClickDetect;
-            this.EnableCompression = favorite.EnableCompression;
-            this.EnableDesktopComposition = favorite.EnableDesktopComposition;
-            this.EnableFontSmoothing = favorite.EnableFontSmoothing;
-            this.LoadBalanceInfo = favorite.LoadBalanceInfo;
-        }
-
-        internal void ToConfigFavorite(FavoriteConfigurationElement favorite)
-        {
-            favorite.AcceleratorPassthrough = this.AcceleratorPassthrough;
-            favorite.AllowBackgroundInput = this.AllowBackgroundInput;
-            favorite.BitmapPeristence = this.BitmapPeristence;
-            favorite.DisableControlAltDelete = this.DisableControlAltDelete;
-            favorite.DisableCursorBlinking = this.DisableCursorBlinking;
-            favorite.DisableCursorShadow = this.DisableCursorShadow;
-            favorite.DisableFullWindowDrag = this.DisableFullWindowDrag;
-            favorite.DisableMenuAnimations = this.DisableMenuAnimations;
-            favorite.DisableTheming = this.DisableTheming;
-            favorite.DisableWallPaper = this.DisableWallPaper;
-            favorite.DisableWindowsKey = this.DisableWindowsKey;
-            favorite.DisplayConnectionBar = this.DisplayConnectionBar;
-            favorite.DoubleClickDetect = this.DoubleClickDetect;
-            favorite.EnableCompression = this.EnableCompression;
-            favorite.EnableDesktopComposition = this.EnableDesktopComposition;
-            favorite.EnableFontSmoothing = this.EnableFontSmoothing;
-            favorite.LoadBalanceInfo = this.LoadBalanceInfo;
-        }
     }
 }

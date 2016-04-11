@@ -56,29 +56,5 @@ namespace Terminals.Data
                     Security = this.Security.Copy()
                 };
         }
-
-        internal void FromConfigFavorite(FavoriteConfigurationElement favorite)
-        {
-            this.CredentialSource = favorite.TsgwCredsSource;
-            this.HostName = favorite.TsgwHostname;
-            this.SeparateLogin = favorite.TsgwSeparateLogin;
-            this.UsageMethod = favorite.TsgwUsageMethod;
-
-            // todo this.Security.Domain = favorite.TsgwDomain;
-            this.Security.EncryptedPassword = favorite.TsgwEncryptedPassword;
-            // todo this.Security.UserName = favorite.TsgwUsername;
-        }
-
-        internal void FoConfigFavorite(FavoriteConfigurationElement favorite)
-        {
-            favorite.TsgwCredsSource = this.CredentialSource;
-            favorite.TsgwHostname = this.HostName;
-            favorite.TsgwSeparateLogin = this.SeparateLogin;
-            favorite.TsgwUsageMethod = this.UsageMethod;
-
-            // todo favorite.TsgwDomain = this.Security.Domain;
-            favorite.TsgwEncryptedPassword = this.Security.EncryptedPassword;
-            // todo favorite.TsgwUsername = this.Security.UserName;
-        }
     }
 }

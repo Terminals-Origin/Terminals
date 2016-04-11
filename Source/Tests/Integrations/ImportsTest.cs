@@ -108,6 +108,7 @@ namespace Tests.Integrations
             favorite.ServerName = favorite.Name;
             SetupSecurityValues(persistence, favorite.Security);
             TsGwOptions tsgwOptions = ((RdpOptions)favorite.ProtocolProperties).TsGateway;
+            tsgwOptions.UsageMethod = 1;// enable
             SetupSecurityValues(persistence, tsgwOptions.Security);
             persistence.Favorites.Add(favorite);
             return favorite;

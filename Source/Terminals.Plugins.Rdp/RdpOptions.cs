@@ -61,28 +61,12 @@ namespace Terminals.Data
 
         public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
-            this.ConnectToConsole = source.ConnectToConsole;
-            this.FullScreen = source.SecurityFullScreen;
-            this.GrabFocusOnConnect = source.GrabFocusOnConnect;
-
-            this.Security.FromConfigFavorite(source);
-            this.Redirect.FromConfigFavorite(source);
-            this.TimeOuts.FromConfigFavorite(source);
-            this.TsGateway.FromConfigFavorite(source);
-            this.UserInterface.FromConfigFavorite(source);
+            throw new NotImplementedException("moved to converter");
         }
 
         public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
-            destination.ConnectToConsole = this.ConnectToConsole;
-            destination.SecurityFullScreen = this.FullScreen;
-            destination.GrabFocusOnConnect = this.GrabFocusOnConnect;
-
-            this.Security.ToConfigFavorite(destination);
-            this.Redirect.ToConfigFavorite(destination);
-            this.TimeOuts.ToConfigFavorite(destination);
-            this.TsGateway.FoConfigFavorite(destination);
-            this.UserInterface.ToConfigFavorite(destination);
+            throw new NotImplementedException("moved to converter");
         }
 
         //TODO internal void AssignStore(PersistenceSecurity persistenceSecurity)

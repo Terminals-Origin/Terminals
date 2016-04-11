@@ -1,4 +1,5 @@
-﻿using Terminals.Data.Credentials;
+﻿using Terminals.Common.Connections;
+using Terminals.Data.Credentials;
 
 namespace Terminals.Data
 {
@@ -8,13 +9,10 @@ namespace Terminals.Data
     /// Temporary used also to support imports and export using old data model, 
     /// before they will be updated.
     /// </summary>
-    internal class ModelConverterV1ToV2
+    internal class ModelConverterV1ToV2 : ModelConvertersTemplate
     {
-        private readonly IPersistence persistence;
-
-        private ModelConverterV1ToV2(IPersistence persistence)
+        private ModelConverterV1ToV2(IPersistence persistence): base(persistence)
         {
-            this.persistence = persistence;
         }
 
         /// <summary>
@@ -29,13 +27,15 @@ namespace Terminals.Data
 
         private IFavorite Convert(FavoriteConfigurationElement sourceFavorite)
         {
-            IFavorite result = persistence.Factory.CreateFavorite();
+            IFavorite result = this.Persistence.Factory.CreateFavorite();
             ConvertGeneralProperties(result, sourceFavorite);
             ConvertSecurity(result, sourceFavorite);
             ConvertBeforeConnetExecute(result, sourceFavorite);
             ConvertDisplay(result, sourceFavorite);
-            result.ProtocolProperties.FromCofigFavorite(result, sourceFavorite);
-
+            
+            IOptionsConverter converter = this.CreateOptionsConverter(result.Protocol);
+            var context = new OptionsConversionContext(this.CredentialFactory, result, sourceFavorite);
+            converter.FromCofigFavorite(context);
             return result;
         }
 
@@ -54,15 +54,15 @@ namespace Terminals.Data
         private void ConvertSecurity(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             var security = result.Security;
-            var guarded = new GuardedSecurity(this.persistence.Security, security);
+            var guarded = new GuardedSecurity(this.Persistence.Security, security);
             // todo validate: dont use resolution here, because in upgrade the persistence is not initialized.
             guarded.Domain = sourceFavorite.DomainName;
             guarded.UserName = sourceFavorite.UserName;
             // because persistence and application masterpassword may differ,
             // we have to go through encryption without credential resolution
-            guarded.Password = persistence.Security.DecryptPassword(sourceFavorite.EncryptedPassword);
+            guarded.Password = this.Persistence.Security.DecryptPassword(sourceFavorite.EncryptedPassword);
             
-            ICredentialSet credential = persistence.Credentials[sourceFavorite.Credential];
+            ICredentialSet credential = this.Persistence.Credentials[sourceFavorite.Credential];
             if (credential != null)
                 security.Credential = credential.Id;
         }
