@@ -12,15 +12,5 @@ namespace Terminals.Data
         {
             return new EmptyOptions();
         }
-
-        public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
-        {
-            // nothing to do
-        }
-
-        public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
-        {
-            // nothing to do
-        }
     }
 }
