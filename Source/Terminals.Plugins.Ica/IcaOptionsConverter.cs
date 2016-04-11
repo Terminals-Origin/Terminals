@@ -3,38 +3,28 @@ using Terminals.Data;
 
 namespace Terminals.Plugins.Ica
 {
-    internal class IcaOptionsConverter : IOptionsConverter
+    internal class IcaOptionsConverter : OptionsConverterTemplate<ICAOptions>, IOptionsConverter
     {
-        public void FromCofigFavorite(OptionsConversionContext context)
+        protected override void FromConfigFavorite(FavoriteConfigurationElement source, ICAOptions options)
         {
-            var options = context.Favorite.ProtocolProperties as ICAOptions;
-            if (options != null)
-            {
-                FavoriteConfigurationElement source = context.ConfigFavorite;
-                options.ApplicationName = source.ICAApplicationName;
-                options.ApplicationPath = source.ICAApplicationPath;
-                options.ApplicationWorkingFolder = source.ICAApplicationWorkingFolder;
-                options.ClientINI = source.IcaClientINI;
-                options.ServerINI = source.IcaServerINI;
-                options.EnableEncryption = source.IcaEnableEncryption;
-                options.EncryptionLevel = source.IcaEncryptionLevel;
-            }
+            options.ApplicationName = source.ICAApplicationName;
+            options.ApplicationPath = source.ICAApplicationPath;
+            options.ApplicationWorkingFolder = source.ICAApplicationWorkingFolder;
+            options.ClientINI = source.IcaClientINI;
+            options.ServerINI = source.IcaServerINI;
+            options.EnableEncryption = source.IcaEnableEncryption;
+            options.EncryptionLevel = source.IcaEncryptionLevel;
         }
 
-        public void ToConfigFavorite(OptionsConversionContext context)
+        protected override void ToConfigFavorite(FavoriteConfigurationElement destination, ICAOptions options)
         {
-            var options = context.Favorite.ProtocolProperties as ICAOptions;
-            if (options != null)
-            {
-                FavoriteConfigurationElement destination = context.ConfigFavorite;
-                destination.ICAApplicationName = options.ApplicationName;
-                destination.ICAApplicationPath = options.ApplicationPath;
-                destination.ICAApplicationWorkingFolder = options.ApplicationWorkingFolder;
-                destination.IcaClientINI = options.ClientINI;
-                destination.IcaServerINI = options.ServerINI;
-                destination.IcaEnableEncryption = options.EnableEncryption;
-                destination.IcaEncryptionLevel = options.EncryptionLevel;
-            }
+            destination.ICAApplicationName = options.ApplicationName;
+            destination.ICAApplicationPath = options.ApplicationPath;
+            destination.ICAApplicationWorkingFolder = options.ApplicationWorkingFolder;
+            destination.IcaClientINI = options.ClientINI;
+            destination.IcaServerINI = options.ServerINI;
+            destination.IcaEnableEncryption = options.EnableEncryption;
+            destination.IcaEncryptionLevel = options.EncryptionLevel;
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Terminals.Plugins.Web
 {
     internal class WebOptionsConverter : IOptionsConverter
     {
-        public void FromCofigFavorite(OptionsConversionContext context)
+        public void FromConfigFavorite(OptionsConversionContext context)
         {
             UrlConverter.UpdateFavoriteUrl(context.Favorite, context.ConfigFavorite.Url);
         }

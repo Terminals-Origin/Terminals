@@ -1,12 +1,11 @@
-﻿using System;
-using Terminals.Common.Connections;
+﻿using Terminals.Common.Connections;
 using Terminals.Data;
 
 namespace Terminals.Plugins.Rdp
 {
     internal class RdpOptionsConverter : IOptionsConverter
     {
-        public void FromCofigFavorite(OptionsConversionContext context)
+        public void FromConfigFavorite(OptionsConversionContext context)
         {
             var rdpOptions = context.Favorite.ProtocolProperties as RdpOptions;
             if (rdpOptions != null)

@@ -59,6 +59,7 @@
     <Compile Include="Connections\IOptionsConverter.cs" />
     <Compile Include="Connections\IOptionsConverterFactory.cs" />
     <Compile Include="Connections\OptionsConversionContext.cs" />
+    <Compile Include="Connections\OptionsConverterTemplate.cs" />
     <Compile Include="Converters\IRelativeUrlProvider.cs" />
     <Compile Include="Converters\UrlConverter.cs" />
     <Compile Include="Data\Favorites\CredentialBase.cs" />

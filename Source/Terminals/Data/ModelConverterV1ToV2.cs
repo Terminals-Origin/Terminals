@@ -35,7 +35,7 @@ namespace Terminals.Data
             
             IOptionsConverter converter = this.CreateOptionsConverter(result.Protocol);
             var context = new OptionsConversionContext(this.CredentialFactory, result, sourceFavorite);
-            converter.FromCofigFavorite(context);
+            converter.FromConfigFavorite(context);
             return result;
         }
 

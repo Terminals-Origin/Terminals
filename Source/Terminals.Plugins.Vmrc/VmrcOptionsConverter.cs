@@ -3,28 +3,18 @@ using Terminals.Data;
 
 namespace Terminals.Plugins.Vmrc
 {
-    internal class VmrcOptionsConverter : IOptionsConverter
+    internal class VmrcOptionsConverter : OptionsConverterTemplate<VMRCOptions>, IOptionsConverter
     {
-        public void FromCofigFavorite(OptionsConversionContext context)
+        protected override void FromConfigFavorite(FavoriteConfigurationElement source, VMRCOptions options)
         {
-            var options = context.Favorite.ProtocolProperties as VMRCOptions;
-            if (options != null)
-            {
-                FavoriteConfigurationElement source = context.ConfigFavorite;
-                options.AdministratorMode = source.VMRCAdministratorMode;
-                options.ReducedColorsMode = source.VMRCReducedColorsMode;
-            }
+            options.AdministratorMode = source.VMRCAdministratorMode;
+            options.ReducedColorsMode = source.VMRCReducedColorsMode;
         }
 
-        public void ToConfigFavorite(OptionsConversionContext context)
+        protected override void ToConfigFavorite(FavoriteConfigurationElement destination, VMRCOptions options)
         {
-            var options = context.Favorite.ProtocolProperties as VMRCOptions;
-            if (options != null)
-            {
-                FavoriteConfigurationElement destination = context.ConfigFavorite;
-                destination.VMRCAdministratorMode = options.AdministratorMode;
-                destination.VMRCReducedColorsMode = options.ReducedColorsMode;
-            }
+            destination.VMRCAdministratorMode = options.AdministratorMode;
+            destination.VMRCReducedColorsMode = options.ReducedColorsMode;
         }
     }
 }

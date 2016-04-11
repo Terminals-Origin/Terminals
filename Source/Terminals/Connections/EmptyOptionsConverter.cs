@@ -7,7 +7,7 @@ namespace Terminals.Connections
     /// </summary>
     internal class EmptyOptionsConverter : IOptionsConverter
     {
-        public void FromCofigFavorite(OptionsConversionContext context)
+        public void FromConfigFavorite(OptionsConversionContext context)
         {
             // nothing to do, empty implementation
         }
