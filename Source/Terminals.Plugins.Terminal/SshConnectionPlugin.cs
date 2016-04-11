@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
+using Terminals.Plugins.Terminal;
 using Terminals.Plugins.Terminal.Properties;
 
 namespace Terminals.Connections.Terminal
 {
-    internal class SshConnectionPlugin: IConnectionPlugin, IOptionsExporterFactory
+    internal class SshConnectionPlugin: IConnectionPlugin, IOptionsExporterFactory, IOptionsConverterFactory
     {
         internal const int SSHPort = 22;
 
@@ -52,6 +54,11 @@ namespace Terminals.Connections.Terminal
         public Image GetIcon()
         {
             return TreeIconSsh;
+        }
+
+        public IOptionsConverter CreatOptionsConverter()
+        {
+            return new SshOptionsConverter();
         }
     }
 }
