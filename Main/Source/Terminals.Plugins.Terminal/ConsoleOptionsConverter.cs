@@ -3,16 +3,11 @@ using Terminals.Data;
 
 namespace Terminals.Plugins.Terminal
 {
-    internal class ConsoleOptionsConverter : IOptionsConverter
+    internal class ConsoleOptionsConverter : OptionsConverterTemplate<ConsoleOptions>, IOptionsConverter
     {
-        public void FromCofigFavorite(OptionsConversionContext context)
+        protected override void FromConfigFavorite(FavoriteConfigurationElement source, ConsoleOptions options)
         {
-            var options = context.Favorite.ProtocolProperties as ConsoleOptions;
-            if (options != null)
-            {
-                FavoriteConfigurationElement source = context.ConfigFavorite;
-                FromConfigFavorite(options, source);
-            }
+            FromConfigFavorite(options, source);
         }
 
         internal static void FromConfigFavorite(ConsoleOptions options, FavoriteConfigurationElement source)
@@ -25,17 +20,12 @@ namespace Terminals.Plugins.Terminal
             options.Font = source.ConsoleFont;
         }
 
-        public void ToConfigFavorite(OptionsConversionContext context)
+        protected override void ToConfigFavorite(FavoriteConfigurationElement destination, ConsoleOptions options)
         {
-            var options = context.Favorite.ProtocolProperties as ConsoleOptions;
-            if (options != null)
-            {
-                FavoriteConfigurationElement destination = context.ConfigFavorite;
-                ToConfigFavorite(destination, options);
-            }
+            ToConfigFavorite(options, destination);
         }
 
-        internal static void ToConfigFavorite(FavoriteConfigurationElement destination, ConsoleOptions options)
+        internal static void ToConfigFavorite(ConsoleOptions options, FavoriteConfigurationElement destination)
         {
             destination.ConsoleBackColor = options.BackColor;
             destination.ConsoleTextColor = options.TextColor;
