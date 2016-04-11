@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="ICAConnectionPlugin.cs" />
     <Compile Include="ICAOptions.cs" />
+    <Compile Include="IcaOptionsConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TerminalsIcaExport.cs" />
   </ItemGroup>

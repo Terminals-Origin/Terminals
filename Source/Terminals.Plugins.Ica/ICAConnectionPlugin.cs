@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
+using Terminals.Plugins.Ica;
 
 namespace Terminals.Connections.ICA
 {
-    internal class ICAConnectionPlugin :IConnectionPlugin, IOptionsExporterFactory
+    internal class ICAConnectionPlugin :IConnectionPlugin, IOptionsExporterFactory, IOptionsConverterFactory
     {
         internal const int ICAPort = 1494;
 
@@ -45,6 +47,11 @@ namespace Terminals.Connections.ICA
         public Image GetIcon()
         {
             return  Connection.Terminalsicon;
+        }
+
+        public IOptionsConverter CreatOptionsConverter()
+        {
+            return new IcaOptionsConverter();
         }
     }
 }
