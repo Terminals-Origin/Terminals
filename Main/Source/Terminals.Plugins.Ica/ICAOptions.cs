@@ -29,24 +29,12 @@ namespace Terminals.Data
 
         public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
-            this.ApplicationName = source.ICAApplicationName;
-            this.ApplicationPath = source.ICAApplicationPath;
-            this.ApplicationWorkingFolder = source.ICAApplicationWorkingFolder;
-            this.ClientINI = source.IcaClientINI;
-            this.ServerINI = source.IcaServerINI;
-            this.EnableEncryption = source.IcaEnableEncryption;
-            this.EncryptionLevel = source.IcaEncryptionLevel;
+            throw new NotImplementedException("moved to converter");
         }
 
         public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
-            destination.ICAApplicationName = this.ApplicationName;
-            destination.ICAApplicationPath = this.ApplicationPath;
-            destination.ICAApplicationWorkingFolder = this.ApplicationWorkingFolder;
-            destination.IcaClientINI = this.ClientINI;
-            destination.IcaServerINI = this.ServerINI;
-            destination.IcaEnableEncryption = this.EnableEncryption;
-            destination.IcaEncryptionLevel = this.EncryptionLevel;
+            throw new NotImplementedException("moved to converter");
         }
     }
 }
