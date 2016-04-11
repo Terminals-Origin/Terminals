@@ -73,6 +73,7 @@
     </Compile>
     <Compile Include="VmrcMenuVisitor.cs" />
     <Compile Include="VMRCOptions.cs" />
+    <Compile Include="VmrcOptionsConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">

@@ -19,14 +19,12 @@ namespace Terminals.Data
 
         public override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
-            this.AdministratorMode = source.VMRCAdministratorMode;
-            this.ReducedColorsMode = source.VMRCReducedColorsMode;
+            throw new NotImplementedException("moved to converter");
         }
 
         public override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
-            destination.VMRCAdministratorMode = this.AdministratorMode;
-            destination.VMRCReducedColorsMode = this.ReducedColorsMode;
+            throw new NotImplementedException("moved to converter");
         }
     }
 }

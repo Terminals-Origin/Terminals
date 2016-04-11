@@ -5,10 +5,12 @@ using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
+using Terminals.Plugins.Vmrc;
 
 namespace Terminals.Connections.VMRC
 {
-    internal class VmrcConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory, IToolbarExtenderFactory
+    internal class VmrcConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory,
+        IToolbarExtenderFactory, IOptionsConverterFactory
     {
         internal const string VMRC = "VMRC";
 
@@ -50,6 +52,11 @@ namespace Terminals.Connections.VMRC
         public Image GetIcon()
         {
             return Connection.Terminalsicon;
+        }
+
+        public IOptionsConverter CreatOptionsConverter()
+        {
+            return new VmrcOptionsConverter();
         }
     }
 }
