@@ -9,7 +9,7 @@ namespace Terminals.Connections
     /// <summary>
     /// Implementation of default values in case required plugin is not available.
     /// </summary>
-    internal class DummyPlugin : IConnectionPlugin
+    internal class DummyPlugin : IConnectionPlugin, IOptionsConverterFactory
     {
         public int Port { get { return 0; } }
 
@@ -38,6 +38,11 @@ namespace Terminals.Connections
         public ProtocolOptions CreateOptions()
         {
             return new EmptyOptions();
+        }
+
+        public IOptionsConverter CreatOptionsConverter()
+        {
+            return new EmptyOptionsConverter();
         }
     }
 }

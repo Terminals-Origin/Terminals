@@ -197,8 +197,11 @@ namespace Terminals.Connections
 
         public IOptionsConverterFactory GetOptionsConverterFactory(string protocolName)
         {
-            IConnectionPlugin protocolPlugin = this.FindPlugin(protocolName);
-            return protocolPlugin as IOptionsConverterFactory;
+            var protocolPlugin = this.FindPlugin(protocolName) as IOptionsConverterFactory;
+            if (protocolPlugin == null)
+                protocolPlugin = this.dummyPlugin as IOptionsConverterFactory;
+
+            return protocolPlugin;
         }
     }
 }
