@@ -71,6 +71,7 @@
       <DependentUpon>SshControl.cs</DependentUpon>
     </Compile>
     <Compile Include="SshOptions.cs" />
+    <Compile Include="SshOptionsConverter.cs" />
     <Compile Include="TcpProtocol.cs" />
     <Compile Include="TelnetConnectionPlugin.cs" />
     <Compile Include="TelnetProtocol.cs" />

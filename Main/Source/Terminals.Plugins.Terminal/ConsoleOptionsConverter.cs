@@ -11,13 +11,18 @@ namespace Terminals.Plugins.Terminal
             if (options != null)
             {
                 FavoriteConfigurationElement source = context.ConfigFavorite;
-                options.BackColor = source.ConsoleBackColor;
-                options.TextColor = source.ConsoleTextColor;
-                options.CursorColor = source.ConsoleCursorColor;
-                options.Columns = source.ConsoleCols;
-                options.Rows = source.ConsoleRows;
-                options.Font = source.ConsoleFont;
+                FromConfigFavorite(options, source);
             }
+        }
+
+        internal static void FromConfigFavorite(ConsoleOptions options, FavoriteConfigurationElement source)
+        {
+            options.BackColor = source.ConsoleBackColor;
+            options.TextColor = source.ConsoleTextColor;
+            options.CursorColor = source.ConsoleCursorColor;
+            options.Columns = source.ConsoleCols;
+            options.Rows = source.ConsoleRows;
+            options.Font = source.ConsoleFont;
         }
 
         public void ToConfigFavorite(OptionsConversionContext context)
@@ -26,13 +31,18 @@ namespace Terminals.Plugins.Terminal
             if (options != null)
             {
                 FavoriteConfigurationElement destination = context.ConfigFavorite;
-                destination.ConsoleBackColor = options.BackColor;
-                destination.ConsoleTextColor = options.TextColor;
-                destination.ConsoleCursorColor = options.CursorColor;
-                destination.ConsoleCols = options.Columns;
-                destination.ConsoleRows = options.Rows;
-                destination.ConsoleFont = options.Font;
+                ToConfigFavorite(destination, options);
             }
+        }
+
+        internal static void ToConfigFavorite(FavoriteConfigurationElement destination, ConsoleOptions options)
+        {
+            destination.ConsoleBackColor = options.BackColor;
+            destination.ConsoleTextColor = options.TextColor;
+            destination.ConsoleCursorColor = options.CursorColor;
+            destination.ConsoleCols = options.Columns;
+            destination.ConsoleRows = options.Rows;
+            destination.ConsoleFont = options.Font;
         }
     }
 }
