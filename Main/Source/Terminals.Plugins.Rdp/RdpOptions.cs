@@ -58,10 +58,5 @@ namespace Terminals.Data
                     TsGateway = this.TsGateway.Copy()
                 };
         }
-
-        //TODO internal void AssignStore(PersistenceSecurity persistenceSecurity)
-        //{
-        //    this.TsGateway.Security.AssignStore(persistenceSecurity);
-        //}
     }
 }

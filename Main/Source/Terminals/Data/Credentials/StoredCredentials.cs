@@ -98,11 +98,6 @@ namespace Terminals.Data
         {
             object loadedObj = Serialize.DeserializeXMLFromDisk(configFileName, typeof (List<CredentialSet>));
             var loadedItems = loadedObj as List<CredentialSet>;
-            foreach (CredentialSet credentialSet in loadedItems)
-            {
-               // TODO credentialSet.AssignStore(this.persistenceSecurity);
-            }
-
             return loadedItems.Cast<ICredentialSet>().ToList();
         }
 

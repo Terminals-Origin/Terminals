@@ -12,8 +12,6 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class StoredCredentials : ICredentials
     {
-        private readonly SqlPersistenceSecurity persistenceSecurity;
-
         private readonly DataDispatcher dispatcher;
 
         public event EventHandler CredentialsChanged;
@@ -22,9 +20,8 @@ namespace Terminals.Data.DB
 
         private bool isLoaded;
 
-        public StoredCredentials(SqlPersistenceSecurity persistenceSecurity, DataDispatcher dispatcher)
+        public StoredCredentials(DataDispatcher dispatcher)
         {
-            this.persistenceSecurity = persistenceSecurity;
             this.dispatcher = dispatcher;
         }
 
@@ -181,16 +178,7 @@ namespace Terminals.Data.DB
         private void ReloadCache()
         {
             List<DbCredentialSet> loaded = LoadFromDatabase();
-            this.AssignSecurity(loaded);
             this.cache.Add(loaded);
-        }
-
-        private void AssignSecurity(List<DbCredentialSet> loaded)
-        {
-            foreach (DbCredentialSet credentialSet in loaded)
-            {
-                credentialSet.AssignSecurity(this.persistenceSecurity);
-            }
         }
 
         private List<DbCredentialSet> LoadFromDatabase()

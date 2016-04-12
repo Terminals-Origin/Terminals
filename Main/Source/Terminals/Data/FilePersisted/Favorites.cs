@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using Terminals.Configuration;
+using Terminals.Data.Credentials;
 using Terminals.Data.FilePersisted;
 
 namespace Terminals.Data
@@ -16,9 +17,12 @@ namespace Terminals.Data
 
         private readonly FavoriteBatchUpdates batchUpdates;
 
+        private PersistenceSecurity security;
+
         internal Favorites(FilePersistence persistence)
         {
             this.persistence = persistence;
+            this.security = persistence.Security;
             this.dispatcher = persistence.Dispatcher;
             this.groups = this.persistence.GroupsStore;
             this.cache = new Dictionary<Guid,IFavorite>();
@@ -147,7 +151,19 @@ namespace Terminals.Data
         {
             foreach (Favorite favorite in this)
             {
-                favorite.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
+                var guarded = new GuardedSecurity(this.security, favorite.Security);
+                guarded.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+                this.UpdatePasswordsInProtocolProperties(favorite.ProtocolProperties, newKeyMaterial);
+            }
+        }
+
+        private void UpdatePasswordsInProtocolProperties(ProtocolOptions protocolProperties, string newKeyMaterial)
+        {
+            RdpOptions rdpOptions = protocolProperties as RdpOptions;
+            if (rdpOptions != null)
+            {
+                var guarded = new GuardedSecurity(this.security, rdpOptions.TsGateway.Security);
+                guarded.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             }
         }
 

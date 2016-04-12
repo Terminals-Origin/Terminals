@@ -1,5 +1,4 @@
 ﻿using System;
-using Terminals.Configuration;
 
 namespace Terminals.Data
 {

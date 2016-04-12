@@ -12,8 +12,6 @@ namespace Terminals.Data.DB
     /// </summary>
     internal partial class DbSecurityOptions : ISecurityOptions
     {
-        private PersistenceSecurity persistenceSecurity;
-
         private StoredCredentials storedCredentials;
 
         /// <summary>
@@ -109,10 +107,9 @@ namespace Terminals.Data.DB
                    (string.IsNullOrEmpty(newValue) && this.CachedCredentials != null);
         }
 
-        internal void AssignStores(StoredCredentials storedCredentials, PersistenceSecurity persistenceSecurity)
+        internal void AssignStores(StoredCredentials storedCredentials)
         {
             this.storedCredentials = storedCredentials;
-            this.persistenceSecurity = persistenceSecurity;
         }
 
         private Guid GetCredential()
@@ -158,16 +155,9 @@ namespace Terminals.Data.DB
             if (this.CachedCredentials == null)
             {
                 this.CachedCredentials = new DbCredentialBase();
-                this.CachedCredentials.AssignSecurity(this.persistenceSecurity);
                 this.CredentialBase = this.CachedCredentials;
                 this.NewCachedCredentials = true;
             }
-        }
-        
-        public void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
-        {
-            if (this.CachedCredentials != null)
-                this.CachedCredentials.UpdatePasswordByNewKeyMaterial(newKeymaterial);
         }
 
         internal void LoadReferences(Database database)
@@ -180,8 +170,6 @@ namespace Terminals.Data.DB
         internal void LoadFieldsFromReferences()
         {
             this.CachedCredentials = this.CredentialBase;
-            if (this.CachedCredentials != null)
-                this.CachedCredentials.AssignSecurity(this.persistenceSecurity);
             this.LoadFromCredentialSetReference();
         }
 
@@ -216,7 +204,6 @@ namespace Terminals.Data.DB
             this.EncryptedPassword = source.EncryptedPassword;
             this.credentialId = source.credentialId;
             this.storedCredentials = source.storedCredentials;
-            this.persistenceSecurity = source.persistenceSecurity;
         }
 
         public override string ToString()
