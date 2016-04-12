@@ -79,7 +79,7 @@ namespace Tests.Validation
             var credentailSet = new DbCredentialSet();
             credentailSet.Name = longText;
             var results = Validations.Validate(credentailSet);
-            Assert.AreEqual(1, results.Count(), "CredentailSet validation failed");
+            Assert.AreEqual(2, results.Count(), "CredentailSet validation failed");
         }
 
         [TestCategory("NonSql")]
