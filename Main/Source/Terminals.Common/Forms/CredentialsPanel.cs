@@ -47,7 +47,7 @@ namespace Terminals.Forms.Controls
 
         public void SetUserNameError(ErrorProvider errorProvider, string errroMessage)
         {
-            errorProvider.SetIconAlignment(this.cmbUsers, ErrorIconAlignment.MiddleRight);
+            errorProvider.SetIconAlignment(this.cmbUsers, ErrorIconAlignment.MiddleLeft);
             errorProvider.SetError(this.cmbUsers, errroMessage);
         }
 

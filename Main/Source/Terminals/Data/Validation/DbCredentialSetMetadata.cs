@@ -7,5 +7,8 @@ namespace Terminals.Data.Validation
         [Required(ErrorMessage = CredentialSetMetadata.NAME_MIN_LENGTH)]
         [StringLength(255, ErrorMessage = Validations.MAX_255_CHARACTERS)]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = CredentialSetMetadata.USERNAME_MIN_LENGTH)]
+        public string EncryptedUserName { get; set; }
     }
 }
