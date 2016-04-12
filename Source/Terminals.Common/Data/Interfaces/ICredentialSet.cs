@@ -18,8 +18,5 @@ namespace Terminals.Data
         /// Gets or sets the unique not empty name of the set.
         /// </summary>
         string Name { get; set; }
-
-        // todo test, if the UserName and Domain properties are still shown in grid
-        // are required to be shown in GridControls, see implementation
     }
 }
