@@ -7,23 +7,20 @@ namespace Terminals
     /// </summary>
     internal class Factory : IFactory
     {
-        private readonly PersistenceSecurity persistenceSecurity;
-
         private readonly Groups groups;
 
         private readonly DataDispatcher dispatcher;
 
-        internal Factory(PersistenceSecurity persistenceSecurity, Groups groups, DataDispatcher dispatcher)
+        internal Factory(Groups groups, DataDispatcher dispatcher)
         {
             this.groups = groups;
             this.dispatcher = dispatcher;
-            this.persistenceSecurity = persistenceSecurity;
         }
 
         public IFavorite CreateFavorite()
         {
             var newItem = new Favorite();
-            newItem.AssignStores(this.persistenceSecurity, this.groups);
+            newItem.AssignStores(this.groups);
             return newItem;
         }
 
@@ -36,9 +33,7 @@ namespace Terminals
 
         public ICredentialSet CreateCredentialSet()
         {
-            var newCredentials = new CredentialSet();
-            // todo newCredentials.AssignStore(persistenceSecurity);
-            return newCredentials;
+            return new CredentialSet();
         }
     }
 }

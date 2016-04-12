@@ -14,8 +14,6 @@ namespace Terminals.Data.DB
 
         private StoredCredentials credentials;
 
-        private PersistenceSecurity persistenceSecurity;
-
         /// <summary>
         /// cant be set in constructor, because the constructor is used by EF when loading the entities
         /// </summary>
@@ -188,8 +186,7 @@ namespace Terminals.Data.DB
 
         IFavorite IFavorite.Copy()
         {
-            DbFavorite copy = Factory.CreateFavorite(this.persistenceSecurity, this.groups, 
-                this.credentials, this.Details.Dispatcher);
+            DbFavorite copy = Factory.CreateFavorite(this.groups, this.credentials, this.Details.Dispatcher);
             copy.UpdateFrom(this);
             return copy;
         }
@@ -222,7 +219,7 @@ namespace Terminals.Data.DB
             this.toolBarIcon = source.ToolBarIconImage;
             // protocolProperties don't have a favorite Id reference, so we can overwrite complete content
             this.protocolProperties = source.protocolProperties.Copy();
-            this.AssignStores(source.groups, source.credentials, source.persistenceSecurity, source.Details.Dispatcher);
+            this.AssignStores(source.groups, source.credentials, source.Details.Dispatcher);
         }
 
         public string GetToolTipText()
@@ -253,25 +250,16 @@ namespace Terminals.Data.DB
                 .ToList();
         }
 
-        internal void AssignStores(Groups groups, StoredCredentials credentials,
-            PersistenceSecurity persistenceSecurity, DataDispatcher dispatcher)
+        internal void AssignStores(Groups groups, StoredCredentials credentials, DataDispatcher dispatcher)
         {
             this.groups = groups;
             this.credentials = credentials;
-            this.persistenceSecurity = persistenceSecurity;
             this.Details.Dispatcher = dispatcher;
-            this.AssignStoreToRdpOptions();
         }
 
         private void UpdateProtocolProperties(ProtocolOptions protocolOptions)
         {
             this.protocolProperties = ConnectionManager.Instance.UpdateProtocolPropertiesByProtocol(this.protocol, protocolOptions);
-            this.AssignStoreToRdpOptions();
-        }
-
-        private void AssignStoreToRdpOptions()
-        {
-            Favorite.AssignStoreToRdpOptions(this.protocolProperties, this.persistenceSecurity);
         }
 
         internal void SaveDetails(Database database)

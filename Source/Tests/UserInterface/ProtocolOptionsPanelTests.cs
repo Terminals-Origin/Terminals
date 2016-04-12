@@ -255,7 +255,7 @@ namespace Tests.UserInterface
             var favoriteGroupsStub = new Mock<IFavoriteGroups>();
             favoriteGroupsStub.Setup(fg => fg.GetGroupsContainingFavorite(It.IsAny<Guid>())).Returns(groups);
             var favorite = new Favorite();
-            favorite.AssignStores(persistenceSecurity, favoriteGroupsStub.Object);
+            favorite.AssignStores(favoriteGroupsStub.Object);
             return favorite;
         }
     }

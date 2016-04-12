@@ -91,11 +91,11 @@ namespace Terminals.Data.DB
                 return;
 
             this.groups = new Groups();
-            this.credentials = new StoredCredentials(this.security, this.Dispatcher);
+            this.credentials = new StoredCredentials(this.Dispatcher);
             this.favorites = new Favorites(this.groups, this.credentials, this.security, this.Dispatcher);
             this.groups.AssignStores(this.Dispatcher, this.favorites);
             this.connectionHistory = new ConnectionHistory(this.favorites, this.Dispatcher);
-            this.Factory = new Factory(this.groups, this.favorites, this.credentials, this.security, this.Dispatcher);
+            this.Factory = new Factory(this.groups, this.favorites, this.credentials, this.Dispatcher);
         }
 
         private bool TryInitializeDatabase()
@@ -116,7 +116,7 @@ namespace Terminals.Data.DB
         public void UpdatePasswordsByNewMasterPassword(string newMasterKey)
         {
             // nothing to do in database, the application master password doesn't affect the database
-            // but, the file persisted passwords may be lost, so we have to update them
+            // but, the file persisted passwords may be lost, so we have to update them.
             var newSecurity = new PersistenceSecurity(this.security);
             var filePersistence = new FilePersistence(newSecurity);
             filePersistence.Initialize();

@@ -54,7 +54,6 @@ namespace Terminals.Data
             {
                 protocol = value;
                 this.protocolProperties = ConnectionManager.Instance.UpdateProtocolPropertiesByProtocol(this.protocol, this.protocolProperties);
-                AssignStoreToRdpOptions(this.ProtocolProperties, this.persistenceSecurity);
             }
         }
 
@@ -116,8 +115,6 @@ namespace Terminals.Data
 
         public Boolean NewWindow { get; set; }
         public String DesktopShare { get; set; }
-
-        private PersistenceSecurity persistenceSecurity;
 
         private IBeforeConnectExecuteOptions executeBeforeConnect = new BeforeConnectExecuteOptions();
         /// <summary>
@@ -278,26 +275,6 @@ namespace Terminals.Data
             this.ProtocolProperties = source.ProtocolProperties.Copy();
         }
 
-        /// <summary>
-        /// Replaces stored password by new one created from newKeyMaterial in underlying store.
-        /// </summary>
-        /// <param name="newKeyMaterial">New shared key used to encrypt passwords in the store</param>
-        internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
-        {
-            // todo this.security.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
-            UpdatePasswordsInProtocolProperties(this.protocolProperties, newKeyMaterial);
-        }
-
-        private static void UpdatePasswordsInProtocolProperties(ProtocolOptions protocolProperties, string newKeyMaterial)
-        {
-            RdpOptions rdpOptions = protocolProperties as RdpOptions;
-            if (rdpOptions != null)
-            {
-                //TODO SecurityOptions tsGatewaySecurity = rdpOptions.TsGateway.Security;
-                //tsGatewaySecurity.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
-            }
-        }
-
         bool IStoreIdEquals<IFavorite>.StoreIdEquals(IFavorite oponent)
         {
             var oponentFavorite = oponent as Favorite;
@@ -312,21 +289,9 @@ namespace Terminals.Data
             return this.Id.GetHashCode();
         }
 
-        internal void AssignStores(PersistenceSecurity persistenceSecurity, IFavoriteGroups groups)
+        internal void AssignStores(IFavoriteGroups groups)
         {
-            this.persistenceSecurity = persistenceSecurity;
             this.groups = groups;
-            // todo this.Security.AssignStore(persistenceSecurity);
-            AssignStoreToRdpOptions(this.ProtocolProperties, persistenceSecurity);
-        }
-
-        internal static void AssignStoreToRdpOptions(ProtocolOptions protocolOptions, PersistenceSecurity persistenceSecurity)
-        {
-            var rdpOptions = protocolOptions as RdpOptions;
-            if (rdpOptions != null)
-            {
-                // TODO rdpOptions.AssignStore(persistenceSecurity);
-            }
         }
 
         public override String ToString()

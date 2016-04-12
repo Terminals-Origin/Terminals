@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
@@ -47,9 +46,9 @@ namespace Tests.SqlPersisted
         {
             DbCredentialSet credentials = this.PrimaryFactory.CreateCredentialSet() as DbCredentialSet;
             credentials.Name = "TestCredentialName";
-            credentials.Domain = "TestDomain";
-            credentials.UserName = "TestUserName";
             var guarded = new GuardedCredential(credentials, this.PrimaryPersistence.Security);
+            guarded.Domain = "TestDomain";
+            guarded.UserName = "TestUserName";
             guarded.Password = VALIDATION_VALUE;
             return credentials;
         }

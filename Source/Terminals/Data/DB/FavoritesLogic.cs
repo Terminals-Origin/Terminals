@@ -369,7 +369,7 @@ namespace Terminals.Data.DB
                 List<DbFavorite> favorites = database.Favorites.ToList();
                 database.Cache.DetachAll(favorites);
                 favorites.ForEach(candidate => candidate
-                    .AssignStores(this.groups, this.credentials, this.persistenceSecurity, this.dispatcher));
+                    .AssignStores(this.groups, this.credentials, this.dispatcher));
                 return favorites;
             }
         }

@@ -7,7 +7,6 @@ using System.Threading;
 using Terminals.Configuration;
 using Terminals.Data.FilePersisted;
 using Terminals.History;
-using Unified;
 
 namespace Terminals.Data
 {
@@ -95,7 +94,7 @@ namespace Terminals.Data
             this.groups = new Groups(this);
             this.favorites = new Favorites(this);
             this.connectionHistory = new ConnectionHistory(this.favorites);
-            this.factory = new Factory(security, this.groups, this.Dispatcher);
+            this.factory = new Factory(this.groups, this.Dispatcher);
             this.InitializeFileWatch(fileWatcher);
         }
 
@@ -220,7 +219,7 @@ namespace Terminals.Data
         {
             foreach (Favorite favorite in fileFavorites)
             {
-                favorite.AssignStores(this.Security, this.groups);
+                favorite.AssignStores(this.groups);
             }
         }
 

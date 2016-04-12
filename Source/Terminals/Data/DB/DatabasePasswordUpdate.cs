@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 using System.Xml.Linq;
+using Terminals.Data.Credentials;
 using Terminals.Security;
 
 namespace Terminals.Data.DB
@@ -119,8 +120,8 @@ namespace Terminals.Data.DB
         {
             foreach (DbCredentialBase credentials in this.database.CredentialBase)
             {
-                credentials.AssignSecurity(this.persistenceSecurity);
-                credentials.UpdatePasswordByNewKeyMaterial(this.newKeyMaterial);
+                var guarded = new GuardedCredential(credentials, this.persistenceSecurity);
+                guarded.UpdatePasswordByNewKeyMaterial(this.newKeyMaterial);
             }
         }
     }
