@@ -57,7 +57,8 @@ namespace Terminals.Credentials
             var results = Validations.Validate(prototype);
             string nameErrorMessage = results["Name"];
             this.errorProvider.SetError(this.NameTextbox, nameErrorMessage);
-            string userNameErrorMessage = results["UserName"];
+            // the validated object contains only encrypted properties.
+            string userNameErrorMessage = results["EncryptedUserName"];
             this.credentialsPanel1.SetUserNameError(this.errorProvider, userNameErrorMessage);
             return results.Empty;
         }
@@ -116,7 +117,7 @@ namespace Terminals.Credentials
         private void UpdateFromControls(ICredentialSet toUpdate)
         {
             toUpdate.Name = this.NameTextbox.Text;
-            var guarded = new GuardedCredential(this.editedCredential, this.persistence.Security);
+            var guarded = new GuardedCredential(toUpdate, this.persistence.Security);
             this.credentialsPanel1.SaveTo(guarded);
         }
 
