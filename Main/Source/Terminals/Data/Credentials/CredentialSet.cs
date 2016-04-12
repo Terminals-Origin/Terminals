@@ -36,9 +36,6 @@ namespace Terminals.Data
             }
         }
 
-        // todo: UserName and Domain properties are only to simplify presentation in grids using SortableList
-        // otherwise sorting fails, see ICredentialSet
-
         public override string ToString()
         {
             return String.Format(@"{0}:{1}\{2}", this.Name, "", "");
