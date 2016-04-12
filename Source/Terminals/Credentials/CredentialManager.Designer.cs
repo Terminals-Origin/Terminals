@@ -115,8 +115,8 @@
             this.gridCredentials.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridCredentials.Size = new System.Drawing.Size(352, 213);
             this.gridCredentials.TabIndex = 5;
-            this.gridCredentials.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridCredentials_CellDoubleClick);
-            this.gridCredentials.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridCredentials_ColumnHeaderMouseClick);
+            this.gridCredentials.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridCredentials_CellDoubleClick);
+            this.gridCredentials.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.GridCredentials_ColumnHeaderMouseClick);
             // 
             // colName
             // 

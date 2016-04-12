@@ -171,6 +171,7 @@
     <Compile Include="Configuration\FavoriteConfigurationSecurity.cs" />
     <Compile Include="Connections\EmptyOptionsConverter.cs" />
     <Compile Include="Converters\TagsConverter.cs" />
+    <Compile Include="Credentials\EditedCredentials.cs" />
     <Compile Include="Data\Credentials\GuardedCredential.cs" />
     <Compile Include="Data\Credentials\GuardedCredentialFactory.cs" />
     <Compile Include="Data\Credentials\GuardedSecurity.cs" />

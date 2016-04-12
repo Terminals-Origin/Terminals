@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 
 namespace Terminals.Credentials
 {
@@ -15,21 +17,28 @@ namespace Terminals.Credentials
 
         internal CredentialManager(IPersistence persistence)
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             this.persistence = persistence;
-            Credentials.CredentialsChanged += new EventHandler(this.CredentialsChanged);
+            this.Credentials.CredentialsChanged += new EventHandler(this.CredentialsChanged);
         }
 
         private void CredentialsChanged(object sender, EventArgs e)
         {
-            BindList();
+            this.BindList();
         }
 
         private void BindList()
         {
             this.gridCredentials.AutoGenerateColumns = false;
-            this.gridCredentials.DataSource = new SortableList<ICredentialSet>(Credentials);
+            var toShow = this.Credentials.Select(this.ToEditedCredentials);
+            this.gridCredentials.DataSource = new SortableList<EditedCredentials>(toShow);
+        }
+
+        private EditedCredentials ToEditedCredentials(ICredentialSet editedCredentials)
+        {
+            var guarded = new GuardedCredential(editedCredentials, this.persistence.Security);
+            return new EditedCredentials(editedCredentials, guarded.UserName, guarded.Domain);
         }
 
         private void DoneButton_Click(object sender, EventArgs e)
@@ -39,18 +48,22 @@ namespace Terminals.Credentials
 
         private void CredentialManager_Load(object sender, EventArgs e)
         {
-            BindList();
+            this.BindList();
         }
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            EditCredential(null);
+            this.EditCredential(null);
         }
 
-        private ICredentialSet GetSelectedItemCredentials()
+        private ICredentialSet GetSelectedCredentials()
         {
-            if (gridCredentials.SelectedRows.Count > 0)
-                return gridCredentials.SelectedRows[0].DataBoundItem as ICredentialSet;
+            if (this.gridCredentials.SelectedRows.Count > 0)
+            {
+                var selected = this.gridCredentials.SelectedRows[0].DataBoundItem as EditedCredentials;
+                return selected.Edited;
+            }
+
             return null;
         }
 
@@ -61,7 +74,7 @@ namespace Terminals.Credentials
 
         private void EditSelectedCredential()
         {
-            ICredentialSet selected = this.GetSelectedItemCredentials();
+            ICredentialSet selected = this.GetSelectedCredentials();
             if (selected != null)
             {
                 this.EditCredential(selected);
@@ -79,38 +92,38 @@ namespace Terminals.Credentials
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            ICredentialSet toRemove = GetSelectedItemCredentials();
+            ICredentialSet toRemove = this.GetSelectedCredentials();
             if (toRemove != null)
             {
                 if (MessageBox.Show("Are you sure you want to delete credential " + toRemove.Name + "?",
                                     "Credential manager", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    Credentials.Remove(toRemove);
-                    BindList();
+                    this.Credentials.Remove(toRemove);
+                    this.BindList();
                 }
             }
         }
 
         private void CredentialManager_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Credentials.CredentialsChanged -= CredentialsChanged;
+            this.Credentials.CredentialsChanged -= this.CredentialsChanged;
         }
 
-        private void gridCredentials_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void GridCredentials_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             DataGridViewColumn lastSortedColumn = this.gridCredentials.FindLastSortedColumn();
             DataGridViewColumn column = this.gridCredentials.Columns[e.ColumnIndex];
 
             SortOrder newSortDirection = SortableUnboundGrid.GetNewSortDirection(lastSortedColumn, column);
-            var data = this.gridCredentials.DataSource as SortableList<ICredentialSet>;
+            var data = this.gridCredentials.DataSource as SortableList<EditedCredentials>;
             this.gridCredentials.DataSource = data.SortByProperty(column.DataPropertyName, newSortDirection);
             column.HeaderCell.SortGlyphDirection = newSortDirection;
         }
 
-        private void gridCredentials_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void GridCredentials_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0) // dont allow double click on column row
-                EditSelectedCredential();
+                this.EditSelectedCredential();
         }
     }
 }
