@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Windows.Forms;
 using Terminals.Common.Forms.EditFavorite;
+using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
 {
-    internal partial class RdpTsGatewayControl : UserControl, IProtocolOptionsControl, ISupportsSecurityControl
+    internal partial class RdpTsGatewayControl : UserControl, IProtocolOptionsControl,
+        ISupportsSecurityControl, IRequiresMRUSettings
     {
         public IGuardedCredentialFactory CredentialFactory { get; set; }
+
+        public IMRUSettings Settings
+        {
+            get { return this.credentialsPanel1.Settings; }
+            set { this.credentialsPanel1.Settings = value; }
+        }
 
         public RdpTsGatewayControl()
         {

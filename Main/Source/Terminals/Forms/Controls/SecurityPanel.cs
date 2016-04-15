@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Terminals.Configuration;
 using Terminals.Credentials;
 using Terminals.Data;
 using Terminals.Data.Credentials;
@@ -26,9 +27,10 @@ namespace Terminals.Forms.Controls
             InitializeComponent();
         }
 
-        internal void AssignPersistence(IPersistence persistence)
+        internal void AssignServices(IPersistence persistence, Settings settings)
         {
             this.persistence = persistence;
+            this.credentialsPanel1.Settings = settings;
         }
 
         private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)

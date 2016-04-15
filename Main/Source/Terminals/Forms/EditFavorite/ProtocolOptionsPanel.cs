@@ -21,6 +21,8 @@ namespace Terminals.Forms.EditFavorite
 
         public IGuardedCredentialFactory CredentialsFactory { get; set; }
 
+        private readonly Settings settings = Settings.Instance;
+
         public ProtocolOptionsPanel()
         {
             this.InitializeComponent();
@@ -57,6 +59,16 @@ namespace Terminals.Forms.EditFavorite
             this.Controls.Add(protocolControl);
             this.RegisterIntegerValidation(protocolControl);
             this.AssignCredentialsFactory(protocolControl);
+            this.AssignMruSettings(protocolControl);
+        }
+
+        private void AssignMruSettings(Control protocolControl)
+        {
+            var control = protocolControl as IRequiresMRUSettings;
+            if (control != null)
+            {
+                control.Settings = this.settings;
+            }
         }
 
         private void AssignCredentialsFactory(Control protocolControl)
@@ -129,7 +141,7 @@ namespace Terminals.Forms.EditFavorite
             {
                 var consumer = protocolControl as ISettingsConsumer;
                 if (consumer != null)
-                    consumer.Settings = Settings.Instance;
+                    consumer.Settings = this.settings;
 
                 protocolControl.LoadFrom(favorite);
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.Credentials;
 using Terminals.Data.Validation;
@@ -25,6 +26,8 @@ namespace Terminals.Credentials
 
             this.persistence = persistence;
             this.editedCredential = editedCredential;
+            this.credentialsPanel1.Settings = Settings.Instance;
+            this.credentialsPanel1.LoadMRUs();
             FillControlsFromCredential();
         }
 
@@ -46,6 +49,7 @@ namespace Terminals.Credentials
 
             if (UpdateCredential())
             {
+                this.credentialsPanel1.SaveMRUs();
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }

@@ -81,7 +81,8 @@
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\InputBoxResult.cs" />
-    <Compile Include="IMRUSettings.cs" />
+    <Compile Include="Configuration\IMRUSettings.cs" />
+    <Compile Include="Configuration\IRequiresMRUSettings.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="TerminalsServices\Client.cs" />
     <Compile Include="TerminalsServices\ConnectionStates.cs" />
@@ -117,8 +118,8 @@
     <Compile Include="Data\Interfaces\IStoreIdEquals.cs" />
     <Compile Include="Forms\EditFavorite\IProtocolObserver.cs" />
     <Compile Include="Forms\EditFavorite\IValidatedProtocolControl.cs" />
-    <Compile Include="IConnectionSettings.cs" />
-    <Compile Include="ISettingsConsumer.cs" />
+    <Compile Include="Configuration\IConnectionSettings.cs" />
+    <Compile Include="Configuration\ISettingsConsumer.cs" />
     <Compile Include="Native\Enums.cs" />
     <Compile Include="Integration\Export\IExportOptionsContext.cs" />
     <Compile Include="Integration\Export\ITerminalsOptionsExport.cs" />
