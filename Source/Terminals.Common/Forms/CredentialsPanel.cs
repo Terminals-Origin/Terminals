@@ -7,7 +7,7 @@ namespace Terminals.Forms.Controls
 {
     public partial class CredentialsPanel : UserControl
     {
-       //TODO  private readonly IMRUSettings settings = Settings.Instance;
+        public IMRUSettings Settings { get; set; }
 
         private String favoritePassword = string.Empty;
 
@@ -53,14 +53,14 @@ namespace Terminals.Forms.Controls
 
         public void LoadMRUs()
         {
-            //TODO this.cmbDomains.Items.AddRange(settings.MRUDomainNames);
-            //this.cmbUsers.Items.AddRange(settings.MRUUserNames);
+            this.cmbDomains.Items.AddRange(this.Settings.MRUDomainNames);
+            this.cmbUsers.Items.AddRange(this.Settings.MRUUserNames);
         }
 
         public void SaveMRUs()
         {
-            //TODO settings.AddDomainMRUItem(cmbDomains.Text);
-            //settings.AddUserMRUItem(cmbUsers.Text);
+            this.Settings.AddDomainMRUItem(cmbDomains.Text);
+            this.Settings.AddUserMRUItem(cmbUsers.Text);
         }
 
         public void LoadDirectlyFrom(IGuardedCredential security)
@@ -124,7 +124,6 @@ namespace Terminals.Forms.Controls
 
         internal void RevealOrHidePwd(object sender, EventArgs e)
         {
-
             if (this.revealPwdButton.ImageIndex==1)
             {
                 this.txtPassword.PasswordChar = '*';

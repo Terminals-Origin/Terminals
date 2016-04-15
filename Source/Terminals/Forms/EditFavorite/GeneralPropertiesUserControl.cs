@@ -81,7 +81,7 @@ namespace Terminals.Forms.EditFavorite
 
         internal void AssignPersistence(IPersistence persistence)
         {
-            this.securityPanel1.AssignPersistence(persistence);
+            this.securityPanel1.AssignServices(persistence, this.settings);
         }
 
         internal void AssignRasControl(RasControl rasControl)
