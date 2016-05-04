@@ -138,7 +138,7 @@ namespace Terminals.Forms
             if (connectionResult.SuccessfulWithVersion)
             {
                 string message = string.Format("Test connection succeeded.");
-                // todo enable database versioning
+                // todo enable database versioning, see also commented code in ShowFailedConnectionTestMessage and ButtonCreateNewDatabaseClick.
                 // string message = string.Format("Test connection succeeded. (Version: {0})", connectionResult.CurrentVersion);
                 MessageBox.Show(message, MESSAGE_HEADER, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -153,7 +153,7 @@ namespace Terminals.Forms
         private static void ShowFailedConnectionTestMessage(DatabaseValidationResult connectionResult)
         {
             string message = string.Format("Test database failed.\r\nReason:{0}", connectionResult.ErroMessage);
-            // todo enable database versioning
+
             //if (connectionResult.IsMinimalVersion)
             //{
             //    message += "\r\n\r\nThe specified database does include a versions table.\r\n" +
@@ -326,7 +326,7 @@ namespace Terminals.Forms
 
         private void ButtonCreateNewDatabaseClick(object sender, EventArgs e)
         {
-            // todo create new database, when configuring connection
+            // create new database, when configuring connection
         }
     }
 }

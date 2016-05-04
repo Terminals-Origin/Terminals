@@ -72,7 +72,7 @@ namespace Terminals.Data.DB
                 {
                     this.TryLoadDetailsFromDatabase();
                 }
-                // todo concurrency: no idea how to solve favorite details loading
+                // concurrency: no idea how to solve favorite details loading
                 catch (EntityException exception)
                 {
                     ReleaseReferences(); // rollback loading
