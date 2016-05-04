@@ -6,9 +6,9 @@ using Terminals.Forms.Controls;
 
 namespace Tests.UserInterface
 {
-    // todo consider creating abstract base test lab to be able test UI on persistence types
+    // consider creating abstract base test lab to be able test UI on persistence types
     // merge usages of Favorite.Persistence into the test lab
-    // todo consider creating unit test to check, if both persistences produce the same events
+    // consider creating unit test to check, if both persistences produce the same events
 
     /// <summary>
     /// The persistence layer here doesnt play role.

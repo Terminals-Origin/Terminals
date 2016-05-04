@@ -55,7 +55,6 @@ namespace Terminals.Integration.Import.RdcMan
             this.favorite.RedirectPorts = localResources.RedirectPorts;
             this.favorite.RedirectClipboard = localResources.RedirectClipboard;
             this.favorite.Sounds = (RemoteSounds)localResources.AudioRedirect;
-            // todo is the mapping correct of keyboardHook?
             this.favorite.GrabFocusOnConnect = localResources.KeyboardHook == 0;
         }
 
