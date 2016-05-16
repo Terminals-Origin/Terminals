@@ -1,5 +1,4 @@
 ﻿using System;
-using Terminals.Configuration;
 using Terminals.Security;
 
 namespace Terminals.Data.Credentials
@@ -112,20 +111,6 @@ namespace Terminals.Data.Credentials
                 return this.PersistenceSecurity.DecryptPersistencePassword(this.credential.EncryptedPassword);
 
             return String.Empty;
-        }
-
-        public static void UpdateFromCredential(ICredentialSet source, ISecurityOptions target, PersistenceSecurity persistenceSecurity)
-        {
-            if (source != null)
-            {
-                target.Credential = source.Id;
-                var guardedSource = new GuardedCredential(source, persistenceSecurity);
-                var guardedTarget = new GuardedCredential(target, persistenceSecurity);
-                guardedTarget.Domain = guardedSource.Domain;
-                guardedTarget.UserName = guardedSource.UserName;
-                // todo is it OK to directly assign unencrypted password and avoid encryption
-                target.EncryptedPassword = source.EncryptedPassword;
-            }
         }
     }
 }
