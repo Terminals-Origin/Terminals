@@ -117,7 +117,7 @@ namespace Terminals.Forms
             this.CreateTerminalTab(favoriteCopy);
         }
 
-        private static IFavorite GetFavoriteUpdatedCopy(IFavorite favorite, ConnectionDefinition definition)
+        private IFavorite GetFavoriteUpdatedCopy(IFavorite favorite, ConnectionDefinition definition)
         {
             // TODO ensure the ID was copied, otherwise the tabControl can never communicate 
             // with rest of the app, because it will never find it by ID.
@@ -126,8 +126,9 @@ namespace Terminals.Forms
             
             if (definition.ForceNewWindow.HasValue)
                 favoriteCopy.NewWindow = definition.ForceNewWindow.Value;
-            
-            // todo favoriteCopy.Security.UpdateFromCredential(definition.Credentials);
+
+            var guarded = this.guardedCredentialFactory.CreateSecurityOptoins(favoriteCopy.Security);
+            guarded.UpdateFromCredential(definition.Credentials);
             return favoriteCopy;
         }
 
