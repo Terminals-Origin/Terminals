@@ -28,19 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.credentialsPanel1 = new CredentialsPanel();
             this.label15 = new System.Windows.Forms.Label();
             this.credentialDropdown = new System.Windows.Forms.ComboBox();
             this.CredentialManagerPicturebox = new System.Windows.Forms.PictureBox();
+            this.credentialsPanel1 = new Terminals.Forms.Controls.CredentialsPanel();
             ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // credentialsPanel1
-            // 
-            this.credentialsPanel1.Location = new System.Drawing.Point(-4, 30);
-            this.credentialsPanel1.Name = "credentialsPanel1";
-            this.credentialsPanel1.Size = new System.Drawing.Size(484, 104);
-            this.credentialsPanel1.TabIndex = 0;
             // 
             // label15
             // 
@@ -76,6 +69,16 @@
             this.CredentialManagerPicturebox.TabStop = false;
             this.CredentialManagerPicturebox.Click += new System.EventHandler(this.CredentialManagerPicturebox_Click);
             // 
+            // credentialsPanel1
+            // 
+            this.credentialsPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.credentialsPanel1.Location = new System.Drawing.Point(0, 26);
+            this.credentialsPanel1.Name = "credentialsPanel1";
+            this.credentialsPanel1.Settings = null;
+            this.credentialsPanel1.Size = new System.Drawing.Size(511, 95);
+            this.credentialsPanel1.TabIndex = 0;
+            this.credentialsPanel1.TextEditsLeft = 3;
+            // 
             // SecurityPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -85,7 +88,7 @@
             this.Controls.Add(this.CredentialManagerPicturebox);
             this.Controls.Add(this.credentialsPanel1);
             this.Name = "SecurityPanel";
-            this.Size = new System.Drawing.Size(511, 128);
+            this.Size = new System.Drawing.Size(511, 121);
             ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

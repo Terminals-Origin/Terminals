@@ -36,14 +36,14 @@ namespace Terminals.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MasterPasswordOptionPanel));
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.revealPwdButton = new System.Windows.Forms.Button();
+            this.hideRevealButtonImages = new System.Windows.Forms.ImageList(this.components);
             this.lblPasswordsMatch = new System.Windows.Forms.Label();
             this.chkPasswordProtectTerminals = new System.Windows.Forms.CheckBox();
             this.lblPassword = new System.Windows.Forms.Label();
             this.PasswordTextbox = new System.Windows.Forms.TextBox();
             this.lblConfirm = new System.Windows.Forms.Label();
             this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
-            this.revealPwdButton = new System.Windows.Forms.Button();
-            this.hideRevealButtonImages = new System.Windows.Forms.ImageList(this.components);
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
@@ -71,6 +71,27 @@ namespace Terminals.Forms
             this.groupBox3.Size = new System.Drawing.Size(500, 112);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
+            // 
+            // revealPwdButton
+            // 
+            this.revealPwdButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.revealPwdButton.Enabled = false;
+            this.revealPwdButton.FlatAppearance.BorderSize = 0;
+            this.revealPwdButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.revealPwdButton.ImageIndex = 0;
+            this.revealPwdButton.ImageList = this.hideRevealButtonImages;
+            this.revealPwdButton.Location = new System.Drawing.Point(251, 45);
+            this.revealPwdButton.Name = "revealPwdButton";
+            this.revealPwdButton.Size = new System.Drawing.Size(25, 30);
+            this.revealPwdButton.TabIndex = 7;
+            this.revealPwdButton.UseVisualStyleBackColor = false;
+            // 
+            // hideRevealButtonImages
+            // 
+            this.hideRevealButtonImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("hideRevealButtonImages.ImageStream")));
+            this.hideRevealButtonImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.hideRevealButtonImages.Images.SetKeyName(0, "eye_hide.png");
+            this.hideRevealButtonImages.Images.SetKeyName(1, "eye_reveal.png");
             // 
             // lblPasswordsMatch
             // 
@@ -130,27 +151,6 @@ namespace Terminals.Forms
             this.ConfirmPasswordTextBox.Size = new System.Drawing.Size(147, 20);
             this.ConfirmPasswordTextBox.TabIndex = 2;
             this.ConfirmPasswordTextBox.TextChanged += new System.EventHandler(this.ConfirmPasswordTextBox_TextChanged);
-            // 
-            // revealPwdButton
-            // 
-            this.revealPwdButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.revealPwdButton.Enabled = false;
-            this.revealPwdButton.FlatAppearance.BorderSize = 0;
-            this.revealPwdButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.revealPwdButton.ImageIndex = 0;
-            this.revealPwdButton.ImageList = this.hideRevealButtonImages;
-            this.revealPwdButton.Location = new System.Drawing.Point(251, 44);
-            this.revealPwdButton.Name = "revealPwdButton";
-            this.revealPwdButton.Size = new System.Drawing.Size(25, 30);
-            this.revealPwdButton.TabIndex = 7;
-            this.revealPwdButton.UseVisualStyleBackColor = false;
-            // 
-            // hideRevealButtonImages
-            // 
-            this.hideRevealButtonImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("hideRevealButtonImages.ImageStream")));
-            this.hideRevealButtonImages.TransparentColor = System.Drawing.Color.Transparent;
-            this.hideRevealButtonImages.Images.SetKeyName(0, "eye_hide.png");
-            this.hideRevealButtonImages.Images.SetKeyName(1, "eye_reveal.png");
             // 
             // MasterPasswordOptionPanel
             // 
