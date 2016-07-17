@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Credentials;
@@ -25,6 +26,8 @@ namespace Terminals.Forms.Controls
         internal SecurityPanel()
         {
             InitializeComponent();
+            this.credentialsPanel1.tableLayoutPanel1.Location = new Point(this.credentialDropdown.Location.X-3,0);
+            this.credentialsPanel1.tableLayoutPanel1.Size = new Size(this.credentialDropdown.Width+36,80);
         }
 
         internal void AssignServices(IPersistence persistence, Settings settings)

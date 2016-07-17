@@ -38,7 +38,7 @@ namespace Terminals.Credentials
             this.NameTextbox = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.credentialsPanel1 = new CredentialsPanel();
+            this.credentialsPanel1 = new Terminals.Forms.Controls.CredentialsPanel();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,11 +86,12 @@ namespace Terminals.Credentials
             // 
             // credentialsPanel1
             // 
-            this.credentialsPanel1.Location = new System.Drawing.Point(2, 38);
+            this.credentialsPanel1.Location = new System.Drawing.Point(5, 35);
             this.credentialsPanel1.Name = "credentialsPanel1";
-            this.credentialsPanel1.Size = new System.Drawing.Size(311, 94);
+            this.credentialsPanel1.Settings = null;
+            this.credentialsPanel1.Size = new System.Drawing.Size(342, 85);
             this.credentialsPanel1.TabIndex = 6;
-            this.credentialsPanel1.TextEditsLeft = 86;
+            this.credentialsPanel1.TextEditsLeft = 3;
             // 
             // ManageCredentialForm
             // 

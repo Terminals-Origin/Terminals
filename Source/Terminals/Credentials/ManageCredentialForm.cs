@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Data;
@@ -14,7 +15,7 @@ namespace Terminals.Credentials
         private readonly IPersistence persistence;
 
         private readonly ICredentialSet editedCredential;
-
+        
         private ICredentials Credentials
         {
             get { return this.persistence.Credentials; }
@@ -23,10 +24,12 @@ namespace Terminals.Credentials
         internal ManageCredentialForm(IPersistence persistence, ICredentialSet editedCredential)
         {
             InitializeComponent();
-
+           
             this.persistence = persistence;
             this.editedCredential = editedCredential;
             this.credentialsPanel1.Settings = Settings.Instance;
+            this.credentialsPanel1.tableLayoutPanel1.Location = new Point(78,0);
+            this.credentialsPanel1.tableLayoutPanel1.Size = new Size(this.NameTextbox.Width+35,80);
             this.credentialsPanel1.LoadMRUs();
             FillControlsFromCredential();
         }
