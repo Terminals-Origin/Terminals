@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\FavoriteConfigurationSecurity.cs" />
+    <Compile Include="Configuration\FileChangedEventArgs.cs" />
     <Compile Include="Connections\EmptyOptionsConverter.cs" />
     <Compile Include="Converters\TagsConverter.cs" />
     <Compile Include="Credentials\EditedCredentials.cs" />

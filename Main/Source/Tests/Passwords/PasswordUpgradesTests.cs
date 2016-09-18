@@ -81,7 +81,7 @@ namespace Tests.Passwords
         {
             // we don't have to authenticate, because it was already done by upgrade
             IFavorite favorite = persistence.Favorites.First();
-            var guardedSecurity = new GuardedSecurity(persistence.Security, favorite.Security);
+            var guardedSecurity = new GuardedCredential(favorite.Security, persistence.Security);
             Assert.AreEqual(PasswordTests.USERPASSWORD, guardedSecurity.Password, "Upgrade favorite password failed.");
 
             ICredentialSet credential = persistence.Credentials.First();

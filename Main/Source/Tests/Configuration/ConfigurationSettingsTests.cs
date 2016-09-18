@@ -24,7 +24,9 @@ namespace Tests
         private static readonly Guid favoriteA = new Guid("eb45aefd-138f-49ca-9c9e-ce5d5877ca62");
         private static readonly Guid favoriteB = new Guid("8dda2ccb-cfb9-4487-bab5-0da5319e1485");
 
-        private readonly Settings settings = Settings.Instance;
+        private Settings settings;
+
+        private Mock<IDataFileWatcher> mockFileWatch;
 
         [ClassInitialize]
         public static void ClassSetUp(TestContext context)
@@ -35,6 +37,9 @@ namespace Tests
         [TestInitialize]
         public void Setup()
         {
+            mockFileWatch = new Mock<IDataFileWatcher>();
+            settings = new Settings(this.mockFileWatch.Object);
+            settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
             // Reset previous test run changes in config fie
             settings.SaveDefaultConfigFile();
             settings.ForceReload();
@@ -65,28 +70,20 @@ namespace Tests
         [TestMethod]
         public void FileWatch_FileChanged_FiresConfigurationChanged()
         {
-            var originalWatch = settings.FileWatch;
-            var mockFileWatch = new Mock<IDataFileWatcher>(MockBehavior.Strict);
-            settings.FileWatch = mockFileWatch.Object;
             bool eventReceived = false;
             settings.ConfigurationChanged += args => eventReceived = true;
             mockFileWatch.Raise(watch => watch.FileChanged += null, EventArgs.Empty);
             Assert.IsTrue(eventReceived, "When receiving file changed event, Settings have to fire configuration changed");
-            settings.FileWatch = originalWatch;
         }
 
         [TestMethod]
         public void DumyControl_AssignSynchronizer_AssignesToFileWatch()
         {
-            var originalWatch = settings.FileWatch;
             var expectedSynchronizer = new Control();
-            var mockFileWatch = new Mock<IDataFileWatcher>(MockBehavior.Strict);
             mockFileWatch.Setup(watch => watch.AssignSynchronizer(expectedSynchronizer))
                          .Verifiable("The assigned synchronized wasnt delivered to the file watching service");
-            settings.FileWatch = mockFileWatch.Object;
             settings.AssignSynchronizationObject(expectedSynchronizer);
             mockFileWatch.VerifyAll();
-            settings.FileWatch = originalWatch;
         }
 
         [TestMethod]

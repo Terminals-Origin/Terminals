@@ -10,6 +10,8 @@ namespace Terminals.Configuration
     {
         private readonly Settings settings;
 
+        private string configuration;
+
         private static readonly string PROFILE_DATA_DIRECTORY = 
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
@@ -108,11 +110,21 @@ namespace Terminals.Configuration
             }
         }
 
-        internal string Configuration { get; private set; }
-        
+        internal string Configuration
+        {
+            get { return this.configuration; }
+            private set
+            {
+                this.configuration = value;
+                FireConfigPathChanged(this.configuration);
+            }
+        }
+
         internal string Favorites { get; private set; }
 
         internal string Credentials { get; private set; }
+
+        internal event EventHandler<FileChangedEventArgs> ConfigFileChanged;
 
         internal FileLocations(Settings settings)
         {
@@ -229,6 +241,15 @@ namespace Terminals.Configuration
             {
                 Logging.FatalFormat("Access Denied {0}", ex.Message);
                 return false;
+            }
+        }
+
+        private void FireConfigPathChanged(string newPath)
+        {
+            if (this.ConfigFileChanged != null)
+            {
+                var args = new FileChangedEventArgs() { NewPath = newPath };
+                this.ConfigFileChanged(this, args);
             }
         }
     }
