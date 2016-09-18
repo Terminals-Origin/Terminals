@@ -30,32 +30,15 @@ namespace Terminals.Configuration
         }
 
         private System.Configuration.Configuration _config = null;
+
         private System.Configuration.Configuration Config
         {
             get
             {
                 if (_config == null)
-                {
-                    InitializeFileWatcher();
                     _config = GetConfiguration();
-                }
 
                 return _config;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the service for monitoring the configuration file
-        /// </summary>
-        internal IDataFileWatcher FileWatch
-        {
-            get
-            {
-                return fileWatcher;
-            }
-            set
-            {
-                AssignNewFileWatch(value);
             }
         }
 
@@ -72,9 +55,31 @@ namespace Terminals.Configuration
         /// </summary>
         private bool delayConfigurationSave;
 
-        internal Settings()
+        private Func<string, IDataFileWatcher> initializeFileWatcher;
+
+        internal Settings() : this(p => new DataFileWatcher(p))
         {
-            this.fileLocations = new FileLocations(this); 
+        }
+
+        internal Settings(IDataFileWatcher fileWatcher) : this(p => fileWatcher)
+        {
+        }
+
+        private Settings(Func<string, IDataFileWatcher> initializeFileWatcher)
+        {
+            this.fileLocations = new FileLocations(this);
+            this.initializeFileWatcher = initializeFileWatcher;
+            this.fileLocations.ConfigFileChanged += this.ConfigFilePathChanged;
+        }
+
+        /// <summary>
+        /// Real filewatch works, only, if the path is correctly configured.
+        /// Changing the path after the watch is created, doesnt raise any event.
+        /// </summary>
+        private void ConfigFilePathChanged(object sender, FileChangedEventArgs e)
+        {
+            this.fileWatcher = this.initializeFileWatcher(e.NewPath);
+            this.fileWatcher.FileChanged += new EventHandler(ConfigFileChanged);
         }
 
         private void ConfigFileChanged(object sender, EventArgs e)
@@ -91,21 +96,6 @@ namespace Terminals.Configuration
             {
                 ConfigurationChanged(args);
             }
-        }
-
-        private void InitializeFileWatcher()
-        {
-            if (fileWatcher != null)
-                return;
-
-            var newWatcher = new DataFileWatcher(fileLocations.Configuration);
-            AssignNewFileWatch(newWatcher);
-        }
-
-        private void AssignNewFileWatch(IDataFileWatcher newWatcher)
-        {
-            fileWatcher = newWatcher;
-            fileWatcher.FileChanged += new EventHandler(ConfigFileChanged);
         }
 
         /// <summary>
