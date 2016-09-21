@@ -25,23 +25,49 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void CopyFavorite()
+        public void CopyFavorite_AddsToPersistence()
         {
-            IFavorite favorite = this.CreatePrimaryFavorite();
-            IFavorite copy = favorite.Copy();
-            this.PrimaryFavorites.Add(copy);
-            this.AssertCopy(copy);
+            IFavorite source = this.CopyInPersistence();
+            this.AssertCopyInSecondaryPersistence(source);
         }
 
         [TestMethod]
-        public void UpdateFromFavorite()
+        public void CopyFavorite_CopiesProperties()
         {
-            IFavorite favoriteA = this.CreatePrimaryFavorite();
-            IFavorite favoriteB = this.CreateTestFavorite();
-            this.PrimaryFavorites.Add(favoriteB);
-            favoriteB.UpdateFrom(favoriteA);
-            this.PrimaryFavorites.Update(favoriteB);
-            this.AssertCopy(favoriteB);
+            IFavorite source = this.CopyInPersistence();
+            this.AssertByToolTip(source);
+        }
+
+        private IFavorite CopyInPersistence()
+        {
+            IFavorite source = this.CreatePrimaryFavorite();
+            IFavorite copy = source.Copy();
+            this.PrimaryFavorites.Add(copy);
+            return source;
+        }
+
+        [TestMethod]
+        public void UpdateFromFavorite_UpdatesInPersistence()
+        {
+            var source = this.UpdateInPersistence();
+            this.AssertCopyInSecondaryPersistence(source);
+        }
+
+        [TestMethod]
+        public void UpdateFromFavorite_CopiesProperties()
+        {
+            var source = this.UpdateInPersistence();
+            this.AssertCopyInSecondaryPersistence(source);
+        }
+
+        private IFavorite UpdateInPersistence()
+        {
+            IFavorite source = this.CreatePrimaryFavorite();
+            IFavorite copy = this.CreateTestFavorite();
+            this.PrimaryFavorites.Add(copy);
+            copy.UpdateFrom(source);
+            this.PrimaryFavorites.Update(copy);
+            return source;
         }
 
         /// <summary>
@@ -56,16 +82,21 @@ namespace Tests.SqlPersisted
             return favorite;
         }
 
-        private void AssertCopy(IFavorite copy)
+        private void AssertCopyInSecondaryPersistence(IFavorite source)
         {
             int stored = this.CheckDatabase.Favorites.Count();
             Assert.AreEqual(2, stored, "Favorites count doesn't match after copy added to the persistence");
             IFavorite secondary = this.SecondaryFavorites.ToList()[1];
             Assert.AreEqual(secondary.ServerName, FAVORITE_SERVERNAME2, "Values not updated properly");
+        }
 
-            // next method loads details of not loaded favorite from database, it shouldn't fail, even if it is a copy
+        private void AssertByToolTip(IFavorite source)
+        {
+            IFavorite copy = this.SecondaryFavorites.ToList()[1];
+            // next method loads details of not loaded favorite from database, it shouldn't fail, even if it is a copy.
             string toolTip = copy.GetToolTipText();
-            Assert.IsFalse(string.IsNullOrEmpty(toolTip), "ToolTip wasn't resolved for copy of favorite");
+            string origTooltip = source.GetToolTipText();
+            Assert.AreEqual(origTooltip, toolTip, "Properties to generate ToolTip weren't copied.");
         }
     }
 }
