@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Terminals.Configuration;
 using Terminals.Data;
+using Terminals.Data.Credentials;
 using Tests.FilePersisted;
 
 namespace Tests.UserInterface
@@ -10,6 +11,8 @@ namespace Tests.UserInterface
     [TestClass]
     public class ToolTipBuilderTests
     {
+        private readonly PersistenceSecurity persistenceSecurity = new PersistenceSecurity();
+
         [TestInitialize]
         public void TestInitialize()
         {
@@ -19,9 +22,8 @@ namespace Tests.UserInterface
         [TestMethod]
         public void NotShowFullToolTips_BuildToolTip_GeneratesWithNotesAndGroups()
         {
-            // todo fix the missing userDisplayName
-            string created = BuildFavoriteToolTip();
-            const string EXPECTED_TOOLTIP = "Computer: TestServerName\r\nPort: 9999\r\nUser: \r\n";
+            string created = this.BuildFavoriteToolTip();
+            const string EXPECTED_TOOLTIP = "Computer: TestServerName\r\nPort: 9999\r\nUser: TestDomain\\TestUser\r\n";
             Assert.AreEqual(EXPECTED_TOOLTIP, created, "Created tooltip should reflect favorite serverName and port.");
         }
 
@@ -31,25 +33,28 @@ namespace Tests.UserInterface
 
             var settings = Settings.Instance;
             settings.ShowFullInformationToolTips = true;
-            string created = BuildFavoriteToolTip();
-            const string EXPECTED_TOOLTIP = "Computer: TestServerName\r\nPort: 9999\r\nUser: \r\n" +
+            string created = this.BuildFavoriteToolTip();
+            const string EXPECTED_TOOLTIP = "Computer: TestServerName\r\nPort: 9999\r\nUser: TestDomain\\TestUser\r\n" +
                                             "Groups: TestGroup\r\nConnect to Console: False\r\nNotes: Here are test notes.\r\n";
             Assert.AreEqual(EXPECTED_TOOLTIP, created, "Created tooltip should reflect favorite serverName and port.");
             settings.ShowFullInformationToolTips = false;
         }
 
-        private static string BuildFavoriteToolTip()
+        private string BuildFavoriteToolTip()
         {
-            IFavorite favorite = CreateTestFavorite();
-            var bulder = new TooTipBuilder();
+            IFavorite favorite = this.CreateTestFavorite();
+            var bulder = new TooTipBuilder(this.persistenceSecurity);
             return bulder.BuildTooTip(favorite);
         }
 
-        private static IFavorite CreateTestFavorite()
+        private IFavorite CreateTestFavorite()
         {
             List<IGroup> groups = CreateTestGroups();
             IFavorite favorite = TestFavoriteFactory.CreateFavorite(groups);
             favorite.ServerName = "TestServerName";
+            var guarded = new GuardedSecurity(this.persistenceSecurity, favorite.Security);
+            guarded.Domain = "TestDomain";
+            guarded.UserName = "TestUser";
             favorite.Port = 9999;
             favorite.Notes = "Here are test notes.";
             return favorite;
