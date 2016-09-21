@@ -168,6 +168,7 @@
     <Compile Include="UserInterface\MockChildProtocolControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UserInterface\TestFavoriteFactory.cs" />
     <Compile Include="UserInterface\ToolStripSettingsTest.cs" />
     <Compile Include="UserInterface\FavoritePropertiesControlTests.cs" />
     <Compile Include="UserInterface\ProtocolOptionsPanelTests.cs" />
@@ -176,6 +177,7 @@
     <Compile Include="UserInterface\RdpMenuVisitorTests.cs" />
     <Compile Include="UserInterface\ProtocolImageListBuilderTests.cs" />
     <Compile Include="UserInterface\FavoriteIconsTests.cs" />
+    <Compile Include="UserInterface\ToolTipBuilderTests.cs" />
     <Compile Include="UserInterface\VncMenuVisitorTests.cs" />
     <Compile Include="UserInterface\VmrcMenuVisitorTests.cs" />
     <Compile Include="Validation\FavoriteNameValidatorTests.cs" />

@@ -71,7 +71,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void ServerName_LoadSave_KeepsValue()
         {
-            Favorite source = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
+            Favorite source = TestFavoriteFactory.CreateFavorite(this.groups);
             source.ServerName = EXPECTED_TEXT;
             Favorite result = this.LoadAndSaveToResult(source);
             Assert.AreEqual(EXPECTED_TEXT, result.ServerName, MESSAGE);
@@ -80,7 +80,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Notes_LoadSave_KeepsValue()
         {
-            Favorite source = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
+            Favorite source = TestFavoriteFactory.CreateFavorite(this.groups);
             source.Notes = EXPECTED_TEXT;
             // because of internal encoding of Notes, we need to cast to IFavorite here
             IFavorite result = this.LoadAndSaveToResult(source);
@@ -90,7 +90,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void BeforeExecuteCommand_LoadSave_KeepsValue()
         {
-            Favorite source = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
+            Favorite source = TestFavoriteFactory.CreateFavorite(this.groups);
             source.ExecuteBeforeConnect.Command = EXPECTED_TEXT;
             Favorite result = this.LoadAndSaveToResult(source);
             Assert.AreEqual(EXPECTED_TEXT, result.ExecuteBeforeConnect.Command, MESSAGE);
@@ -100,7 +100,7 @@ namespace Tests.UserInterface
         public void VncProcol_LoadSave_KeepsProtocolPropertiesType()
         {
             this.LoadPropertiesControl();
-            Favorite source = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
+            Favorite source = TestFavoriteFactory.CreateFavorite(this.groups);
             source.Protocol = VncConnectionPlugin.VNC;
             Favorite result = this.LoadAndSaveToResult(source);
             const string PROTOCOL_MESSAGE = "Roundtrip has to preserve the protocol properties";
@@ -120,7 +120,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void FavoriteGroup_LoadFrom_IsLoadedAsSelected()
         {
-            Favorite source = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
+            Favorite source = TestFavoriteFactory.CreateFavorite(this.groups);
             this.propertiesControl.LoadFrom(source);
             List<IGroup> newlySelected = this.propertiesControl.GetNewlySelectedGroups();
             Assert.AreEqual(1, newlySelected.Count, "Not changed selection, has to return identical groups");
@@ -129,7 +129,7 @@ namespace Tests.UserInterface
         private Favorite LoadAndSaveToResult(Favorite source)
         {
             this.propertiesControl.LoadFrom(source);
-            Favorite result = ProtocolOptionsPanelTests.CreateFavorite(this.groups);
+            Favorite result = TestFavoriteFactory.CreateFavorite(this.groups);
             this.propertiesControl.SaveTo(result);
             return result;
         }

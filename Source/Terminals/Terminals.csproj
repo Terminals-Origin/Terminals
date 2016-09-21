@@ -176,6 +176,7 @@
     <Compile Include="Data\Credentials\GuardedCredential.cs" />
     <Compile Include="Data\Credentials\GuardedCredentialFactory.cs" />
     <Compile Include="Data\Credentials\GuardedSecurity.cs" />
+    <Compile Include="Data\Favorites\TooTipBuilder.cs" />
     <Compile Include="Data\FilePersisted\FavoriteBatchUpdates.cs" />
     <Compile Include="Data\ModelConvertersTemplate.cs" />
     <Compile Include="Forms\FavoriteSorting.cs" />
