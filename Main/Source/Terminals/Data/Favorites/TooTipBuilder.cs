@@ -7,14 +7,18 @@ namespace Terminals.Data
 {
     internal class TooTipBuilder
     {
+        private readonly PersistenceSecurity persistenceSecurity;
+
+        public TooTipBuilder(PersistenceSecurity persistenceSecurity)
+        {
+            this.persistenceSecurity = persistenceSecurity;
+        }
 
         internal string BuildTooTip(IFavorite selected)
         {
-            //PersistenceSecurity persistenceSecurity = null;
-            //var guarded = new GuardedCredential(selected.Security, persistenceSecurity);
-            //todo string userDisplayName = HelperFunctions.UserDisplayName(guarded.Domain, guarded.UserName);
-
-            return GetToolTipText(selected, string.Empty);
+            var guarded = new GuardedCredential(selected.Security, this.persistenceSecurity);
+            string userDisplayName = HelperFunctions.UserDisplayName(guarded.Domain, guarded.UserName);
+            return GetToolTipText(selected, userDisplayName);
         }
 
         internal static String GetToolTipText(IFavorite selected)
