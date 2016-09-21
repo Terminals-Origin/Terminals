@@ -57,7 +57,6 @@ namespace Terminals.Data.Credentials
                 var guardedTarget = new GuardedCredential(target, this.PersistenceSecurity);
                 guardedTarget.Domain = guardedSource.Domain;
                 guardedTarget.UserName = guardedSource.UserName;
-                // todo is it OK to directly assign unencrypted password and avoid encryption
                 target.EncryptedPassword = source.EncryptedPassword;
             }
         }
