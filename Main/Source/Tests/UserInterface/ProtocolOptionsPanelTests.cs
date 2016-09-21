@@ -183,7 +183,7 @@ namespace Tests.UserInterface
         public void ProtocolChilds_LoadFrom_CallsChildLoadFrom()
         {
             protocolPanel.Controls.Add(childProtocolControlMock);
-            IFavorite irelevant = CreateFavorite(new List<IGroup>());
+            IFavorite irelevant = TestFavoriteFactory.CreateFavorite(new List<IGroup>());
             protocolPanel.LoadFrom(irelevant);
             Assert.IsTrue(childProtocolControlMock.Loaded, "LoadFrom has to call LoadFrom on all his childs");
         }
@@ -192,7 +192,7 @@ namespace Tests.UserInterface
         public void ProtocolChilds_SaveTo_CallsChildSaveTo()
         {
             protocolPanel.Controls.Add(childProtocolControlMock);
-            IFavorite irelevant = CreateFavorite(new List<IGroup>());
+            IFavorite irelevant = TestFavoriteFactory.CreateFavorite(new List<IGroup>());
             protocolPanel.SaveTo(irelevant);
             Assert.IsTrue(childProtocolControlMock.Saved, "SveTo has to call SveTo on all his childs");
         }
@@ -245,18 +245,9 @@ namespace Tests.UserInterface
 
         private static Favorite CreateFavorite(string protocol)
         {
-            Favorite source = CreateFavorite(new List<IGroup>());
+            Favorite source = TestFavoriteFactory.CreateFavorite(new List<IGroup>());
             source.Protocol = protocol;
             return source;
-        }
-
-        internal static Favorite CreateFavorite(List<IGroup> groups)
-        {
-            var favoriteGroupsStub = new Mock<IFavoriteGroups>();
-            favoriteGroupsStub.Setup(fg => fg.GetGroupsContainingFavorite(It.IsAny<Guid>())).Returns(groups);
-            var favorite = new Favorite();
-            favorite.AssignStores(favoriteGroupsStub.Object);
-            return favorite;
         }
     }
 }

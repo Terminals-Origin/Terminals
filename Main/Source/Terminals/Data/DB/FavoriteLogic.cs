@@ -224,7 +224,7 @@ namespace Terminals.Data.DB
 
         public string GetToolTipText()
         {
-            return Favorite.GetToolTipText(this);
+            return TooTipBuilder.GetToolTipText(this);
         }
 
         bool IStoreIdEquals<IFavorite>.StoreIdEquals(IFavorite oponent)
