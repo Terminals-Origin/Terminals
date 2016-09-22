@@ -120,8 +120,8 @@ namespace Terminals.Forms.Controls
             if (groupNode == null)
                 return null;
 
-            var nodes = new TreeListNodes(groupNode.Nodes);
-            return nodes.FavoriteNodes.FirstOrDefault(favoriteNode => favoriteNode.Favorite.StoreIdEquals(favorite));
+            List<FavoriteTreeNode> favoriteNodes = TreeListNodes.FilterFavoriteNodes(groupNode.Nodes);
+            return favoriteNodes.FirstOrDefault(favoriteNode => favoriteNode.Favorite.StoreIdEquals(favorite));
         }
 
         private void FavsTree_DragEnter(object sender, DragEventArgs e)

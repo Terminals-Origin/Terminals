@@ -62,8 +62,7 @@ namespace Terminals.Forms.Controls
 
         internal bool ContainsFavoriteNode(IFavorite favorite)
         {
-            var nodes = new TreeListNodes(this.Nodes);
-            return nodes.ContainsFavoriteNode(favorite);
+            return TreeListNodes.ContainsFavoriteNode(this.Nodes, favorite);
         }
 
         internal void UpdateByGroup(IGroup group)
@@ -82,8 +81,7 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal void CheckChildsByParent()
         {
-            var childNodes = new TreeListNodes(this.Nodes);
-            childNodes.CheckChildNodesRecursive(this.Checked);
+            TreeListNodes.CheckChildNodesRecursive(this.Nodes, this.Checked);
         }
 
         /// <summary>

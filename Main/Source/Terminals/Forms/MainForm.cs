@@ -50,6 +50,8 @@ namespace Terminals
 
         private readonly IToolbarExtender[] toolbarExtenders;
 
+        private readonly ToolTipBuilder toolTipBuilder;
+
         #endregion
 
         #region Properties
@@ -151,6 +153,7 @@ namespace Terminals
             try
             {
                 this.persistence = persistence;
+                this.toolTipBuilder = new ToolTipBuilder(this.persistence.Security);
                 settings.StartDelayedUpdate();
 
                 // Set default font type by Windows theme to use for all controls on form
@@ -225,7 +228,7 @@ namespace Terminals
             this.tcTerminals.ShowToolTipOnTitle = settings.ShowInformationToolTips;
             IFavorite selectedFavorite = this.terminalsControler.SelectedFavorite;
             if (selectedFavorite != null)
-                this.terminalsControler.Selected.ToolTipText = selectedFavorite.GetToolTipText();
+                this.terminalsControler.Selected.ToolTipText = this.toolTipBuilder.BuildTooTip(selectedFavorite);
 
             this.groupsToolStripMenuItem.Visible = settings.EnableGroupsMenu;
             this.tsbTags.Checked = settings.ShowFavoritePanel;

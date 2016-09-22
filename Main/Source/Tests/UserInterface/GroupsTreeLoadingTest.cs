@@ -118,10 +118,8 @@ namespace Tests.UserInterface
         {
             var treeView = new TestTreeView();
             var treeLoader = new FavoriteTreeListLoader(treeView, this.Persistence);
-            treeLoader.LoadRootNodes(); // now we have 7 including Dummy nodes 
-            var rootNodes = new TreeListNodes(treeView.Nodes);
-
-            treeLoader.LoadGroupNodesRecursive(rootNodes);
+            treeLoader.LoadRootNodes(); // now we have 7 including Dummy nodes
+            treeLoader.LoadGroupNodesRecursive();
             int allLoadedCount = treeView.GetNodeCount(true);
             // or assert: treeView.Nodes[1].Nodes[0].Nodes[0].Name = "FavoriteA"
             // Dummy are replaced, and also Favorite nodes are included

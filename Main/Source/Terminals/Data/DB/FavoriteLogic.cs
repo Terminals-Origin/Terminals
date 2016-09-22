@@ -222,11 +222,6 @@ namespace Terminals.Data.DB
             this.AssignStores(source.groups, source.credentials, source.Details.Dispatcher);
         }
 
-        public string GetToolTipText()
-        {
-            return TooTipBuilder.GetToolTipText(this);
-        }
-
         bool IStoreIdEquals<IFavorite>.StoreIdEquals(IFavorite oponent)
         {
             var oponentFavorite = oponent as DbFavorite;

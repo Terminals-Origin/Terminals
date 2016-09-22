@@ -11,6 +11,8 @@ namespace Terminals.Forms.Controls
     {
         private IPersistence persistence;
 
+        private ToolTipBuilder toolTipBuilder;
+
         /// <summary>
         /// Gets or sets the context menu, which will be shown, when selected item is clicked.
         /// Needs to be public get and set to be available in designer.
@@ -95,15 +97,16 @@ namespace Terminals.Forms.Controls
         internal void LoadEvents(IPersistence persistence)
         {
             this.persistence = persistence;
+            this.toolTipBuilder = new ToolTipBuilder(this.persistence.Security);
             this.LoadAll();
         }
        
-        private static ListViewItem FavoriteToListViewItem(IFavorite favorite)
+        private ListViewItem FavoriteToListViewItem(IFavorite favorite)
         {
             var item = new ListViewItem();
             item.Tag = favorite;
             item.Text = favorite.Name;
-            item.ToolTipText = favorite.GetToolTipText();
+            item.ToolTipText = this.toolTipBuilder.BuildTooTip(favorite);
             item.ImageKey = FavoriteIcons.GetTreeviewImageListKey(favorite.Protocol);
             return item;
         }

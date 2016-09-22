@@ -43,7 +43,7 @@ namespace Tests.UserInterface
         private string BuildFavoriteToolTip()
         {
             IFavorite favorite = this.CreateTestFavorite();
-            var bulder = new TooTipBuilder(this.persistenceSecurity);
+            var bulder = new ToolTipBuilder(this.persistenceSecurity);
             return bulder.BuildTooTip(favorite);
         }
 

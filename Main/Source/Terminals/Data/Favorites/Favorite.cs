@@ -207,11 +207,6 @@ namespace Terminals.Data
             return this.groups.GetGroupsContainingFavorite(this.Id);
         }
 
-        public String GetToolTipText()
-        {
-            return TooTipBuilder.GetToolTipText(this);
-        }
-
         /// <summary>
         /// Creates new favorite filled by properties of this favorite except Id and Groups.
         /// </summary>

@@ -61,6 +61,8 @@ namespace Terminals
             private ToolStripItem restoreScreenMenuItem;
             private ToolStripItem fullScreenMenuItem;
 
+            private readonly ToolTipBuilder toolTipBuilder;
+
             /// <summary>
             /// Stored in context menu Tag to identify favorite context menu items
             /// </summary>
@@ -84,6 +86,7 @@ namespace Terminals
             internal FavoritesMenuLoader(MainForm mainForm, IPersistence persistence)
             {
                 this.persistence = persistence;
+                this.toolTipBuilder = new ToolTipBuilder(this.persistence.Security);
                 AssignMainFormFields(mainForm);
                 this.favoritesToolStripMenuItem.DropDownItems.Add("-");
                 CreateUntaggedItem();
@@ -302,7 +305,7 @@ namespace Terminals
             {
                 Image buttonImage = favorite.ToolBarIconImage;
                 ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, buttonImage, this.serverToolStripMenuItemClick);
-                favoriteBtn.ToolTipText = favorite.GetToolTipText();
+                favoriteBtn.ToolTipText = this.toolTipBuilder.BuildTooTip(favorite);
                 favoriteBtn.Tag = favorite;
                 favoriteBtn.Overflow = ToolStripItemOverflow.AsNeeded;
                 return favoriteBtn;
@@ -344,7 +347,7 @@ namespace Terminals
                 }
             }
 
-            private static void OnTagTrayMenuItemDropDownOpening(object sender, EventArgs e)
+            private void OnTagTrayMenuItemDropDownOpening(object sender, EventArgs e)
             {
                 var groupMenu = (GroupMenuItem)sender;
                 if (groupMenu.IsEmpty)
@@ -410,12 +413,12 @@ namespace Terminals
                 elm.Launch();
             }
 
-            private static ToolStripMenuItem CreateFavoriteMenuItem(IFavorite favorite)
+            private ToolStripMenuItem CreateFavoriteMenuItem(IFavorite favorite)
             {
                 ToolStripMenuItem item = new ToolStripMenuItem(favorite.Name);
                 item.Tag = FAVORITE;
                 item.Image = favorite.ToolBarIconImage;
-                item.ToolTipText = favorite.GetToolTipText();
+                item.ToolTipText = this.toolTipBuilder.BuildTooTip(favorite);
                 return item;
             }
 

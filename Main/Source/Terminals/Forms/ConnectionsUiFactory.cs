@@ -219,7 +219,9 @@ namespace Terminals.Forms
             try
             {
                 this.mainForm.AssignEventsToConnectionTab(terminalTabPage);
-                this.ConfigureTabPage(terminalTabPage, favorite.GetToolTipText(), true, favorite);
+                var toolTipBuilder = new ToolTipBuilder(this.persistence.Security);
+                string toolTipText = toolTipBuilder.BuildTooTip(favorite);
+                this.ConfigureTabPage(terminalTabPage, toolTipText, true, favorite);
 
                 Connection conn = CreateConnection(favorite, terminalTabPage, this.mainForm);
                 this.UpdateConnectionTabPageByConnectionState(favorite, terminalTabPage, conn);
