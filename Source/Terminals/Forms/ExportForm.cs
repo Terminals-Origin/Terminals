@@ -13,9 +13,6 @@ namespace Terminals.Forms
     {
         private readonly IPersistence persistence;
         private readonly FavoriteTreeListLoader treeLoader;
-
-        private readonly TreeListNodes rootNodes;
-
         private readonly Exporters exporters;
 
         public ExportForm(IPersistence persistence)
@@ -27,7 +24,6 @@ namespace Terminals.Forms
             this.treeLoader.LoadRootNodes();
             this.exporters = Integrations.CreateExporters(this.persistence);
             this.saveFileDialog.Filter = this.exporters.GetProvidersDialogFilter();
-            this.rootNodes = new TreeListNodes(this.favsTree.Nodes);
         }
 
         private void ExportForm_Load(object sender, EventArgs e)
@@ -71,7 +67,7 @@ namespace Terminals.Forms
 
         private List<FavoriteConfigurationElement> GetFavoritesToExport()
         {
-            List<IFavorite> favorites = this.rootNodes.FindAllCheckedFavorites();
+            List<IFavorite> favorites = TreeListNodes.FindAllCheckedFavorites(this.favsTree.Nodes);
             return this.ConvertFavoritesToExport(favorites);
         }
 
@@ -91,9 +87,9 @@ namespace Terminals.Forms
 
         private void BtnSelect_Click(object sender, EventArgs e)
         {
-            // dont expand only load compleate subtree
-            this.treeLoader.LoadGroupNodesRecursive(this.rootNodes);
-            this.rootNodes.CheckChildNodesRecursive(true);
+            // dont expand only load complete subtree
+            this.treeLoader.LoadGroupNodesRecursive();
+            TreeListNodes.CheckChildNodesRecursive(this.favsTree.Nodes, true);
         }
 
         private void ExportForm_FormClosing(object sender, FormClosingEventArgs e)

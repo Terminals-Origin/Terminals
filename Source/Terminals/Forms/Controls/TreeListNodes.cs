@@ -12,12 +12,13 @@ namespace Terminals.Forms.Controls
     {
         private readonly TreeNodeCollection nodes;
 
+        private readonly ToolTipBuilder toolTipBuilder;
+
         internal IEnumerable<FavoriteTreeNode> FavoriteNodes
         {
             get
             {
-                return this.nodes.OfType<FavoriteTreeNode>()
-                                 .ToList();
+                return FilterFavoriteNodes(this.nodes);
             }
         }
 
@@ -25,59 +26,74 @@ namespace Terminals.Forms.Controls
         {
             get
             {
-                return this.nodes.OfType<GroupTreeNode>()
-                                 .ToList();
+                return FilterGroupNodes(this.nodes);
             }
         }
 
-        public TreeListNodes(TreeNodeCollection nodes)
+        public TreeListNodes(TreeNodeCollection nodes, ToolTipBuilder toolTipBuilder)
         {
             this.nodes = nodes;
+            this.toolTipBuilder = toolTipBuilder;
+        }
+
+        private static List<GroupTreeNode> FilterGroupNodes(TreeNodeCollection nodes)
+        {
+            return nodes.OfType<GroupTreeNode>()
+                .ToList();
+        }
+
+        internal static List<FavoriteTreeNode> FilterFavoriteNodes(TreeNodeCollection nodes)
+        {
+            return nodes.OfType<FavoriteTreeNode>()
+                .ToList();
         }
 
         /// <summary>
         /// Gets not null collection of favorites obtained using recursive search from all favorite nodes.
         /// </summary>
-        internal List<IFavorite> FindAllCheckedFavorites()
+        internal static List<IFavorite> FindAllCheckedFavorites(TreeNodeCollection nodes)
         {
             var favorites = new List<IFavorite>();
-            this.FindAllCheckedFavorites(favorites);
+            FindAllCheckedFavorites(nodes, favorites);
             return favorites;
         }
 
-        private void FindAllCheckedFavorites(List<IFavorite> favorites)
+        private static void FindAllCheckedFavorites(TreeNodeCollection nodes, List<IFavorite> favorites)
         {
-            var candidates = this.FindCheckedFavorites();
+            var candidates = FindCheckedFavorites(nodes);
             favorites.AddRange(candidates);
 
-            foreach (GroupTreeNode groupNode in this.GroupNodes)
+            foreach (GroupTreeNode groupNode in FilterGroupNodes(nodes))
             {
                 // dont expect only Favorite nodes, because of group nodes on the same level
                 groupNode.ExpandCheckedGroupNode();
-                var childNodes = new TreeListNodes(groupNode.Nodes);
-                childNodes.FindAllCheckedFavorites(favorites);
+                FindAllCheckedFavorites(groupNode.Nodes, favorites);
             }
         }
 
-        private IEnumerable<IFavorite> FindCheckedFavorites()
+        private static IEnumerable<IFavorite> FindCheckedFavorites(TreeNodeCollection nodes)
         {
-            return this.FavoriteNodes.Where(node => node.Checked)
+            return FilterFavoriteNodes(nodes).Where(node => node.Checked)
                                      .Select(node => node.Favorite);
         }
 
-        internal void CheckChildNodesRecursive(bool checkState)
+        internal static void CheckChildNodesRecursive(TreeNodeCollection nodes, bool checkState)
         {
-            foreach (TreeNode node in this.nodes)
+            foreach (TreeNode node in nodes)
             {
                 node.Checked = checkState;
-                var childNodes = new TreeListNodes(node.Nodes);
-                childNodes.CheckChildNodesRecursive(checkState);
+                CheckChildNodesRecursive(node.Nodes, checkState);
             }
         }
 
         internal bool ContainsFavoriteNode(IFavorite favorite)
         {
-            return this.FavoriteNodes.Any(node => node.Favorite.StoreIdEquals(favorite));
+            return ContainsFavoriteNode(this.nodes, favorite);
+        }
+
+        internal static bool ContainsFavoriteNode(TreeNodeCollection nodes, IFavorite favorite)
+        {
+            return FilterFavoriteNodes(nodes).Any(node => node.Favorite.StoreIdEquals(favorite));
         }
 
         internal void InsertGroupNodes(IEnumerable<IGroup> groups)
@@ -125,7 +141,8 @@ namespace Terminals.Forms.Controls
 
         private void AddFavoriteNode(IFavorite favorite, int index = -1)
         {
-            var favoriteTreeNode = new FavoriteTreeNode(favorite);
+            string toolTip = this.toolTipBuilder.BuildTooTip(favorite);
+            var favoriteTreeNode = new FavoriteTreeNode(favorite, toolTip);
             this.InsertNodePreservingOrder(index, favoriteTreeNode);
         }
 

@@ -34,8 +34,8 @@ namespace Tests.SqlPersisted
         [TestMethod]
         public void CopyFavorite_CopiesProperties()
         {
-            IFavorite source = this.CopyInPersistence();
-            this.AssertByToolTip(source);
+            this.CopyInPersistence();
+            this.AssertCopyServerName();
         }
 
         private IFavorite CopyInPersistence()
@@ -56,8 +56,8 @@ namespace Tests.SqlPersisted
         [TestMethod]
         public void UpdateFromFavorite_CopiesProperties()
         {
-            var source = this.UpdateInPersistence();
-            this.AssertCopyInSecondaryPersistence(source);
+            this.UpdateInPersistence();
+            this.AssertCopyServerName();
         }
 
         private IFavorite UpdateInPersistence()
@@ -86,17 +86,13 @@ namespace Tests.SqlPersisted
         {
             int stored = this.CheckDatabase.Favorites.Count();
             Assert.AreEqual(2, stored, "Favorites count doesn't match after copy added to the persistence");
-            IFavorite secondary = this.SecondaryFavorites.ToList()[1];
-            Assert.AreEqual(secondary.ServerName, FAVORITE_SERVERNAME2, "Values not updated properly");
         }
 
-        private void AssertByToolTip(IFavorite source)
+        private void AssertCopyServerName()
         {
-            IFavorite copy = this.SecondaryFavorites.ToList()[1];
             // next method loads details of not loaded favorite from database, it shouldn't fail, even if it is a copy.
-            string toolTip = copy.GetToolTipText();
-            string origTooltip = source.GetToolTipText();
-            Assert.AreEqual(origTooltip, toolTip, "Properties to generate ToolTip weren't copied.");
+            IFavorite secondary = this.SecondaryFavorites.ToList()[1];
+            Assert.AreEqual(secondary.ServerName, FAVORITE_SERVERNAME2, "ServerName not updated properly in target copy.");
         }
     }
 }

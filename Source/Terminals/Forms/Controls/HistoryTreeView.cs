@@ -16,6 +16,8 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private DateTime lastFullRefresh = DateTime.Now;
 
+        private ToolTipBuilder toolTipBuilder;
+
         public HistoryTreeView()
         {
             InitializeComponent();
@@ -30,6 +32,7 @@ namespace Terminals.Forms.Controls
         internal void Load(IPersistence persistence)
         {
             this.persistence = persistence;
+            this.toolTipBuilder = new ToolTipBuilder(this.persistence.Security);
             var connectionHistory = this.persistence.ConnectionHistory;
             connectionHistory.HistoryRecorded += new HistoryRecorded(this.HistoryRecorded);
             connectionHistory.HistoryClear += new Action(this.ConnectionHistory_HistoryClear);
@@ -103,12 +106,12 @@ namespace Terminals.Forms.Controls
                 InsertRecordedNode(todayGroup, args);
         }
 
-        private static void InsertRecordedNode(GroupTreeNode todayGroup, HistoryRecordedEventArgs args)
+        private void InsertRecordedNode(GroupTreeNode todayGroup, HistoryRecordedEventArgs args)
         {
             IFavorite favorite = args.Favorite;
             if (favorite != null) // shouldnt happen, because the favorite was actualy processed
             {
-                var nodes = new TreeListNodes(todayGroup.Nodes);
+                var nodes = new TreeListNodes(todayGroup.Nodes, this.toolTipBuilder);
                 nodes.InsertFavorite(favorite);
             }
         }
@@ -136,12 +139,13 @@ namespace Terminals.Forms.Controls
             CreateGroupNodes(groupNode, groupFavorites);
         }
 
-        private static void CreateGroupNodes(GroupTreeNode groupNode,
+        private void CreateGroupNodes(GroupTreeNode groupNode,
             SortableList<IFavorite> groupFavorites)
         {
             foreach (IFavorite favorite in groupFavorites)
             {
-                var favoriteNode = new FavoriteTreeNode(favorite);
+                string toolTip = this.toolTipBuilder.BuildTooTip(favorite);
+                var favoriteNode = new FavoriteTreeNode(favorite, toolTip);
                 groupNode.Nodes.Add(favoriteNode);
             }
         }

@@ -26,7 +26,7 @@ namespace Tests.UserInterface
         public void TestSetup()
         {
             this.sourceFavorite = this.AddFavorite("SourceFavorite");
-            this.sourceFavoriteNode = new FavoriteTreeNode(sourceFavorite);
+            this.sourceFavoriteNode = new FavoriteTreeNode(sourceFavorite, string.Empty);
             this.sourceGroup = this.AddNewGroup("SourceGroup");
             this.sourceGroupNode = new GroupTreeNode(sourceGroup);
             this.targetFavorite = this.AddFavorite("TargetFavorite");

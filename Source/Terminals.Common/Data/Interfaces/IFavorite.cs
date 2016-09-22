@@ -91,10 +91,5 @@ namespace Terminals.Data
         /// </summary>
         /// <param name="source">Not null item, which properties should be use to update this instance</param>
         void UpdateFrom(IFavorite source);
-
-        /// <summary>
-        /// Gets label, which represents this instance detail information.
-        /// </summary>
-        string GetToolTipText();
     }
 }

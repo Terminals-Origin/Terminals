@@ -43,16 +43,16 @@ namespace Terminals.Forms.Controls
         /// <summary>
         /// Create new not root level container
         /// </summary>
-        private FavoritesLevelUpdate(TreeNodeCollection nodes, FavoritesChangedEventArgs changes, GroupTreeNode parent)
-            : base(nodes, changes, parent)
+        private FavoritesLevelUpdate(TreeNodeCollection nodes, FavoritesChangedEventArgs changes, GroupTreeNode parent, ToolTipBuilder toolTipBuilder)
+            : base(nodes, changes, toolTipBuilder, parent)
         {
         }
 
         /// <summary>
         /// Create root level container. Parent is not defined. This is an entry point of the update.
         /// </summary>
-        internal FavoritesLevelUpdate(TreeNodeCollection nodes, FavoritesChangedEventArgs changes)
-            : base(nodes, changes)
+        internal FavoritesLevelUpdate(TreeNodeCollection nodes, FavoritesChangedEventArgs changes, ToolTipBuilder toolTipBuilder)
+            : base(nodes, changes, toolTipBuilder)
         {
         }
 
@@ -113,7 +113,8 @@ namespace Terminals.Forms.Controls
             this.Nodes.InsertNodePreservingOrder(index, this.CurrentNode);
 
             // dont apply the name before we fix the position
-            this.CurrentNode.UpdateByFavorite(updatedFavorite);
+            string toolTip = this.ToolTipBuilder.BuildTooTip(updatedFavorite);
+            this.CurrentNode.UpdateByFavorite(updatedFavorite, toolTip);
         }
 
         private IFavorite SelectUpdatedFavorite()
@@ -127,7 +128,7 @@ namespace Terminals.Forms.Controls
             // take only expanded nodes, for better performance and to protect the lazy loading
             foreach (GroupTreeNode groupNode in this.LoadedGroupNodes)
             {
-                var levelUpdate = new FavoritesLevelUpdate(groupNode.Nodes, this.Changes, groupNode);
+                var levelUpdate = new FavoritesLevelUpdate(groupNode.Nodes, this.Changes, groupNode, this.ToolTipBuilder);
                 levelUpdate.Run();
             }
         }

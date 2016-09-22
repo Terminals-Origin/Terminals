@@ -21,6 +21,8 @@ namespace Terminals.Forms.Controls
 
         private readonly IFavorites favorites;
 
+        private readonly ToolTipBuilder toolTipBuilder;
+
         private TreeNodeCollection RootNodes
         {
             get { return this.treeList.Nodes; }
@@ -43,6 +45,7 @@ namespace Terminals.Forms.Controls
             this.treeList = treeListToFill;
             this.treeList.AfterExpand += new TreeViewEventHandler(this.OnTreeViewExpand);
 
+            this.toolTipBuilder = new ToolTipBuilder(persistence.Security);
             this.persistedGroups = persistence.Groups;
             this.favorites = persistence.Favorites;
             this.dispatcher = persistence.Dispatcher;
@@ -82,7 +85,7 @@ namespace Terminals.Forms.Controls
         {
             GroupTreeNode selectedGroup = this.treeList.FindSelectedGroupNode();
             IFavorite selectedFavorite = this.treeList.SelectedFavorite;
-            var updater = new FavoritesLevelUpdate(this.RootNodes, args);
+            var updater = new FavoritesLevelUpdate(this.RootNodes, args, this.toolTipBuilder);
             updater.Run();
             this.treeList.RestoreSelectedFavorite(selectedGroup, selectedFavorite);
         }
@@ -95,7 +98,7 @@ namespace Terminals.Forms.Controls
             }
             else
             {
-                var levelParams = new GroupsLevelUpdate(this.RootNodes, args);
+                var levelParams = new GroupsLevelUpdate(this.RootNodes, args, this.toolTipBuilder);
                 levelParams.Run();
             }
         }
@@ -105,7 +108,7 @@ namespace Terminals.Forms.Controls
             if (persistedGroups == null) // because of designer
                 return;
 
-            var nodes = new TreeListNodes(this.RootNodes);
+            var nodes = new TreeListNodes(this.RootNodes, this.toolTipBuilder);
             // dont load everything, it is done by lazy loading after expand
             IOrderedEnumerable<IGroup> rootGroups = GetSortedRootGroups();
             nodes.InsertGroupNodes(rootGroups);
@@ -125,12 +128,18 @@ namespace Terminals.Forms.Controls
                                   .OrderBy(group => group.Name);
         }
 
-        internal void LoadGroupNodesRecursive(TreeListNodes nodes)
+        internal void LoadGroupNodesRecursive()
+        {
+            var rootNodes = new TreeListNodes(this.RootNodes, this.toolTipBuilder);
+            this.LoadGroupNodesRecursive(rootNodes);
+        }
+
+        private void LoadGroupNodesRecursive(TreeListNodes nodes)
         {
             foreach (var groupNode in nodes.GroupNodes)
             {
                 this.LoadGroupNode(groupNode);
-                var childNodes = new TreeListNodes(groupNode.Nodes);
+                var childNodes = new TreeListNodes(groupNode.Nodes, this.toolTipBuilder);
                 this.LoadGroupNodesRecursive(childNodes);
             }
         }
@@ -142,14 +151,14 @@ namespace Terminals.Forms.Controls
 
             groupNode.Nodes.Clear();
             this.AddGroupNodes(groupNode);
-            var nodes = new TreeListNodes(groupNode.Nodes);
+            var nodes = new TreeListNodes(groupNode.Nodes, this.toolTipBuilder);
             nodes.AddFavoriteNodes(groupNode.Favorites);
         }
 
         private void AddGroupNodes(GroupTreeNode groupNode)
         {
             IEnumerable<IGroup> childGroups = this.GetChildGroups(groupNode.Group);
-            var nodes = new TreeListNodes(groupNode.Nodes);
+            var nodes = new TreeListNodes(groupNode.Nodes, this.toolTipBuilder);
             nodes.InsertGroupNodes(childGroups);
         }
 

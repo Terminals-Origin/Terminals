@@ -5,11 +5,11 @@ using Terminals.Network;
 
 namespace Terminals.Data
 {
-    internal class TooTipBuilder
+    internal class ToolTipBuilder
     {
         private readonly PersistenceSecurity persistenceSecurity;
 
-        public TooTipBuilder(PersistenceSecurity persistenceSecurity)
+        public ToolTipBuilder(PersistenceSecurity persistenceSecurity)
         {
             this.persistenceSecurity = persistenceSecurity;
         }
@@ -19,11 +19,6 @@ namespace Terminals.Data
             var guarded = new GuardedCredential(selected.Security, this.persistenceSecurity);
             string userDisplayName = HelperFunctions.UserDisplayName(guarded.Domain, guarded.UserName);
             return GetToolTipText(selected, userDisplayName);
-        }
-
-        internal static String GetToolTipText(IFavorite selected)
-        {
-            return GetToolTipText(selected, string.Empty);
         }
 
         internal static String GetToolTipText(IFavorite selected, string userDisplayName)
