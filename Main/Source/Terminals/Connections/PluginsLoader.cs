@@ -17,9 +17,18 @@ namespace Terminals.Connections
 
         private static IEnumerable<IConnectionPlugin> LoadAssemblyPlugins(string pluginFile)
         {
-            Assembly pluginAssembly = Assembly.LoadFrom(pluginFile);
-            var types = FindAllPluginTypes(pluginAssembly);
-            return types.Select(Activator.CreateInstance).OfType<IConnectionPlugin>();
+            try
+            {
+                Assembly pluginAssembly = Assembly.LoadFrom(pluginFile);
+                var types = FindAllPluginTypes(pluginAssembly);
+                return types.Select(Activator.CreateInstance).OfType<IConnectionPlugin>();
+            }
+            catch (Exception exception)
+            {
+                string message = string.Format("Unable to load plugins from '{0}'.", pluginFile);
+                Logging.Info(message, exception);
+                return new IConnectionPlugin[0];
+            }
         }
 
         private static IEnumerable<Type> FindAllPluginTypes(Assembly pluginAssembly)
@@ -30,9 +39,17 @@ namespace Terminals.Connections
 
         private static string[] FindPluginDirectories()
         {
-            string applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string pluginsDirectory = Path.Combine(applicationDirectory, "Plugins");
-            return Directory.GetDirectories(pluginsDirectory);
+            try
+            {
+                string applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                string pluginsDirectory = Path.Combine(applicationDirectory, "Plugins");
+                return Directory.GetDirectories(pluginsDirectory);
+            }
+            catch (Exception exception)
+            {
+                Logging.Info("Unable to open plugins directory.", exception);
+                return new string[0];
+            }
         }
 
         private static List<string> FindAllPluginAssemblies(string[] pluginDirectories)
@@ -43,7 +60,16 @@ namespace Terminals.Connections
 
         private static string[] FindPluginAssemblies(string pluginDirectory)
         {
-            return Directory.GetFiles(pluginDirectory, "Terminals.Plugins.*.dll");
+            try
+            {
+                return Directory.GetFiles(pluginDirectory, "Terminals.Plugins.*.dll");
+            }
+            catch (Exception exception)
+            {
+                string message = string.Format("Unable to load plugins list from '{0}'.", pluginDirectory);
+                Logging.Info(message, exception);
+                return new string[0];
+            }
         }
     }
 }
