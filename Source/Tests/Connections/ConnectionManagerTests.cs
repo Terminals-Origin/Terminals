@@ -4,23 +4,20 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Terminals;
 using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Connections.ICA;
-using Terminals.Connections.Rdp;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
 using Terminals.Data;
-using Terminals.Forms.EditFavorite;
 using Terminals.Integration.Export;
 
 namespace Tests.Connections
 {
     [TestClass]
-    public class ConnectionManagerTests
+    public class ConnectionManagerTests : PluginBasedTests
     {
         private readonly ConnectionManager connectionManager = new ConnectionManager();
 
@@ -74,7 +71,8 @@ namespace Tests.Connections
             mockFavorite.SetupGet(f => f.Protocol).Returns(testCase.Item1);
             Type created = connectionManager.CreateConnection(mockFavorite.Object).GetType();
             this.ReportCreatedConnection(testCase, created);
-            return testCase.Item2 == created;
+            // because the runtime type differs
+            return testCase.Item2.FullName == created.FullName;
         }
 
         private void ReportCreatedConnection(Tuple<string, Type> testCase, Type created)
@@ -229,39 +227,39 @@ namespace Tests.Connections
         [TestMethod]
         public void KnownProtocols_CreateControls_ReturnsAllControls()
         {
-            Tuple<string, int, Type>[] testData = CreateControlsTestData();
+            Tuple<string, int, string>[] testData = CreateControlsTestData();
             bool allValid = testData.All(this.AssertCreatedControls);
             const string MESSAGE = "Created controls dont match expectations.";
             Assert.IsTrue(allValid, MESSAGE);
         }
 
-        private Tuple<string, int, Type>[] CreateControlsTestData()
+        private Tuple<string, int, string>[] CreateControlsTestData()
         {
             return new []{
-                new Tuple<string, int, Type>(KnownConnectionConstants.RDP, 5, typeof(RdpDisplayControl)),
-                new Tuple<string, int, Type>(VncConnectionPlugin.VNC, 1, typeof(VncControl)),
-                new Tuple<string, int, Type>(VmrcConnectionPlugin.VMRC, 1, typeof(VmrcControl)),
-                new Tuple<string, int, Type>(TelnetConnectionPlugin.TELNET, 1, typeof(ConsolePreferences)),
-                new Tuple<string, int, Type>(SshConnectionPlugin.SSH, 2, typeof(ConsolePreferences)),
-                new Tuple<string, int, Type>(ICAConnectionPlugin.ICA_CITRIX, 1, typeof(CitrixControl))
+                new Tuple<string, int, string>(KnownConnectionConstants.RDP, 5, "Terminals.Forms.EditFavorite.RdpDisplayControl"),
+                new Tuple<string, int, string>(VncConnectionPlugin.VNC, 1, "Terminals.Forms.EditFavorite.VncControl"),
+                new Tuple<string, int, string>(VmrcConnectionPlugin.VMRC, 1, "Terminals.Forms.EditFavorite.VmrcControl"),
+                new Tuple<string, int, string>(TelnetConnectionPlugin.TELNET, 1, "Terminals.ConsolePreferences"),
+                new Tuple<string, int, string>(SshConnectionPlugin.SSH, 2, "Terminals.ConsolePreferences"),
+                new Tuple<string, int, string>(ICAConnectionPlugin.ICA_CITRIX, 1, "Terminals.Forms.EditFavorite.CitrixControl")
             };
         }
 
-        private bool AssertCreatedControls(Tuple<string, int, Type> testCase)
+        private bool AssertCreatedControls(Tuple<string, int, string> testCase)
         {
             var controls = connectionManager.CreateControls(testCase.Item1);
-            Type firstControl = controls[0].GetType();
+            string firstControl = controls[0].GetType().FullName;
             this.ReportAssertedResult(testCase, controls, firstControl);
             bool countMathes = testCase.Item2 == controls.Length;
             bool controlTypeMatches = firstControl == testCase.Item3;
             return countMathes && controlTypeMatches;
         }
 
-        private void ReportAssertedResult(Tuple<string, int, Type> testCase, Control[] controls, Type firstControl)
+        private void ReportAssertedResult(Tuple<string, int, string> testCase, Control[] controls, string firstControl)
         {
             const string MESSAGE_FORMAT = "Tested Protocol '{0}': {1} controls, first '{2}', expected ({3},'{4}')";
             string messgae = string.Format(MESSAGE_FORMAT, testCase.Item1,
-                controls.Length, firstControl.Name, testCase.Item2, testCase.Item3);
+                controls.Length, firstControl, testCase.Item2, testCase.Item3);
             this.TestContext.WriteLine(messgae);
         }
 
@@ -291,18 +289,18 @@ namespace Tests.Connections
         [TestMethod]
         public void GetTerminalsOptionsExporters_ReturnsAllExporters()
         {
-            var expected = new[]
+            string[] expected = new[]
             {
-                typeof (TerminalsRdpExport),
-                typeof (TerminalsVncExport),
-                typeof (TerminalsIcaExport),
-                typeof (TerminalsSshExport),
-                typeof (TerminalsTelnetExport),
-                typeof (TerminalsVmrcExport)
+                "Terminals.Integration.Export.TerminalsRdpExport",
+                "Terminals.Integration.Export.TerminalsVncExport",
+                "Terminals.Integration.Export.TerminalsIcaExport",
+                "Terminals.Integration.Export.TerminalsSshExport",
+                "Terminals.Integration.Export.TerminalsTelnetExport",
+                "Terminals.Integration.Export.TerminalsVmrcExport"
             };
 
             ITerminalsOptionsExport[] exporters = this.connectionManager.GetTerminalsOptionsExporters();
-            bool allPresent = exporters.All(e => expected.Contains(e.GetType()));
+            bool allPresent = exporters.All(e => expected.Contains(e.GetType().FullName));
             Assert.IsTrue(allPresent, "All supported plugins should cover all options to export.");
         }
 
@@ -325,20 +323,20 @@ namespace Tests.Connections
         [TestMethod]
         public void AllKnownPorts_GetPluginsByPort_ReturnExpectedPlugins()
         {
-            var testCases = new List<Tuple<int, IEnumerable<Type>>>()
+            var testCases = new List<Tuple<int, IEnumerable<string>>>()
             {
-                new Tuple<int, IEnumerable<Type>>(KnownConnectionConstants.RDPPort, 
-                    new List<Type>() { typeof(RdpConnectionPlugin)}),
-                new Tuple<int, IEnumerable<Type>>(KnownConnectionConstants.VNCVMRCPort, 
-                    new List<Type>() { typeof(VncConnectionPlugin), typeof(VmrcConnectionPlugin)}),
-                new Tuple<int, IEnumerable<Type>>(TelnetConnectionPlugin.TelnetPort, 
-                    new List<Type>() { typeof(TelnetConnectionPlugin)}),
-                new Tuple<int, IEnumerable<Type>>(SshConnectionPlugin.SSHPort, 
-                    new List<Type>() { typeof(SshConnectionPlugin)}),
-                new Tuple<int, IEnumerable<Type>>(KnownConnectionConstants.HTTPPort, 
-                    new List<Type>() { typeof(HttpConnectionPlugin)}),
-                new Tuple<int, IEnumerable<Type>>(HttpsConnectionPlugin.HTTPSPort, 
-                    new List<Type>() { typeof(HttpsConnectionPlugin)}),
+                new Tuple<int, IEnumerable<string>>(KnownConnectionConstants.RDPPort, 
+                    new List<string>() { "Terminals.Connections.Rdp.RdpConnectionPlugin"}),
+                new Tuple<int, IEnumerable<string>>(KnownConnectionConstants.VNCVMRCPort, 
+                    new List<string>() { "Terminals.Connections.VNC.VncConnectionPlugin", "Terminals.Connections.VMRC.VmrcConnectionPlugin"}),
+                new Tuple<int, IEnumerable<string>>(TelnetConnectionPlugin.TelnetPort, 
+                    new List<string>() { "Terminals.Connections.Terminal.TelnetConnectionPlugin"}),
+                new Tuple<int, IEnumerable<string>>(SshConnectionPlugin.SSHPort, 
+                    new List<string>() { "Terminals.Connections.Terminal.SshConnectionPlugin"}),
+                new Tuple<int, IEnumerable<string>>(KnownConnectionConstants.HTTPPort, 
+                    new List<string>() { "Terminals.Connections.Web.HttpConnectionPlugin"}),
+                new Tuple<int, IEnumerable<string>>(HttpsConnectionPlugin.HTTPSPort, 
+                    new List<string>() { "Terminals.Connections.Web.HttpsConnectionPlugin"}),
             };
 
             bool allPortsResolved = testCases.All(this.AssertAllPortPluginsResolved);
@@ -348,15 +346,16 @@ namespace Tests.Connections
         [TestMethod]
         public void UnknownPort_GetPluginsByPort_ReturnsDummyPlugin()
         {
-            var testCase = new Tuple<int, IEnumerable<Type>>(0, new List<Type>() {typeof (DummyPlugin)});
+            string dummyPlugin = typeof (DummyPlugin).FullName;
+            var testCase = new Tuple<int, IEnumerable<string>>(0, new List<string>() { dummyPlugin });
             var isValid = this.AssertAllPortPluginsResolved(testCase);
             Assert.IsTrue(isValid, "Unknown protocol has to return some dummy data to represent failed state.");
         }
 
-        private bool AssertAllPortPluginsResolved(Tuple<int, IEnumerable<Type>> testCase)
+        private bool AssertAllPortPluginsResolved(Tuple<int, IEnumerable<string>> testCase)
         {
             IEnumerable<IConnectionPlugin> resolved = this.connectionManager.GetPluginsByPort(testCase.Item1);
-            return resolved.All(plugin => testCase.Item2.Contains(plugin.GetType()));
+            return resolved.All(plugin => testCase.Item2.Contains(plugin.GetType().FullName));
         }
 
         [TestMethod]

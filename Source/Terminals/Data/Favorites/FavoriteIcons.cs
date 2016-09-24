@@ -29,7 +29,23 @@ namespace Terminals.Data
             }
         }
 
-        private static readonly Dictionary<string, Image> pluginIcons = ConnectionManager.Instance.GetPluginIcons();
+        private static ConnectionManager connectionManager = ConnectionManager.Instance;
+
+        /// <summary>
+        /// For testability purpose to be removed.
+        /// </summary>
+        public static ConnectionManager ConnectionManager
+        {
+            get { return connectionManager; }
+            set
+            {
+                connectionManager = value;
+                pluginIcons = connectionManager.GetPluginIcons();
+            }
+        }
+
+        private static Dictionary<string, Image> pluginIcons = ConnectionManager.GetPluginIcons();
+
 
         internal static IDictionary<string, Image> GetProtocolIcons()
         {

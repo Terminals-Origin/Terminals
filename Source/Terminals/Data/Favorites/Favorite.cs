@@ -4,10 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Xml.Serialization;
 using Terminals.Common.Connections;
-using Terminals.Configuration;
-using Terminals.Connections;
 using Terminals.Converters;
-using Terminals.Network;
 
 namespace Terminals.Data
 {
@@ -53,7 +50,6 @@ namespace Terminals.Data
             set
             {
                 protocol = value;
-                this.protocolProperties = ConnectionManager.Instance.UpdateProtocolPropertiesByProtocol(this.protocol, this.protocolProperties);
             }
         }
 
@@ -223,6 +219,12 @@ namespace Terminals.Data
             if (sourceFavorite == null)
                 return;
             this.UpdateFrom(sourceFavorite);
+        }
+
+        public void ChangeProtocol(string protocol, ProtocolOptions options)
+        {
+            this.protocol = protocol;
+            this.protocolProperties = options;
         }
 
         private void UpdateFrom(Favorite source)

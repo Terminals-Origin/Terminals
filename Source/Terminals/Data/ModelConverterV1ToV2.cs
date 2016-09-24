@@ -1,4 +1,5 @@
 ﻿using Terminals.Common.Connections;
+using Terminals.Connections;
 using Terminals.Data.Credentials;
 
 namespace Terminals.Data
@@ -11,8 +12,11 @@ namespace Terminals.Data
     /// </summary>
     internal class ModelConverterV1ToV2 : ModelConvertersTemplate
     {
-        private ModelConverterV1ToV2(IPersistence persistence): base(persistence)
+        private readonly ConnectionManager connectionManager;
+
+        private ModelConverterV1ToV2(IPersistence persistence, ConnectionManager connectionManager): base(persistence)
         {
+            this.connectionManager = connectionManager;
         }
 
         /// <summary>
@@ -21,7 +25,7 @@ namespace Terminals.Data
         /// </summary>
         internal static IFavorite ConvertToFavorite(FavoriteConfigurationElement sourceFavorite, IPersistence persistence)
         {
-            var converter = new ModelConverterV1ToV2(persistence);
+            var converter = new ModelConverterV1ToV2(persistence, ConnectionManager.Instance);
             return converter.Convert(sourceFavorite);
         }
 
@@ -39,9 +43,9 @@ namespace Terminals.Data
             return result;
         }
 
-        private static void ConvertGeneralProperties(IFavorite result, FavoriteConfigurationElement sourceFavorite)
+        private void ConvertGeneralProperties(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
-            result.Protocol = sourceFavorite.Protocol;
+            connectionManager.ChangeProtocol(result, sourceFavorite.Protocol);
             result.Name = sourceFavorite.Name;
             result.Port = sourceFavorite.Port;
             result.ServerName = sourceFavorite.ServerName;

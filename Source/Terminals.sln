@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals", "Terminals\Terminals.csproj", "{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}"
 EndProject
@@ -26,13 +26,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSHClient", "SSHClient\SSHClient.csproj", "{6F218F20-AE4B-4966-A821-4BDE214B8BFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{81B4C28B-5B10-4A53-B0AC-9E8F72733139}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4E869002-54F7-4D67-9A35-F52D85D78B60}"
-	ProjectSection(SolutionItems) = preProject
-		Local.testsettings = Local.testsettings
-		Terminals.vsmdi = Terminals.vsmdi
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlMigrations", "SqlMigrations", "{92B0C240-075E-4B86-820E-BBEC58B331DE}"
 EndProject
@@ -70,6 +63,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Terminal", "Terminals.Plugins.Terminal\Terminals.Plugins.Terminal.csproj", "{8E972A0C-57E2-4E5C-9EF5-D7CD681188C5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Rdp", "Terminals.Plugins.Rdp\Terminals.Plugins.Rdp.csproj", "{F0C60ED2-9A47-4364-AF57-505BC3E953D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vnc", "Vnc", "{04783F0B-4961-4550-8561-FB1734CCE3FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -378,17 +373,20 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{E0695F0F-0FAF-44BC-AE55-A1FCBFE70271} = {04783F0B-4961-4550-8561-FB1734CCE3FC}
+		{0C89B7A2-A218-49E4-B545-5B044A45F977} = {04783F0B-4961-4550-8561-FB1734CCE3FC}
 		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
 		{C451F6AA-0F56-4051-968B-90EBB90C8864} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
 		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
 		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8} = {BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}
 		{D775E5FD-DDD7-46AA-8BEF-CC18BA0BB702} = {BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}
-		{123562C5-8D66-4E30-9676-D47B4C03EE7F} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
+		{123562C5-8D66-4E30-9676-D47B4C03EE7F} = {04783F0B-4961-4550-8561-FB1734CCE3FC}
 		{278FACE8-1579-4C13-AE59-1B24A7091CFC} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
 		{BB4A4CC7-C449-4F81-8395-7806CC1BDFA8} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
 		{C841CCF6-4793-41B7-835E-F749E2525963} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
 		{8E972A0C-57E2-4E5C-9EF5-D7CD681188C5} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
 		{F0C60ED2-9A47-4364-AF57-505BC3E953D5} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
+		{04783F0B-4961-4550-8561-FB1734CCE3FC} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 26
@@ -410,6 +408,7 @@ Global
 		SccProjectName4 = TerminalsUpdater
 		SccLocalPath4 = TerminalsUpdater
 		SccProjectUniqueName5 = VncSharp\\VncSharp.csproj
+		SccProjectTopLevelParentUniqueName5 = Terminals.sln
 		SccProjectName5 = VncSharp
 		SccAuxPath5 = https://tfs.codeplex.com/tfs/TFS01
 		SccLocalPath5 = VncSharp
@@ -426,6 +425,7 @@ Global
 		SccProjectName9 = TerminalEmulator
 		SccLocalPath9 = TerminalEmulator
 		SccProjectUniqueName10 = zlib.net\\zlib.net.csproj
+		SccProjectTopLevelParentUniqueName10 = Terminals.sln
 		SccProjectName10 = zlib.net
 		SccLocalPath10 = zlib.net
 		SccProjectUniqueName11 = SSHClient\\SSHClient.csproj

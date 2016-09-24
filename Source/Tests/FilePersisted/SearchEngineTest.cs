@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Terminals.Connections;
 using Terminals.Connections.Terminal;
 using Terminals.Data;
 using Terminals.Forms.Controls;
+using Tests.Connections;
 
 namespace Tests.FilePersisted
 {
@@ -48,7 +48,7 @@ namespace Tests.FilePersisted
         public void PrepareTestSet()
         {
             this.Persistence.StartDelayedUpdate();
-            this.favoriteSsh = CreateConfiguredFavorite(f => f.Protocol = PROTOCOL);
+            this.favoriteSsh = CreateConfiguredFavorite(f => ConnectionManagerOtionsTests.MockConnectionManager.ChangeProtocol(f, PROTOCOL));
             this.favoriteNamed = CreateConfiguredFavorite(f => f.Name = NAME);
             this.favoriteServerName = CreateConfiguredFavorite(f => f.ServerName = SERVER_NAME);
             this.favoritePort = CreateConfiguredFavorite(f => f.Port = PORT);

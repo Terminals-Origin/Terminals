@@ -186,7 +186,7 @@ namespace Terminals.Data.DB
                 catch (DbUpdateException)
                 {
                     // load default values, because have load something, the favorite will be removed by next refresh
-                    this.favorite.UpdateProtocolProperties(new RdpOptions());
+                    this.favorite.protocolProperties = new EmptyOptions();
                 }
                 catch (EntityException exception)
                 {
@@ -199,8 +199,7 @@ namespace Terminals.Data.DB
             {
                 if (!this.favorite.isNewlyCreated && !this.protocolPropertiesLoaded)
                 {
-                    ProtocolOptions protocolProperties = this.LoadPropertiesFromDatabase();
-                    this.favorite.UpdateProtocolProperties(protocolProperties);
+                    this.favorite.protocolProperties = this.LoadPropertiesFromDatabase();
                     this.protocolPropertiesLoaded = true;
                 }
             }
@@ -275,6 +274,12 @@ namespace Terminals.Data.DB
                 this.Display.UpdateFrom(source.Display);
                 this.ExecuteBeforeConnect.UpdateFrom(source.ExecuteBeforeConnect);
             }
+        }
+
+        public void ChangeProtocol(string protocol, ProtocolOptions options)
+        {
+            this.protocol = protocol;
+            this.protocolProperties = options;
         }
     }
 }

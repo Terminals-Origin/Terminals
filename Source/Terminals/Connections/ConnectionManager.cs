@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Terminals.Common;
 using Terminals.Common.Connections;
 using Terminals.Connections.ICA;
 using Terminals.Connections.Rdp;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
-using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
 using Terminals.Data;
 using Terminals.Integration.Export;
@@ -42,20 +40,44 @@ namespace Terminals.Connections
 
         #endregion
 
-        public ConnectionManager()
+        public ConnectionManager(): this(LoadPlugins)
+        {
+        }
+
+        private static Dictionary<string, IConnectionPlugin> LoadPlugins()
         {
             // RAS, // this protocol doesnt fit to the concept and seems to be broken 
-            this.plugins = new Dictionary<string, IConnectionPlugin>()
+            // todo how to sort the plugins, so the VNC preceeds the VMRC to let the GetPortName works.
+            var plugins = new Dictionary<string, IConnectionPlugin>()
             {
-                { KnownConnectionConstants.RDP, new RdpConnectionPlugin() },
-                { KnownConnectionConstants.HTTP, new HttpConnectionPlugin() },
-                { KnownConnectionConstants.HTTPS, new HttpsConnectionPlugin() },
-                { VncConnectionPlugin.VNC, new VncConnectionPlugin() },
-                { VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin() },
-                { TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin() },
-                { SshConnectionPlugin.SSH, new SshConnectionPlugin() },
-                { ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin() }
+                {KnownConnectionConstants.RDP, new RdpConnectionPlugin()},
+                {KnownConnectionConstants.HTTP, new HttpConnectionPlugin()},
+                {KnownConnectionConstants.HTTPS, new HttpsConnectionPlugin()},
+                //{ VncConnectionPlugin.VNC, new VncConnectionPlugin() },
+                //{ VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin() },
+                {TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin()},
+                {SshConnectionPlugin.SSH, new SshConnectionPlugin()},
+                {ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin()}
             };
+
+            LoadExternalPlugins(plugins);
+
+            plugins.Add(VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin());
+            return plugins;
+        }
+
+        internal ConnectionManager(Func<Dictionary<string, IConnectionPlugin>> loadPlugins)
+        {
+            this.plugins = loadPlugins();
+        }
+
+        private static void LoadExternalPlugins(Dictionary<string, IConnectionPlugin> plugins)
+        {
+            var pluginLoader = new PluginsLoader();
+            foreach (IConnectionPlugin loaded in pluginLoader.Load())
+            {
+                plugins.Add(loaded.PortName, loaded);
+            }
         }
 
         internal Dictionary<string, Image> GetPluginIcons()
@@ -202,6 +224,12 @@ namespace Terminals.Connections
                 protocolPlugin = this.dummyPlugin as IOptionsConverterFactory;
 
             return protocolPlugin;
+        }
+
+        public void ChangeProtocol(IFavorite favorite, string protocol)
+        {
+            ProtocolOptions options = this.UpdateProtocolPropertiesByProtocol(protocol, favorite.ProtocolProperties);
+            favorite.ChangeProtocol(protocol, options);
         }
     }
 }

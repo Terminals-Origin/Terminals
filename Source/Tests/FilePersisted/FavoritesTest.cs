@@ -7,6 +7,7 @@ using Terminals.Common.Connections;
 using Terminals.Connections.VNC;
 using Terminals.Data;
 using Terminals.Data.Credentials;
+using Tests.Connections;
 
 namespace Tests.FilePersisted
 {
@@ -47,7 +48,7 @@ namespace Tests.FilePersisted
         {
             IFavorite favorite = this.AddFavorite();
             // now it has RdpOptions
-            favorite.Protocol = VncConnectionPlugin.VNC;
+            ConnectionManagerOtionsTests.MockConnectionManager.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
             this.Persistence.Favorites.Update(favorite);
             AssertRdpSecurity(this.Persistence.Security, favorite);
         }
@@ -57,7 +58,7 @@ namespace Tests.FilePersisted
         /// </summary>
         internal static void AssertRdpSecurity(PersistenceSecurity persistenceSecurity, IFavorite favorite)
         {
-            favorite.Protocol = KnownConnectionConstants.RDP;
+            ConnectionManagerOtionsTests.MockConnectionManager.ChangeProtocol(favorite, KnownConnectionConstants.RDP);
             var rdpOptions = favorite.ProtocolProperties as RdpOptions;
             
             var guarded = new GuardedSecurity(persistenceSecurity, rdpOptions.TsGateway.Security);

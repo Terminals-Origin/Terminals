@@ -13,11 +13,12 @@ using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
 using Terminals.Data;
+using Tests.Connections;
 
 namespace Tests.UserInterface
 {
     [TestClass]
-    public class FavoriteIconsTests
+    public class FavoriteIconsTests : PluginBasedTests
     {
         private const string UNKNOWN_ICON_KEY = "terminalsicon.png";
 
@@ -67,6 +68,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void AllKnownProtocols_GetFavoriteIcon_ReturnPluginIcon()
         {
+            FavoriteIcons.ConnectionManager = ConnectionManagerOtionsTests.MockConnectionManager;
             var testData = new[]
             {
                 new Tuple<string, Image>(KnownConnectionConstants.RDP, RdpConnectionPlugin.TreeIconRdp),
@@ -83,6 +85,7 @@ namespace Tests.UserInterface
 
             bool iconsEquals = testData.All(this.AssertGetFavoriteIcon);
             Assert.IsTrue(iconsEquals, "All protocols have to return their plugin icon.");
+            FavoriteIcons.ConnectionManager = ConnectionManager.Instance;
         }
 
         [TestMethod]

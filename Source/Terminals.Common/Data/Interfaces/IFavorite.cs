@@ -21,10 +21,10 @@ namespace Terminals.Data
         new string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the protocol type. Accepted value is one of ConnectionManager values.
-        /// Set this value also updates the ProtocolProperties property to provide extra options.
+        /// Gets the protocol type. Accepted value is one of ConnectionManager values.
+        /// Set this value using <see cref="ChangeProtocol"/>.
         /// </summary>
-        String Protocol { get; set; }
+        String Protocol { get; }
 
         /// <summary>
         /// Gets or sets positive number in range 0 - 65535
@@ -76,7 +76,8 @@ namespace Terminals.Data
         /// <summary>
         /// Depending on selected protocol, this should contain the protocol detailed options.
         /// Because default protocol is RDP, also this properties are RdpOptions by default.
-        /// This property should be always updated by changing Protocol property value
+        /// This property should be always updated by changing Protocol property value.
+        /// Set this value using <see cref="ChangeProtocol"/>.
         /// </summary>
         ProtocolOptions ProtocolProperties { get; }
 
@@ -91,5 +92,12 @@ namespace Terminals.Data
         /// </summary>
         /// <param name="source">Not null item, which properties should be use to update this instance</param>
         void UpdateFrom(IFavorite source);
+
+        /// <summary>
+        /// Use this method to update the protocol.
+        /// </summary>
+        /// <param name="protocol">Not null, New protocol name to assing.</param>
+        /// <param name="options">Not null, structure for protocol specific options, has to fit to protocol.</param>
+        void ChangeProtocol(string protocol, ProtocolOptions options);
     }
 }
