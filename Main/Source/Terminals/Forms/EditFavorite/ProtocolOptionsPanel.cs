@@ -2,7 +2,6 @@
 using System.Windows.Forms;
 using Terminals.Common.Forms.EditFavorite;
 using Terminals.Configuration;
-using Terminals.Connections;
 using Terminals.Data;
 
 namespace Terminals.Forms.EditFavorite
@@ -10,14 +9,6 @@ namespace Terminals.Forms.EditFavorite
     internal partial class ProtocolOptionsPanel : UserControl
     {
         private NewTerminalFormValidator validator;
-
-        internal string[] AvailableProtocols
-        {
-            get
-            {
-                return ConnectionManager.Instance.GetAvailableProtocols();
-            }
-        }
 
         public IGuardedCredentialFactory CredentialsFactory { get; set; }
 
@@ -28,11 +19,10 @@ namespace Terminals.Forms.EditFavorite
             this.InitializeComponent();
         }
 
-        internal void ReloadControls(string newProtocol)
+        internal void ReloadControls(Control[] newProtocolControls)
         {
-            Control[] newControls = ConnectionManager.Instance.CreateControls(newProtocol);
             this.RemoveCurrentControls();
-            this.AddControls(newControls);
+            this.AddControls(newProtocolControls);
         }
 
         private void RemoveCurrentControls()

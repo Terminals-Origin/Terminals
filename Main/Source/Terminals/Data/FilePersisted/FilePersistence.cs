@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data.FilePersisted;
 using Terminals.History;
 
@@ -71,7 +72,7 @@ namespace Terminals.Data
         private IDataFileWatcher fileWatcher;
         private bool delaySave;
 
-        private readonly FavoritesFileSerializer serializer = new FavoritesFileSerializer();
+        private readonly FavoritesFileSerializer serializer = new FavoritesFileSerializer(ConnectionManager.Instance);
 
         internal FilePersistence() : this(new PersistenceSecurity())
         {}

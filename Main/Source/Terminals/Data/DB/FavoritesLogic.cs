@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Transactions;
+using Terminals.Connections;
 
 namespace Terminals.Data.DB
 {
@@ -368,10 +369,17 @@ namespace Terminals.Data.DB
                 // to list because Linq to entities allows only cast to primitive types
                 List<DbFavorite> favorites = database.Favorites.ToList();
                 database.Cache.DetachAll(favorites);
-                favorites.ForEach(candidate => candidate
-                    .AssignStores(this.groups, this.credentials, this.dispatcher));
+                favorites.ForEach(this.PrepareFavorite);
                 return favorites;
             }
+        }
+
+        private void PrepareFavorite(DbFavorite favorite)
+        {
+            favorite.AssignStores(this.groups, this.credentials, this.dispatcher);
+            // not real change, but synchronizing loaded properties to empty state, before details are loaded from DB.
+            var correctOptions = ConnectionManager.Instance.UpdateProtocolPropertiesByProtocol(favorite.Protocol, new EmptyOptions());
+            favorite.ChangeProtocol(favorite.Protocol, correctOptions);
         }
 
         #region IEnumerable members

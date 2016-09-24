@@ -160,8 +160,6 @@ namespace Terminals.Data.DB
             set
             {
                 this.protocol = value;
-                // Reflect the protocol change into the protocol properties
-                this.UpdateProtocolProperties(this.protocolProperties);
             }
         }
 
@@ -172,9 +170,8 @@ namespace Terminals.Data.DB
         public DbFavorite()
         {
             this.Groups = new HashSet<DbGroup>();
-            this.Protocol = KnownConnectionConstants.RDP;
             this.Port = KnownConnectionConstants.RDPPort;
-            this.protocolProperties = new RdpOptions();
+            this.ChangeProtocol(KnownConnectionConstants.RDP, new RdpOptions());
             this.Details = new FavoriteDetails(this);
         }
 
@@ -214,11 +211,11 @@ namespace Terminals.Data.DB
             this.NewWindow = source.NewWindow;
             this.Notes = source.Notes;
             this.Port = source.Port;
-            this.Protocol = source.Protocol;
             this.ServerName = source.ServerName;
             this.toolBarIcon = source.ToolBarIconImage;
             // protocolProperties don't have a favorite Id reference, so we can overwrite complete content
-            this.protocolProperties = source.protocolProperties.Copy();
+            ProtocolOptions sourceProperties = source.protocolProperties.Copy();
+            this.ChangeProtocol(source.Protocol, sourceProperties);
             this.AssignStores(source.groups, source.credentials, source.Details.Dispatcher);
         }
 
@@ -250,11 +247,6 @@ namespace Terminals.Data.DB
             this.groups = groups;
             this.credentials = credentials;
             this.Details.Dispatcher = dispatcher;
-        }
-
-        private void UpdateProtocolProperties(ProtocolOptions protocolOptions)
-        {
-            this.protocolProperties = ConnectionManager.Instance.UpdateProtocolPropertiesByProtocol(this.protocol, protocolOptions);
         }
 
         internal void SaveDetails(Database database)

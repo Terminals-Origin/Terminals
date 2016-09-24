@@ -8,6 +8,7 @@ using Terminals.Connections.VNC;
 using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.EditFavorite;
+using Tests.Connections;
 
 namespace Tests.UserInterface
 {
@@ -15,7 +16,7 @@ namespace Tests.UserInterface
     /// Setup of roundtrip tests to check, if the favorite is properly loaded and saved by the user control.
     /// </summary>
     [TestClass]
-    public class FavoritePropertiesControlTests
+    public class FavoritePropertiesControlTests : PluginBasedTests
     {
         private const string EXPECTED_TEXT = "EXPECTED_TEXT";
         private const string MESSAGE = "Roundtrip should keep original value";
@@ -104,7 +105,9 @@ namespace Tests.UserInterface
             source.Protocol = VncConnectionPlugin.VNC;
             Favorite result = this.LoadAndSaveToResult(source);
             const string PROTOCOL_MESSAGE = "Roundtrip has to preserve the protocol properties";
-            Assert.IsInstanceOfType(result.ProtocolProperties, typeof(VncOptions), PROTOCOL_MESSAGE);
+            var expectedType = typeof(VncOptions).FullName;
+            string protocolProperties = result.ProtocolProperties.GetType().FullName;
+            Assert.AreEqual(protocolProperties, expectedType, PROTOCOL_MESSAGE);
         }
 
         private void LoadPropertiesControl()

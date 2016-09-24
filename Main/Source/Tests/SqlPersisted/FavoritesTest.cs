@@ -4,14 +4,15 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Terminals.Connections;
 using Terminals.Connections.VNC;
 using Terminals.Data;
 using Terminals.Data.Credentials;
 using Terminals.Data.DB;
+using Tests.Connections;
 
 namespace Tests.SqlPersisted
 {
+    [DeploymentItem(PluginBasedTests.VNC_PLUGIN, PluginBasedTests.VNC_TARGET)]
     /// <summary>
     ///This is a test class for database implementation of Favorites
     ///</summary>
@@ -91,7 +92,7 @@ namespace Tests.SqlPersisted
         public void UpdateFavoriteTest()
         {
             IFavorite favorite = this.AddFavoriteToPrimaryPersistence();
-            favorite.Protocol = VncConnectionPlugin.VNC;
+            ConnectionManagerOtionsTests.MockConnectionManager.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
             favorite.Display.Colors = Terminals.Colors.Bits24;
             this.PrimaryFavorites.Update(favorite);
 
@@ -99,8 +100,9 @@ namespace Tests.SqlPersisted
             Assert.IsTrue(target.Protocol == VncConnectionPlugin.VNC, "Protocol wasn't updated");
             Assert.IsTrue(target.Display.Colors == Terminals.Colors.Bits24, "Colors property wasn't updated");
 
-            var testOptions = target.ProtocolProperties as VncOptions;
-            Assert.IsNotNull(testOptions, "Protocol properties weren't updated");
+            // Because of dynamic loading, types compare is not possible.
+            var testOptions = target.ProtocolProperties.GetType().FullName;
+            Assert.AreEqual("Terminals.Data.VncOptions", testOptions, "Protocol properties weren't updated");
             Assert.AreEqual(1, this.updatedCount, "Event wasn't delivered");
         }
 
@@ -186,7 +188,7 @@ namespace Tests.SqlPersisted
         {
             IFavorite favorite = this.CreateTestFavorite();
             // now it has RdpOptions
-            favorite.Protocol = VncConnectionPlugin.VNC;
+            ConnectionManagerOtionsTests.MockConnectionManager.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
             this.PrimaryFavorites.Update(favorite);
             FilePersisted.FavoritesTest.AssertRdpSecurity(this.PrimaryPersistence.Security, favorite);
         }

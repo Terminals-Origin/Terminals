@@ -7,7 +7,12 @@ namespace Terminals.Data.FilePersisted
 {
     internal class FavoritesFileSerializer
     {
-        private readonly ConnectionManager connectinManager = ConnectionManager.Instance;
+        private readonly ConnectionManager connectinManager;
+
+        public FavoritesFileSerializer(ConnectionManager connectinManager)
+        {
+            this.connectinManager = connectinManager;
+        }
 
         public void SerializeToXml(FavoritesFile fileContent, string fileLocation)
         {

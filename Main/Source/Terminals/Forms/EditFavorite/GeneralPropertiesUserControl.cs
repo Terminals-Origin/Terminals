@@ -272,7 +272,8 @@ namespace Terminals.Forms.EditFavorite
         {
             favorite.Name = (String.IsNullOrEmpty(this.txtName.Text) ? this.cmbServers.Text : this.txtName.Text);
             favorite.ServerName = this.cmbServers.Text;
-            favorite.Protocol = this.ProtocolComboBox.Text;
+            string protocol = this.ProtocolComboBox.Text;
+            this.connectionManager.ChangeProtocol(favorite, protocol);
             Int32 port;
             Int32.TryParse(this.PortText, out port);
             favorite.Port = port;

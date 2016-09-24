@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Terminals.Common.Connections;
+using Terminals.Connections;
 using Terminals.Connections.ICA;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
@@ -12,6 +13,7 @@ using Terminals.Data;
 using Terminals.Data.Credentials;
 using Terminals.Forms;
 using Terminals.Forms.EditFavorite;
+using Tests.Connections;
 using Tests.FilePersisted;
 
 namespace Tests.UserInterface
@@ -27,6 +29,8 @@ namespace Tests.UserInterface
         private const int EXPECTED_NUMBER = 5;
         private const string PROTOCOL_MESSAGE = "Protocol Roundtrip has to preserve the property value";
         private static readonly PersistenceSecurity persistenceSecurity = new PersistenceSecurity();
+
+        private readonly ConnectionManager connectionManager = ConnectionManagerOtionsTests.MockConnectionManager;
 
         private readonly ProtocolOptionsPanel protocolPanel = new ProtocolOptionsPanel();
         private readonly MockChildProtocolControl childProtocolControlMock = new MockChildProtocolControl();
@@ -173,7 +177,7 @@ namespace Tests.UserInterface
         {
             // do ti before used on the control to prevent source damage by the load
             Favorite result = CreateFavorite(source.Protocol);
-            this.protocolPanel.ReloadControls(source.Protocol);
+            this.ReloadProtocolPanel(source.Protocol);
             this.protocolPanel.LoadFrom(source);
             this.protocolPanel.SaveTo(result);
             return result;
@@ -235,7 +239,7 @@ namespace Tests.UserInterface
 
         private void AssertLoadedControlsImplementInterface(string protocol)
         {
-            this.protocolPanel.ReloadControls(protocol);
+            this.ReloadProtocolPanel(protocol);
             int validControls = this.protocolPanel.Controls.OfType<IProtocolOptionsControl>().Count();
             int allControls = this.protocolPanel.Controls.Count;
             const string MESSAGEFORMAT = "All {0} protocol option controls have to implement IProtocolOptionsControl";
@@ -243,10 +247,16 @@ namespace Tests.UserInterface
             Assert.AreEqual(allControls, validControls, message);
         }
 
-        private static Favorite CreateFavorite(string protocol)
+        private void ReloadProtocolPanel(string protocol)
+        {
+            var controls = this.connectionManager.CreateControls(protocol);
+            this.protocolPanel.ReloadControls(controls);
+        }
+
+        private Favorite CreateFavorite(string protocol)
         {
             Favorite source = TestFavoriteFactory.CreateFavorite(new List<IGroup>());
-            source.Protocol = protocol;
+            this.connectionManager.ChangeProtocol(source, protocol);
             return source;
         }
     }

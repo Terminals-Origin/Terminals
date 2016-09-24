@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Data.Credentials;
 using Terminals.Forms.Controls;
@@ -14,6 +15,8 @@ namespace Terminals.Forms.EditFavorite
         private const string GROUPS_NODE = "groupsNode";
         private const string EXECUTE_NODE = "executeNode";
         private const string NOTES_NODE = "notesNode";
+
+        private readonly ConnectionManager connectionManager = ConnectionManager.Instance;
 
         public event EventHandler SetOkButtonRequested
         {
@@ -53,7 +56,7 @@ namespace Terminals.Forms.EditFavorite
             this.DockAllPanels();
             this.HideAllPanels();
 
-            string[] availablePlugins = this.protocolOptionsPanel1.AvailableProtocols;
+            string[] availablePlugins = connectionManager.GetAvailableProtocols();
             this.generalPanel1.AssingAvailablePlugins(availablePlugins);
             this.generalPanel1.ProtocolChanged += GenearalPanel1ProtocolChanged;
             string firstPlugin = KnownConnectionConstants.RDP;
@@ -76,7 +79,8 @@ namespace Terminals.Forms.EditFavorite
         private void GenearalPanel1ProtocolChanged(string newProtocol)
         {
             this.ProtocolOptionsNode.Text = string.Format("{0} Options", newProtocol);
-            this.protocolOptionsPanel1.ReloadControls(newProtocol);
+            Control[] newControls = this.connectionManager.CreateControls(newProtocol);
+            this.protocolOptionsPanel1.ReloadControls(newControls);
             this.UpdateProtocolOptionsNodeIcons(newProtocol);
             this.ReloadProtocolTreeNodes();
         }

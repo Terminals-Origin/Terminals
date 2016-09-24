@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Connections.ICA;
+using Terminals.Connections.Rdp;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
+using Terminals.Connections.Web;
 using Terminals.Data;
 
 namespace Tests.Connections
@@ -14,20 +17,34 @@ namespace Tests.Connections
     [TestClass]
     public class ConnectionManagerOtionsTests
     {
-        private readonly ConnectionManager connectionManager = new ConnectionManager();
+        private static readonly ConnectionManager mockConnectionManager = new ConnectionManager(() =>
+            new Dictionary<string, IConnectionPlugin>()
+            {
+                {KnownConnectionConstants.RDP, new RdpConnectionPlugin()},
+                {KnownConnectionConstants.HTTP, new HttpConnectionPlugin()},
+                {KnownConnectionConstants.HTTPS, new HttpsConnectionPlugin()},
+                {VncConnectionPlugin.VNC, new VncConnectionPlugin()},
+                {VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin()},
+                {TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin()},
+                {SshConnectionPlugin.SSH, new SshConnectionPlugin()},
+                {ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin()}
+            });
+
+        internal static ConnectionManager MockConnectionManager { get { return mockConnectionManager; } }
+
         public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void NullCurrentOptionsRdpProtocol_UpdateProtocolPropertiesByProtocol_ReturnsRdpOptions()
         {
-            var returned = connectionManager.UpdateProtocolPropertiesByProtocol(KnownConnectionConstants.RDP, null);
+            var returned = MockConnectionManager.UpdateProtocolPropertiesByProtocol(KnownConnectionConstants.RDP, null);
             Assert.IsInstanceOfType(returned, typeof(RdpOptions), "When creating new favorite, the options arent set yet.");
         }
         
         [TestMethod]
         public void UnknownProtocol_UpdateProtocolPropertiesByProtocol_ReturnsEmptyOptions()
         {
-            var returned = connectionManager.UpdateProtocolPropertiesByProtocol("UnknonwProtocol", new ConsoleOptions());
+            var returned = MockConnectionManager.UpdateProtocolPropertiesByProtocol("UnknonwProtocol", new ConsoleOptions());
             Assert.IsInstanceOfType(returned, typeof(EmptyOptions), "There is no option, how to switch the properties.");
         }
         
@@ -52,11 +69,11 @@ namespace Tests.Connections
 
         private bool AssertTheSameInstance(Tuple<string, ProtocolOptions> testCase)
         {
-            var returned = connectionManager.UpdateProtocolPropertiesByProtocol(testCase.Item1, testCase.Item2);
+            ProtocolOptions returned = MockConnectionManager.UpdateProtocolPropertiesByProtocol(testCase.Item1, testCase.Item2);
             string expected = testCase.Item2.GetType().Name;
             string returnedType = returned.GetType().Name;
             ReportChangedOptions(testCase.Item1, expected, returnedType);
-            return returned == testCase.Item2;  
+            return returned.GetType().FullName == testCase.Item2.GetType().FullName;  
         }
 
         [TestMethod]
@@ -81,9 +98,9 @@ namespace Tests.Connections
         private bool AssertOptions(Tuple<string, Type> testCase)
         {
             // No protocol uses EmptyOptions, so it is used as change from something else
-            var returned = connectionManager.UpdateProtocolPropertiesByProtocol(testCase.Item1, new EmptyOptions());
+            var returned = MockConnectionManager.UpdateProtocolPropertiesByProtocol(testCase.Item1, new EmptyOptions());
             ReportCreated(returned, testCase);
-            return returned.GetType() == testCase.Item2;
+            return returned.GetType().FullName == testCase.Item2.FullName;
         }
 
         private void ReportCreated(ProtocolOptions returned, Tuple<string, Type> testCase)

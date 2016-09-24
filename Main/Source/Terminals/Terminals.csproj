@@ -1594,17 +1594,9 @@
       <Project>{c841ccf6-4793-41b7-835e-f749e2525963}</Project>
       <Name>Terminals.Plugins.Vmrc</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Terminals.Plugins.Vnc\Terminals.Plugins.Vnc.csproj">
-      <Project>{123562C5-8D66-4E30-9676-D47B4C03EE7F}</Project>
-      <Name>Terminals.Plugins.Vnc</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Terminals.Plugins.Web\Terminals.Plugins.Web.csproj">
       <Project>{278face8-1579-4c13-ae59-1b24a7091cfc}</Project>
       <Name>Terminals.Plugins.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VncSharp\VncSharp.csproj">
-      <Project>{E0DED53A-C3E1-441D-9AD2-766E49EAD417}</Project>
-      <Name>VncSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
