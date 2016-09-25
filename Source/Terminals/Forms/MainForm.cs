@@ -992,7 +992,7 @@ namespace Terminals
                 IFavorite favorite = this.tabsFilter.FindFavoriteByTabTitle(menuItem.Text);
 
                 if (favorite != null)
-                    menuItem.Image = favorite.ToolBarIconImage;
+                    menuItem.Image = this.PersistedFavorites.LoadFavoriteIcon(favorite);
             }
         }
 

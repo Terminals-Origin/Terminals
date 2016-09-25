@@ -303,7 +303,7 @@ namespace Terminals
 
             private ToolStripButton CreateFavoriteButton(IFavorite favorite)
             {
-                Image buttonImage = favorite.ToolBarIconImage;
+                Image buttonImage = this.PersistedFavorites.LoadFavoriteIcon(favorite);
                 ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, buttonImage, this.serverToolStripMenuItemClick);
                 favoriteBtn.ToolTipText = this.toolTipBuilder.BuildTooTip(favorite);
                 favoriteBtn.Tag = favorite;
@@ -417,7 +417,7 @@ namespace Terminals
             {
                 ToolStripMenuItem item = new ToolStripMenuItem(favorite.Name);
                 item.Tag = FAVORITE;
-                item.Image = favorite.ToolBarIconImage;
+                item.Image = this.PersistedFavorites.LoadFavoriteIcon(favorite);
                 item.ToolTipText = this.toolTipBuilder.BuildTooTip(favorite);
                 return item;
             }

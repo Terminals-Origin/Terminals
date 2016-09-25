@@ -38,11 +38,6 @@ namespace Terminals.Data
         String ServerName { get; set; }
 
         /// <summary>
-        /// Gets the image loaded from assigned icon file.
-        /// </summary>
-        Image ToolBarIconImage { get; }
-
-        /// <summary>
         /// Gets or sets the flag identifying, if the connection should be opened in new window or in TabControl.
         /// False by default.
         /// </summary>

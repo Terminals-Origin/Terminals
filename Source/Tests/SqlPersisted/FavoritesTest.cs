@@ -159,7 +159,7 @@ namespace Tests.SqlPersisted
             // try to access on not saved favorite
             this.PrimaryFavorites.Add(favorite);
             this.PrimaryFavorites.UpdateFavoriteIcon(favorite, IMAGE_FILE);
-            Image favoriteIcon = favorite.ToolBarIconImage;
+            Image favoriteIcon = this.PrimaryFavorites.LoadFavoriteIcon(favorite);
 
             DbFavorite checkFavorite = this.CheckFavorites.FirstOrDefault();
 
