@@ -82,6 +82,11 @@ namespace Terminals.Data
         }
 
         private string toolBarIconFile;
+
+        /// <summary>
+        /// Gets or sets the absolute path to the tool bar icon file, if custom icon was assigned.
+        /// To directly access the icon image use <see cref="ToolBarIconImage"/>
+        /// </summary>
         public string ToolBarIconFile
         {
             get

@@ -15,6 +15,8 @@ namespace Terminals.Forms.EditFavorite
     internal partial class GeneralPropertiesUserControl : UserControl
     {
         private readonly Settings settings = Settings.Instance;
+        private readonly ConnectionManager connectionManager = ConnectionManager.Instance;
+        private readonly IFavorites favorites = Persistence.Instance.Favorites;
 
         internal string ServerNameText { get { return this.cmbServers.Text.Trim(); } }
 
@@ -35,8 +37,6 @@ namespace Terminals.Forms.EditFavorite
         private RasControl rasControl;
 
         private bool canValidate;
-
-        private readonly ConnectionManager connectionManager = ConnectionManager.Instance;
 
         public event Action<string> ProtocolChanged;
 
@@ -265,7 +265,7 @@ namespace Terminals.Forms.EditFavorite
         private void FillDescriptionProperties(IFavorite favorite)
         {
             favorite.NewWindow = this.NewWindowCheckbox.Checked;
-            favorite.ToolBarIconFile = this.currentToolBarFileName;
+            this.favorites.UpdateFavoriteIcon(favorite, this.currentToolBarFileName);
         }
 
         private void FillGeneralProrperties(IFavorite favorite)
@@ -307,8 +307,7 @@ namespace Terminals.Forms.EditFavorite
         {
             this.NewWindowCheckbox.Checked = favorite.NewWindow;
             this.chkAddtoToolbar.Checked = settings.HasToolbarButton(favorite.Id);
-            this.pictureBox2.Image = favorite.ToolBarIconImage;
-            this.currentToolBarFileName = favorite.ToolBarIconFile;
+            this.pictureBox2.Image = this.favorites.LoadFavoriteIcon(favorite);
         }
 
         internal void LoadMRUs()

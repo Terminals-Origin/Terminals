@@ -86,7 +86,7 @@ namespace Terminals.Data
             return Connection.Terminalsicon;
         }
 
-        internal Image GetFavoriteIcon(IFavorite favorite)
+        internal Image GetFavoriteIcon(Favorite favorite)
         {
             if (String.IsNullOrEmpty(favorite.ToolBarIconFile))
             {

@@ -329,7 +329,7 @@ namespace Terminals.Data
         {
             var toUpdate = favorite as Favorite;
             if (toUpdate.ToolBarIconImage == null)
-                toUpdate.ToolBarIconImage = favoriteIcons.GetFavoriteIcon(favorite);
+                toUpdate.ToolBarIconImage = favoriteIcons.GetFavoriteIcon(toUpdate);
             return toUpdate.ToolBarIconImage;
         }
 
