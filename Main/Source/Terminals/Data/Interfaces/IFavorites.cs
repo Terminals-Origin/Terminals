@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Terminals.Data
 {
@@ -94,5 +95,18 @@ namespace Terminals.Data
         /// Saves changes, if delayed save isn't required.
         /// </summary>
         void ApplyUserNameToAllFavorites(List<IFavorite> selectedFavorites, string newUserName);
+
+        /// <summary>
+        /// Stores new icon for selected favorite.
+        /// </summary>
+        /// <param name="favorite">Not null favorite to be updated.</param>
+        /// <param name="imageFilePath">Full path to the file to be applied as new favorite icon.</param>
+        void UpdateFavoriteIcon(IFavorite favorite, string imageFilePath);
+
+        /// <summary>
+        /// Loads icon image for selected favorite. Returns not null custom icon or default based on favorite protocol.
+        /// </summary>
+        /// <param name="favorite">Not null favorite for which to obtain the icon.</param>
+        Image LoadFavoriteIcon(IFavorite favorite);
     }
 }

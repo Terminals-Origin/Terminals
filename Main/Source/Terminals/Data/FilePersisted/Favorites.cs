@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using System.Drawing;
 using Terminals.Configuration;
 using Terminals.Data.Credentials;
 using Terminals.Data.FilePersisted;
@@ -12,16 +13,20 @@ namespace Terminals.Data
     {
         private readonly DataDispatcher dispatcher;
         private readonly FilePersistence persistence;
+
+        private readonly FavoriteIcons favoriteIcons;
+
         private readonly Groups groups;
         private readonly Dictionary<Guid, IFavorite> cache;
 
         private readonly FavoriteBatchUpdates batchUpdates;
 
-        private PersistenceSecurity security;
+        private readonly PersistenceSecurity security;
 
-        internal Favorites(FilePersistence persistence)
+        internal Favorites(FilePersistence persistence, FavoriteIcons favoriteIcons)
         {
             this.persistence = persistence;
+            this.favoriteIcons = favoriteIcons;
             this.security = persistence.Security;
             this.dispatcher = persistence.Dispatcher;
             this.groups = this.persistence.GroupsStore;
@@ -311,6 +316,21 @@ namespace Terminals.Data
         {
             this.batchUpdates.ApplyUserNameToFavorites(selectedFavorites, newUserName);
             this.SaveAndReportFavoritesUpdate(selectedFavorites);
+        }
+
+        public void UpdateFavoriteIcon(IFavorite favorite, string imageFilePath)
+        {
+            var toUpdate = favorite as Favorite;
+            toUpdate.ToolBarIconFile = imageFilePath;
+            this.SaveAndReportFavoriteUpdate(toUpdate);
+        }
+
+        public Image LoadFavoriteIcon(IFavorite favorite)
+        {
+            var toUpdate = favorite as Favorite;
+            if (toUpdate.ToolBarIconImage == null)
+                toUpdate.ToolBarIconImage = favoriteIcons.GetFavoriteIcon(favorite);
+            return toUpdate.ToolBarIconImage;
         }
 
         #endregion
