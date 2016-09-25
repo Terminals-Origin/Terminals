@@ -157,13 +157,15 @@ namespace Tests.SqlPersisted
             IFavorite favorite = this.CreateTestFavorite();
             const string IMAGE_FILE = "ControlPanel.png";
             // try to access on not saved favorite
-            favorite.ToolBarIconFile = IMAGE_FILE;
-            Image favoriteIcon = favorite.ToolBarIconImage;
             this.PrimaryFavorites.Add(favorite);
+            this.PrimaryFavorites.UpdateFavoriteIcon(favorite, IMAGE_FILE);
+            Image favoriteIcon = favorite.ToolBarIconImage;
+
             DbFavorite checkFavorite = this.CheckFavorites.FirstOrDefault();
 
             Assert.IsNotNull(favoriteIcon, "Icon wasn't assigned successfully");
-            Assert.IsNotNull(checkFavorite.ToolBarIconImage, "Icon didn't reach the database");
+            var loadedIcon = this.SecondaryFavorites.LoadFavoriteIcon(checkFavorite);
+            Assert.IsNotNull(loadedIcon, "Icon didn't reach the database");
             Image expectedImage = Image.FromFile(Path.Combine(this.TestContext.DeploymentDirectory, IMAGE_FILE));
             Assert.IsTrue(ImageCompare(expectedImage, favoriteIcon), "The file wasnt assigned properly");
         }

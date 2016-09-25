@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Infrastructure;
+using System.Drawing;
 using System.Linq;
 using System.Transactions;
 using Terminals.Connections;
@@ -32,13 +33,17 @@ namespace Terminals.Data.DB
 
         private readonly ConnectionManager connectionManager;
 
+        private readonly DbFavoriteImagesStore favoriteIcons;
+
         internal Favorites(Groups groups, StoredCredentials credentials,
-            PersistenceSecurity persistenceSecurity, DataDispatcher dispatcher, ConnectionManager connectionManager)
+            PersistenceSecurity persistenceSecurity, DataDispatcher dispatcher,
+            ConnectionManager connectionManager, FavoriteIcons favoriteIcons)
         {
             this.groups = groups;
             this.credentials = credentials;
             this.dispatcher = dispatcher;
             this.connectionManager = connectionManager;
+            this.favoriteIcons = new DbFavoriteImagesStore(this.dispatcher, favoriteIcons);
             this.batchActions = new FavoritesBatchActions(this, this.cache, this.dispatcher, persistenceSecurity);
         }
 
@@ -307,6 +312,25 @@ namespace Terminals.Data.DB
         public void ApplyUserNameToAllFavorites(List<IFavorite> selectedFavorites, string newUserName)
         {
             this.batchActions.ApplyUserNameToFavorites(selectedFavorites, newUserName);
+        }
+
+        public void UpdateFavoriteIcon(IFavorite favorite, string imageFilePath)
+        {
+            var toUpdate = favorite as DbFavorite;
+            // todo what if the icon is assigned when copying favorite? It is not save this way.
+            this.favoriteIcons.AssingNewIcon(toUpdate, imageFilePath);
+
+            using (Database database = DatabaseConnections.CreateInstance())
+            {
+                this.favoriteIcons.UpdateImageInDatabase(toUpdate, database);
+            }
+        }
+
+        public Image LoadFavoriteIcon(IFavorite favorite)
+        {
+            var toUpdate = favorite as DbFavorite;
+            this.favoriteIcons.LoadImageFromDatabase(toUpdate);
+            return toUpdate.ToolBarIconImage;
         }
 
         private void EnsureCache()

@@ -110,7 +110,6 @@ namespace Terminals.Data.DB
             }
             set
             {
-                this.toolBarIcon = FavoriteIcons.Instance.LoadImage(value, this);
             }
         }
 
@@ -121,10 +120,11 @@ namespace Terminals.Data.DB
         {
             get
             {
-                if (this.toolBarIcon == null)
-                    this.Details.LoadImageFromDatabase();
-
                 return this.toolBarIcon;
+            }
+            set
+            {
+                this.toolBarIcon = value;
             }
         }
 
@@ -212,7 +212,7 @@ namespace Terminals.Data.DB
             this.Notes = source.Notes;
             this.Port = source.Port;
             this.ServerName = source.ServerName;
-            this.toolBarIcon = source.ToolBarIconImage;
+            this.ToolBarIconImage = source.ToolBarIconImage;
             // protocolProperties don't have a favorite Id reference, so we can overwrite complete content
             ProtocolOptions sourceProperties = source.protocolProperties.Copy();
             this.ChangeProtocol(source.Protocol, sourceProperties);

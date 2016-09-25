@@ -97,15 +97,20 @@ namespace Terminals.Data
         }
 
         private Image toolBarIconImage;
+
+        /// <summary>
+        /// Gets or sets the loaded image. Used sa cache to prevent redundant loading from disk.
+        /// </summary>
         [XmlIgnore]
         public Image ToolBarIconImage
         {
             get
             {
-                // cache the image to safe the resources
-                if(this.toolBarIconImage == null)
-                    this.toolBarIconImage = FavoriteIcons.Instance.GetFavoriteIcon(this);
-                return this.toolBarIconImage;
+               return this.toolBarIconImage;
+            }
+            set
+            {
+                this.toolBarIconImage = value;
             }
         }
 

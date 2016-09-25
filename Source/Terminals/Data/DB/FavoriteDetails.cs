@@ -31,15 +31,6 @@ namespace Terminals.Data.DB
                 }
             }
 
-            private bool ShouldSaveIcon
-            {
-                get
-                {
-                    return this.favorite.toolBarIcon != null &&
-                           !FavoriteIcons.Instance.IsDefaultProtocolImage(this.favorite.toolBarIcon);
-                }
-            }
-
             public DbCredentialBase CredentialBaseToRemove
             {
                 get
@@ -118,7 +109,6 @@ namespace Terminals.Data.DB
                     this.Security.Save();
                 
                 this.SaveProtocolProperties(database);
-                this.UpdateImageInDatabase(database);
             }
 
             /// <summary>
@@ -141,36 +131,6 @@ namespace Terminals.Data.DB
                 {
                     this.Dispatcher.ReportActionError(SaveProtocolProperties, database, this.favorite,
                                                       exception, "Unable to Save favorite protocol properties to database.\r\nDatabase connection lost.");
-                }
-            }
-
-            private void UpdateImageInDatabase(Database database)
-            {
-                try
-                {
-                    this.TryUpdateImageInDatabase(database);
-                }
-                catch (DbUpdateException)
-                {
-                    // recovery will be done by next update
-                    Logging.Error("Unable to update favorite image in database because of concurrency exception");
-                }
-                catch (EntityException exception)
-                {
-                    this.Dispatcher.ReportActionError(UpdateImageInDatabase, database, this.favorite, exception,
-                       "Unable to Save favorite icon to database.\r\nDatabase connection lost.");
-                }
-            }
-
-            private void TryUpdateImageInDatabase(Database database)
-            {
-                if (this.ShouldSaveIcon)
-                {
-                    byte[] imageData = FavoriteIcons.Instance.ImageToBinary(this.favorite.toolBarIcon);
-                    if (imageData.Length > 0)
-                    {
-                        database.SetFavoriteIcon(this.favorite.Id, imageData);
-                    }
                 }
             }
 
@@ -212,38 +172,6 @@ namespace Terminals.Data.DB
                     Type propertiesType = this.favorite.protocolProperties.GetType();
                     return Serialize.DeSerializeXML(serializedProperties, propertiesType) as ProtocolOptions;
                 }
-            }
-
-            internal void LoadImageFromDatabase()
-            {
-                try
-                {
-                    this.TryLoadImageFromDatabase();
-                }
-                catch (DbUpdateException)
-                {
-                    // assign default image and let fix by next refresh
-                    this.AssignImageByLoadedData(new byte[0]);
-                }
-                catch (EntityException exception)
-                {
-                    this.Dispatcher.ReportActionError(LoadImageFromDatabase, this.favorite, exception,
-                        "Unable to load favorite icon from database.\r\nDatabase connection lost.");
-                }
-            }
-
-            private void TryLoadImageFromDatabase()
-            {
-                using (Database database = DatabaseConnections.CreateInstance())
-                {
-                    byte[] imageData = database.GetFavoriteIcon(this.favorite.Id);
-                    this.AssignImageByLoadedData(imageData);
-                }
-            }
-
-            private void AssignImageByLoadedData(byte[] imageData)
-            {
-                this.favorite.toolBarIcon = FavoriteIcons.Instance.LoadImage(imageData, this.favorite);
             }
 
             /// <summary>
