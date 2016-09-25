@@ -67,7 +67,7 @@ namespace Terminals.Forms.Controls
         {
             InitializeComponent();
 
-            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.GetProtocolIcons);
+            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.Instance.GetProtocolIcons);
             iconsBuilder.Build(this.imageListIcons);
         }
 

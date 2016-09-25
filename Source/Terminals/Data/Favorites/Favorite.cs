@@ -104,7 +104,7 @@ namespace Terminals.Data
             {
                 // cache the image to safe the resources
                 if(this.toolBarIconImage == null)
-                    this.toolBarIconImage = FavoriteIcons.GetFavoriteIcon(this);
+                    this.toolBarIconImage = FavoriteIcons.Instance.GetFavoriteIcon(this);
                 return this.toolBarIconImage;
             }
         }
