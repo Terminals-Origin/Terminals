@@ -14,9 +14,12 @@ namespace Terminals.Data
     {
         private readonly ConnectionManager connectionManager;
 
+        private readonly IFavorites favorites;
+
         private ModelConverterV1ToV2(IPersistence persistence, ConnectionManager connectionManager): base(persistence)
         {
             this.connectionManager = connectionManager;
+            this.favorites = persistence.Favorites;
         }
 
         /// <summary>
@@ -45,14 +48,14 @@ namespace Terminals.Data
 
         private void ConvertGeneralProperties(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
-            connectionManager.ChangeProtocol(result, sourceFavorite.Protocol);
+            this.connectionManager.ChangeProtocol(result, sourceFavorite.Protocol);
             result.Name = sourceFavorite.Name;
             result.Port = sourceFavorite.Port;
             result.ServerName = sourceFavorite.ServerName;
-            result.ToolBarIconFile = sourceFavorite.ToolBarIcon;
             result.NewWindow = sourceFavorite.NewWindow;
             result.DesktopShare = sourceFavorite.DesktopShare;
             result.Notes = sourceFavorite.Notes;
+            this.favorites.UpdateFavoriteIcon(result, sourceFavorite.ToolBarIcon);
         }
 
         private void ConvertSecurity(IFavorite result, FavoriteConfigurationElement sourceFavorite)

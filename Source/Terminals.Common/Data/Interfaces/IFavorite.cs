@@ -38,12 +38,6 @@ namespace Terminals.Data
         String ServerName { get; set; }
 
         /// <summary>
-        /// Gets or sets the absolute path to the tool bar icon file, if custom icon was assigned.
-        /// To directly access the icon image use <see cref="ToolBarIconImage"/>
-        /// </summary>
-        String ToolBarIconFile { get; set; }
-
-        /// <summary>
         /// Gets the image loaded from assigned icon file.
         /// </summary>
         Image ToolBarIconImage { get; }

@@ -98,9 +98,9 @@ namespace Tests.UserInterface
 
         private bool AssertGetFavoriteIcon(Tuple<string, Image> testCase)
         {
-            var mockFavorite = new Mock<IFavorite>();
-            mockFavorite.SetupGet(f => f.Protocol).Returns(testCase.Item1);
-            var icon = icons.GetFavoriteIcon(mockFavorite.Object);
+            var favorite = new Favorite();
+            favorite.Protocol = testCase.Item1;
+            var icon = icons.GetFavoriteIcon(favorite);
             bool iconEquals = icon == testCase.Item2;
             this.TestContext.WriteLine("{0} icon equals: {1}", testCase.Item1, iconEquals);
             return iconEquals;

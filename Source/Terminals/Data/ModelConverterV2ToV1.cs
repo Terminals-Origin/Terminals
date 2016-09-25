@@ -53,7 +53,7 @@ namespace Terminals.Data
             result.ServerName = sourceFavorite.ServerName;
             result.Url = UrlConverter.ExtractAbsoluteUrl(sourceFavorite);
 
-            result.ToolBarIcon = sourceFavorite.ToolBarIconFile;
+            // stoping the backward compatibility: result.ToolBarIcon = sourceFavorite.ToolBarIconFile;
             result.NewWindow = sourceFavorite.NewWindow;
             result.DesktopShare = sourceFavorite.DesktopShare;
             result.Notes = sourceFavorite.Notes;
