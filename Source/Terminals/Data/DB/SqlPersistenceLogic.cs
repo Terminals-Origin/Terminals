@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Timers;
+using Terminals.Connections;
 using Terminals.Data.History;
 
 namespace Terminals.Data.DB
@@ -92,7 +93,7 @@ namespace Terminals.Data.DB
 
             this.groups = new Groups();
             this.credentials = new StoredCredentials(this.Dispatcher);
-            this.favorites = new Favorites(this.groups, this.credentials, this.security, this.Dispatcher);
+            this.favorites = new Favorites(this.groups, this.credentials, this.security, this.Dispatcher, ConnectionManager.Instance);
             this.groups.AssignStores(this.Dispatcher, this.favorites);
             this.connectionHistory = new ConnectionHistory(this.favorites, this.Dispatcher);
             this.Factory = new Factory(this.groups, this.favorites, this.credentials, this.Dispatcher);

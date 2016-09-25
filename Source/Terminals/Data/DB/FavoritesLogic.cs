@@ -28,17 +28,17 @@ namespace Terminals.Data.DB
 
         private bool isLoaded;
 
-        private readonly PersistenceSecurity persistenceSecurity;
-
         private readonly FavoritesBatchActions batchActions;
 
+        private readonly ConnectionManager connectionManager;
+
         internal Favorites(Groups groups, StoredCredentials credentials,
-            PersistenceSecurity persistenceSecurity, DataDispatcher dispatcher)
+            PersistenceSecurity persistenceSecurity, DataDispatcher dispatcher, ConnectionManager connectionManager)
         {
             this.groups = groups;
             this.credentials = credentials;
-            this.persistenceSecurity = persistenceSecurity;
             this.dispatcher = dispatcher;
+            this.connectionManager = connectionManager;
             this.batchActions = new FavoritesBatchActions(this, this.cache, this.dispatcher, persistenceSecurity);
         }
 
@@ -378,7 +378,7 @@ namespace Terminals.Data.DB
         {
             favorite.AssignStores(this.groups, this.credentials, this.dispatcher);
             // not real change, but synchronizing loaded properties to empty state, before details are loaded from DB.
-            var correctOptions = ConnectionManager.Instance.UpdateProtocolPropertiesByProtocol(favorite.Protocol, new EmptyOptions());
+            var correctOptions = this.connectionManager.UpdateProtocolPropertiesByProtocol(favorite.Protocol, new EmptyOptions());
             favorite.ChangeProtocol(favorite.Protocol, correctOptions);
         }
 
