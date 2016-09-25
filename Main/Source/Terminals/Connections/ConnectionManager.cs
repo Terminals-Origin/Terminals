@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
-using Terminals.Connections.ICA;
 using Terminals.Connections.Rdp;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
@@ -57,7 +56,7 @@ namespace Terminals.Connections
                 //{ VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin() },
                 {TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin()},
                 {SshConnectionPlugin.SSH, new SshConnectionPlugin()},
-                {ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin()}
+                //{ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin()}
             };
 
             LoadExternalPlugins(plugins);

@@ -1579,10 +1579,6 @@
       <Project>{fcd4beca-9923-4bb0-bf57-8e8bcd0f784c}</Project>
       <Name>Terminals.External</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Terminals.Plugins.Ica\Terminals.Plugins.Ica.csproj">
-      <Project>{bb4a4cc7-c449-4f81-8395-7806cc1bdfa8}</Project>
-      <Name>Terminals.Plugins.Ica</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Terminals.Plugins.Rdp\Terminals.Plugins.Rdp.csproj">
       <Project>{f0c60ed2-9a47-4364-af57-505bc3e953d5}</Project>
       <Name>Terminals.Plugins.Rdp</Name>
