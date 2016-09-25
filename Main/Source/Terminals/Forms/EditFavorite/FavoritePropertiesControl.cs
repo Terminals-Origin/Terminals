@@ -46,7 +46,7 @@ namespace Terminals.Forms.EditFavorite
         {
             this.InitializeComponent();
 
-            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.GetProtocolIcons);
+            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.Instance.GetProtocolIcons);
             iconsBuilder.Build(this.treeIcons);
             this.generalPanel1.AssignRasControl(this.rasControl1);
         }
@@ -87,7 +87,7 @@ namespace Terminals.Forms.EditFavorite
 
         private void UpdateProtocolOptionsNodeIcons(string newProtocol)
         {
-            string imageKey = FavoriteIcons.GetTreeviewImageListKey(newProtocol);
+            string imageKey = FavoriteIcons.Instance.GetTreeviewImageListKey(newProtocol);
             UpdateNodeIcon(this.ProtocolOptionsNode, imageKey);
         }
 

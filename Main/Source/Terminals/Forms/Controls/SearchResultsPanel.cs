@@ -90,7 +90,7 @@ namespace Terminals.Forms.Controls
         {
             InitializeComponent();
 
-            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.GetProtocolIcons);
+            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.Instance.GetProtocolIcons);
             iconsBuilder.Build(this.protocolsImageList);
         }
 
@@ -107,7 +107,7 @@ namespace Terminals.Forms.Controls
             item.Tag = favorite;
             item.Text = favorite.Name;
             item.ToolTipText = this.toolTipBuilder.BuildTooTip(favorite);
-            item.ImageKey = FavoriteIcons.GetTreeviewImageListKey(favorite.Protocol);
+            item.ImageKey = FavoriteIcons.Instance.GetTreeviewImageListKey(favorite.Protocol);
             return item;
         }
 

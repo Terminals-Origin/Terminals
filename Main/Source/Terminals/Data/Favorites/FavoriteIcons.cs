@@ -12,7 +12,7 @@ namespace Terminals.Data
     /// <summary>
     /// Loading of icons from files
     /// </summary>
-    internal static class FavoriteIcons
+    internal class FavoriteIcons
     {
         private const string DEFAULT_ICONKEY = "terminalsicon.png";
 
@@ -29,25 +29,30 @@ namespace Terminals.Data
             }
         }
 
-        private static ConnectionManager connectionManager = ConnectionManager.Instance;
+        private Dictionary<string, Image> pluginIcons;
 
         /// <summary>
-        /// For testability purpose to be removed.
+        /// Gets the thread safe singleton instance. Use only for startup procedure, will removed in the future.
         /// </summary>
-        public static ConnectionManager ConnectionManager
+        public static FavoriteIcons Instance
         {
-            get { return connectionManager; }
-            set
+            get
             {
-                connectionManager = value;
-                pluginIcons = connectionManager.GetPluginIcons();
+                return Nested.instance;
             }
         }
 
-        private static Dictionary<string, Image> pluginIcons = ConnectionManager.GetPluginIcons();
+        private static class Nested
+        {
+            internal static readonly FavoriteIcons instance = new FavoriteIcons(ConnectionManager.Instance);
+        }
 
+        public FavoriteIcons(ConnectionManager connectionManager)
+        {
+            this.pluginIcons = connectionManager.GetPluginIcons();
+        }
 
-        internal static IDictionary<string, Image> GetProtocolIcons()
+        internal IDictionary<string, Image> GetProtocolIcons()
         {
             Dictionary<string, Image> uiIcons = pluginIcons.ToDictionary(k => CreateIconKey(k.Key), v => v.Value);
             uiIcons.Add(DEFAULT_ICONKEY, Connection.Terminalsicon);
@@ -62,7 +67,7 @@ namespace Terminals.Data
         /// <summary>
         /// Gets the icon file name by icons defined in FavoritesTreeView imageListIcons
         /// </summary>
-        internal static string GetTreeviewImageListKey(string protocol)
+        internal string GetTreeviewImageListKey(string protocol)
         {
             if (pluginIcons.ContainsKey(protocol))
                 return CreateIconKey(protocol);
@@ -73,7 +78,7 @@ namespace Terminals.Data
         /// <summary>
         /// Gets the icon indexes by icons defined in FavoritesTreeView imageListIcons
         /// </summary>
-        private static Image GetProtocolImage(IFavorite favorite)
+        private Image GetProtocolImage(IFavorite favorite)
         {
             if (pluginIcons.ContainsKey(favorite.Protocol))
                 return pluginIcons[favorite.Protocol];
@@ -81,7 +86,7 @@ namespace Terminals.Data
             return Connection.Terminalsicon;
         }
 
-        internal static Image GetFavoriteIcon(IFavorite favorite)
+        internal Image GetFavoriteIcon(IFavorite favorite)
         {
             if (String.IsNullOrEmpty(favorite.ToolBarIconFile))
             {
@@ -108,13 +113,13 @@ namespace Terminals.Data
             return defaultIcon;
         }
 
-        internal static Image LoadImage(string value, IFavorite favorite)
+        internal Image LoadImage(string value, IFavorite favorite)
         {
             byte[] imageData = LoadImage(value);
             return LoadImage(imageData, favorite);
         }
 
-        internal static Image LoadImage(byte[] imageData, IFavorite favorite)
+        internal Image LoadImage(byte[] imageData, IFavorite favorite)
         {
             try
             {
@@ -174,7 +179,7 @@ namespace Terminals.Data
             return newFileInThumbsDir;
         }
 
-        internal static byte[] ImageToBinary(Image image)
+        internal byte[] ImageToBinary(Image image)
         {
             if (IsDefaultProtocolImage(image))
                 return EmptyImageData;
@@ -186,7 +191,7 @@ namespace Terminals.Data
             }
         }
 
-        internal static bool IsDefaultProtocolImage(Image image)
+        internal bool IsDefaultProtocolImage(Image image)
         {
             return Connection.Terminalsicon == image || pluginIcons.ContainsValue(image);
         }

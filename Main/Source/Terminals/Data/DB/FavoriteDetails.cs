@@ -36,7 +36,7 @@ namespace Terminals.Data.DB
                 get
                 {
                     return this.favorite.toolBarIcon != null &&
-                           !FavoriteIcons.IsDefaultProtocolImage(this.favorite.toolBarIcon);
+                           !FavoriteIcons.Instance.IsDefaultProtocolImage(this.favorite.toolBarIcon);
                 }
             }
 
@@ -166,7 +166,7 @@ namespace Terminals.Data.DB
             {
                 if (this.ShouldSaveIcon)
                 {
-                    byte[] imageData = FavoriteIcons.ImageToBinary(this.favorite.toolBarIcon);
+                    byte[] imageData = FavoriteIcons.Instance.ImageToBinary(this.favorite.toolBarIcon);
                     if (imageData.Length > 0)
                     {
                         database.SetFavoriteIcon(this.favorite.Id, imageData);
@@ -243,7 +243,7 @@ namespace Terminals.Data.DB
 
             private void AssignImageByLoadedData(byte[] imageData)
             {
-                this.favorite.toolBarIcon = FavoriteIcons.LoadImage(imageData, this.favorite);
+                this.favorite.toolBarIcon = FavoriteIcons.Instance.LoadImage(imageData, this.favorite);
             }
 
             /// <summary>

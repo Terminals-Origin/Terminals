@@ -110,7 +110,7 @@ namespace Terminals.Data.DB
             }
             set
             {
-                this.toolBarIcon = FavoriteIcons.LoadImage(value, this);
+                this.toolBarIcon = FavoriteIcons.Instance.LoadImage(value, this);
             }
         }
 

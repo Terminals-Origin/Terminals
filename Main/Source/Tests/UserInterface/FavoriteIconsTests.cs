@@ -26,6 +26,8 @@ namespace Tests.UserInterface
 
         private const string UNKNOWNPROTOCOL = "UnknownProtocol";
 
+        private FavoriteIcons icons = new FavoriteIcons(ConnectionManagerOtionsTests.MockConnectionManager);
+
         public TestContext TestContext { get; set; }
 
         [TestMethod]
@@ -59,7 +61,7 @@ namespace Tests.UserInterface
 
         private bool AssertGetTreeviewImageListKey(Tuple<string, string> testCase)
         {
-            var iconKey = FavoriteIcons.GetTreeviewImageListKey(testCase.Item1);
+            var iconKey = icons.GetTreeviewImageListKey(testCase.Item1);
             const string FORMAT = "{0}: Expected '{1}', resolved '{2}'";
             this.TestContext.WriteLine(FORMAT, testCase.Item1, testCase.Item2, iconKey);
             return testCase.Item2 == iconKey;
@@ -68,7 +70,6 @@ namespace Tests.UserInterface
         [TestMethod]
         public void AllKnownProtocols_GetFavoriteIcon_ReturnPluginIcon()
         {
-            FavoriteIcons.ConnectionManager = ConnectionManagerOtionsTests.MockConnectionManager;
             var testData = new[]
             {
                 new Tuple<string, Image>(KnownConnectionConstants.RDP, RdpConnectionPlugin.TreeIconRdp),
@@ -85,7 +86,6 @@ namespace Tests.UserInterface
 
             bool iconsEquals = testData.All(this.AssertGetFavoriteIcon);
             Assert.IsTrue(iconsEquals, "All protocols have to return their plugin icon.");
-            FavoriteIcons.ConnectionManager = ConnectionManager.Instance;
         }
 
         [TestMethod]
@@ -100,7 +100,7 @@ namespace Tests.UserInterface
         {
             var mockFavorite = new Mock<IFavorite>();
             mockFavorite.SetupGet(f => f.Protocol).Returns(testCase.Item1);
-            var icon = FavoriteIcons.GetFavoriteIcon(mockFavorite.Object);
+            var icon = icons.GetFavoriteIcon(mockFavorite.Object);
             bool iconEquals = icon == testCase.Item2;
             this.TestContext.WriteLine("{0} icon equals: {1}", testCase.Item1, iconEquals);
             return iconEquals;
@@ -109,8 +109,8 @@ namespace Tests.UserInterface
         [TestMethod]
         public void AllKnownProtocols_IsDefaultProtocolImage_ReturnTrue()
         {
-            IEnumerable<Image> testCase = FavoriteIcons.GetProtocolIcons().Values;
-            bool allDefault = testCase.All(FavoriteIcons.IsDefaultProtocolImage);
+            IEnumerable<Image> testCase = icons.GetProtocolIcons().Values;
+            bool allDefault = testCase.All(icons.IsDefaultProtocolImage);
             Assert.IsTrue(allDefault, "The produced default icons have to be identified as produced.");
         }
     }
