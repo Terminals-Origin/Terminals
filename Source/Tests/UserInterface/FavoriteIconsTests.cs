@@ -18,7 +18,7 @@ using Tests.Connections;
 namespace Tests.UserInterface
 {
     [TestClass]
-    public class FavoriteIconsTests : PluginBasedTests
+    public class FavoriteIconsTests
     {
         private const string UNKNOWN_ICON_KEY = "terminalsicon.png";
 
