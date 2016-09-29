@@ -1539,10 +1539,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Granados\Granados.csproj">
-      <Project>{9780D85D-2E12-4747-9E08-DEDB95A71FC3}</Project>
-      <Name>Granados</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HexEditor\HexEditor.csproj">
       <Project>{405E4F74-CE98-4BDC-8B78-F3293F4F7BBF}</Project>
       <Name>HexEditor</Name>
@@ -1559,17 +1555,9 @@
       <Project>{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}</Project>
       <Name>SqlScriptRunner</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SSHClient\SSHClient.csproj">
-      <Project>{6F218F20-AE4B-4966-A821-4BDE214B8BFF}</Project>
-      <Name>SSHClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TabControl\TabControl.csproj">
       <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>
       <Name>TabControl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TerminalEmulator\TerminalEmulator.csproj">
-      <Project>{933C6FDB-9617-4F19-89AF-C5D373F88479}</Project>
-      <Name>TerminalEmulator</Name>
     </ProjectReference>
     <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">
       <Project>{1f720fd0-21a5-4bed-90f6-02cdabb8854d}</Project>
@@ -1582,10 +1570,6 @@
     <ProjectReference Include="..\Terminals.Plugins.Rdp\Terminals.Plugins.Rdp.csproj">
       <Project>{f0c60ed2-9a47-4364-af57-505bc3e953d5}</Project>
       <Name>Terminals.Plugins.Rdp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Terminals.Plugins.Terminal\Terminals.Plugins.Terminal.csproj">
-      <Project>{8e972a0c-57e2-4e5c-9ef5-d7cd681188c5}</Project>
-      <Name>Terminals.Plugins.Terminal</Name>
     </ProjectReference>
     <ProjectReference Include="..\Terminals.Plugins.Vmrc\Terminals.Plugins.Vmrc.csproj">
       <Project>{c841ccf6-4793-41b7-835e-f749e2525963}</Project>

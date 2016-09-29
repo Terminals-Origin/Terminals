@@ -1,4 +1,6 @@
-﻿namespace Terminals.Forms.EditFavorite
+﻿using Terminals.Common.Configuration;
+
+namespace Terminals.Forms.EditFavorite
 {
     partial class SshControl
     {
@@ -33,7 +35,7 @@
             // 
             // SSHPreferences
             // 
-            this.SSHPreferences.AuthMethod = SSHClient.AuthMethod.PublicKey;
+            this.SSHPreferences.AuthMethod = AuthMethod.PublicKey;
             this.SSHPreferences.KeyTag = "";
             this.SSHPreferences.Location = new System.Drawing.Point(0, 0);
             this.SSHPreferences.Margin = new System.Windows.Forms.Padding(4);

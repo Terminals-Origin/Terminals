@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using Terminals.Common.Configuration;
 
 namespace Terminals.Integration.Import
 {
@@ -70,12 +71,12 @@ namespace Terminals.Integration.Import
             return tmp;
         }
 
-        internal SSHClient.AuthMethod ReadAuthMethod()
+        internal AuthMethod ReadAuthMethod()
         {
-            SSHClient.AuthMethod tmp = SSHClient.AuthMethod.Password;
+            AuthMethod tmp = AuthMethod.Password;
             string str = this.ReadString();
             if (!String.IsNullOrEmpty(str))
-                tmp = (SSHClient.AuthMethod)Enum.Parse(typeof(SSHClient.AuthMethod), str);
+                tmp = (AuthMethod)Enum.Parse(typeof(AuthMethod), str);
             return tmp;
         }
 

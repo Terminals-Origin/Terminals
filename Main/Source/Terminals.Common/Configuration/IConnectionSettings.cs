@@ -1,4 +1,4 @@
-using SSHClient;
+using Terminals.Common.Configuration;
 
 namespace Terminals.Configuration
 {

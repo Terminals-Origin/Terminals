@@ -1,14 +1,7 @@
-/*
- * Created by SharpDevelop.
- * User: julian_cable
- * Date: 18/01/2009
- * Time: 09:02
- * 
- */
 using System;
 using System.Configuration;
 
-namespace SSHClient
+namespace Terminals.Common.Configuration
 {
 	/// <summary>
 	/// SSHKeysSection is a special configuration section for SSH keys.
@@ -46,12 +39,12 @@ namespace SSHClient
 
         public void AddKey(string name, string key)
         {
-        	Keys.Add(new KeyConfigElement(name, key));
+        	this.Keys.Add(new KeyConfigElement(name, key));
         }
  
         public string Key(string name)
         {
-        	return Keys[name].Key;
+        	return this.Keys[name].Key;
         }
 	}	
 	[ConfigurationCollection(typeof(KeyConfigElement),
@@ -77,15 +70,15 @@ namespace SSHClient
         {
             get
             {
-                return (KeyConfigElement)BaseGet(index);
+                return (KeyConfigElement)this.BaseGet(index);
             }
             set
             {
-                if (BaseGet(index) != null)
+                if (this.BaseGet(index) != null)
                 {
-                    BaseRemoveAt(index);
+                    this.BaseRemoveAt(index);
                 }
-                BaseAdd(index, value);
+                this.BaseAdd(index, value);
             }
         }
 
@@ -93,13 +86,13 @@ namespace SSHClient
         {
             get
             {
-                return (KeyConfigElement)BaseGet(Name);
+                return (KeyConfigElement)this.BaseGet(Name);
             }
         }
 
         public void Add(KeyConfigElement key)
         {
-            BaseAdd(key, false);
+            this.BaseAdd(key, false);
             // Add custom code here.
         }
     }
@@ -109,8 +102,8 @@ namespace SSHClient
         // Constructor allowing name, and key to be specified.
         public KeyConfigElement(String newName, String newKey)
         {
-            Name = newName;
-            Key = newKey;
+            this.Name = newName;
+            this.Key = newKey;
         }
 
         // Default constructor, will use default values as defined
@@ -123,7 +116,7 @@ namespace SSHClient
         // default values for url and port.
         public KeyConfigElement(string elementName)
         {
-            Name = elementName;
+            this.Name = elementName;
         }
 
         [ConfigurationProperty("name", IsRequired = true, IsKey = true)]

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Connections.Rdp;
-using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.Web;
 using Terminals.Data;
@@ -54,8 +53,8 @@ namespace Terminals.Connections
                 {KnownConnectionConstants.HTTPS, new HttpsConnectionPlugin()},
                 //{ VncConnectionPlugin.VNC, new VncConnectionPlugin() },
                 //{ VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin() },
-                {TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin()},
-                {SshConnectionPlugin.SSH, new SshConnectionPlugin()},
+                //{TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin()},
+                //{SshConnectionPlugin.SSH, new SshConnectionPlugin()},
                 //{ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin()}
             };
 

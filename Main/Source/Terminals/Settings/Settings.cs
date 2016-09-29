@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading;
-using SSHClient;
+using Terminals.Common.Configuration;
 using Terminals.Data;
 using Terminals.Security;
 

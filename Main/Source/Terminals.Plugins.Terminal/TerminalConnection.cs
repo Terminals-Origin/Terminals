@@ -1,5 +1,6 @@
 using System;
 using System.Net.Sockets;
+using Terminals.Common.Configuration;
 using Terminals.Configuration;
 using Terminals.Connections.Terminal;
 using Terminals.Converters;
@@ -121,7 +122,7 @@ namespace Terminals.Connections
 
             String key = String.Empty;
             var options = this.Favorite.ProtocolProperties as SshOptions;
-            SSHClient.KeyConfigElement keyConfigElement = this.Settings.SSHKeys.Keys[options.CertificateKey];
+            KeyConfigElement keyConfigElement = this.Settings.SSHKeys.Keys[options.CertificateKey];
 
             if (keyConfigElement != null)
                 key = keyConfigElement.Key;

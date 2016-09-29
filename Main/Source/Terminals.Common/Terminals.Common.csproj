@@ -56,6 +56,8 @@
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\AuthMethod.cs" />
+    <Compile Include="Configuration\KeysSection.cs" />
     <Compile Include="Connections\IOptionsConverter.cs" />
     <Compile Include="Connections\IOptionsConverterFactory.cs" />
     <Compile Include="Connections\OptionsConversionContext.cs" />
@@ -141,12 +143,6 @@
     <Compile Include="TerminalsServices\SessionProcess.cs" />
     <Compile Include="TerminalsServices\TerminalServer.cs" />
     <Compile Include="TerminalsServices\TerminalServicesAPI.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SSHClient\SSHClient.csproj">
-      <Project>{6f218f20-ae4b-4966-a821-4bde214b8bff}</Project>
-      <Name>SSHClient</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Connections\Connection.resx">
