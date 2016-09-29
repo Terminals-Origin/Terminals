@@ -1,5 +1,5 @@
 ﻿using System;
-using SSHClient;
+using Terminals.Common.Configuration;
 
 namespace Terminals.Data
 {

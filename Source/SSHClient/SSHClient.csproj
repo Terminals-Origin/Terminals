@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>SSHClient</RootNamespace>
     <AssemblyName>SSHClient</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\cablej01\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
@@ -37,6 +37,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -77,7 +78,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthMethod.cs" />
     <Compile Include="KeyChooser.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -86,7 +86,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="KeyGenForm.Designer.cs" />
-    <Compile Include="KeysSection.cs" />
     <Compile Include="Preferences.Designer.cs">
       <DependentUpon>Preferences.cs</DependentUpon>
     </Compile>
@@ -120,6 +119,11 @@
     <ProjectReference Include="..\Granados\Granados.csproj">
       <Project>{9780D85D-2E12-4747-9E08-DEDB95A71FC3}</Project>
       <Name>Granados</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">
+      <Project>{1f720fd0-21a5-4bed-90f6-02cdabb8854d}</Project>
+      <Name>Terminals.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

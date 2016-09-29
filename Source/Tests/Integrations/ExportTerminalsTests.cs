@@ -21,7 +21,7 @@ namespace Tests.Integrations
     /// </summary>
     [DeploymentItem(PluginBasedTests.VNC_PLUGIN, PluginBasedTests.VNC_TARGET)]
     [DeploymentItem(PluginBasedTests.ICA_PLUGIN, PluginBasedTests.ICA_TARGET)]
-
+    [DeploymentItem(PluginBasedTests.TERMINAL_PLUGIN, PluginBasedTests.TERMINAL_TARGET)]
     [TestClass]
     public class ExportTerminalsTests : FilePersistedTestLab
     {
@@ -34,16 +34,16 @@ namespace Tests.Integrations
         {
             var testData = new[]
             {
-                //new Tuple<string, string>(KnownConnectionConstants.RDP, "sounds"),
-                //new Tuple<string, string>(KnownConnectionConstants.RDP, "enableSecuritySettings"),
-                //new Tuple<string, string>(KnownConnectionConstants.RDP, "tsgwUsageMethod"),
-                //new Tuple<string, string>(KnownConnectionConstants.RDP, "executeBeforeConnect"), // applies to all protocols
-               // new Tuple<string, string>(VncConnectionPlugin.VNC, "vncAutoScale"),
-                //new Tuple<string, string>(VmrcConnectionPlugin.VMRC, "vmrcadministratormode"),
-                //new Tuple<string, string>(TelnetConnectionPlugin.TELNET, "telnet"),
-                //new Tuple<string, string>(TelnetConnectionPlugin.TELNET, "consolerows"),
-                //new Tuple<string, string>(SshConnectionPlugin.SSH, "ssh1"),
-                //new Tuple<string, string>(SshConnectionPlugin.SSH, "consolerows"),
+                new Tuple<string, string>(KnownConnectionConstants.RDP, "sounds"),
+                new Tuple<string, string>(KnownConnectionConstants.RDP, "enableSecuritySettings"),
+                new Tuple<string, string>(KnownConnectionConstants.RDP, "tsgwUsageMethod"),
+                new Tuple<string, string>(KnownConnectionConstants.RDP, "executeBeforeConnect"), // applies to all protocols
+                new Tuple<string, string>(VncConnectionPlugin.VNC, "vncAutoScale"),
+                new Tuple<string, string>(VmrcConnectionPlugin.VMRC, "vmrcadministratormode"),
+                new Tuple<string, string>(TelnetConnectionPlugin.TELNET, "telnet"),
+                new Tuple<string, string>(TelnetConnectionPlugin.TELNET, "consolerows"),
+                new Tuple<string, string>(SshConnectionPlugin.SSH, "ssh1"),
+                new Tuple<string, string>(SshConnectionPlugin.SSH, "consolerows"),
                 new Tuple<string, string>(ICAConnectionPlugin.ICA_CITRIX, "iCAApplicationName")
             };
 

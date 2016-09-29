@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using Terminals.Common.Configuration;
 using Terminals.Converters;
 
 namespace Terminals
@@ -808,12 +809,12 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("authMethod", DefaultValue = SSHClient.AuthMethod.Password)]
-        public SSHClient.AuthMethod AuthMethod
+        [ConfigurationProperty("authMethod", DefaultValue = AuthMethod.Password)]
+        public AuthMethod AuthMethod
         {
             get
             {
-                return (SSHClient.AuthMethod)this["authMethod"];
+                return (AuthMethod)this["authMethod"];
             }
             set
             {

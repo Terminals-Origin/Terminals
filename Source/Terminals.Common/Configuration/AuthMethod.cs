@@ -1,4 +1,4 @@
-﻿namespace SSHClient
+﻿namespace Terminals.Common.Configuration
 {
     public enum AuthMethod
     {

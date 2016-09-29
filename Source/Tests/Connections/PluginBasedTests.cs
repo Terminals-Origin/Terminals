@@ -10,6 +10,7 @@ namespace Tests.Connections
     /// </summary>
     [DeploymentItem(VNC_PLUGIN, VNC_TARGET)]
     [DeploymentItem(ICA_PLUGIN, ICA_TARGET)]
+    [DeploymentItem(TERMINAL_PLUGIN, TERMINAL_TARGET)]
     [TestClass]
     public abstract class PluginBasedTests
     {
@@ -20,5 +21,9 @@ namespace Tests.Connections
         internal const string ICA_PLUGIN = "Terminals.Plugins.Ica.dll";
 
         internal const string ICA_TARGET = @"Plugins\Ica";
+
+        internal const string TERMINAL_PLUGIN = "Terminals.Plugins.Terminal.dll";
+
+        internal const string TERMINAL_TARGET = @"Plugins\Terminal";
     }
 }
