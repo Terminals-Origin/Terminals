@@ -96,8 +96,8 @@ namespace Tests.Connections
             var testData = new[]
             {
                 new Tuple<string, int>(KnownConnectionConstants.RDP, KnownConnectionConstants.RDPPort),
-                new Tuple<string, int>(VncConnectionPlugin.VNC, KnownConnectionConstants.VNCVMRCPort),
-                new Tuple<string, int>(VmrcConnectionPlugin.VMRC, KnownConnectionConstants.VNCVMRCPort),
+                new Tuple<string, int>(VncConnectionPlugin.VNC, VncConnectionPlugin.VncPort),
+                new Tuple<string, int>(VmrcConnectionPlugin.VMRC, VmrcConnectionPlugin.VMRCPort),
                 new Tuple<string, int>(TelnetConnectionPlugin.TELNET, TelnetConnectionPlugin.TelnetPort),
                 new Tuple<string, int>(SshConnectionPlugin.SSH, SshConnectionPlugin.SSHPort),
                 new Tuple<string, int>(KnownConnectionConstants.HTTP, KnownConnectionConstants.HTTPPort),
@@ -132,9 +132,9 @@ namespace Tests.Connections
             var testData = new[]
             {
                 new Tuple<int, string>(KnownConnectionConstants.RDPPort, KnownConnectionConstants.RDP),
-                new Tuple<int, string>(KnownConnectionConstants.VNCVMRCPort, VncConnectionPlugin.VNC),
+                new Tuple<int, string>(VncConnectionPlugin.VncPort, VncConnectionPlugin.VNC),
                 // imposible to distinquish vnc and vmrc, if both operate on the same port.
-                // new Tuple<int, string>(KnownConnectionConstants.VNCVMRCPort, VmrcConnectionPlugin.VMRC),
+                // new Tuple<int, string>(VmrcConnectionPlugin.VMRCPort, VmrcConnectionPlugin.VMRC),
                 new Tuple<int, string>(TelnetConnectionPlugin.TelnetPort, TelnetConnectionPlugin.TELNET),
                 new Tuple<int, string>(SshConnectionPlugin.SSHPort, SshConnectionPlugin.SSH),
                 new Tuple<int, string>(KnownConnectionConstants.HTTPPort, KnownConnectionConstants.HTTP),
@@ -327,7 +327,7 @@ namespace Tests.Connections
             {
                 new Tuple<int, IEnumerable<string>>(KnownConnectionConstants.RDPPort, 
                     new List<string>() { "Terminals.Connections.Rdp.RdpConnectionPlugin"}),
-                new Tuple<int, IEnumerable<string>>(KnownConnectionConstants.VNCVMRCPort, 
+                new Tuple<int, IEnumerable<string>>(VncConnectionPlugin.VncPort,
                     new List<string>() { "Terminals.Connections.VNC.VncConnectionPlugin", "Terminals.Connections.VMRC.VmrcConnectionPlugin"}),
                 new Tuple<int, IEnumerable<string>>(TelnetConnectionPlugin.TelnetPort, 
                     new List<string>() { "Terminals.Connections.Terminal.TelnetConnectionPlugin"}),

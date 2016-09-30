@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Connections.Rdp;
-using Terminals.Connections.VMRC;
 using Terminals.Connections.Web;
 using Terminals.Data;
 using Terminals.Integration.Export;
@@ -45,7 +44,6 @@ namespace Terminals.Connections
         private static Dictionary<string, IConnectionPlugin> LoadPlugins()
         {
             // RAS, // this protocol doesnt fit to the concept and seems to be broken 
-            // todo how to sort the plugins, so the VNC preceeds the VMRC to let the GetPortName works.
             var plugins = new Dictionary<string, IConnectionPlugin>()
             {
                 {KnownConnectionConstants.RDP, new RdpConnectionPlugin()},
@@ -58,9 +56,9 @@ namespace Terminals.Connections
                 //{ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin()}
             };
 
+            // todo we need to provide a check, that no two plugins are loaded which handle the same protocol
             LoadExternalPlugins(plugins);
 
-            plugins.Add(VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin());
             return plugins;
         }
 
@@ -143,7 +141,11 @@ namespace Terminals.Connections
         /// </summary>
         internal string GetPortName(int port)
         {
-            var plugin = this.plugins.Values.FirstOrDefault(p => PluginIsOnPort(port, p));
+            // hack to let the VNC take precedence over the VMRC
+            var plugin = this.plugins.Values.OrderBy(p => p.PortName.Length)
+                .FirstOrDefault(p => PluginIsOnPort(port, p));
+
+
             if (plugin != null)
                 return plugin.PortName;
 

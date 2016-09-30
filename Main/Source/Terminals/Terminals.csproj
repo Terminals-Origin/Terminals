@@ -109,14 +109,6 @@
     <Reference Include="AWSSDK, Version=1.3.10.0, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL">
       <HintPath>..\..\Resources\Libraries\AmazonS3\AWSSDK.dll</HintPath>
     </Reference>
-    <Reference Include="AxInterop.VMRCClientControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Resources\Libraries\VMRC\AxInterop.VMRCClientControlLib.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="AxWFICALib">
-      <HintPath>..\..\Resources\Libraries\Citrix\AxWFICALib.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
@@ -125,10 +117,6 @@
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Interop.VMRCClientControlLib">
-      <HintPath>..\..\Resources\Libraries\VMRC\Interop.VMRCClientControlLib.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="MSTSCLib">
       <SpecificVersion>False</SpecificVersion>
@@ -1570,10 +1558,6 @@
     <ProjectReference Include="..\Terminals.Plugins.Rdp\Terminals.Plugins.Rdp.csproj">
       <Project>{f0c60ed2-9a47-4364-af57-505bc3e953d5}</Project>
       <Name>Terminals.Plugins.Rdp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Terminals.Plugins.Vmrc\Terminals.Plugins.Vmrc.csproj">
-      <Project>{c841ccf6-4793-41b7-835e-f749e2525963}</Project>
-      <Name>Terminals.Plugins.Vmrc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Terminals.Plugins.Web\Terminals.Plugins.Web.csproj">
       <Project>{278face8-1579-4c13-ae59-1b24a7091cfc}</Project>
