@@ -12,6 +12,7 @@ namespace Tests.Connections
     [DeploymentItem(ICA_PLUGIN, ICA_TARGET)]
     [DeploymentItem(TERMINAL_PLUGIN, TERMINAL_TARGET)]
     [DeploymentItem(VMRC_PLUGIN, VMRC_TARGET)]
+    [DeploymentItem(WEB_PLUGIN, WEB_TARGET)]
     [TestClass]
     public abstract class PluginBasedTests
     {
@@ -30,5 +31,9 @@ namespace Tests.Connections
         internal const string VMRC_PLUGIN = "Terminals.Plugins.Vmrc.dll";
 
         internal const string VMRC_TARGET = @"Plugins\Vmrc";
+
+        internal const string WEB_PLUGIN = "Terminals.Plugins.Web.dll";
+
+        internal const string WEB_TARGET = @"Plugins\Web";
     }
 }

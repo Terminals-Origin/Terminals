@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Connections.Rdp;
-using Terminals.Connections.Web;
 using Terminals.Data;
 using Terminals.Integration.Export;
 
@@ -47,8 +46,8 @@ namespace Terminals.Connections
             var plugins = new Dictionary<string, IConnectionPlugin>()
             {
                 {KnownConnectionConstants.RDP, new RdpConnectionPlugin()},
-                {KnownConnectionConstants.HTTP, new HttpConnectionPlugin()},
-                {KnownConnectionConstants.HTTPS, new HttpsConnectionPlugin()},
+                //{KnownConnectionConstants.HTTP, new HttpConnectionPlugin()},
+                //{KnownConnectionConstants.HTTPS, new HttpsConnectionPlugin()},
                 //{ VncConnectionPlugin.VNC, new VncConnectionPlugin() },
                 //{ VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin() },
                 //{TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin()},
@@ -144,7 +143,6 @@ namespace Terminals.Connections
             // hack to let the VNC take precedence over the VMRC
             var plugin = this.plugins.Values.OrderBy(p => p.PortName.Length)
                 .FirstOrDefault(p => PluginIsOnPort(port, p));
-
 
             if (plugin != null)
                 return plugin.PortName;
