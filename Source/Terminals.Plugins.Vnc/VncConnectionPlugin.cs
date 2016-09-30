@@ -17,9 +17,11 @@ namespace Terminals.Connections.VNC
     {
         internal const string VNC = "VNC";
 
+        internal const int VncPort = 5900;
+
         internal static readonly Image TreeIconVnc = Resources.treeIcon_vnc;
 
-        public int Port { get { return KnownConnectionConstants.VNCVMRCPort; } }
+        public int Port { get { return VncPort; } }
 
         public string PortName { get { return VNC; } }
 

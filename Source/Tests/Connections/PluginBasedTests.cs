@@ -11,6 +11,7 @@ namespace Tests.Connections
     [DeploymentItem(VNC_PLUGIN, VNC_TARGET)]
     [DeploymentItem(ICA_PLUGIN, ICA_TARGET)]
     [DeploymentItem(TERMINAL_PLUGIN, TERMINAL_TARGET)]
+    [DeploymentItem(VMRC_PLUGIN, VMRC_TARGET)]
     [TestClass]
     public abstract class PluginBasedTests
     {
@@ -25,5 +26,9 @@ namespace Tests.Connections
         internal const string TERMINAL_PLUGIN = "Terminals.Plugins.Terminal.dll";
 
         internal const string TERMINAL_TARGET = @"Plugins\Terminal";
+
+        internal const string VMRC_PLUGIN = "Terminals.Plugins.Vmrc.dll";
+
+        internal const string VMRC_TARGET = @"Plugins\Vmrc";
     }
 }

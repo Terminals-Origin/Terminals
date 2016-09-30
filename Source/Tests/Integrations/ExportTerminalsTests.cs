@@ -22,6 +22,7 @@ namespace Tests.Integrations
     [DeploymentItem(PluginBasedTests.VNC_PLUGIN, PluginBasedTests.VNC_TARGET)]
     [DeploymentItem(PluginBasedTests.ICA_PLUGIN, PluginBasedTests.ICA_TARGET)]
     [DeploymentItem(PluginBasedTests.TERMINAL_PLUGIN, PluginBasedTests.TERMINAL_TARGET)]
+    [DeploymentItem(PluginBasedTests.VMRC_PLUGIN, PluginBasedTests.VMRC_TARGET)]
     [TestClass]
     public class ExportTerminalsTests : FilePersistedTestLab
     {
