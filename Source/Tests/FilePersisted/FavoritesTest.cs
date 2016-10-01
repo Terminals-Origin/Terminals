@@ -48,7 +48,7 @@ namespace Tests.FilePersisted
         {
             IFavorite favorite = this.AddFavorite();
             // now it has RdpOptions
-            ConnectionManagerOtionsTests.MockConnectionManager.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
+            ConnectionManagerOtionsTests.StaticLoadingConnectionManager.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
             this.Persistence.Favorites.Update(favorite);
             AssertRdpSecurity(this.Persistence.Security, favorite);
         }
@@ -58,7 +58,7 @@ namespace Tests.FilePersisted
         /// </summary>
         internal static void AssertRdpSecurity(PersistenceSecurity persistenceSecurity, IFavorite favorite)
         {
-            ConnectionManagerOtionsTests.MockConnectionManager.ChangeProtocol(favorite, KnownConnectionConstants.RDP);
+            ConnectionManagerOtionsTests.StaticLoadingConnectionManager.ChangeProtocol(favorite, KnownConnectionConstants.RDP);
             var rdpOptions = favorite.ProtocolProperties as RdpOptions;
             
             var guarded = new GuardedSecurity(persistenceSecurity, rdpOptions.TsGateway.Security);

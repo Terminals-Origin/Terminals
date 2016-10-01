@@ -10,7 +10,6 @@ namespace Terminals.Integration
 
         protected TIntegrationType FindProvider(string fileName)
         {
-            //LoadImportersFromAssemblies();
             LoadProviders();
 
             string extension = Path.GetExtension(fileName);

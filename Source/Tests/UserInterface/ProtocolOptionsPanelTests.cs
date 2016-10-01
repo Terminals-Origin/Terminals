@@ -30,7 +30,7 @@ namespace Tests.UserInterface
         private const string PROTOCOL_MESSAGE = "Protocol Roundtrip has to preserve the property value";
         private static readonly PersistenceSecurity persistenceSecurity = new PersistenceSecurity();
 
-        private readonly ConnectionManager connectionManager = ConnectionManagerOtionsTests.MockConnectionManager;
+        private readonly ConnectionManager connectionManager = ConnectionManagerOtionsTests.StaticLoadingConnectionManager;
 
         private readonly ProtocolOptionsPanel protocolPanel = new ProtocolOptionsPanel();
         private readonly MockChildProtocolControl childProtocolControlMock = new MockChildProtocolControl();
@@ -187,7 +187,7 @@ namespace Tests.UserInterface
         public void ProtocolChilds_LoadFrom_CallsChildLoadFrom()
         {
             protocolPanel.Controls.Add(childProtocolControlMock);
-            IFavorite irelevant = TestFavoriteFactory.CreateFavorite(new List<IGroup>());
+            IFavorite irelevant = TestMocksFactory.CreateFavorite(new List<IGroup>());
             protocolPanel.LoadFrom(irelevant);
             Assert.IsTrue(childProtocolControlMock.Loaded, "LoadFrom has to call LoadFrom on all his childs");
         }
@@ -196,7 +196,7 @@ namespace Tests.UserInterface
         public void ProtocolChilds_SaveTo_CallsChildSaveTo()
         {
             protocolPanel.Controls.Add(childProtocolControlMock);
-            IFavorite irelevant = TestFavoriteFactory.CreateFavorite(new List<IGroup>());
+            IFavorite irelevant = TestMocksFactory.CreateFavorite(new List<IGroup>());
             protocolPanel.SaveTo(irelevant);
             Assert.IsTrue(childProtocolControlMock.Saved, "SveTo has to call SveTo on all his childs");
         }
@@ -255,7 +255,7 @@ namespace Tests.UserInterface
 
         private Favorite CreateFavorite(string protocol)
         {
-            Favorite source = TestFavoriteFactory.CreateFavorite(new List<IGroup>());
+            Favorite source = TestMocksFactory.CreateFavorite(new List<IGroup>());
             this.connectionManager.ChangeProtocol(source, protocol);
             return source;
         }

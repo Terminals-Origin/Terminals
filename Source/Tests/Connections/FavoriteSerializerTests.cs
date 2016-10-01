@@ -36,7 +36,7 @@ namespace Tests.Connections
         
         private static bool RestoreXmlSerializedFavorite(Tuple<string, Type> testCase)
         {
-            var serializer = new FavoritesFileSerializer(ConnectionManagerOtionsTests.MockConnectionManager);
+            var serializer = new FavoritesFileSerializer(ConnectionManagerOtionsTests.StaticLoadingConnectionManager);
             FavoritesFile file = CreateTestFile(testCase.Item1);
             const string FILE_NAME = "SerializationTest.xml";
             serializer.SerializeToXml(file, FILE_NAME);
@@ -48,7 +48,7 @@ namespace Tests.Connections
         private static FavoritesFile CreateTestFile(string testCase)
         {
             var source = new Favorite();
-            ConnectionManagerOtionsTests.MockConnectionManager.ChangeProtocol(source, testCase);
+            ConnectionManagerOtionsTests.StaticLoadingConnectionManager.ChangeProtocol(source, testCase);
             var file = new FavoritesFile();
             file.Favorites = new Favorite[] {source};
             return file;

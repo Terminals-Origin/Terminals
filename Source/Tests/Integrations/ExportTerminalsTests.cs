@@ -8,10 +8,11 @@ using Terminals.Connections.ICA;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
+using Terminals.Data;
 using Terminals.Integration.Export;
 using Terminals.Integration.Import;
 using Tests.Connections;
-using Tests.FilePersisted;
+using Tests.UserInterface;
 
 namespace Tests.Integrations
 {
@@ -19,13 +20,8 @@ namespace Tests.Integrations
     /// Needs persistence, because of historical reasons the FavoriteConfigurationElement
     /// resolves security using persistence
     /// </summary>
-    [DeploymentItem(PluginBasedTests.VNC_PLUGIN, PluginBasedTests.VNC_TARGET)]
-    [DeploymentItem(PluginBasedTests.ICA_PLUGIN, PluginBasedTests.ICA_TARGET)]
-    [DeploymentItem(PluginBasedTests.TERMINAL_PLUGIN, PluginBasedTests.TERMINAL_TARGET)]
-    [DeploymentItem(PluginBasedTests.VMRC_PLUGIN, PluginBasedTests.VMRC_TARGET)]
-    [DeploymentItem(PluginBasedTests.WEB_PLUGIN, PluginBasedTests.WEB_TARGET)]
     [TestClass]
-    public class ExportTerminalsTests : FilePersistedTestLab
+    public class ExportTerminalsTests
     {
         private const string TEST_FILE = "Exported.xml";
 
@@ -77,7 +73,9 @@ namespace Tests.Integrations
                 IncludePasswords = true
             };
 
-            var exporter = new ExportTerminals(this.Persistence);
+            IPersistence persistence = TestMocksFactory.CreatePersistence().Object;
+            ITerminalsOptionsExport[] exporters = ConnectionManagerOtionsTests.StaticLoadingConnectionManager.GetTerminalsOptionsExporters();
+            var exporter = new ExportTerminals(persistence, exporters);
             exporter.Export(options);
         }
 

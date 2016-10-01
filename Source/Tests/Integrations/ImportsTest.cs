@@ -11,6 +11,7 @@ using Terminals.Forms.Controls;
 using Terminals.Integration;
 using Terminals.Integration.Export;
 using Terminals.Integration.Import;
+using Tests.Connections;
 using Tests.FilePersisted;
 
 namespace Tests.Integrations
@@ -134,7 +135,7 @@ namespace Tests.Integrations
                     IncludePasswords = true
                 };
 
-            Exporters exporters = Terminals.Integration.Integrations.CreateExporters(persistence);
+            Exporters exporters = new Exporters(persistence, ConnectionManagerOtionsTests.StaticLoadingConnectionManager);
             exporters.Export(options);
         }
 

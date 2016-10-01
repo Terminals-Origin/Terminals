@@ -169,7 +169,7 @@
     <Compile Include="UserInterface\MockChildProtocolControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UserInterface\TestFavoriteFactory.cs" />
+    <Compile Include="UserInterface\TestMocksFactory.cs" />
     <Compile Include="UserInterface\ToolStripSettingsTest.cs" />
     <Compile Include="UserInterface\FavoritePropertiesControlTests.cs" />
     <Compile Include="UserInterface\ProtocolOptionsPanelTests.cs" />

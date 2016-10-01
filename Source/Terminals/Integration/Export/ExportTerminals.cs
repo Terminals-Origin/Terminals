@@ -2,7 +2,6 @@
 using System.Text;
 using System.Xml;
 using Terminals.Configuration;
-using Terminals.Connections;
 using Terminals.Converters;
 using Terminals.Data;
 using Terminals.Integration.Import;
@@ -16,6 +15,8 @@ namespace Terminals.Integration.Export
     {
         private readonly IPersistence persistence;
 
+        private readonly ITerminalsOptionsExport[] optionsExporters;
+
         string IIntegration.Name
         {
             get { return ImportTerminals.PROVIDER_NAME; }
@@ -26,8 +27,9 @@ namespace Terminals.Integration.Export
             get { return ImportTerminals.TERMINALS_FILEEXTENSION; }
         }
 
-        public ExportTerminals(IPersistence persistence)
+        public ExportTerminals(IPersistence persistence, ITerminalsOptionsExport[] optionsExporters)
         {
+            this.optionsExporters = optionsExporters;
             this.persistence = persistence;
         }
 
@@ -66,7 +68,7 @@ namespace Terminals.Integration.Export
             ExportCredentials(context);
             ExportExecuteBeforeConnect(context.Writer, context.Favorite);
 
-            foreach (ITerminalsOptionsExport optionsExporter in ConnectionManager.Instance.GetTerminalsOptionsExporters())
+            foreach (ITerminalsOptionsExport optionsExporter in this.optionsExporters)
             {
                 optionsExporter.ExportOptions(context);
             }
