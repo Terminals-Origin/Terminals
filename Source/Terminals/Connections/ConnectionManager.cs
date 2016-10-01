@@ -40,12 +40,18 @@ namespace Terminals.Connections
         {
         }
 
-        private static Dictionary<string, IConnectionPlugin> LoadPlugins()
+        internal ConnectionManager(Func<IEnumerable<IConnectionPlugin>> loadPlugins)
+        {
+            IEnumerable<IConnectionPlugin> loaded = loadPlugins();
+            this.plugins = SortExternalPlugins(loaded);
+        }
+
+        private static IEnumerable<IConnectionPlugin> LoadPlugins()
         {
             // RAS, // this protocol doesnt fit to the concept and seems to be broken 
-            var plugins = new Dictionary<string, IConnectionPlugin>()
+            var plugins = new List<IConnectionPlugin>()
             {
-                {KnownConnectionConstants.RDP, new RdpConnectionPlugin()},
+                { new RdpConnectionPlugin() },
                 //{KnownConnectionConstants.HTTP, new HttpConnectionPlugin()},
                 //{KnownConnectionConstants.HTTPS, new HttpsConnectionPlugin()},
                 //{ VncConnectionPlugin.VNC, new VncConnectionPlugin() },
@@ -55,24 +61,38 @@ namespace Terminals.Connections
                 //{ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin()}
             };
 
-            // todo we need to provide a check, that no two plugins are loaded which handle the same protocol
-            LoadExternalPlugins(plugins);
-
+            var pluginLoader = new PluginsLoader();
+            plugins.AddRange(pluginLoader.Load());
             return plugins;
         }
 
-        internal ConnectionManager(Func<Dictionary<string, IConnectionPlugin>> loadPlugins)
+        private static Dictionary<string, IConnectionPlugin> SortExternalPlugins(IEnumerable<IConnectionPlugin> plugins)
         {
-            this.plugins = loadPlugins();
+           var sortedPlugins = new Dictionary<string, IConnectionPlugin>();
+
+            foreach (IConnectionPlugin loaded in plugins)
+            {
+                SortPlugin(sortedPlugins, loaded);
+            }
+
+            return sortedPlugins;
         }
 
-        private static void LoadExternalPlugins(Dictionary<string, IConnectionPlugin> plugins)
+        private static void SortPlugin(Dictionary<string, IConnectionPlugin> sortedPlugins, IConnectionPlugin loaded)
         {
-            var pluginLoader = new PluginsLoader();
-            foreach (IConnectionPlugin loaded in pluginLoader.Load())
-            {
-                plugins.Add(loaded.PortName, loaded);
-            }
+            if (sortedPlugins.ContainsKey(loaded.PortName))
+                LogDuplicitPlugin(loaded);
+            else
+                sortedPlugins.Add(loaded.PortName, loaded);
+        }
+
+        private static void LogDuplicitPlugin(IConnectionPlugin loaded)
+        {
+            const string MESSAGE_FORMAT = "Plugin for protocol {0} ({1}:{2}) already present.";
+            Type pluginType = loaded.GetType();
+            string assemblyPath = pluginType.Assembly.CodeBase;
+            string message = string.Format(MESSAGE_FORMAT, loaded.PortName, pluginType, assemblyPath);
+            Logging.Warn(message);
         }
 
         internal Dictionary<string, Image> GetPluginIcons()
