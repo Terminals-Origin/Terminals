@@ -18,16 +18,16 @@ namespace Tests.Connections
     public class ConnectionManagerOtionsTests
     {
         private static readonly ConnectionManager staticLoadingConnectionManager = new ConnectionManager(() =>
-            new Dictionary<string, IConnectionPlugin>()
+            new List<IConnectionPlugin>()
             {
-                {KnownConnectionConstants.RDP, new RdpConnectionPlugin()},
-                {KnownConnectionConstants.HTTP, new HttpConnectionPlugin()},
-                {KnownConnectionConstants.HTTPS, new HttpsConnectionPlugin()},
-                {VncConnectionPlugin.VNC, new VncConnectionPlugin()},
-                {VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin()},
-                {TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin()},
-                {SshConnectionPlugin.SSH, new SshConnectionPlugin()},
-                {ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin()}
+                new RdpConnectionPlugin(),
+                new HttpConnectionPlugin(),
+                new HttpsConnectionPlugin(),
+                new VncConnectionPlugin(),
+                new VmrcConnectionPlugin(),
+                new TelnetConnectionPlugin(),
+                new SshConnectionPlugin(),
+                new ICAConnectionPlugin()
             });
 
         internal static ConnectionManager StaticLoadingConnectionManager { get { return staticLoadingConnectionManager; } }
