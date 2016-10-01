@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Connections.ICA;
@@ -26,7 +25,7 @@ namespace Tests.UserInterface
 
         private const string UNKNOWNPROTOCOL = "UnknownProtocol";
 
-        private FavoriteIcons icons = new FavoriteIcons(ConnectionManagerOtionsTests.MockConnectionManager);
+        private FavoriteIcons icons = new FavoriteIcons(ConnectionManagerOtionsTests.StaticLoadingConnectionManager);
 
         public TestContext TestContext { get; set; }
 

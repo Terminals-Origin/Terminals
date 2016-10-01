@@ -33,13 +33,7 @@ namespace Tests.UserInterface
         [TestInitialize]
         public void SetUp()
         {
-            var persistenceStub = new Mock<IPersistence>();
-            var credentials = new Mock<ICredentials>();
-            credentials.Setup(cr => cr.GetEnumerator()).Returns(new List<ICredentialSet>().GetEnumerator());
-            persistenceStub.SetupGet(p => p.Credentials).Returns(credentials.Object);
-            var groupsStub = new Mock<IGroups>();
-            groupsStub.Setup(g => g.GetEnumerator()).Returns(new List<IGroup>().GetEnumerator());
-            persistenceStub.SetupGet(persistence => persistence.Groups).Returns(groupsStub.Object);
+            Mock<IPersistence> persistenceStub = TestMocksFactory.CreatePersistence();
             this.irelevantPersistence = persistenceStub.Object;
             this.propertiesControl.AssignPersistence(irelevantPersistence);
         }
@@ -72,7 +66,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void ServerName_LoadSave_KeepsValue()
         {
-            Favorite source = TestFavoriteFactory.CreateFavorite(this.groups);
+            Favorite source = TestMocksFactory.CreateFavorite(this.groups);
             source.ServerName = EXPECTED_TEXT;
             Favorite result = this.LoadAndSaveToResult(source);
             Assert.AreEqual(EXPECTED_TEXT, result.ServerName, MESSAGE);
@@ -81,7 +75,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void Notes_LoadSave_KeepsValue()
         {
-            Favorite source = TestFavoriteFactory.CreateFavorite(this.groups);
+            Favorite source = TestMocksFactory.CreateFavorite(this.groups);
             source.Notes = EXPECTED_TEXT;
             // because of internal encoding of Notes, we need to cast to IFavorite here
             IFavorite result = this.LoadAndSaveToResult(source);
@@ -91,7 +85,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void BeforeExecuteCommand_LoadSave_KeepsValue()
         {
-            Favorite source = TestFavoriteFactory.CreateFavorite(this.groups);
+            Favorite source = TestMocksFactory.CreateFavorite(this.groups);
             source.ExecuteBeforeConnect.Command = EXPECTED_TEXT;
             Favorite result = this.LoadAndSaveToResult(source);
             Assert.AreEqual(EXPECTED_TEXT, result.ExecuteBeforeConnect.Command, MESSAGE);
@@ -101,7 +95,7 @@ namespace Tests.UserInterface
         public void VncProcol_LoadSave_KeepsProtocolPropertiesType()
         {
             this.LoadPropertiesControl();
-            Favorite source = TestFavoriteFactory.CreateFavorite(this.groups);
+            Favorite source = TestMocksFactory.CreateFavorite(this.groups);
             source.Protocol = VncConnectionPlugin.VNC;
             Favorite result = this.LoadAndSaveToResult(source);
             const string PROTOCOL_MESSAGE = "Roundtrip has to preserve the protocol properties";
@@ -123,7 +117,7 @@ namespace Tests.UserInterface
         [TestMethod]
         public void FavoriteGroup_LoadFrom_IsLoadedAsSelected()
         {
-            Favorite source = TestFavoriteFactory.CreateFavorite(this.groups);
+            Favorite source = TestMocksFactory.CreateFavorite(this.groups);
             this.propertiesControl.LoadFrom(source);
             List<IGroup> newlySelected = this.propertiesControl.GetNewlySelectedGroups();
             Assert.AreEqual(1, newlySelected.Count, "Not changed selection, has to return identical groups");
@@ -132,7 +126,7 @@ namespace Tests.UserInterface
         private Favorite LoadAndSaveToResult(Favorite source)
         {
             this.propertiesControl.LoadFrom(source);
-            Favorite result = TestFavoriteFactory.CreateFavorite(this.groups);
+            Favorite result = TestMocksFactory.CreateFavorite(this.groups);
             this.propertiesControl.SaveTo(result);
             return result;
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Integration.Export;
 using Terminals.Integration.Import;
@@ -10,9 +11,12 @@ namespace Terminals.Integration
     {
         private readonly IPersistence persistence;
 
-        public Exporters(IPersistence persistence)
+        private readonly ConnectionManager connectionManager;
+
+        public Exporters(IPersistence persistence, ConnectionManager connectionManager)
         {
             this.persistence = persistence;
+            this.connectionManager = connectionManager;
         }
 
         protected override void LoadProviders()
@@ -20,7 +24,8 @@ namespace Terminals.Integration
             if (providers == null)
             {
                 providers = new Dictionary<string, IExport>();
-                providers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ExportTerminals(this.persistence));
+                ITerminalsOptionsExport[] optionsExporters = this.connectionManager.GetTerminalsOptionsExporters();
+                providers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ExportTerminals(this.persistence, optionsExporters));
                 providers.Add(ImportRDP.FILE_EXTENSION, new ExportRdp(this.persistence));
                 var androidExport = new ExportExtraLogicAndroidRd(this.persistence);
                 providers.Add(GetExtraAndroidProviderKey(), androidExport);

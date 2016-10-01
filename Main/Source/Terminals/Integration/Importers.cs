@@ -19,7 +19,6 @@ namespace Terminals.Integration.Import
 
         internal string GetProvidersDialogFilter()
         {
-            // LoadImportersFromAssemblies();
             LoadProviders();
 
             StringBuilder stringBuilder = new StringBuilder();

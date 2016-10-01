@@ -50,7 +50,7 @@ namespace Tests.UserInterface
         private IFavorite CreateTestFavorite()
         {
             List<IGroup> groups = CreateTestGroups();
-            IFavorite favorite = TestFavoriteFactory.CreateFavorite(groups);
+            IFavorite favorite = TestMocksFactory.CreateFavorite(groups);
             favorite.ServerName = "TestServerName";
             var guarded = new GuardedSecurity(this.persistenceSecurity, favorite.Security);
             guarded.Domain = "TestDomain";

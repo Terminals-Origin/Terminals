@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms.Controls;
 using Terminals.Integration;
@@ -22,7 +23,7 @@ namespace Terminals.Forms
 
             this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence);
             this.treeLoader.LoadRootNodes();
-            this.exporters = Integrations.CreateExporters(this.persistence);
+            this.exporters = new Exporters(this.persistence, ConnectionManager.Instance);
             this.saveFileDialog.Filter = this.exporters.GetProvidersDialogFilter();
         }
 
