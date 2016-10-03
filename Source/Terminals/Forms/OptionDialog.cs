@@ -191,8 +191,7 @@ namespace Terminals.Forms
         {
             return this.Controls
                 .Cast<Control>()
-                .Where(control => control is IOptionPanel)
-                .Cast<IOptionPanel>();
+                .OfType<IOptionPanel>();
         }
 
         private void OptionDialog_FormClosed(object sender, FormClosedEventArgs e)

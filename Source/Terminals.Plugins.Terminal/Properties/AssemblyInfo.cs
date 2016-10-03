@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Terminals.Plugins.Terminal")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Telnet and Ssh")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCulture("")]
 
@@ -11,5 +11,4 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("8e972a0c-57e2-4e5c-9ef5-d7cd681188c5")]
 
-[assembly: InternalsVisibleTo("Terminals")]
 [assembly: InternalsVisibleTo("Tests")]

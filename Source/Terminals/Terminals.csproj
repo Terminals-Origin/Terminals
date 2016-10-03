@@ -145,6 +145,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Terminals, Version=3.6.1.27288, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="TransPort2006">
       <HintPath>..\..\Resources\Libraries\TransPort2006\TransPort2006.dll</HintPath>
     </Reference>
@@ -174,6 +175,17 @@
     <Compile Include="Connections\DummyPlugin.cs" />
     <Compile Include="Connections\IConnectionManager.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
+    <Compile Include="Connections\PluginDefinition.cs" />
+    <Compile Include="Settings\IPluginSettings.cs" />
+    <Compile Include="Connections\IPluginsLoader.cs" />
+    <Compile Include="Forms\OptionPanels\PluginsOptionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\PluginsOptionPanel.Designer.cs">
+      <DependentUpon>PluginsOptionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\PluginsSelection.cs" />
+    <Compile Include="Forms\OptionPanels\SelectedPlugin.cs" />
     <Compile Include="Integration\Export\ExportOptionsContext.cs" />
     <Compile Include="Data\FilePersisted\FavoritesFileSerializer.cs" />
     <Compile Include="Forms\Controls\ProtocolImageListBuilder.cs" />
@@ -969,6 +981,9 @@
     <EmbeddedResource Include="Forms\AddConnectionForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AddConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OptionPanels\PluginsOptionPanel.resx">
+      <DependentUpon>PluginsOptionPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\Tools\NetworkingToolsLayout.resx">
       <SubType>Designer</SubType>

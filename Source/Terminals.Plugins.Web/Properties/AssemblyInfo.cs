@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Terminals.Plugins.Web")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("HTTP and HTTPS")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCulture("")]
 
@@ -11,5 +11,4 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("278face8-1579-4c13-ae59-1b24a7091cfc")]
 
-[assembly: InternalsVisibleTo("Terminals")]
 [assembly: InternalsVisibleTo("Tests")]
