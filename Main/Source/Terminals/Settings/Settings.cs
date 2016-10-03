@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
-using System.Threading;
 using Terminals.Common.Configuration;
 using Terminals.Data;
 using Terminals.Security;
 
 namespace Terminals.Configuration
 {
-    internal partial class Settings : IConnectionSettings, IMRUSettings
+    internal partial class Settings : IConnectionSettings, IMRUSettings, IPluginSettings
     {
         public Version ConfigVersion
         {
@@ -1086,6 +1085,31 @@ namespace Terminals.Configuration
                 GetSection().AskToReconnect = value;
                 SaveImmediatelyIfRequested();
             }
+        }
+
+        public string[] DisabledPlugins
+        {
+            get
+            {
+                return this.GetSection().DisabledPlugins.ToSortedArray();
+            }
+            set
+            {
+                this.UpdateDisabledPlugins(value);
+            }
+        }
+
+        public void UpdateDisabledPlugins(string[] disabledPlugins)
+        {
+            MRUItemConfigurationElementCollection pluginsSection = this.GetSection().DisabledPlugins;
+            pluginsSection.Clear();
+
+            foreach (string disabledPlugin in disabledPlugins)
+            {
+                pluginsSection.AddByName(disabledPlugin);
+            }
+
+            this.SaveImmediatelyIfRequested();
         }
     }
 }

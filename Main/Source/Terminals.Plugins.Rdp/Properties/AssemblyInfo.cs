@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Terminals.Plugins.Rdp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("RDP")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCulture("")]
 

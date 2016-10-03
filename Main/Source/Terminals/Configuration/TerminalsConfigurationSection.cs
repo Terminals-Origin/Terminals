@@ -958,6 +958,20 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("disabledPlugins")]
+        [ConfigurationCollection(typeof(MRUItemConfigurationElementCollection))]
+        public MRUItemConfigurationElementCollection DisabledPlugins
+        {
+            get
+            {
+                return (MRUItemConfigurationElementCollection)this["disabledPlugins"];
+            }
+            set
+            {
+                this["disabledPlugins"] = value;
+            }
+        }
+
         [ConfigurationProperty("savedCredentials", DefaultValue = "")]
         public string SavedCredentialsLocation
         {

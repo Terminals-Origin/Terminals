@@ -48,6 +48,7 @@ namespace Terminals.Forms
             System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Screen Capture", new System.Windows.Forms.TreeNode[] {
             treeNode11});
             System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Data store");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Plugins");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionDialog));
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -79,6 +80,8 @@ namespace Terminals.Forms
             this.panelFlickr = new Terminals.Forms.FlickrOptionPanel();
             this.tabPagePersistence = new System.Windows.Forms.TabPage();
             this.panelPersistence = new Terminals.Forms.PersistenceOptionPanel();
+            this.tabPagePlugins = new System.Windows.Forms.TabPage();
+            this.panelPlugins = new Terminals.Forms.OptionPanels.PluginsOptionPanel();
             this.OptionTitelLabel = new System.Windows.Forms.Label();
             this.tabCtrlOptionPanels.SuspendLayout();
             this.tabPageStartupShutdown.SuspendLayout();
@@ -93,6 +96,7 @@ namespace Terminals.Forms
             this.tabPageScreenCapture.SuspendLayout();
             this.tabPageFlickr.SuspendLayout();
             this.tabPagePersistence.SuspendLayout();
+            this.tabPagePlugins.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOk
@@ -186,13 +190,17 @@ namespace Terminals.Forms
             treeNode13.Name = "Data store";
             treeNode13.Tag = "Persistence";
             treeNode13.Text = "Data store";
+            treeNode14.Name = "Plugins";
+            treeNode14.Tag = "Plugins";
+            treeNode14.Text = "Plugins";
             this.OptionsTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode3,
             treeNode7,
             treeNode10,
             treeNode12,
-            treeNode13});
+            treeNode13,
+            treeNode14});
             this.OptionsTreeView.ShowLines = false;
             this.OptionsTreeView.Size = new System.Drawing.Size(192, 365);
             this.OptionsTreeView.TabIndex = 6;
@@ -216,6 +224,7 @@ namespace Terminals.Forms
             this.tabCtrlOptionPanels.Controls.Add(this.tabPageScreenCapture);
             this.tabCtrlOptionPanels.Controls.Add(this.tabPageFlickr);
             this.tabCtrlOptionPanels.Controls.Add(this.tabPagePersistence);
+            this.tabCtrlOptionPanels.Controls.Add(this.tabPagePlugins);
             this.tabCtrlOptionPanels.ItemSize = new System.Drawing.Size(20, 20);
             this.tabCtrlOptionPanels.Location = new System.Drawing.Point(198, 8);
             this.tabCtrlOptionPanels.Multiline = true;
@@ -232,7 +241,7 @@ namespace Terminals.Forms
             this.tabPageStartupShutdown.Location = new System.Drawing.Point(4, 4);
             this.tabPageStartupShutdown.Name = "tabPageStartupShutdown";
             this.tabPageStartupShutdown.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageStartupShutdown.Size = new System.Drawing.Size(602, 357);
+            this.tabPageStartupShutdown.Size = new System.Drawing.Size(582, 357);
             this.tabPageStartupShutdown.TabIndex = 0;
             this.tabPageStartupShutdown.Text = "Startup";
             this.tabPageStartupShutdown.UseVisualStyleBackColor = true;
@@ -251,7 +260,7 @@ namespace Terminals.Forms
             this.tabPageInterface.Location = new System.Drawing.Point(4, 4);
             this.tabPageInterface.Name = "tabPageInterface";
             this.tabPageInterface.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageInterface.Size = new System.Drawing.Size(602, 357);
+            this.tabPageInterface.Size = new System.Drawing.Size(582, 357);
             this.tabPageInterface.TabIndex = 1;
             this.tabPageInterface.Text = "Interface";
             this.tabPageInterface.UseVisualStyleBackColor = true;
@@ -269,7 +278,7 @@ namespace Terminals.Forms
             this.tabPageFavorites.Controls.Add(this.panelFavorites);
             this.tabPageFavorites.Location = new System.Drawing.Point(4, 4);
             this.tabPageFavorites.Name = "tabPageFavorites";
-            this.tabPageFavorites.Size = new System.Drawing.Size(602, 357);
+            this.tabPageFavorites.Size = new System.Drawing.Size(582, 357);
             this.tabPageFavorites.TabIndex = 10;
             this.tabPageFavorites.Text = "Favorites";
             this.tabPageFavorites.UseVisualStyleBackColor = true;
@@ -287,7 +296,7 @@ namespace Terminals.Forms
             this.tabPageMasterPwd.Controls.Add(this.panelMasterPassword);
             this.tabPageMasterPwd.Location = new System.Drawing.Point(4, 4);
             this.tabPageMasterPwd.Name = "tabPageMasterPwd";
-            this.tabPageMasterPwd.Size = new System.Drawing.Size(602, 357);
+            this.tabPageMasterPwd.Size = new System.Drawing.Size(582, 357);
             this.tabPageMasterPwd.TabIndex = 2;
             this.tabPageMasterPwd.Text = "Master Pwd";
             this.tabPageMasterPwd.UseVisualStyleBackColor = true;
@@ -305,7 +314,7 @@ namespace Terminals.Forms
             this.tabPageDefaultPwd.Controls.Add(this.panelDefaultPassword);
             this.tabPageDefaultPwd.Location = new System.Drawing.Point(4, 4);
             this.tabPageDefaultPwd.Name = "tabPageDefaultPwd";
-            this.tabPageDefaultPwd.Size = new System.Drawing.Size(602, 357);
+            this.tabPageDefaultPwd.Size = new System.Drawing.Size(582, 357);
             this.tabPageDefaultPwd.TabIndex = 4;
             this.tabPageDefaultPwd.Text = "Default Pwd";
             this.tabPageDefaultPwd.UseVisualStyleBackColor = true;
@@ -323,7 +332,7 @@ namespace Terminals.Forms
             this.tabPageAmazon.Controls.Add(this.panelAmazon);
             this.tabPageAmazon.Location = new System.Drawing.Point(4, 4);
             this.tabPageAmazon.Name = "tabPageAmazon";
-            this.tabPageAmazon.Size = new System.Drawing.Size(602, 357);
+            this.tabPageAmazon.Size = new System.Drawing.Size(582, 357);
             this.tabPageAmazon.TabIndex = 5;
             this.tabPageAmazon.Text = "Amazon";
             this.tabPageAmazon.UseVisualStyleBackColor = true;
@@ -341,7 +350,7 @@ namespace Terminals.Forms
             this.tabPageConnections.Controls.Add(this.panelConnections);
             this.tabPageConnections.Location = new System.Drawing.Point(4, 4);
             this.tabPageConnections.Name = "tabPageConnections";
-            this.tabPageConnections.Size = new System.Drawing.Size(602, 357);
+            this.tabPageConnections.Size = new System.Drawing.Size(582, 357);
             this.tabPageConnections.TabIndex = 3;
             this.tabPageConnections.Text = "Connections";
             this.tabPageConnections.UseVisualStyleBackColor = true;
@@ -359,7 +368,7 @@ namespace Terminals.Forms
             this.tabPageBeforeConnect.Controls.Add(this.panelExecuteBeforeConnect);
             this.tabPageBeforeConnect.Location = new System.Drawing.Point(4, 4);
             this.tabPageBeforeConnect.Name = "tabPageBeforeConnect";
-            this.tabPageBeforeConnect.Size = new System.Drawing.Size(602, 357);
+            this.tabPageBeforeConnect.Size = new System.Drawing.Size(582, 357);
             this.tabPageBeforeConnect.TabIndex = 6;
             this.tabPageBeforeConnect.Text = "Before Connect";
             this.tabPageBeforeConnect.UseVisualStyleBackColor = true;
@@ -377,7 +386,7 @@ namespace Terminals.Forms
             this.tabPageProxy.Controls.Add(this.panelProxy);
             this.tabPageProxy.Location = new System.Drawing.Point(4, 4);
             this.tabPageProxy.Name = "tabPageProxy";
-            this.tabPageProxy.Size = new System.Drawing.Size(602, 357);
+            this.tabPageProxy.Size = new System.Drawing.Size(582, 357);
             this.tabPageProxy.TabIndex = 7;
             this.tabPageProxy.Text = "Proxy";
             this.tabPageProxy.UseVisualStyleBackColor = true;
@@ -395,7 +404,7 @@ namespace Terminals.Forms
             this.tabPageScreenCapture.Controls.Add(this.panelScreenCapture);
             this.tabPageScreenCapture.Location = new System.Drawing.Point(4, 4);
             this.tabPageScreenCapture.Name = "tabPageScreenCapture";
-            this.tabPageScreenCapture.Size = new System.Drawing.Size(602, 357);
+            this.tabPageScreenCapture.Size = new System.Drawing.Size(582, 357);
             this.tabPageScreenCapture.TabIndex = 8;
             this.tabPageScreenCapture.Text = "Capture";
             this.tabPageScreenCapture.UseVisualStyleBackColor = true;
@@ -413,7 +422,7 @@ namespace Terminals.Forms
             this.tabPageFlickr.Controls.Add(this.panelFlickr);
             this.tabPageFlickr.Location = new System.Drawing.Point(4, 4);
             this.tabPageFlickr.Name = "tabPageFlickr";
-            this.tabPageFlickr.Size = new System.Drawing.Size(602, 357);
+            this.tabPageFlickr.Size = new System.Drawing.Size(582, 357);
             this.tabPageFlickr.TabIndex = 9;
             this.tabPageFlickr.Text = "Flickr";
             this.tabPageFlickr.UseVisualStyleBackColor = true;
@@ -431,7 +440,7 @@ namespace Terminals.Forms
             this.tabPagePersistence.Location = new System.Drawing.Point(4, 4);
             this.tabPagePersistence.Name = "tabPagePersistence";
             this.tabPagePersistence.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePersistence.Size = new System.Drawing.Size(602, 357);
+            this.tabPagePersistence.Size = new System.Drawing.Size(582, 357);
             this.tabPagePersistence.TabIndex = 11;
             this.tabPagePersistence.Text = "Data store";
             this.tabPagePersistence.UseVisualStyleBackColor = true;
@@ -442,6 +451,24 @@ namespace Terminals.Forms
             this.panelPersistence.Name = "panelPersistence";
             this.panelPersistence.Size = new System.Drawing.Size(512, 328);
             this.panelPersistence.TabIndex = 0;
+            // 
+            // tabPagePlugins
+            // 
+            this.tabPagePlugins.Controls.Add(this.panelPlugins);
+            this.tabPagePlugins.Location = new System.Drawing.Point(4, 4);
+            this.tabPagePlugins.Name = "tabPagePlugins";
+            this.tabPagePlugins.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPagePlugins.Size = new System.Drawing.Size(582, 357);
+            this.tabPagePlugins.TabIndex = 12;
+            this.tabPagePlugins.Text = "Plugins";
+            this.tabPagePlugins.UseVisualStyleBackColor = true;
+            // 
+            // panelPlugins
+            // 
+            this.panelPlugins.Location = new System.Drawing.Point(8, 27);
+            this.panelPlugins.Name = "panelPlugins";
+            this.panelPlugins.Size = new System.Drawing.Size(509, 300);
+            this.panelPlugins.TabIndex = 0;
             // 
             // OptionTitelLabel
             // 
@@ -492,6 +519,7 @@ namespace Terminals.Forms
             this.tabPageScreenCapture.ResumeLayout(false);
             this.tabPageFlickr.ResumeLayout(false);
             this.tabPagePersistence.ResumeLayout(false);
+            this.tabPagePlugins.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -529,5 +557,7 @@ namespace Terminals.Forms
         private FlickrOptionPanel panelFlickr;
         private System.Windows.Forms.TabPage tabPagePersistence;
         private PersistenceOptionPanel panelPersistence;
+        private System.Windows.Forms.TabPage tabPagePlugins;
+        private OptionPanels.PluginsOptionPanel panelPlugins;
     }
 }

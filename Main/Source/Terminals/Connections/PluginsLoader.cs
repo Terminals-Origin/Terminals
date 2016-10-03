@@ -6,12 +6,11 @@ using System.Reflection;
 
 namespace Terminals.Connections
 {
-    internal class PluginsLoader
+    internal class PluginsLoader : IPluginsLoader
     {
         public IEnumerable<IConnectionPlugin> Load()
         {
-            string[] pluginDirectories = FindPluginDirectories();
-            List<string> allPluginAssemblies = FindAllPluginAssemblies(pluginDirectories);
+            List<string> allPluginAssemblies = FindPluginAssemblies();
             return allPluginAssemblies.SelectMany(LoadAssemblyPlugins).ToList();
         }
 
@@ -29,6 +28,43 @@ namespace Terminals.Connections
                 Logging.Info(message, exception);
                 return new IConnectionPlugin[0];
             }
+        }
+
+        public IEnumerable<PluginDefinition> FindAvailablePlugins()
+        {
+            List<string> allPluginAssemblies = FindPluginAssemblies();
+            return allPluginAssemblies.Select(LoadPlugDefinition)
+                .ToList();
+        }
+
+        private static PluginDefinition LoadPlugDefinition(string pluginFile)
+        {
+            string description = GetAssemblyDescription(pluginFile);
+            return new PluginDefinition(pluginFile, description);
+        }
+
+        private static string GetAssemblyDescription(string pluginFile)
+        {
+            Assembly assembly = Assembly.ReflectionOnlyLoadFrom(pluginFile);
+            CustomAttributeData customData = assembly.GetCustomAttributesData()
+                .FirstOrDefault(IsAssemblyDecriptionAttribute);
+
+            if (customData == null)
+                return string.Empty;
+
+            return customData.ConstructorArguments[0].Value.ToString();
+        }
+
+        private static bool IsAssemblyDecriptionAttribute(CustomAttributeData attribute)
+        {
+            return attribute.Constructor.DeclaringType == typeof(AssemblyDescriptionAttribute) &&
+                   attribute.ConstructorArguments.Count == 1;
+        }
+
+        private static List<string> FindPluginAssemblies()
+        {
+            string[] pluginDirectories = FindPluginDirectories();
+            return FindAllPluginAssemblies(pluginDirectories);
         }
 
         private static IEnumerable<Type> FindAllPluginTypes(Assembly pluginAssembly)
