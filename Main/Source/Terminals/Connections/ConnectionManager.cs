@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
-using Terminals.Connections.Rdp;
 using Terminals.Data;
 using Terminals.Integration.Export;
 
@@ -51,7 +50,7 @@ namespace Terminals.Connections
             // RAS, // this protocol doesnt fit to the concept and seems to be broken 
             var plugins = new List<IConnectionPlugin>()
             {
-                { new RdpConnectionPlugin() },
+                //{ new RdpConnectionPlugin() },
                 //{KnownConnectionConstants.HTTP, new HttpConnectionPlugin()},
                 //{KnownConnectionConstants.HTTPS, new HttpsConnectionPlugin()},
                 //{ VncConnectionPlugin.VNC, new VncConnectionPlugin() },
