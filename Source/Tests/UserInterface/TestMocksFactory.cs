@@ -17,6 +17,8 @@ namespace Tests.UserInterface
             var groupsStub = new Mock<IGroups>();
             groupsStub.Setup(g => g.GetEnumerator()).Returns(new List<IGroup>().GetEnumerator());
             persistenceStub.SetupGet(persistence => persistence.Groups).Returns(groupsStub.Object);
+            var favoritesStub = new Mock<IFavorites>();
+            persistenceStub.SetupGet(p => p.Favorites).Returns(favoritesStub.Object);
             return persistenceStub;
         }
 

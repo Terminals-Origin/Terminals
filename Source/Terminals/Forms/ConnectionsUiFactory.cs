@@ -137,7 +137,7 @@ namespace Terminals.Forms
             if (!definition.ForceConsole.HasValue)
                 return;
 
-            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            var rdpOptions = favorite.ProtocolProperties as IForceConsoleOptions;
             if (rdpOptions != null)
                 rdpOptions.ConnectToConsole = definition.ForceConsole.Value;
         }

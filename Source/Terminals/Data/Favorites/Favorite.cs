@@ -152,7 +152,7 @@ namespace Terminals.Data
             get { return this.display; }
         }
 
-        private ProtocolOptions protocolProperties = new RdpOptions();
+        private ProtocolOptions protocolProperties = new EmptyOptions();
         /// <summary>
         /// Depending on selected protocol, this should contain the protocol detailed options.
         /// Because default protocol is RDP, also this properties are RdpOptions by default.

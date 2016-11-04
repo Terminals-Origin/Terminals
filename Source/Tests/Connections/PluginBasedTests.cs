@@ -13,6 +13,7 @@ namespace Tests.Connections
     [DeploymentItem(TERMINAL_PLUGIN, TERMINAL_TARGET)]
     [DeploymentItem(VMRC_PLUGIN, VMRC_TARGET)]
     [DeploymentItem(WEB_PLUGIN, WEB_TARGET)]
+    [DeploymentItem(RDP_PLUGIN, RDP_TARGET)]
     [TestClass]
     public abstract class PluginBasedTests
     {
@@ -35,5 +36,9 @@ namespace Tests.Connections
         internal const string WEB_PLUGIN = "Terminals.Plugins.Web.dll";
 
         internal const string WEB_TARGET = @"Plugins\Web";
+
+        internal const string RDP_PLUGIN = "Terminals.Plugins.Rdp.dll";
+
+        internal const string RDP_TARGET = @"Plugins\Rdp";
     }
 }

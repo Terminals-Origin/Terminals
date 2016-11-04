@@ -265,16 +265,12 @@ namespace Terminals
             favorite.Security.EncryptedUserName = String.Empty;
             favorite.Security.EncryptedPassword = String.Empty;
 
-            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
-            if (rdpOptions != null)
-            {
-                rdpOptions.Security.Enabled = false;
-                rdpOptions.Security.WorkingFolder = String.Empty;
-                rdpOptions.Security.StartProgram = String.Empty;
-                rdpOptions.FullScreen = false;
-            }
-
             var defaultFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, this.persistence);
+            defaultFavorite.EnableSecuritySettings = false;
+            defaultFavorite.SecurityWorkingFolder = string.Empty;
+            defaultFavorite.SecurityStartProgram = string.Empty;
+            defaultFavorite.SecurityFullScreen = false;
+
             settings.SaveDefaultFavorite(defaultFavorite);
         }
 

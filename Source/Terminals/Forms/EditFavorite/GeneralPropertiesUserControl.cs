@@ -16,7 +16,7 @@ namespace Terminals.Forms.EditFavorite
     {
         private readonly Settings settings = Settings.Instance;
         private readonly ConnectionManager connectionManager = ConnectionManager.Instance;
-        private readonly IFavorites favorites = Persistence.Instance.Favorites;
+        private IFavorites favorites;
 
         internal string ServerNameText { get { return this.cmbServers.Text.Trim(); } }
 
@@ -81,6 +81,7 @@ namespace Terminals.Forms.EditFavorite
 
         internal void AssignPersistence(IPersistence persistence)
         {
+            this.favorites = persistence.Favorites;
             this.securityPanel1.AssignServices(persistence, this.settings);
         }
 

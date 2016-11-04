@@ -105,7 +105,7 @@ namespace Terminals.Data
                     favorite.Port = port;
             }
 
-            var rdpProperties = favorite.ProtocolProperties as RdpOptions;
+            var rdpProperties = favorite.ProtocolProperties as IForceConsoleOptions;
             if (rdpProperties != null)
                 rdpProperties.ConnectToConsole = connectToConsole;
 

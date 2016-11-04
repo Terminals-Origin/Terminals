@@ -3,7 +3,7 @@
 namespace Terminals.Data
 {
     [Serializable]
-    public class RdpOptions : ProtocolOptions
+    public class RdpOptions : ProtocolOptions, IForceConsoleOptions, IContainsCredentials
     {
         public Boolean ConnectToConsole { get; set; }
         public Boolean GrabFocusOnConnect { get; set; }
@@ -57,6 +57,11 @@ namespace Terminals.Data
                     Redirect = this.Redirect.Copy(),
                     TsGateway = this.TsGateway.Copy()
                 };
+        }
+
+        public SecurityOptions GetSecurity()
+        {
+            return this.TsGateway.Security;
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
+using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Data.Credentials;
 using Terminals.Forms.Controls;
@@ -67,10 +68,11 @@ namespace Tests.Integrations
         [TestMethod]
         public void ExportImportFavorite_ImportsTsgwOptionsSecurity()
         {
+            // todo caused by validation accessing the ConnectionManager, which is not configured.
             string path = this.TestContext.DeploymentDirectory;
             IFavorite importedFavorite = PerformImportExportFavorite(this.Persistence, path);
-            TsGwOptions tsgwOptions = ((RdpOptions)importedFavorite.ProtocolProperties).TsGateway;
-            AssertSecurityImported(this.Persistence, tsgwOptions.Security);
+            SecurityOptions security = ((IContainsCredentials)importedFavorite.ProtocolProperties).GetSecurity();
+            AssertSecurityImported(this.Persistence, security);
         }
 
         /// <summary>
@@ -107,6 +109,7 @@ namespace Tests.Integrations
             IFavorite favorite = persistence.Factory.CreateFavorite();
             favorite.Name = "testFavorite";
             favorite.ServerName = favorite.Name;
+            ConnectionManagerOtionsTests.StaticLoadingConnectionManager.ChangeProtocol(favorite, KnownConnectionConstants.RDP);
             SetupSecurityValues(persistence, favorite.Security);
             TsGwOptions tsgwOptions = ((RdpOptions)favorite.ProtocolProperties).TsGateway;
             tsgwOptions.UsageMethod = 1;// enable
