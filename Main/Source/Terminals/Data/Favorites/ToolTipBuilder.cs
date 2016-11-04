@@ -37,7 +37,7 @@ namespace Terminals.Data
 
         private static string CreateExtendedToolTip(IFavorite selected)
         {
-            var rdp = selected.ProtocolProperties as RdpOptions;
+            var rdp = selected.ProtocolProperties as IForceConsoleOptions;
             bool console = false;
             if (rdp != null)
                 console = rdp.ConnectToConsole;

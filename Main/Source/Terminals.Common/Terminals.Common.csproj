@@ -65,6 +65,8 @@
     <Compile Include="Converters\IRelativeUrlProvider.cs" />
     <Compile Include="Converters\UrlConverter.cs" />
     <Compile Include="Data\Favorites\CredentialBase.cs" />
+    <Compile Include="Data\Favorites\IContainsCredentials.cs" />
+    <Compile Include="Data\Favorites\IForceConsoleOptions.cs" />
     <Compile Include="Data\Favorites\SecurityOptions.cs" />
     <Compile Include="Data\Interfaces\IGuardedCredential.cs" />
     <Compile Include="Data\Interfaces\IGuardedCredentialFactory.cs" />

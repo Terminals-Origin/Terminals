@@ -164,10 +164,11 @@ namespace Terminals.Data
 
         private void UpdatePasswordsInProtocolProperties(ProtocolOptions protocolProperties, string newKeyMaterial)
         {
-            RdpOptions rdpOptions = protocolProperties as RdpOptions;
-            if (rdpOptions != null)
+            var options = protocolProperties as IContainsCredentials;
+            if (options != null)
             {
-                var guarded = new GuardedSecurity(this.security, rdpOptions.TsGateway.Security);
+                SecurityOptions securityOptions = options.GetSecurity();
+                var guarded = new GuardedSecurity(this.security, securityOptions);
                 guarded.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             }
         }

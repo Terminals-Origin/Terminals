@@ -145,7 +145,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Terminals, Version=3.6.1.27288, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="TransPort2006">
       <HintPath>..\..\Resources\Libraries\TransPort2006\TransPort2006.dll</HintPath>
     </Reference>
@@ -1569,10 +1568,6 @@
     <ProjectReference Include="..\Terminals.External\Terminals.External.csproj">
       <Project>{fcd4beca-9923-4bb0-bf57-8e8bcd0f784c}</Project>
       <Name>Terminals.External</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Terminals.Plugins.Rdp\Terminals.Plugins.Rdp.csproj">
-      <Project>{f0c60ed2-9a47-4364-af57-505bc3e953d5}</Project>
-      <Name>Terminals.Plugins.Rdp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

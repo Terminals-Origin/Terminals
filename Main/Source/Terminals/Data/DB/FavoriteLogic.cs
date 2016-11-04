@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Terminals.Common.Connections;
-using Terminals.Connections;
 using Terminals.Converters;
 
 namespace Terminals.Data.DB
@@ -171,7 +170,7 @@ namespace Terminals.Data.DB
         {
             this.Groups = new HashSet<DbGroup>();
             this.Port = KnownConnectionConstants.RDPPort;
-            this.ChangeProtocol(KnownConnectionConstants.RDP, new RdpOptions());
+            this.ChangeProtocol(KnownConnectionConstants.RDP, new EmptyOptions());
             this.Details = new FavoriteDetails(this);
         }
 
