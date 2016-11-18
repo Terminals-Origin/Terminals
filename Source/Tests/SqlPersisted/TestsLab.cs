@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.DB;
+using Tests.Connections;
 using Tests.FilePersisted;
 
 namespace Tests.SqlPersisted
@@ -85,9 +86,9 @@ namespace Tests.SqlPersisted
             this.CheckDatabase = DatabaseConnections.CreateInstance();
             this.CheckDatabase.UpdateMasterPassword(String.Empty);
 
-            this.PrimaryPersistence = new SqlPersistence();
+            this.PrimaryPersistence = new SqlPersistence(FavoriteIcons.Instance, ConnectionManagerOtionsTests.StaticLoadingConnectionManager);
             this.PrimaryPersistence.Initialize();
-            this.SecondaryPersistence = new SqlPersistence();
+            this.SecondaryPersistence = new SqlPersistence(FavoriteIcons.Instance, ConnectionManagerOtionsTests.StaticLoadingConnectionManager);
             this.SecondaryPersistence.Initialize();
 
             this.ClearTestLab(); // because of failed previous tests
@@ -150,7 +151,6 @@ namespace Tests.SqlPersisted
         internal DbFavorite CreateTestFavorite()
         {
             var favorite = this.PrimaryPersistence.Factory.CreateFavorite() as DbFavorite;
-            // set required properties
             favorite.Name = FAVORITE_NAME;
             favorite.ServerName = FAVORITE_SERVERNAME;
             return favorite;

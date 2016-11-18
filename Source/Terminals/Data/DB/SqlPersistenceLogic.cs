@@ -62,10 +62,17 @@ namespace Terminals.Data.DB
         public ICredentials Credentials { get { return this.credentials; } }
 
         private readonly SqlPersistenceSecurity security;
+
+        private readonly FavoriteIcons favoriteIcons;
+
+        private readonly ConnectionManager connectionManager;
+
         public PersistenceSecurity Security { get { return this.security; } }
 
-        internal SqlPersistence()
+        internal SqlPersistence(FavoriteIcons favoriteIcons, ConnectionManager connectionManager)
         {
+            this.favoriteIcons = favoriteIcons;
+            this.connectionManager = connectionManager;
             this.reLoadClock = new Timer(DEFAULT_REFRESH_INTERVAL);
             this.security = new SqlPersistenceSecurity();
             this.security.AssignPersistence(this);
@@ -94,7 +101,7 @@ namespace Terminals.Data.DB
             this.groups = new Groups();
             this.credentials = new StoredCredentials(this.Dispatcher);
             this.favorites = new Favorites(this.groups, this.credentials, this.security,
-                this.Dispatcher, ConnectionManager.Instance, FavoriteIcons.Instance);
+                this.Dispatcher, connectionManager, favoriteIcons);
             this.groups.AssignStores(this.Dispatcher, this.favorites);
             this.connectionHistory = new ConnectionHistory(this.favorites, this.Dispatcher);
             this.Factory = new Factory(this.groups, this.favorites, this.credentials, this.Dispatcher);

@@ -98,8 +98,8 @@ namespace Tests.SqlPersisted
         public void MasterPasswordUpdateTest()
         {
             var newFavorite = this.AddFavoriteWithTestPassword();
-            var rdpOptions = newFavorite.ProtocolProperties as RdpOptions;
-            var guardedOptions = new GuardedSecurity(this.PrimaryPersistence.Security, rdpOptions.TsGateway.Security);
+            var rdpOptions = newFavorite.ProtocolProperties as IContainsCredentials;
+            var guardedOptions = new GuardedSecurity(this.PrimaryPersistence.Security, rdpOptions.GetSecurity());
             guardedOptions.Password = VALIDATION_VALUE;
             this.PrimaryFavorites.Update(newFavorite);
             DatabasePasswordUpdate.UpdateMastrerPassord(settings.ConnectionString, string.Empty, VALIDATION_VALUE_B);
@@ -114,8 +114,8 @@ namespace Tests.SqlPersisted
             Assert.AreEqual(VALIDATION_VALUE, resolvedSecurity.Password,
                 "Favorite password doesn't match after database password update.");
             
-            var secondaryRdpOptions = resultFavorite.ProtocolProperties as RdpOptions;
-            var resolvedOptionsSecurity = new GuardedSecurity(this.SecondaryPersistence.Security, secondaryRdpOptions.TsGateway.Security);
+            var secondaryRdpOptions = resultFavorite.ProtocolProperties as IContainsCredentials;
+            var resolvedOptionsSecurity = new GuardedSecurity(this.SecondaryPersistence.Security, secondaryRdpOptions.GetSecurity());
             Assert.AreEqual(VALIDATION_VALUE, resolvedOptionsSecurity.Password,
                 "Favorite TS gateway password doesn't match after database password update.");
         }

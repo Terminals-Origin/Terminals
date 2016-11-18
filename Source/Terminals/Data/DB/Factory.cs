@@ -30,6 +30,7 @@
         internal static DbFavorite CreateFavorite(Groups groups, StoredCredentials credentials, DataDispatcher dispatcher)
         {
             var favorite = new DbFavorite();
+            // todo assign correct protocol options using connectionmanager
             favorite.Display = new DbDisplayOptions();
             favorite.Security = new DbSecurityOptions();
             favorite.ExecuteBeforeConnect = new DbBeforeConnectExecute();
