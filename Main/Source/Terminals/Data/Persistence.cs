@@ -1,5 +1,6 @@
 ﻿using System;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data.DB;
 
 namespace Terminals.Data
@@ -28,7 +29,7 @@ namespace Terminals.Data
             if (Settings.Instance.PersistenceType == FilePersistence.TYPE_ID)
                 this.persistence = new FilePersistence();
             else
-                this.persistence = new SqlPersistence();
+                this.persistence = new SqlPersistence(FavoriteIcons.Instance, ConnectionManager.Instance);
         }
 
         /// <summary>
