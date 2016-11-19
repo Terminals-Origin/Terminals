@@ -22,7 +22,7 @@ namespace Terminals.Data
 
         public string Name { get { return "Files"; } }
 
-        private readonly FileLocations fileLocations = Settings.Instance.FileLocations;
+        private readonly FileLocations fileLocations;
         private readonly Favorites favorites;
         public IFavorites Favorites
         {
@@ -72,28 +72,29 @@ namespace Terminals.Data
         private IDataFileWatcher fileWatcher;
         private bool delaySave;
 
-        private readonly FavoritesFileSerializer serializer = new FavoritesFileSerializer(ConnectionManager.Instance);
-
-        internal FilePersistence() : this(new PersistenceSecurity())
-        {}
+        private readonly FavoritesFileSerializer serializer;
 
         /// <summary>
         /// Try to reuse current security in case of changing persistence, because user is already authenticated
         /// </summary>
         internal FilePersistence(PersistenceSecurity security)
-            : this(security, new DataFileWatcher(Settings.Instance.FileLocations.Favorites))
+            : this(security, new DataFileWatcher(Settings.Instance.FileLocations.Favorites),
+                  FavoriteIcons.Instance, ConnectionManager.Instance)
         {}
 
         /// <summary>
         /// For testing purpose allowes to inject internaly used services
         /// </summary>
-        internal FilePersistence(PersistenceSecurity security, IDataFileWatcher fileWatcher)
+        internal FilePersistence(PersistenceSecurity security, IDataFileWatcher fileWatcher,
+            FavoriteIcons favoriteIcons, ConnectionManager connectionManager)
         {
+            this.fileLocations = Settings.Instance.FileLocations;
+            this.serializer = new FavoritesFileSerializer(connectionManager);
             this.InitializeSecurity(security);
             this.Dispatcher = new DataDispatcher();
             this.storedCredentials = new StoredCredentials(security);
             this.groups = new Groups(this);
-            this.favorites = new Favorites(this, FavoriteIcons.Instance);
+            this.favorites = new Favorites(this, favoriteIcons);
             this.connectionHistory = new ConnectionHistory(this.favorites);
             this.factory = new Factory(this.groups, this.Dispatcher);
             this.InitializeFileWatch(fileWatcher);

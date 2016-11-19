@@ -7,6 +7,7 @@ using Terminals.Data;
 using Terminals.Data.Credentials;
 using Terminals.Security;
 using Terminals.Updates;
+using Tests.FilePersisted;
 
 namespace Tests.Passwords
 {
@@ -100,7 +101,7 @@ namespace Tests.Passwords
 
         private IPersistence RunUpgrade()
         {
-            var persistence = new FilePersistence();
+            var persistence = FilePersistedTestLab.CreateFilePersistence();
             var contentUpgrade = new FilesV2ContentUpgrade(persistence, GetMasterPassword);
             contentUpgrade.Run();
             settings.ForceReload(); // because we changed its file, while upgrading

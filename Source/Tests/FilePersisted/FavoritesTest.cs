@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Common.Connections;
+using Terminals.Connections;
 using Terminals.Connections.VNC;
 using Terminals.Data;
 using Terminals.Data.Credentials;
@@ -32,7 +33,7 @@ namespace Tests.FilePersisted
             const string SPECIAL_CHARACTERS = "čočka\r\nčočka"; // some example special characters
             favorite.Notes = SPECIAL_CHARACTERS;
             this.Persistence.Favorites.Update(favorite);
-            var secondary = new FilePersistence();
+            var secondary = FilePersistedTestLab.CreateFilePersistence();
             secondary.Initialize();
             IFavorite checkfavorite = secondary.Favorites.FirstOrDefault();
             Assert.AreEqual(SPECIAL_CHARACTERS, checkfavorite.Notes, "favorite notes were not saved properly");
@@ -108,7 +109,7 @@ namespace Tests.FilePersisted
 
         private FilePersistence InitializeSecondaryPersistence(TestFileWatch testFileWatch)
         {
-            var secondaryPersistence = new FilePersistence(new PersistenceSecurity(), testFileWatch);
+            var secondaryPersistence = new FilePersistence(new PersistenceSecurity(), testFileWatch, FavoriteIcons.Instance, ConnectionManager.Instance);
             // let the persistence load initial state
             secondaryPersistence.Initialize();
             secondaryPersistence.Dispatcher.FavoritesChanged += this.DispatcherOnFavoritesChanged;

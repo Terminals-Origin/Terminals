@@ -17,8 +17,13 @@ namespace Tests.FilePersisted
         {
             SetDefaultFileLocations();
             File.Delete(settings.FileLocations.Favorites);
-            this.Persistence = new FilePersistence();
+            this.Persistence = CreateFilePersistence();
             this.Persistence.Initialize();
+        }
+
+        internal static FilePersistence CreateFilePersistence()
+        {
+            return new FilePersistence(new PersistenceSecurity());
         }
 
         internal static void SetDefaultFileLocations()
