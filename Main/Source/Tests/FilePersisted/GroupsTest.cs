@@ -143,7 +143,7 @@ namespace Tests.FilePersisted
 
         private static IGroup GetFromSecondaryPersistence()
         {
-            var secondaryPersistence = new FilePersistence();
+            var secondaryPersistence = FilePersistedTestLab.CreateFilePersistence();
             secondaryPersistence.Initialize();
             return secondaryPersistence.Groups[GROUP_NAME2];
         }
