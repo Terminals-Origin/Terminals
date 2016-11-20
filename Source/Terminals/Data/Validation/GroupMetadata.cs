@@ -9,9 +9,13 @@ namespace Terminals.Data.Validation
         public string Name { get; set; }
     }
 
-    internal class GroupValidator : AbstractValidator<IGroup>
+    internal class GroupValidator : NamedItemValidator<IGroup>
+    { }
+
+    internal class NamedItemValidator<TNamedItem> : AbstractValidator<TNamedItem>
+        where TNamedItem : INamedItem
     {
-        public GroupValidator()
+        public NamedItemValidator()
         {
             this.RuleFor(g => g.Name).NotEmpty().WithMessage(CredentialSetMetadata.NAME_MIN_LENGTH);
         }
