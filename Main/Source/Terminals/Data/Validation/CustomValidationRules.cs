@@ -11,12 +11,19 @@ namespace Terminals.Data.Validation
 
         internal const string METHOD_ISKNOWNPROTOCOL = "IsKnownProtocol";
 
+        internal const string SERVER_NAME_IS_NOT_IN_THE_CORRECT_FORMAT = "Server name is not in the correct format.";
+
         public static ValidationResult IsValidServerName(string serverName)
         {
-            if (Settings.Instance.ForceComputerNamesAsURI && Uri.CheckHostName(serverName) == UriHostNameType.Unknown)
-                return new ValidationResult("Server name is not in the correct format.", new string[] { "ServerName" });
+            if (IsValidServerNameB(serverName))
+                return new ValidationResult(SERVER_NAME_IS_NOT_IN_THE_CORRECT_FORMAT, new string[] { "ServerName" });
 
             return ValidationResult.Success;
+        }
+
+        internal static bool IsValidServerNameB(string serverName)
+        {
+            return Settings.Instance.ForceComputerNamesAsURI && Uri.CheckHostName(serverName) == UriHostNameType.Unknown;
         }
 
         public static ValidationResult IsKnownProtocol(string protocol)
