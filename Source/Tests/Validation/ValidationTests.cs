@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
 using Terminals.Data.DB;
 using Terminals.Data.Validation;
+using Tests.Connections;
 
 namespace Tests.Validation
 {
@@ -31,7 +32,7 @@ namespace Tests.Validation
             var favorite = new Favorite();
             favorite.Protocol = longText.Substring(0, 11);
             favorite.ServerName = longText;
-            var results = Validations.Validate(favorite);
+            var results = Validations.Validate(ConnectionManagerOtionsTests.StaticLoadingConnectionManager, favorite);
             Assert.AreEqual(3, results.Count(), "Some properties arent validated properly for Favorite");
         }
 
@@ -74,7 +75,7 @@ namespace Tests.Validation
             favorite.ExecuteBeforeConnect.Command = longText;
             favorite.ExecuteBeforeConnect.CommandArguments = longText;
             favorite.ExecuteBeforeConnect.InitialDirectory = longText;
-            var results = Validations.Validate(favorite);
+            var results = Validations.Validate(ConnectionManagerOtionsTests.StaticLoadingConnectionManager, favorite);
             return results;
         }
 
