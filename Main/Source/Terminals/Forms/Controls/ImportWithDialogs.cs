@@ -99,7 +99,7 @@ namespace Terminals.Forms.Controls
 
         private void TryProcessFavorite(ImportContext context)
         {
-            context.ToPerisist = ModelConverterV1ToV2.ConvertToFavorite(context.ToImport, this.persistence);
+            context.ToPerisist = ModelConverterV1ToV2.ConvertToFavorite(context.ToImport, this.persistence, this.connectionManager);
             ValidationStates results = Validations.Validate(connectionManager, context.ToPerisist);
             if (results.Empty)
                 this.ProcessFavorite(context);

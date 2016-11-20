@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
+using Tests.Connections;
 
 namespace Tests.FilePersisted
 {
@@ -23,7 +24,7 @@ namespace Tests.FilePersisted
 
         internal static FilePersistence CreateFilePersistence()
         {
-            return new FilePersistence(new PersistenceSecurity());
+            return new FilePersistence(new PersistenceSecurity(), new TestFileWatch(), FavoriteIcons.Instance, TestConnectionManager.Instance);
         }
 
         internal static void SetDefaultFileLocations()

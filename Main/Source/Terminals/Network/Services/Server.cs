@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Terminals.Connections;
 using Terminals.Data;
 using Unified;
 
@@ -75,7 +76,7 @@ namespace Terminals.Network
             
             foreach (IFavorite favorite in favoritesToShare)
             {
-                FavoriteConfigurationElement configFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, persistence);
+                FavoriteConfigurationElement configFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, persistence, ConnectionManager.Instance);
                 list.Add(SharedFavorite.ConvertFromFavorite(this.persistence, configFavorite));
             }
             return list;

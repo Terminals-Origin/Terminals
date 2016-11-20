@@ -75,7 +75,7 @@ namespace Terminals.Forms
         private List<FavoriteConfigurationElement> ConvertFavoritesToExport(List<IFavorite> favorites)
         {
             return favorites.Distinct()
-                .Select(favorite => ModelConverterV2ToV1.ConvertToFavorite(favorite, this.persistence))
+                .Select(favorite => ModelConverterV2ToV1.ConvertToFavorite(favorite, this.persistence, ConnectionManager.Instance))
                 .ToList();
         }
 

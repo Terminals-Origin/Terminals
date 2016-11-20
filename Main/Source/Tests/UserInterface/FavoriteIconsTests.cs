@@ -25,7 +25,7 @@ namespace Tests.UserInterface
 
         private const string UNKNOWNPROTOCOL = "UnknownProtocol";
 
-        private FavoriteIcons icons = new FavoriteIcons(TestConnecionManager.Instance);
+        private FavoriteIcons icons = new FavoriteIcons(TestConnectionManager.Instance);
 
         public TestContext TestContext { get; set; }
 

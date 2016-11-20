@@ -12,13 +12,11 @@ namespace Terminals.Data
     /// </summary>
     internal class ModelConverterV1ToV2 : ModelConvertersTemplate
     {
-        private readonly ConnectionManager connectionManager;
-
         private readonly IFavorites favorites;
 
-        private ModelConverterV1ToV2(IPersistence persistence, ConnectionManager connectionManager): base(persistence)
+        private ModelConverterV1ToV2(IPersistence persistence, ConnectionManager connectionManager)
+            : base(persistence, connectionManager)
         {
-            this.connectionManager = connectionManager;
             this.favorites = persistence.Favorites;
         }
 
@@ -26,9 +24,10 @@ namespace Terminals.Data
         /// Doesn't convert Tags to groups, it has to be handled manually, 
         /// when adding Favorite into Persistence
         /// </summary>
-        internal static IFavorite ConvertToFavorite(FavoriteConfigurationElement sourceFavorite, IPersistence persistence)
+        internal static IFavorite ConvertToFavorite(FavoriteConfigurationElement sourceFavorite,
+            IPersistence persistence, ConnectionManager connectionManager)
         {
-            var converter = new ModelConverterV1ToV2(persistence, ConnectionManager.Instance);
+            var converter = new ModelConverterV1ToV2(persistence, connectionManager);
             return converter.Convert(sourceFavorite);
         }
 
@@ -48,7 +47,7 @@ namespace Terminals.Data
 
         private void ConvertGeneralProperties(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
-            this.connectionManager.ChangeProtocol(result, sourceFavorite.Protocol);
+            this.ConnectionManager.ChangeProtocol(result, sourceFavorite.Protocol);
             result.Name = sourceFavorite.Name;
             result.Port = sourceFavorite.Port;
             result.ServerName = sourceFavorite.ServerName;

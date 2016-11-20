@@ -1,4 +1,6 @@
-﻿using Terminals.Data;
+﻿using Terminals.Common.Connections;
+using Terminals.Connections;
+using Terminals.Data;
 
 namespace Terminals
 {
@@ -11,16 +13,20 @@ namespace Terminals
 
         private readonly DataDispatcher dispatcher;
 
-        internal Factory(Groups groups, DataDispatcher dispatcher)
+        private readonly ConnectionManager connectionManager;
+
+        internal Factory(Groups groups, DataDispatcher dispatcher, ConnectionManager connectionManager)
         {
             this.groups = groups;
             this.dispatcher = dispatcher;
+            this.connectionManager = connectionManager;
         }
 
         public IFavorite CreateFavorite()
         {
             var newItem = new Favorite();
             newItem.AssignStores(this.groups);
+            connectionManager.ChangeProtocol(newItem, KnownConnectionConstants.RDP);
             return newItem;
         }
 

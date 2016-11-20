@@ -74,7 +74,7 @@ namespace Tests.Integrations
             };
 
             IPersistence persistence = TestMocksFactory.CreatePersistence().Object;
-            ITerminalsOptionsExport[] exporters = TestConnecionManager.Instance.GetTerminalsOptionsExporters();
+            ITerminalsOptionsExport[] exporters = TestConnectionManager.Instance.GetTerminalsOptionsExporters();
             var exporter = new ExportTerminals(persistence, exporters);
             exporter.Export(options);
         }
