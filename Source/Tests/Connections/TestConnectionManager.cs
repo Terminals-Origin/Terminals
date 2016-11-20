@@ -9,7 +9,7 @@ using Terminals.Connections.Web;
 
 namespace Tests.Connections
 {
-    internal class TestConnecionManager
+    internal class TestConnectionManager
     {
         private static readonly ConnectionManager instance = new ConnectionManager(() =>
             new List<IConnectionPlugin>()

@@ -96,7 +96,7 @@ namespace Terminals.Data
             this.groups = new Groups(this);
             this.favorites = new Favorites(this, favoriteIcons);
             this.connectionHistory = new ConnectionHistory(this.favorites);
-            this.factory = new Factory(this.groups, this.Dispatcher);
+            this.factory = new Factory(this.groups, this.Dispatcher,  connectionManager);
             this.InitializeFileWatch(fileWatcher);
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms;
 
@@ -16,6 +17,8 @@ namespace Terminals
         private readonly Settings settings = Settings.Instance;
 
         private NewTerminalFormValidator validator;
+
+        private readonly ConnectionManager connectionManager = ConnectionManager.Instance;
 
         public Guid EditedId { get; private set; }
 
@@ -170,7 +173,7 @@ namespace Terminals
                 var defaultSavedFavorite = settings.GetDefaultFavorite();
                 if (defaultSavedFavorite != null)
                 {
-                    var defaultFavorite = ModelConverterV1ToV2.ConvertToFavorite(defaultSavedFavorite, this.persistence);
+                    var defaultFavorite = ModelConverterV1ToV2.ConvertToFavorite(defaultSavedFavorite, this.persistence, this.connectionManager);
                     this.favoritePropertiesControl1.LoadFrom(defaultFavorite);
                 }
 
@@ -265,7 +268,7 @@ namespace Terminals
             favorite.Security.EncryptedUserName = String.Empty;
             favorite.Security.EncryptedPassword = String.Empty;
 
-            var defaultFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, this.persistence);
+            var defaultFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, this.persistence, this.connectionManager);
             defaultFavorite.EnableSecuritySettings = false;
             defaultFavorite.SecurityWorkingFolder = string.Empty;
             defaultFavorite.SecurityStartProgram = string.Empty;

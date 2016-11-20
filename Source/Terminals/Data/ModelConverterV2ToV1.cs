@@ -2,6 +2,7 @@
 using Terminals.Common.Connections;
 using Terminals.Common.Converters;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data.Credentials;
 
 namespace Terminals.Data
@@ -14,13 +15,15 @@ namespace Terminals.Data
     /// </summary>
     internal class ModelConverterV2ToV1 : ModelConvertersTemplate
     {
-        private ModelConverterV2ToV1(IPersistence persistence) : base(persistence)
+        private ModelConverterV2ToV1(IPersistence persistence, ConnectionManager connectionManager)
+            : base(persistence, connectionManager)
         {
         }
 
-        internal static FavoriteConfigurationElement ConvertToFavorite(IFavorite sourceFavorite, IPersistence persistence)
+        internal static FavoriteConfigurationElement ConvertToFavorite(IFavorite sourceFavorite,
+            IPersistence persistence, ConnectionManager connectionManager)
         {
-            var converter = new ModelConverterV2ToV1(persistence);
+            var converter = new ModelConverterV2ToV1(persistence, connectionManager);
             return converter.ConvertToFavorite(sourceFavorite);
         }
 

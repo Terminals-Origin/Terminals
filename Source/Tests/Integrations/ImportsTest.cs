@@ -109,7 +109,6 @@ namespace Tests.Integrations
             IFavorite favorite = persistence.Factory.CreateFavorite();
             favorite.Name = "testFavorite";
             favorite.ServerName = favorite.Name;
-            TestConnecionManager.Instance.ChangeProtocol(favorite, KnownConnectionConstants.RDP);
             SetupSecurityValues(persistence, favorite.Security);
             TsGwOptions tsgwOptions = ((RdpOptions)favorite.ProtocolProperties).TsGateway;
             tsgwOptions.UsageMethod = 1;// enable
@@ -128,7 +127,7 @@ namespace Tests.Integrations
 
         private static void ExportFavorite(IFavorite favorite, IPersistence persistence)
         {
-            FavoriteConfigurationElement favoriteElement = ModelConverterV2ToV1.ConvertToFavorite(favorite, persistence);
+            FavoriteConfigurationElement favoriteElement = ModelConverterV2ToV1.ConvertToFavorite(favorite, persistence, TestConnectionManager.Instance);
 
             ExportOptions options = new ExportOptions
                 {
@@ -138,7 +137,7 @@ namespace Tests.Integrations
                     IncludePasswords = true
                 };
 
-            Exporters exporters = new Exporters(persistence, TestConnecionManager.Instance);
+            Exporters exporters = new Exporters(persistence, TestConnectionManager.Instance);
             exporters.Export(options);
         }
 
@@ -192,7 +191,7 @@ namespace Tests.Integrations
             Func<int, DialogResult> strategy)
         {
             var moqInterface = new TestImportUi(strategy);
-            var managedImport = new ImportWithDialogs(moqInterface, persistence, TestConnecionManager.Instance);
+            var managedImport = new ImportWithDialogs(moqInterface, persistence, TestConnectionManager.Instance);
             bool success = managedImport.Import(toImport);
             return success;
         }

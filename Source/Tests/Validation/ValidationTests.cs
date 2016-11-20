@@ -32,7 +32,7 @@ namespace Tests.Validation
             var favorite = new Favorite();
             favorite.Protocol = longText.Substring(0, 11);
             favorite.ServerName = longText;
-            var results = Validations.Validate(TestConnecionManager.Instance, favorite);
+            var results = Validations.Validate(TestConnectionManager.Instance, favorite);
             Assert.AreEqual(3, results.Count(), "Some properties arent validated properly for Favorite");
         }
 
@@ -75,7 +75,7 @@ namespace Tests.Validation
             favorite.ExecuteBeforeConnect.Command = longText;
             favorite.ExecuteBeforeConnect.CommandArguments = longText;
             favorite.ExecuteBeforeConnect.InitialDirectory = longText;
-            var results = Validations.Validate(TestConnecionManager.Instance, favorite);
+            var results = Validations.Validate(TestConnectionManager.Instance, favorite);
             return results;
         }
 

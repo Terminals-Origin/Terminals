@@ -86,9 +86,9 @@ namespace Tests.SqlPersisted
             this.CheckDatabase = DatabaseConnections.CreateInstance();
             this.CheckDatabase.UpdateMasterPassword(String.Empty);
 
-            this.PrimaryPersistence = new SqlPersistence(FavoriteIcons.Instance, TestConnecionManager.Instance);
+            this.PrimaryPersistence = new SqlPersistence(FavoriteIcons.Instance, TestConnectionManager.Instance);
             this.PrimaryPersistence.Initialize();
-            this.SecondaryPersistence = new SqlPersistence(FavoriteIcons.Instance, TestConnecionManager.Instance);
+            this.SecondaryPersistence = new SqlPersistence(FavoriteIcons.Instance, TestConnectionManager.Instance);
             this.SecondaryPersistence.Initialize();
 
             this.ClearTestLab(); // because of failed previous tests

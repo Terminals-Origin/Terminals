@@ -30,7 +30,7 @@ namespace Tests.UserInterface
         private const string PROTOCOL_MESSAGE = "Protocol Roundtrip has to preserve the property value";
         private static readonly PersistenceSecurity persistenceSecurity = new PersistenceSecurity();
 
-        private readonly ConnectionManager connectionManager = TestConnecionManager.Instance;
+        private readonly ConnectionManager connectionManager = TestConnectionManager.Instance;
 
         private readonly ProtocolOptionsPanel protocolPanel = new ProtocolOptionsPanel();
         private readonly MockChildProtocolControl childProtocolControlMock = new MockChildProtocolControl();

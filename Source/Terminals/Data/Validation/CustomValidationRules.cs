@@ -25,13 +25,5 @@ namespace Terminals.Data.Validation
         {
             return Settings.Instance.ForceComputerNamesAsURI && Uri.CheckHostName(serverName) == UriHostNameType.Unknown;
         }
-
-        public static ValidationResult IsKnownProtocol(string protocol)
-        {
-            if (ConnectionManager.Instance.IsKnownProtocol(protocol))
-                return ValidationResult.Success;
-
-            return new ValidationResult(Validations.UNKNOWN_PROTOCOL, new string[] { "Protocol" });
-        }
     }
 }

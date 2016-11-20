@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Converters;
 using Terminals.Data;
 using Terminals.Forms.Controls;
@@ -136,7 +137,7 @@ namespace Terminals.Updates
 
             foreach (FavoriteConfigurationElement favoriteConfigElement in settings.GetFavorites())
             {
-                IFavorite favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement, this.persistence);
+                IFavorite favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement, this.persistence, ConnectionManager.Instance);
                 ImportWithDialogs.AddFavoriteIntoGroups(this.persistence, favorite, tagsConvertert.ResolveTagsList(favoriteConfigElement));
                 this.persistence.Favorites.Add(favorite);
             }

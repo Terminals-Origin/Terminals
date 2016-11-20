@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Common.Connections;
-using Terminals.Connections;
 using Terminals.Connections.ICA;
-using Terminals.Connections.Rdp;
 using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
-using Terminals.Connections.Web;
 using Terminals.Data;
 
 namespace Tests.Connections
@@ -22,14 +18,14 @@ namespace Tests.Connections
         [TestMethod]
         public void NullCurrentOptionsRdpProtocol_UpdateProtocolPropertiesByProtocol_ReturnsRdpOptions()
         {
-            var returned = TestConnecionManager.Instance.UpdateProtocolPropertiesByProtocol(KnownConnectionConstants.RDP, null);
+            var returned = TestConnectionManager.Instance.UpdateProtocolPropertiesByProtocol(KnownConnectionConstants.RDP, null);
             Assert.IsInstanceOfType(returned, typeof(RdpOptions), "When creating new favorite, the options arent set yet.");
         }
         
         [TestMethod]
         public void UnknownProtocol_UpdateProtocolPropertiesByProtocol_ReturnsEmptyOptions()
         {
-            var returned = TestConnecionManager.Instance.UpdateProtocolPropertiesByProtocol("UnknonwProtocol", new ConsoleOptions());
+            var returned = TestConnectionManager.Instance.UpdateProtocolPropertiesByProtocol("UnknonwProtocol", new ConsoleOptions());
             Assert.IsInstanceOfType(returned, typeof(EmptyOptions), "There is no option, how to switch the properties.");
         }
         
@@ -54,7 +50,7 @@ namespace Tests.Connections
 
         private bool AssertTheSameInstance(Tuple<string, ProtocolOptions> testCase)
         {
-            ProtocolOptions returned = TestConnecionManager.Instance.UpdateProtocolPropertiesByProtocol(testCase.Item1, testCase.Item2);
+            ProtocolOptions returned = TestConnectionManager.Instance.UpdateProtocolPropertiesByProtocol(testCase.Item1, testCase.Item2);
             string expected = testCase.Item2.GetType().Name;
             string returnedType = returned.GetType().Name;
             ReportChangedOptions(testCase.Item1, expected, returnedType);
@@ -83,7 +79,7 @@ namespace Tests.Connections
         private bool AssertOptions(Tuple<string, Type> testCase)
         {
             // No protocol uses EmptyOptions, so it is used as change from something else
-            var returned = TestConnecionManager.Instance.UpdateProtocolPropertiesByProtocol(testCase.Item1, new EmptyOptions());
+            var returned = TestConnectionManager.Instance.UpdateProtocolPropertiesByProtocol(testCase.Item1, new EmptyOptions());
             ReportCreated(returned, testCase);
             return returned.GetType().FullName == testCase.Item2.FullName;
         }

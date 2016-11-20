@@ -48,7 +48,7 @@ namespace Tests.FilePersisted
         public void PrepareTestSet()
         {
             this.Persistence.StartDelayedUpdate();
-            this.favoriteSsh = CreateConfiguredFavorite(f => TestConnecionManager.Instance.ChangeProtocol(f, PROTOCOL));
+            this.favoriteSsh = CreateConfiguredFavorite(f => TestConnectionManager.Instance.ChangeProtocol(f, PROTOCOL));
             this.favoriteNamed = CreateConfiguredFavorite(f => f.Name = NAME);
             this.favoriteServerName = CreateConfiguredFavorite(f => f.ServerName = SERVER_NAME);
             this.favoritePort = CreateConfiguredFavorite(f => f.Port = PORT);
