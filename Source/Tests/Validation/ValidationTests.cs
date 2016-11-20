@@ -125,14 +125,14 @@ namespace Tests.Validation
         }
 
         [TestMethod]
-        public void EmptyDbGroupName_ValidateNameOnly_ReturnsNameError()
+        public void EmptyGroupName_ValidateNameOnly_ReturnsNameError()
         {
-            var group = new DbGroup();
+            var group = new Group();
             group.Name = string.Empty;
             AssertNameOnlyValidation(group);
         }
 
-        private static void AssertNameOnlyValidation(DbGroup group)
+        private static void AssertNameOnlyValidation(IGroup group)
         {
             ValidationStates results = Validations.ValidateNameProperty(group);
             Assert.AreEqual(1, results.Count(), "Group name validation failed");

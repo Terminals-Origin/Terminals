@@ -63,8 +63,7 @@ namespace Terminals.Data.Validation
                 validator = new FavoriteValidator(ConnectionManager.Instance);
 
             FluentValidation.Results.ValidationResult toConvert = validator.Validate(favorite);
-            var results = ConvertResultsToStates(toConvert);
-
+            List<ValidationState> results = ConvertResultsToStates(toConvert);
             return new ValidationStates(results);
         }
 
@@ -78,8 +77,7 @@ namespace Terminals.Data.Validation
                 validator = new CredentialSetValidator();
 
             FluentValidation.Results.ValidationResult toConvert = validator.Validate(credentialSet);
-            var results = ConvertResultsToStates(toConvert);
-
+            List<ValidationState> results = ConvertResultsToStates(toConvert);
             return new ValidationStates(results);
         }
 
@@ -98,11 +96,15 @@ namespace Terminals.Data.Validation
 
         internal static ValidationStates ValidateNameProperty(INamedItem toValidate)
         {
-            var results = new List<ValidationResult>();
-            var context = new ValidationContext(toValidate, null, null);
-            context.MemberName = NAME_PROPERTY;
-            Validator.TryValidateProperty(toValidate.Name, context, results);
-            var states = ConvertResultsToStates(results);
+            NamedItemValidator<INamedItem> validator;
+
+            if (toValidate is DbGroup || toValidate is DbFavorite)
+                validator = new DbNamedItemValidator<INamedItem>();
+            else 
+                validator = new NamedItemValidator<INamedItem>();
+
+            FluentValidation.Results.ValidationResult results = validator.Validate(toValidate);
+            List<ValidationState> states = ConvertResultsToStates(results);
             return new ValidationStates(states);
         }
 
