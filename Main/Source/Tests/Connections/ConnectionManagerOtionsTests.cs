@@ -17,34 +17,19 @@ namespace Tests.Connections
     [TestClass]
     public class ConnectionManagerOtionsTests
     {
-        private static readonly ConnectionManager staticLoadingConnectionManager = new ConnectionManager(() =>
-            new List<IConnectionPlugin>()
-            {
-                new RdpConnectionPlugin(),
-                new HttpConnectionPlugin(),
-                new HttpsConnectionPlugin(),
-                new VncConnectionPlugin(),
-                new VmrcConnectionPlugin(),
-                new TelnetConnectionPlugin(),
-                new SshConnectionPlugin(),
-                new ICAConnectionPlugin()
-            });
-
-        internal static ConnectionManager StaticLoadingConnectionManager { get { return staticLoadingConnectionManager; } }
-
         public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void NullCurrentOptionsRdpProtocol_UpdateProtocolPropertiesByProtocol_ReturnsRdpOptions()
         {
-            var returned = StaticLoadingConnectionManager.UpdateProtocolPropertiesByProtocol(KnownConnectionConstants.RDP, null);
+            var returned = TestConnecionManager.Instance.UpdateProtocolPropertiesByProtocol(KnownConnectionConstants.RDP, null);
             Assert.IsInstanceOfType(returned, typeof(RdpOptions), "When creating new favorite, the options arent set yet.");
         }
         
         [TestMethod]
         public void UnknownProtocol_UpdateProtocolPropertiesByProtocol_ReturnsEmptyOptions()
         {
-            var returned = StaticLoadingConnectionManager.UpdateProtocolPropertiesByProtocol("UnknonwProtocol", new ConsoleOptions());
+            var returned = TestConnecionManager.Instance.UpdateProtocolPropertiesByProtocol("UnknonwProtocol", new ConsoleOptions());
             Assert.IsInstanceOfType(returned, typeof(EmptyOptions), "There is no option, how to switch the properties.");
         }
         
@@ -69,7 +54,7 @@ namespace Tests.Connections
 
         private bool AssertTheSameInstance(Tuple<string, ProtocolOptions> testCase)
         {
-            ProtocolOptions returned = StaticLoadingConnectionManager.UpdateProtocolPropertiesByProtocol(testCase.Item1, testCase.Item2);
+            ProtocolOptions returned = TestConnecionManager.Instance.UpdateProtocolPropertiesByProtocol(testCase.Item1, testCase.Item2);
             string expected = testCase.Item2.GetType().Name;
             string returnedType = returned.GetType().Name;
             ReportChangedOptions(testCase.Item1, expected, returnedType);
@@ -98,7 +83,7 @@ namespace Tests.Connections
         private bool AssertOptions(Tuple<string, Type> testCase)
         {
             // No protocol uses EmptyOptions, so it is used as change from something else
-            var returned = StaticLoadingConnectionManager.UpdateProtocolPropertiesByProtocol(testCase.Item1, new EmptyOptions());
+            var returned = TestConnecionManager.Instance.UpdateProtocolPropertiesByProtocol(testCase.Item1, new EmptyOptions());
             ReportCreated(returned, testCase);
             return returned.GetType().FullName == testCase.Item2.FullName;
         }

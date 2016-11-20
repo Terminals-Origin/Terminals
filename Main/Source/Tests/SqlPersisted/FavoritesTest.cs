@@ -92,7 +92,7 @@ namespace Tests.SqlPersisted
         public void UpdateFavoriteTest()
         {
             IFavorite favorite = this.AddFavoriteToPrimaryPersistence();
-            ConnectionManagerOtionsTests.StaticLoadingConnectionManager.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
+            TestConnecionManager.Instance.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
             favorite.Display.Colors = Terminals.Colors.Bits24;
             this.PrimaryFavorites.Update(favorite);
 
@@ -190,7 +190,7 @@ namespace Tests.SqlPersisted
         {
             IFavorite favorite = this.CreateTestFavorite();
             // now it has RdpOptions
-            ConnectionManagerOtionsTests.StaticLoadingConnectionManager.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
+            TestConnecionManager.Instance.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
             this.PrimaryFavorites.Update(favorite);
             FilePersisted.FavoritesTest.AssertRdpSecurity(this.PrimaryPersistence.Security, favorite);
         }
