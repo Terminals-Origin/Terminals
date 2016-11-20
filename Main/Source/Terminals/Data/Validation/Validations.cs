@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using FluentValidation.Results;
 using Terminals.Connections;
 using Terminals.Data.DB;
-using ValidationContext = System.ComponentModel.DataAnnotations.ValidationContext;
 
 namespace Terminals.Data.Validation
 {
@@ -26,33 +23,6 @@ namespace Terminals.Data.Validation
         /// </summary>
         internal const string NAME_PROPERTY = "Name";
 
-        static Validations()
-        {
-            RegisterSqlValidations();
-            RegisterFilePersistedValidations();
-        }
-
-        private static void RegisterSqlValidations()
-        {
-            RegisterProvider(typeof(DbFavorite), typeof(DbFavoriteMetadata));
-            RegisterProvider(typeof(DbBeforeConnectExecute), typeof(DbBeforeConnectExecuteMetadata));
-            RegisterProvider(typeof(DbGroup), typeof(DbGroupMetadata));
-            RegisterProvider(typeof(DbCredentialSet), typeof(DbCredentialSetMetadata));
-        }
-
-        private static void RegisterFilePersistedValidations()
-        {
-            RegisterProvider(typeof(Favorite), typeof(FavoriteMetadata));
-            RegisterProvider(typeof(Group), typeof(GroupMetadata));
-            RegisterProvider(typeof(CredentialSet), typeof(CredentialSetMetadata));
-        }
-
-        private static void RegisterProvider(Type itemType, Type metadataType)
-        {
-            var association = new AssociatedMetadataTypeTypeDescriptionProvider(itemType, metadataType);
-            TypeDescriptor.AddProviderTransparent(association, itemType);
-        }
-
         internal static ValidationStates Validate(IFavorite favorite)
         {
             AbstractValidator<IFavorite> validator;
@@ -62,7 +32,7 @@ namespace Terminals.Data.Validation
             else
                 validator = new FavoriteValidator(ConnectionManager.Instance);
 
-            FluentValidation.Results.ValidationResult toConvert = validator.Validate(favorite);
+            ValidationResult toConvert = validator.Validate(favorite);
             List<ValidationState> results = ConvertResultsToStates(toConvert);
             return new ValidationStates(results);
         }
@@ -76,7 +46,7 @@ namespace Terminals.Data.Validation
             else
                 validator = new CredentialSetValidator();
 
-            FluentValidation.Results.ValidationResult toConvert = validator.Validate(credentialSet);
+            ValidationResult toConvert = validator.Validate(credentialSet);
             List<ValidationState> results = ConvertResultsToStates(toConvert);
             return new ValidationStates(results);
         }
@@ -90,7 +60,7 @@ namespace Terminals.Data.Validation
             else
                 validator = new NamedItemValidator<IGroup>();
 
-            FluentValidation.Results.ValidationResult results = validator.Validate(group);
+            ValidationResult results = validator.Validate(group);
             return ConvertResultsToStates(results);
         }
 
@@ -103,39 +73,23 @@ namespace Terminals.Data.Validation
             else 
                 validator = new NamedItemValidator<INamedItem>();
 
-            FluentValidation.Results.ValidationResult results = validator.Validate(toValidate);
+            ValidationResult results = validator.Validate(toValidate);
             List<ValidationState> states = ConvertResultsToStates(results);
             return new ValidationStates(states);
         }
 
-        private static List<ValidationState> ConvertResultsToStates(FluentValidation.Results.ValidationResult results)
+        private static List<ValidationState> ConvertResultsToStates(ValidationResult results)
         {
             return results.Errors
                 .Select(ToState)
                 .ToList();
         }
 
-        private static ValidationState ToState(FluentValidation.Results.ValidationFailure result)
+        private static ValidationState ToState(ValidationFailure result)
         {
             return new ValidationState()
                 {
                     PropertyName = result.PropertyName,
-                    Message = result.ErrorMessage
-                };
-        }
-
-        private static List<ValidationState> ConvertResultsToStates(List<ValidationResult> results)
-        {
-            return results.Where(result => result.MemberNames.Any())
-                .Select(ToState)
-                .ToList();
-        }
-
-        private static ValidationState ToState(ValidationResult result)
-        {
-            return new ValidationState()
-                {
-                    PropertyName = result.MemberNames.First(),
                     Message = result.ErrorMessage
                 };
         }
