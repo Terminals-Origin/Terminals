@@ -109,7 +109,7 @@ namespace Tests.Integrations
             IFavorite favorite = persistence.Factory.CreateFavorite();
             favorite.Name = "testFavorite";
             favorite.ServerName = favorite.Name;
-            ConnectionManagerOtionsTests.StaticLoadingConnectionManager.ChangeProtocol(favorite, KnownConnectionConstants.RDP);
+            TestConnecionManager.Instance.ChangeProtocol(favorite, KnownConnectionConstants.RDP);
             SetupSecurityValues(persistence, favorite.Security);
             TsGwOptions tsgwOptions = ((RdpOptions)favorite.ProtocolProperties).TsGateway;
             tsgwOptions.UsageMethod = 1;// enable
@@ -138,7 +138,7 @@ namespace Tests.Integrations
                     IncludePasswords = true
                 };
 
-            Exporters exporters = new Exporters(persistence, ConnectionManagerOtionsTests.StaticLoadingConnectionManager);
+            Exporters exporters = new Exporters(persistence, TestConnecionManager.Instance);
             exporters.Export(options);
         }
 
@@ -192,7 +192,7 @@ namespace Tests.Integrations
             Func<int, DialogResult> strategy)
         {
             var moqInterface = new TestImportUi(strategy);
-            var managedImport = new ImportWithDialogs(moqInterface, persistence, ConnectionManagerOtionsTests.StaticLoadingConnectionManager);
+            var managedImport = new ImportWithDialogs(moqInterface, persistence, TestConnecionManager.Instance);
             bool success = managedImport.Import(toImport);
             return success;
         }
