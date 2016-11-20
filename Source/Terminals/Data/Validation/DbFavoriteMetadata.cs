@@ -30,7 +30,7 @@ namespace Terminals.Data.Validation
         public int Port { get; set; }
     }
 
-    internal class DbFavoriteValidator : AbstractValidator<IFavorite>
+    internal class DbFavoriteValidator : DbNamedItemValidator<IFavorite>
     {
         private readonly ConnectionManager connectionManager;
 
@@ -42,9 +42,6 @@ namespace Terminals.Data.Validation
             this.RuleFor(g => g.Protocol).Length(0, 10).WithMessage(Validations.UNKNOWN_PROTOCOL);
             this.RuleFor(g => g.Protocol).Must(this.IsKnownProtocol)
                 .WithMessage(Validations.UNKNOWN_PROTOCOL);
-
-            this.RuleFor(g => g.Name).NotEmpty().WithMessage(CredentialSetMetadata.NAME_MIN_LENGTH);
-            this.RuleFor(g => g.Name).Length(0, 255).WithMessage(Validations.MAX_255_CHARACTERS);
 
             this.RuleFor(g => g.ServerName).NotEmpty();
             this.RuleFor(g => g.ServerName).Length(0, 255).WithMessage(Validations.MAX_255_CHARACTERS);

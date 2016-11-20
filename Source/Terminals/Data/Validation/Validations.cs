@@ -85,12 +85,12 @@ namespace Terminals.Data.Validation
 
         internal static List<ValidationState> Validate(IGroup group)
         {
-            AbstractValidator<IGroup> validator;
+            NamedItemValidator<IGroup> validator;
 
             if (group is DbGroup)
-                validator = new DbGroupValidator();
+                validator = new DbNamedItemValidator<IGroup>();
             else
-                validator = new GroupValidator();
+                validator = new NamedItemValidator<IGroup>();
 
             FluentValidation.Results.ValidationResult results = validator.Validate(group);
             return ConvertResultsToStates(results);

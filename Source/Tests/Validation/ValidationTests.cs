@@ -36,29 +36,46 @@ namespace Tests.Validation
         }
 
         [TestMethod]
-        public void DbFavoriteValidationTest()
+        public void InvalidDbFavorite_Validatie_ReturnsErrorsForAllProperties()
+        {
+            ValidationStates results = ValidateDbFavorite();
+            Assert.AreEqual(9, results.Count(), "Some properties arent validated properly for DbFavorite");
+        }
+
+        [TestMethod]
+        public void DbFavorite_Validate_ReturnsAllServerNameErrors()
+        {
+            ValidationStates results = ValidateDbFavorite();
+            var serverNameErrors = results.Count(result => result.PropertyName == "ServerName");
+            Assert.AreEqual(2, serverNameErrors, "DbFavorite ServerName wasnt validated properly");
+        }
+
+        [TestMethod]
+        public void DbFavorite_Validate_ReturnsAllProtocolErrors()
+        {
+            ValidationStates results = ValidateDbFavorite();
+            var protocolErrors = results.Count(result => result.PropertyName == "Protocol");
+            Assert.AreEqual(2, protocolErrors, "DbFavorite protocol wasnt validated properly");
+        }
+
+        private static ValidationStates ValidateDbFavorite()
         {
             // created dbfavorite is not compleate, only necessary to make validable using IFavorite
             var favorite = new DbFavorite();
             favorite.ExecuteBeforeConnect = new DbBeforeConnectExecute();
             favorite.Security = new DbSecurityOptions();
             favorite.Details.LoadFieldsFromReferences();
-            
+
             favorite.Protocol = longText.Substring(0, 11);
             favorite.ServerName = longText;
             favorite.Name = longText;
             favorite.Notes = longText;
-            
+
             favorite.ExecuteBeforeConnect.Command = longText;
             favorite.ExecuteBeforeConnect.CommandArguments = longText;
             favorite.ExecuteBeforeConnect.InitialDirectory = longText;
             var results = Validations.Validate(favorite);
-
-            Assert.AreEqual(9, results.Count(), "Some properties arent validated properly for DbFavorite");
-            var serverNameErrors = results.Count(result => result.PropertyName == "ServerName");
-            Assert.AreEqual(2, serverNameErrors, "DbFavorite ServerName wasnt validated properly");
-            var protocolErrors = results.Count(result => result.PropertyName == "Protocol");
-            Assert.AreEqual(2, protocolErrors, "DbFavorite protocol wasnt validated properly");
+            return results;
         }
 
         [TestMethod]
@@ -100,7 +117,7 @@ namespace Tests.Validation
         }
 
         [TestMethod]
-        public void LongDbGroupName_Validate_ReturnsNameError()
+        public void LongDbGroupName_ValidateNameOnly_ReturnsNameError()
         {
             var group = new DbGroup();
             group.Name = longText;
@@ -108,7 +125,7 @@ namespace Tests.Validation
         }
 
         [TestMethod]
-        public void EmptyDbGroupName_Validate_ReturnsNameError()
+        public void EmptyDbGroupName_ValidateNameOnly_ReturnsNameError()
         {
             var group = new DbGroup();
             group.Name = string.Empty;

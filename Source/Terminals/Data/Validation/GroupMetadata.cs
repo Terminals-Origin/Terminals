@@ -9,9 +9,6 @@ namespace Terminals.Data.Validation
         public string Name { get; set; }
     }
 
-    internal class GroupValidator : NamedItemValidator<IGroup>
-    { }
-
     internal class NamedItemValidator<TNamedItem> : AbstractValidator<TNamedItem>
         where TNamedItem : INamedItem
     {
