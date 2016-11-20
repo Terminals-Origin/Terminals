@@ -32,9 +32,7 @@ namespace Terminals.Data.Validation
             else
                 validator = new FavoriteValidator(ConnectionManager.Instance);
 
-            ValidationResult toConvert = validator.Validate(favorite);
-            List<ValidationState> results = ConvertResultsToStates(toConvert);
-            return new ValidationStates(results);
+            return ValidateToStates(validator, favorite);
         }
 
         internal static ValidationStates Validate(ICredentialSet credentialSet)
@@ -46,36 +44,44 @@ namespace Terminals.Data.Validation
             else
                 validator = new CredentialSetValidator();
 
-            ValidationResult toConvert = validator.Validate(credentialSet);
-            List<ValidationState> results = ConvertResultsToStates(toConvert);
-            return new ValidationStates(results);
+            return ValidateToStates(validator, credentialSet);
         }
 
         internal static List<ValidationState> Validate(IGroup group)
         {
-            NamedItemValidator<IGroup> validator;
-
-            if (group is DbGroup)
-                validator = new DbNamedItemValidator<IGroup>();
-            else
-                validator = new NamedItemValidator<IGroup>();
-
-            ValidationResult results = validator.Validate(group);
-            return ConvertResultsToStates(results);
+            return ValidateNamedItem(group);
         }
 
         internal static ValidationStates ValidateNameProperty(INamedItem toValidate)
         {
-            NamedItemValidator<INamedItem> validator;
+            NamedItemValidator<INamedItem> validator = SelectValidator(toValidate);
+            return ValidateToStates(validator, toValidate);
+        }
 
+        private static List<ValidationState> ValidateNamedItem(INamedItem toValidate)
+        {
+            var validator = SelectValidator(toValidate);
+            return Validate(validator, toValidate);
+        }
+
+        private static NamedItemValidator<INamedItem> SelectValidator(INamedItem toValidate)
+        {
             if (toValidate is DbGroup || toValidate is DbFavorite)
-                validator = new DbNamedItemValidator<INamedItem>();
-            else 
-                validator = new NamedItemValidator<INamedItem>();
+                return new DbNamedItemValidator<INamedItem>();
 
+            return new NamedItemValidator<INamedItem>();
+        }
+
+        private static ValidationStates ValidateToStates<TItem>(AbstractValidator<TItem> validator, TItem toValidate)
+        {
+            List<ValidationState> results = Validate(validator, toValidate);
+            return new ValidationStates(results);
+        }
+
+        private static List<ValidationState> Validate<TItem>(AbstractValidator<TItem> validator, TItem toValidate)
+        {
             ValidationResult results = validator.Validate(toValidate);
-            List<ValidationState> states = ConvertResultsToStates(results);
-            return new ValidationStates(states);
+            return ConvertResultsToStates(results);
         }
 
         private static List<ValidationState> ConvertResultsToStates(ValidationResult results)
