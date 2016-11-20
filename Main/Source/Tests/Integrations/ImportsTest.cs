@@ -68,7 +68,7 @@ namespace Tests.Integrations
         [TestMethod]
         public void ExportImportFavorite_ImportsTsgwOptionsSecurity()
         {
-            // todo caused by validation accessing the ConnectionManager, which is not configured.
+            // todo all sources, where favorite is created need to setup the protocolProperties when changing the protocol.
             string path = this.TestContext.DeploymentDirectory;
             IFavorite importedFavorite = PerformImportExportFavorite(this.Persistence, path);
             SecurityOptions security = ((IContainsCredentials)importedFavorite.ProtocolProperties).GetSecurity();
@@ -192,7 +192,7 @@ namespace Tests.Integrations
             Func<int, DialogResult> strategy)
         {
             var moqInterface = new TestImportUi(strategy);
-            var managedImport = new ImportWithDialogs(moqInterface, persistence);
+            var managedImport = new ImportWithDialogs(moqInterface, persistence, ConnectionManagerOtionsTests.StaticLoadingConnectionManager);
             bool success = managedImport.Import(toImport);
             return success;
         }

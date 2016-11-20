@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.Connections;
 using Terminals.Converters;
 using Terminals.Data;
 using Terminals.Data.Validation;
@@ -18,20 +19,23 @@ namespace Terminals.Forms.Controls
         private readonly IImportUi importUi;
         private readonly IPersistence persistence;
 
+        private readonly ConnectionManager connectionManager;
+
         private IFavorites PersistedFavorites
         {
             get { return this.persistence.Favorites; }
         }
 
         internal ImportWithDialogs(Form sourceForm, IPersistence persistence)
-            : this(new FormsImportUi(sourceForm), persistence)
+            : this(new FormsImportUi(sourceForm), persistence, ConnectionManager.Instance)
         {
         }
 
-        internal ImportWithDialogs(IImportUi importUi, IPersistence persistence)
+        internal ImportWithDialogs(IImportUi importUi, IPersistence persistence, ConnectionManager connectionManager)
         {
             this.importUi = importUi;
             this.persistence = persistence;
+            this.connectionManager = connectionManager;
         }
 
         internal Boolean Import(List<FavoriteConfigurationElement> favoritesToImport)
@@ -96,7 +100,7 @@ namespace Terminals.Forms.Controls
         private void TryProcessFavorite(ImportContext context)
         {
             context.ToPerisist = ModelConverterV1ToV2.ConvertToFavorite(context.ToImport, this.persistence);
-            ValidationStates results = Validations.Validate(context.ToPerisist);
+            ValidationStates results = Validations.Validate(connectionManager, context.ToPerisist);
             if (results.Empty)
                 this.ProcessFavorite(context);
             else

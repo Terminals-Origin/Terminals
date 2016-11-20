@@ -23,14 +23,14 @@ namespace Terminals.Data.Validation
         /// </summary>
         internal const string NAME_PROPERTY = "Name";
 
-        internal static ValidationStates Validate(IFavorite favorite)
+        internal static ValidationStates Validate(ConnectionManager connectionManager, IFavorite favorite)
         {
             AbstractValidator<IFavorite> validator;
 
             if (favorite is DbFavorite)
-                validator = new DbFavoriteValidator(ConnectionManager.Instance);
+                validator = new DbFavoriteValidator(connectionManager);
             else
-                validator = new FavoriteValidator(ConnectionManager.Instance);
+                validator = new FavoriteValidator(connectionManager);
 
             return ValidateToStates(validator, favorite);
         }
