@@ -101,10 +101,10 @@ namespace Terminals.Data.DB
             this.groups = new Groups();
             this.credentials = new StoredCredentials(this.Dispatcher);
             this.favorites = new Favorites(this.groups, this.credentials, this.security,
-                this.Dispatcher, connectionManager, favoriteIcons);
+                this.Dispatcher, this.connectionManager, this.favoriteIcons);
             this.groups.AssignStores(this.Dispatcher, this.favorites);
             this.connectionHistory = new ConnectionHistory(this.favorites, this.Dispatcher);
-            this.Factory = new Factory(this.groups, this.favorites, this.credentials, this.Dispatcher);
+            this.Factory = new Factory(this.groups, this.favorites, this.credentials, this.Dispatcher, this.connectionManager);
         }
 
         private bool TryInitializeDatabase()
