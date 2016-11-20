@@ -22,7 +22,7 @@ namespace Terminals.Data.Validation
         public int Port { get; set; }
     }
 
-    internal class FavoriteValidator : AbstractValidator<IFavorite>
+    internal class FavoriteValidator : NamedItemValidator<IFavorite>
     {
         private readonly ConnectionManager connectionManager;
 
@@ -30,7 +30,6 @@ namespace Terminals.Data.Validation
         {
             this.connectionManager = connectionManager;
 
-            this.RuleFor(g => g.Name).NotEmpty().WithMessage(CredentialSetMetadata.NAME_MIN_LENGTH);
             this.RuleFor(g => g.Port).InclusiveBetween(0, 65535).WithMessage(Validations.PORT_RANGE);
             this.RuleFor(g => g.ServerName).Must(g => !CustomValidationRules.IsValidServerNameB(g))
                 .WithMessage(CustomValidationRules.SERVER_NAME_IS_NOT_IN_THE_CORRECT_FORMAT);
