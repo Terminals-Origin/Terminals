@@ -1,4 +1,7 @@
-﻿namespace Terminals.Data.DB
+﻿using Terminals.Common.Connections;
+using Terminals.Connections;
+
+namespace Terminals.Data.DB
 {
     /// <summary>
     /// Unified creation of Entity framework entities
@@ -13,24 +16,32 @@
 
         private readonly DataDispatcher dispatcher;
 
+        private readonly ConnectionManager connectionManager;
+
         internal Factory(Groups groups, Favorites favorites, 
-            StoredCredentials credentials, DataDispatcher dispatcher)
+            StoredCredentials credentials, DataDispatcher dispatcher,
+            ConnectionManager connectionManager)
         {
             this.groups = groups;
             this.favorites = favorites;
             this.credentials = credentials;
             this.dispatcher = dispatcher;
+            this.connectionManager = connectionManager;
         }
 
         public IFavorite CreateFavorite()
         {
-            return CreateFavorite(this.groups, this.credentials, this.dispatcher);
+            var favorite = CreateFavorite(this.groups, this.credentials, this.dispatcher);
+            this.connectionManager.ChangeProtocol(favorite, KnownConnectionConstants.RDP);
+            return favorite;
         }
 
+        /// <summary>
+        /// Does not set the protocol options.
+        /// </summary>
         internal static DbFavorite CreateFavorite(Groups groups, StoredCredentials credentials, DataDispatcher dispatcher)
         {
             var favorite = new DbFavorite();
-            // todo assign correct protocol options using connectionmanager
             favorite.Display = new DbDisplayOptions();
             favorite.Security = new DbSecurityOptions();
             favorite.ExecuteBeforeConnect = new DbBeforeConnectExecute();
