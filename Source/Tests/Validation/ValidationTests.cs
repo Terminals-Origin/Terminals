@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
@@ -24,9 +25,8 @@ namespace Tests.Validation
             longText = longTextBuilder.ToString();
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
-        public void FavoriteValidationTest()
+        public void Favorite_Validate_ReturnsErrors()
         {
             var favorite = new Favorite();
             favorite.Protocol = longText.Substring(0, 11);
@@ -35,7 +35,6 @@ namespace Tests.Validation
             Assert.AreEqual(3, results.Count(), "Some properties arent validated properly for Favorite");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DbFavoriteValidationTest()
         {
@@ -62,38 +61,61 @@ namespace Tests.Validation
             Assert.AreEqual(2, protocolErrors, "DbFavorite protocol wasnt validated properly");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
-        public void DbGroupValidationTest()
+        public void EmptyGroupName_ValidateGroup_ReturnsError()
         {
-            var group = new DbGroup();
-            group.Name = longText;
+            AssertGroupValidation(new Group());
+        }
+
+        [TestMethod]
+        public void EmptyDbGroupName_ValidateGroup_ReturnsError()
+        {
+            AssertGroupValidation(new DbGroup());
+        }
+
+        private static void AssertGroupValidation(IGroup group)
+        {
+            group.Name = String.Empty;
             var results = Validations.Validate(group);
             Assert.AreEqual(1, results.Count, "Group name validation failed");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
-        public void DbCredentialsetValidationTest()
+        public void Credential_Validate_ReturnsError()
         {
-            var credentailSet = new DbCredentialSet();
-            credentailSet.Name = longText;
-            var results = Validations.Validate(credentailSet);
-            Assert.AreEqual(2, results.Count(), "CredentailSet validation failed");
+            AssertCredentialsValidation(new CredentialSet(), 1);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
-        public void DbGroupNamePropertyValidationTest()
+        public void DbCredential_Validate_ReturnsError()
+        {
+            AssertCredentialsValidation(new DbCredentialSet(), 2);
+        }
+
+        private static void AssertCredentialsValidation(ICredentialSet credentailSet, int expectedErrorsCount)
+        {
+            credentailSet.Name = longText;
+            var results = Validations.Validate(credentailSet);
+            Assert.AreEqual(expectedErrorsCount, results.Count(), "CredentailSet validation failed");
+        }
+
+        [TestMethod]
+        public void LongDbGroupName_Validate_ReturnsNameError()
         {
             var group = new DbGroup();
             group.Name = longText;
-            AssertGroupValidation(group);
-            group.Name = string.Empty;
-            AssertGroupValidation(group);
+            AssertNameOnlyValidation(group);
         }
 
-        private static void AssertGroupValidation(DbGroup group)
+        [TestMethod]
+        public void EmptyDbGroupName_Validate_ReturnsNameError()
+        {
+            var group = new DbGroup();
+            group.Name = string.Empty;
+            AssertNameOnlyValidation(group);
+        }
+
+        private static void AssertNameOnlyValidation(DbGroup group)
         {
             ValidationStates results = Validations.ValidateNameProperty(group);
             Assert.AreEqual(1, results.Count(), "Group name validation failed");

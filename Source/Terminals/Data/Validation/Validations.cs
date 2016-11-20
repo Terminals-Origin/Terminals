@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using FluentValidation;
+using Terminals.Connections;
 using Terminals.Data.DB;
+using ValidationContext = System.ComponentModel.DataAnnotations.ValidationContext;
 
 namespace Terminals.Data.Validation
 {
@@ -52,27 +55,44 @@ namespace Terminals.Data.Validation
 
         internal static ValidationStates Validate(IFavorite favorite)
         {
-            List<ValidationState> results = ValidateObject(favorite);
-            var executeResults = ValidateObject(favorite.ExecuteBeforeConnect);
-            results.AddRange(executeResults);
+            AbstractValidator<IFavorite> validator;
+
+            if (favorite is DbFavorite)
+                validator = new DbFavoriteValidator(ConnectionManager.Instance);
+            else
+                validator = new FavoriteValidator(ConnectionManager.Instance);
+
+            FluentValidation.Results.ValidationResult toConvert = validator.Validate(favorite);
+            var results = ConvertResultsToStates(toConvert);
+
             return new ValidationStates(results);
         }
 
         internal static ValidationStates Validate(ICredentialSet credentialSet)
         {
-            var results = ValidateObject(credentialSet);
+            AbstractValidator<ICredentialSet> validator;
+
+            if (credentialSet is DbCredentialSet)
+                validator = new DbCredentialSetValidator();
+            else
+                validator = new CredentialSetValidator();
+
+            FluentValidation.Results.ValidationResult toConvert = validator.Validate(credentialSet);
+            var results = ConvertResultsToStates(toConvert);
+
             return new ValidationStates(results);
         }
 
         internal static List<ValidationState> Validate(IGroup group)
         {
-            return ValidateObject(group);
-        }
+            AbstractValidator<IGroup> validator;
 
-        private static List<ValidationState> ValidateObject(object toValidate)
-        {
-            var results = new List<ValidationResult>();
-            Validator.TryValidateObject(toValidate, new ValidationContext(toValidate, null, null), results, true);
+            if (group is DbGroup)
+                validator = new DbGroupValidator();
+            else
+                validator = new GroupValidator();
+
+            FluentValidation.Results.ValidationResult results = validator.Validate(group);
             return ConvertResultsToStates(results);
         }
 
@@ -84,6 +104,22 @@ namespace Terminals.Data.Validation
             Validator.TryValidateProperty(toValidate.Name, context, results);
             var states = ConvertResultsToStates(results);
             return new ValidationStates(states);
+        }
+
+        private static List<ValidationState> ConvertResultsToStates(FluentValidation.Results.ValidationResult results)
+        {
+            return results.Errors
+                .Select(ToState)
+                .ToList();
+        }
+
+        private static ValidationState ToState(FluentValidation.Results.ValidationFailure result)
+        {
+            return new ValidationState()
+                {
+                    PropertyName = result.PropertyName,
+                    Message = result.ErrorMessage
+                };
         }
 
         private static List<ValidationState> ConvertResultsToStates(List<ValidationResult> results)

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using FluentValidation;
 
 namespace Terminals.Data.Validation
 {
@@ -12,5 +13,15 @@ namespace Terminals.Data.Validation
 
         [Required(ErrorMessage = USERNAME_MIN_LENGTH)]
         public string EncryptedUserName { get; set; }
+    }
+
+
+    internal class CredentialSetValidator : AbstractValidator<ICredentialSet>
+    {
+        public CredentialSetValidator()
+        {
+            this.RuleFor(g => g.Name).NotEmpty().WithMessage(CredentialSetMetadata.NAME_MIN_LENGTH);
+            this.RuleFor(g => g.EncryptedUserName).NotEmpty().WithMessage(CredentialSetMetadata.USERNAME_MIN_LENGTH);
+        }
     }
 }
