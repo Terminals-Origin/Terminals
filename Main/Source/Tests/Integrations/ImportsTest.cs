@@ -68,7 +68,6 @@ namespace Tests.Integrations
         [TestMethod]
         public void ExportImportFavorite_ImportsTsgwOptionsSecurity()
         {
-            // todo all sources, where favorite is created need to setup the protocolProperties when changing the protocol.
             string path = this.TestContext.DeploymentDirectory;
             IFavorite importedFavorite = PerformImportExportFavorite(this.Persistence, path);
             SecurityOptions security = ((IContainsCredentials)importedFavorite.ProtocolProperties).GetSecurity();
