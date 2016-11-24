@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Connections.VNC;
@@ -9,16 +8,18 @@ using Terminals.Data;
 using Terminals.Data.Credentials;
 using Terminals.Data.DB;
 using Tests.Connections;
+using Tests.Helpers;
 
 namespace Tests.SqlPersisted
 {
-    [DeploymentItem(PluginBasedTests.VNC_PLUGIN, PluginBasedTests.VNC_TARGET)]
     /// <summary>
     ///This is a test class for database implementation of Favorites
     ///</summary>
+    [DeploymentItem(PluginBasedTests.VNC_PLUGIN, PluginBasedTests.VNC_TARGET)]
     [TestClass]
     public class FavoritesTest : TestsLab
     {
+        private const string IMAGE_FILE = ImageAssert.IMAGE_FILE;
         private int addedCount;
         private int updatedCount;
         private int deletedCount;
@@ -150,14 +151,17 @@ namespace Tests.SqlPersisted
             Assert.AreEqual(2, this.updatedCount, "Event wasn't delivered");
         }
 
-        [DeploymentItem(@"Terminals\Resources\ControlPanel.png")]
+        [DeploymentItem(IMAGE_FILE)]
         [TestMethod]
         public void LoadSaveFavoriteIconsTest()
         {
             IFavorite favorite = this.CreateTestFavorite();
-            const string IMAGE_FILE = "ControlPanel.png";
+
             // try to access on not saved favorite
             this.PrimaryFavorites.Add(favorite);
+            int updatesCount = 0;
+            this.PrimaryPersistence.Dispatcher.FavoritesChanged += args => updatesCount++;
+
             this.PrimaryFavorites.UpdateFavoriteIcon(favorite, IMAGE_FILE);
             Image favoriteIcon = this.PrimaryFavorites.LoadFavoriteIcon(favorite);
 
@@ -166,23 +170,8 @@ namespace Tests.SqlPersisted
             Assert.IsNotNull(favoriteIcon, "Icon wasn't assigned successfully");
             var loadedIcon = this.SecondaryFavorites.LoadFavoriteIcon(checkFavorite);
             Assert.IsNotNull(loadedIcon, "Icon didn't reach the database");
-            Image expectedImage = Image.FromFile(Path.Combine(this.TestContext.DeploymentDirectory, IMAGE_FILE));
-            Assert.IsTrue(ImageCompare(expectedImage, favoriteIcon), "The file wasnt assigned properly");
-        }
-
-        private static bool ImageCompare(Image firstImage, Image secondImage)
-        {
-            using (var ms = new MemoryStream())
-            {
-                firstImage.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                byte[] firstBitmap = ms.ToArray();
-                ms.Position = 0;
-
-                secondImage.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                byte[] secondBitmap = ms.ToArray();
-
-                return firstBitmap.SequenceEqual(secondBitmap);
-            }
+            ImageAssert.AssertExpectedImage(this.TestContext.DeploymentDirectory, favoriteIcon);
+            Assert.AreEqual(0, updatesCount, FilePersisted.FavoritesTest.UPDATE_ICON_MESSAGE);
         }
 
         [TestMethod]

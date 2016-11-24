@@ -321,6 +321,7 @@ namespace Terminals.Data
 
         public void UpdateFavoriteIcon(IFavorite favorite, string imageFilePath)
         {
+            // TODO shouldnt save the Favorite, if it is not in cache.
             var toUpdate = favorite as Favorite;
             toUpdate.ToolBarIconFile = imageFilePath;
             this.SaveAndReportFavoriteUpdate(toUpdate);
