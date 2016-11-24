@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Common.Connections;
-using Terminals.Connections;
 using Terminals.Connections.VNC;
 using Terminals.Data;
 using Terminals.Data.Credentials;
 using Tests.Connections;
+using Tests.Helpers;
 
 namespace Tests.FilePersisted
 {
     [TestClass]
     public class FavoritesTest : FilePersistedTestLab
     {
+        internal const string UPDATE_ICON_MESSAGE = "Favorite update has to be reported only once during save of favorite.";
+
         private Guid addedFavoriteId;
         private Guid updatedFavoriteId;
         private Guid deletedFavoriteId;
@@ -22,12 +25,37 @@ namespace Tests.FilePersisted
         private Guid updatedGroupId;
         private Guid deletedGroupId;
 
+        public TestContext TestContext { get; set; }
+
+        [DeploymentItem(ImageAssert.IMAGE_FILE)]
+        [TestMethod]
+        public void CustomIcon_UpdateFavoriteIcon_ChangesIconImage()
+        {
+            var favorite = this.AddFavorite();
+            var favorites = this.Persistence.Favorites;
+            favorites.UpdateFavoriteIcon(favorite, ImageAssert.IMAGE_FILE);
+            Image favoriteIcon = favorites.LoadFavoriteIcon(favorite);
+            ImageAssert.AssertExpectedImage(this.TestContext.DeploymentDirectory, favoriteIcon);
+        }
+
+        [Ignore] // not finished yet
+        [DeploymentItem(ImageAssert.IMAGE_FILE)]
+        [TestMethod]
+        public void CustomIcon_UpdateFavoriteIcon_DoesntReportFavoriteUpdated()
+        {
+            var favorite = this.AddFavorite();
+            var favorites = this.Persistence.Favorites;
+            int updateCount = 0;
+            this.Persistence.Dispatcher.FavoritesChanged += args => updateCount++;
+            favorites.UpdateFavoriteIcon(favorite, ImageAssert.IMAGE_FILE);
+            Assert.AreEqual(0, updateCount, UPDATE_ICON_MESSAGE);
+        }
+
         /// <summary>
         /// Notes property can store special characters, so it is Base64 encoded.
         /// </summary>
-        [TestCategory("NonSql")]
         [TestMethod]
-        public void SaveLoadNotesTest()
+        public void LocalizedNotes_SaveLoad_LoadsAssignedValue()
         {
             IFavorite favorite = this.AddFavorite();
             const string SPECIAL_CHARACTERS = "čočka\r\nčočka"; // some example special characters
@@ -43,9 +71,8 @@ namespace Tests.FilePersisted
         /// Checks, if we are still able to manipulate passwords after protocol update.
         /// This is a special case for RdpOptions, which need persistence to handle Gateway credentials
         /// </summary>
-        [TestCategory("NonSql")]
         [TestMethod]
-        public void UpdateProtocolTest()
+        public void VNCProtocolToRdp_ChangeProtocol_AllowesUpdatesRdpSecurity()
         {
             IFavorite favorite = this.AddFavorite();
             // now it has RdpOptions
@@ -69,9 +96,8 @@ namespace Tests.FilePersisted
         /// <summary>
         /// Focus on both favorites changes (add, remove, delete) and group memberschip changes.
         /// </summary>
-        [TestCategory("NonSql")]
         [TestMethod]
-        public void FavoritesAndGroupsReloadTest()
+        public void FavoritesAndGroupsReload_ReportsAllEvents()
         {
             IFavorite favToRemove = this.AddFavorite();
             IGroup groupToRemove = this.AddNewGroup("GroupToRemove");
