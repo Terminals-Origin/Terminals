@@ -16,7 +16,7 @@ namespace Tests.Connections
                 new Tuple<string, string>("VMRC", "Terminals.Plugins.Vmrc"),
                 new Tuple<string, string>("Telnet and Ssh", "Terminals.Plugins.Terminal"),
                 new Tuple<string, string>("HTTP and HTTPS", "Terminals.Plugins.Web"),
-                // todo add RDP plugin to test the loader
+                new Tuple<string, string>("RDP", "Terminals.Plugins.Rdp")
             };
 
         [TestMethod]
