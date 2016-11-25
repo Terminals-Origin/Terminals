@@ -15,7 +15,6 @@ namespace Tests.SqlPersisted
     /// <summary>
     ///This is a test class for database implementation of Favorites
     ///</summary>
-    [DeploymentItem(PluginBasedTests.VNC_PLUGIN, PluginBasedTests.VNC_TARGET)]
     [TestClass]
     public class FavoritesTest : TestsLab
     {
