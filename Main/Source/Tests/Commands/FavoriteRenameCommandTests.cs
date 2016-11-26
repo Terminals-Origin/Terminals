@@ -28,7 +28,6 @@ namespace Tests.Commands
             this.command = new FavoriteRenameCommand(this.Persistence, service);
         }
         
-        [TestCategory("NonSql")]
         [TestMethod]
         public void NoDuplicitProperlyRenames()
         {
@@ -36,7 +35,6 @@ namespace Tests.Commands
             Assert.AreEqual(RENAMED_NAME, this.copy.Name, "Favorite wasnt properly renamed");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void NoDuplicitDoesntAskUser()
         {
@@ -51,7 +49,6 @@ namespace Tests.Commands
             Assert.IsFalse(asked, "If there is no duplicit, user shouldnt be prompter.");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void OverwriteProperlyRemovesDuplicit()
         {
@@ -60,7 +57,6 @@ namespace Tests.Commands
             Assert.AreEqual(1, favoritesCount, "overwritten favorite should be removed from persistence.");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void RejectedRenameDoesntChangeAnything()
         {

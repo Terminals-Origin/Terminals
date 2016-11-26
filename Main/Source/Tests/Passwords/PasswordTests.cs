@@ -15,7 +15,6 @@ namespace Tests.Passwords
 
         public TestContext TestContext { get; set; }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void V1MasterPasswordValidationTest()
         {
@@ -28,7 +27,6 @@ namespace Tests.Passwords
             Assert.IsTrue(isValid, "Couldn't validate stored master password v1");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void V1MasterPasswordIsUniqueTest()
         {
@@ -37,7 +35,6 @@ namespace Tests.Passwords
             Assert.AreEqual(key1, key2, "generated master password key v1 doesn't equals.");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void V1PasswordsUniqueEncryptionTest()
         {
@@ -47,7 +44,6 @@ namespace Tests.Passwords
             Assert.AreEqual(encryptedPassword, encryptedPassword2, "password encryption v1 doesn't generate identical encrypted bytes");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void V1PasswordsEncryptDecryptTest()
         {
@@ -67,7 +63,6 @@ namespace Tests.Passwords
             return encryptedPassword;
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void V2MasterPasswordValidationTest()
         {
@@ -79,7 +74,6 @@ namespace Tests.Passwords
             Assert.IsTrue(isValid, "Unable to validate encrypted master password version 2");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void V2MasterPasswordIsUniqueTest()
         {
@@ -100,7 +94,6 @@ namespace Tests.Passwords
             return accessor.InvokeStatic("CalculateMasterPasswordKey", parameters).ToString();
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void V2PasswordsUniqueEncryptionTest()
         {
@@ -110,7 +103,6 @@ namespace Tests.Passwords
             Assert.AreNotEqual(encryptedPassword, encryptedPassword2, "password encryption always generates identical encrypted bytes");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void V2PasswordsEncryptDecryptTest()
         {

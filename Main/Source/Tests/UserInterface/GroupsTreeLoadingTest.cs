@@ -14,7 +14,6 @@ namespace Tests.UserInterface
         /// <summary>
         /// If this test is succesfull, than also prereguisite checks for all other test are fullfiled
         /// </summary>
-        [TestCategory("NonSql")]
         [TestMethod]
         public void LoadingAllGroupsTest()
         {
@@ -25,7 +24,6 @@ namespace Tests.UserInterface
             Assert.AreEqual(3, secondNodeChilds, "Child node of GroupG were not expanded properly");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void CreateLeadingGroupTest()
         {
@@ -33,7 +31,6 @@ namespace Tests.UserInterface
             this.AssertAddedGroupNode(group, this.RootNodes[0]);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void CreateGroupBySortingTest()
         {
@@ -41,7 +38,6 @@ namespace Tests.UserInterface
             this.AssertAddedGroupNode(group, this.RootNodes[1]);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void CreateLastGroupTest()
         {
@@ -50,7 +46,6 @@ namespace Tests.UserInterface
             this.AssertAddedGroupNode(group, this.RootNodes[3]);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void CreateSecondLevelGroupTest()
         {
@@ -60,7 +55,6 @@ namespace Tests.UserInterface
             this.AssertNodesCount(10, 4); // noting should change on root level
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void RenameGroupTest()
         {
@@ -71,7 +65,6 @@ namespace Tests.UserInterface
             this.AssertNodesCount(8, 4);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void MoveGroupTest()
         {
@@ -82,7 +75,6 @@ namespace Tests.UserInterface
             this.AssertNodesCount(9, 3);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void MoveGroupToRootTest()
         {
@@ -93,7 +85,6 @@ namespace Tests.UserInterface
             this.AssertNodesCount(9, 5);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DontAffectNotLoadedGroupTest()
         {
@@ -112,7 +103,6 @@ namespace Tests.UserInterface
             this.AssertNodesCount(7, 5);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void LoadRecursiveLoadsCompleateSubtree()
         {

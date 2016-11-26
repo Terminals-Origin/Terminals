@@ -33,7 +33,6 @@ namespace Tests.UserInterface
             this.targetGroup = this.AddNewGroup("TargetGroup");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DragGroupOnGroupTest()
         {
@@ -41,7 +40,6 @@ namespace Tests.UserInterface
             Assert.AreEqual(DragDropEffects.Move, dragdrop.Effect);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DragGroupOnNothingTest()
         {
@@ -49,7 +47,6 @@ namespace Tests.UserInterface
             Assert.AreEqual(DragDropEffects.Move, dragdrop.Effect);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DragGroupOnItSelfTest()
         {
@@ -57,7 +54,6 @@ namespace Tests.UserInterface
             Assert.AreEqual(DragDropEffects.None, dragdrop.Effect);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DragGroupOnFavoriteTest()
         {
@@ -67,7 +63,6 @@ namespace Tests.UserInterface
             Assert.AreEqual(DragDropEffects.None, dragdrop.Effect);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DragFavoriteOnFavoriteTest()
         {
@@ -76,7 +71,6 @@ namespace Tests.UserInterface
             Assert.AreEqual(DragDropEffects.None, dragdrop.Effect);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DragFavoriteOnNothingTest()
         {
@@ -84,7 +78,6 @@ namespace Tests.UserInterface
             Assert.AreEqual(DragDropEffects.Move, dragdrop.Effect);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DragFavoriteOnGroupToMoveTest()
         {
@@ -92,7 +85,6 @@ namespace Tests.UserInterface
             Assert.AreEqual(DragDropEffects.Move, dragdrop.Effect);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DragFavoriteOnGroupToCopyTest()
         {
@@ -100,7 +92,6 @@ namespace Tests.UserInterface
             Assert.AreEqual(DragDropEffects.Copy, dragdrop.Effect);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DragFavoriteOnGroupToAddToGroupTest()
         {
@@ -108,7 +99,6 @@ namespace Tests.UserInterface
             Assert.AreEqual(DragDropEffects.Link, dragdrop.Effect);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DropGroupOnGroupToMakeItNestedTest()
         {
@@ -117,7 +107,6 @@ namespace Tests.UserInterface
             Assert.IsTrue(this.sourceGroup.Parent.StoreIdEquals(this.targetGroup));
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DropGroupToMoveToRootTest()
         {
@@ -128,7 +117,6 @@ namespace Tests.UserInterface
             Assert.IsNull(this.sourceGroup.Parent);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DropFavoriteOnGroupToMoveTest()
         {
@@ -138,7 +126,6 @@ namespace Tests.UserInterface
             Assert.IsTrue(hasTargetGroup);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DropFavoriteToMoveToRootTest()
         {
@@ -150,7 +137,6 @@ namespace Tests.UserInterface
             Assert.IsFalse(this.sourceFavorite.Groups.Any(), "Favorite cant be listed in any group");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DropFavoriteOnGroupToCopyTest()
         {
@@ -161,7 +147,6 @@ namespace Tests.UserInterface
             this.AssertTargetGroupAfterFavoriteDrop(true);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DropFavoriteOnGroupToAddToGroupTest()
         {

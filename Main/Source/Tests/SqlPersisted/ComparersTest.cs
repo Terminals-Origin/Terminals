@@ -30,7 +30,6 @@ namespace Tests.SqlPersisted
 
         private readonly DbFavorite favoriteB = new DbFavorite { Id = 2 };
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void CompareByIdTest()
         {  
@@ -49,7 +48,6 @@ namespace Tests.SqlPersisted
             Assert.AreEqual(0, empty.Count, "Favorite wasn't found in second collection");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void CompareByVersionTest()
         {

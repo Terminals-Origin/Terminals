@@ -15,7 +15,6 @@ namespace Tests.UserInterface
         private const int IRELEVANT_KEY = 1;
         private const int IRELEVANT_LEFT = 40;
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void NotExistingFile_Load_ReturnsNull()
         {
@@ -23,7 +22,6 @@ namespace Tests.UserInterface
             Assert.IsNull(loaded, "We do nothing, when settings are loaded as null.");
         }
 
-        [TestCategory("NonSql")]
         [ExpectedException(typeof(UnauthorizedAccessException))]
         [TestMethod]
         public void ReadOnlyFile_Save_ThrowsAnException()
@@ -63,7 +61,6 @@ namespace Tests.UserInterface
         /// <summary>
         /// Simple roundtrip test of settings reload
         /// </summary>
-        [TestCategory("NonSql")]
         [TestMethod]
         public void PanelLocation_LoadFromSaved_ReadsSavedLocation()
         {
