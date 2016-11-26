@@ -67,7 +67,6 @@ namespace Tests
             Directory.CreateDirectory(this.targetDir);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void PortableVersionAppconfigTest()
         {
@@ -77,7 +76,6 @@ namespace Tests
             Assert.AreEqual(appConfigContent, upgradedAppConfig, "App config file is expected default");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void PortableVersionLog4NetTest()
         {
@@ -86,7 +84,6 @@ namespace Tests
             Assert.AreEqual(log4NetContent, upgradedLog4Net, "Log4net config file is expected default");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void UserProfileVersionAppConfigTest()
         {
@@ -98,7 +95,6 @@ namespace Tests
             Assert.IsTrue(inUserProfile, "App config doesnt contain user profile flag");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void UserProfileVersionLog4NetTest()
         {

@@ -12,7 +12,6 @@ namespace Tests.UserInterface
     {
         private const string BFAVORITE_NAME = "BFavorite";
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void AddFavoriteToRootTest()
         {
@@ -23,7 +22,6 @@ namespace Tests.UserInterface
             this.AssertNodesCount(9, 5);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void AddFavoriteToSecondLevelTest()
         {
@@ -37,7 +35,6 @@ namespace Tests.UserInterface
 
         // both favorite delete test are enough to test, if all nodes related
         // to the favorite will be deleted, not only one instance.
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DeleteRootFavoriteTest()
         {
@@ -45,7 +42,6 @@ namespace Tests.UserInterface
             this.AssertNodesCount(7, 3);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DeleteNestedFavoriteTest()
         {
@@ -55,7 +51,6 @@ namespace Tests.UserInterface
             Assert.AreEqual(0, nodeKChildsCount, "Favorite node wasnt remvoed from NodeK");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void MoveNestedFavoriteToRootTest()
         {
@@ -65,7 +60,6 @@ namespace Tests.UserInterface
             this.AssertNodesCount(8, 5);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void RenameFavoriteTest()
         {
@@ -76,7 +70,6 @@ namespace Tests.UserInterface
             this.AssertNodesCount(8, 4);
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void DontAffectNotLoadedGroupTest()
         {

@@ -20,7 +20,6 @@ namespace Tests.FilePersisted
 
         private IGroups PersistedGroups { get { return this.Persistence.Groups; } }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void AddGroup()
         {
@@ -31,7 +30,6 @@ namespace Tests.FilePersisted
             Assert.AreEqual(1, PersistedGroups.Count(), "Group wasnt created properly");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void RemoveFavoriteShouldNotRemoveGroups()
         {
@@ -44,7 +42,6 @@ namespace Tests.FilePersisted
             Assert.AreEqual(0, this.removedReported, "Removed group was reported");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void RemoveGroupShouldReportTheRemove()
         {
@@ -56,7 +53,6 @@ namespace Tests.FilePersisted
             Assert.AreEqual(1, this.removedReported, "Remove group wasnt reported.");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void RemoveGroupShouldNotRemoveFavorites()
         {
@@ -75,7 +71,6 @@ namespace Tests.FilePersisted
             return tuple;
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void RemoveGroupUpdatesNestedGroups()
         {
@@ -84,7 +79,6 @@ namespace Tests.FilePersisted
             Assert.IsNull(groupsLab.Child.Parent, "Remove parent group didnt update all childs parent relationship.");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void RemoveGroupReportsNestedGroupUpdate()
         {
@@ -93,7 +87,6 @@ namespace Tests.FilePersisted
             Assert.AreEqual(1, groupsLab.UpdateReported, "Remove parent group didnt send child group update.");
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void RebuildGroupsTest()
         {
@@ -118,7 +111,6 @@ namespace Tests.FilePersisted
                 this.updateReported++;
         }
 
-        [TestCategory("NonSql")]
         [TestMethod]
         public void UpdateGroupTest()
         {
