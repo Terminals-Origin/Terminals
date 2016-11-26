@@ -31,14 +31,34 @@ namespace Tests.FilePersisted
         [TestMethod]
         public void CustomIcon_UpdateFavoriteIcon_ChangesIconImage()
         {
-            var favorite = this.AddFavorite();
-            var favorites = this.Persistence.Favorites;
-            favorites.UpdateFavoriteIcon(favorite, ImageAssert.IMAGE_FILE);
-            Image favoriteIcon = favorites.LoadFavoriteIcon(favorite);
-            ImageAssert.AssertExpectedImage(this.TestContext.DeploymentDirectory, favoriteIcon);
+            var favorite = this.UpdateFavoriteIcon();
+            Image favoriteIcon = this.Favorites.LoadFavoriteIcon(favorite);
+            ImageAssert.AssertExpectedIcon(this.TestContext.DeploymentDirectory, favoriteIcon);
         }
 
-        [Ignore] // not finished yet
+        private IFavorite UpdateFavoriteIcon()
+        {
+            var favorite = this.AddFavorite();
+            this.Favorites.UpdateFavoriteIcon(favorite, ImageAssert.IMAGE_FILE);
+            return favorite;
+        }
+
+        [DeploymentItem(ImageAssert.IMAGE_FILE)]
+        [TestMethod]
+        public void CustomIcon_UpdateFavoriteIcon_DoesntSaveFavorite()
+        {
+            var favorite = this.AddFavorite();
+            this.Favorites.UpdateFavoriteIcon(favorite, ImageAssert.IMAGE_FILE);
+            FilePersistence secondaryPersistence = CreateFilePersistence();
+            secondaryPersistence.Initialize();
+            IFavorite checkfavorite = secondaryPersistence.Favorites.FirstOrDefault();
+            Image favoriteIcon = secondaryPersistence.Favorites.LoadFavoriteIcon(checkfavorite);
+
+            string testDeploymentDir = this.TestContext.TestDeploymentDir;
+            bool iconEquals = ImageAssert.IconEquals(testDeploymentDir, favoriteIcon);
+            Assert.IsFalse(iconEquals, "UpdateIcon cant save favorite.");
+        }
+
         [DeploymentItem(ImageAssert.IMAGE_FILE)]
         [TestMethod]
         public void CustomIcon_UpdateFavoriteIcon_DoesntReportFavoriteUpdated()
@@ -60,11 +80,16 @@ namespace Tests.FilePersisted
             IFavorite favorite = this.AddFavorite();
             const string SPECIAL_CHARACTERS = "čočka\r\nčočka"; // some example special characters
             favorite.Notes = SPECIAL_CHARACTERS;
-            this.Persistence.Favorites.Update(favorite);
-            var secondary = FilePersistedTestLab.CreateFilePersistence();
-            secondary.Initialize();
-            IFavorite checkfavorite = secondary.Favorites.FirstOrDefault();
+            this.Favorites.Update(favorite);
+            IFavorite checkfavorite = LoadFavoriteFromSecondaryPersistence();
             Assert.AreEqual(SPECIAL_CHARACTERS, checkfavorite.Notes, "favorite notes were not saved properly");
+        }
+
+        private static IFavorite LoadFavoriteFromSecondaryPersistence()
+        {
+            FilePersistence secondaryPersistence = CreateFilePersistence();
+            secondaryPersistence.Initialize();
+            return secondaryPersistence.Favorites.FirstOrDefault();
         }
 
         /// <summary>
@@ -77,7 +102,7 @@ namespace Tests.FilePersisted
             IFavorite favorite = this.AddFavorite();
             // now it has RdpOptions
             TestConnectionManager.Instance.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
-            this.Persistence.Favorites.Update(favorite);
+            this.Favorites.Update(favorite);
             AssertRdpSecurity(this.Persistence.Security, favorite);
         }
 
@@ -166,12 +191,11 @@ namespace Tests.FilePersisted
         private Tuple<IFavorite, IGroup> UpdatePrimaryPersistenceFavorites(Tuple<IFavorite, IGroup> toUpdate,
             Tuple<IFavorite, IGroup> toRemove)
         {
-            IFavorites primaryFavorites = this.Persistence.Favorites;
             var favoriteToUpdate = toUpdate.Item1;
             favoriteToUpdate.Name = "some other value";
             // simulates group update by removing its favorite
-            primaryFavorites.UpdateFavorite(favoriteToUpdate, new List<IGroup>());
-            primaryFavorites.Delete(toRemove.Item1);
+            this.Favorites.UpdateFavorite(favoriteToUpdate, new List<IGroup>());
+            this.Favorites.Delete(toRemove.Item1);
             this.Persistence.Groups.Delete(toRemove.Item2);
             Tuple<IFavorite, IGroup> added = this.AddFavoriteWithGroup("GroupToAdd");
             return added;

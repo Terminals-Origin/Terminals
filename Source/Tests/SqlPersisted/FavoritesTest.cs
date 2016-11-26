@@ -166,7 +166,7 @@ namespace Tests.SqlPersisted
             Assert.IsNotNull(favoriteIcon, "Icon wasn't assigned successfully");
             var loadedIcon = this.SecondaryFavorites.LoadFavoriteIcon(checkFavorite);
             Assert.IsNotNull(loadedIcon, "Icon didn't reach the database");
-            ImageAssert.AssertExpectedImage(this.TestContext.DeploymentDirectory, favoriteIcon);
+            ImageAssert.AssertExpectedIcon(this.TestContext.DeploymentDirectory, favoriteIcon);
         }
 
         [DeploymentItem(IMAGE_FILE)]

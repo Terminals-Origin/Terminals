@@ -9,13 +9,20 @@ namespace Tests.Helpers
     {
         internal const string IMAGE_FILE = @"ControlPanel.png";
 
-        internal static void AssertExpectedImage(string deploymentDirectory, Image favoriteIcon)
+        internal static void AssertExpectedIcon(string deploymentDirectory, Image favoriteIcon)
         {
-            Image expectedImage = Image.FromFile(Path.Combine(deploymentDirectory, IMAGE_FILE));
-            Assert.IsTrue(ImageCompare(expectedImage, favoriteIcon), "The file wasnt assigned properly");
+            var areEqual = IconEquals(deploymentDirectory, favoriteIcon);
+            Assert.IsTrue(areEqual, "The file wasnt assigned properly");
         }
 
-        private static bool ImageCompare(Image firstImage, Image secondImage)
+        internal static bool IconEquals(string deploymentDirectory, Image favoriteIcon)
+        {
+            string fullIconPath = Path.Combine(deploymentDirectory, IMAGE_FILE);
+            Image expectedImage = Image.FromFile(fullIconPath);
+            return AreEqual(expectedImage, favoriteIcon);
+        }
+
+        private static bool AreEqual(Image firstImage, Image secondImage)
         {
             using (var ms = new MemoryStream())
             {

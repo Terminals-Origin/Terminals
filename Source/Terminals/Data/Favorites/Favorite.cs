@@ -97,29 +97,18 @@ namespace Terminals.Data
             {
                 this.toolBarIconFile = value;
                 // don't dispose the previous image here, because it can be loaded from default shared FavoriteIcons
-                this.toolBarIconImage = null;
+                this.ToolBarIconImage = null;
             }
         }
-
-        private Image toolBarIconImage;
 
         /// <summary>
-        /// Gets or sets the loaded image. Used sa cache to prevent redundant loading from disk.
+        /// Gets or sets the loaded image. Used as cache to prevent redundant loading from disk.
         /// </summary>
         [XmlIgnore]
-        public Image ToolBarIconImage
-        {
-            get
-            {
-               return this.toolBarIconImage;
-            }
-            set
-            {
-                this.toolBarIconImage = value;
-            }
-        }
+        public Image ToolBarIconImage { get; set; }
 
         public Boolean NewWindow { get; set; }
+
         public String DesktopShare { get; set; }
 
         private IBeforeConnectExecuteOptions executeBeforeConnect = new BeforeConnectExecuteOptions();
