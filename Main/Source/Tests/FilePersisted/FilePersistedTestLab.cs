@@ -11,7 +11,11 @@ namespace Tests.FilePersisted
     public abstract class FilePersistedTestLab
     {
         private readonly Settings settings = Settings.Instance;
+
         internal FilePersistence Persistence { get; private set; }
+
+        internal IFavorites Favorites { get { return this.Persistence.Favorites; } }
+
 
         [TestInitialize]
         public void InitializeTestLab()
@@ -37,7 +41,7 @@ namespace Tests.FilePersisted
             IFavorite favorite = this.AddFavorite();
             IGroup group = this.Persistence.Factory.CreateGroup(groupName);
             group.AddFavorite(favorite);
-            this.Persistence.Favorites.UpdateFavorite(favorite, new List<IGroup>() { group });
+            this.Favorites.UpdateFavorite(favorite, new List<IGroup>() { group });
             return new Tuple<IFavorite, IGroup>(favorite, group);
         }
 
@@ -45,7 +49,7 @@ namespace Tests.FilePersisted
         {
             IFavorite favorite = this.Persistence.Factory.CreateFavorite();
             favorite.Name = favoriteName;
-            this.Persistence.Favorites.Add(favorite);
+            this.Favorites.Add(favorite);
             return favorite;
         }
 
