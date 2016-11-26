@@ -155,11 +155,8 @@ namespace Tests.SqlPersisted
         public void LoadSaveFavoriteIconsTest()
         {
             IFavorite favorite = this.CreateTestFavorite();
-
             // try to access on not saved favorite
             this.PrimaryFavorites.Add(favorite);
-            int updatesCount = 0;
-            this.PrimaryPersistence.Dispatcher.FavoritesChanged += args => updatesCount++;
 
             this.PrimaryFavorites.UpdateFavoriteIcon(favorite, IMAGE_FILE);
             Image favoriteIcon = this.PrimaryFavorites.LoadFavoriteIcon(favorite);
@@ -170,6 +167,19 @@ namespace Tests.SqlPersisted
             var loadedIcon = this.SecondaryFavorites.LoadFavoriteIcon(checkFavorite);
             Assert.IsNotNull(loadedIcon, "Icon didn't reach the database");
             ImageAssert.AssertExpectedImage(this.TestContext.DeploymentDirectory, favoriteIcon);
+        }
+
+        [DeploymentItem(IMAGE_FILE)]
+        [TestMethod]
+        public void UpdateFavoriteIcon_DoesntFireFavoriteUpdate()
+        {
+            IFavorite favorite = this.CreateTestFavorite();
+            this.PrimaryFavorites.Add(favorite);
+            int updatesCount = 0;
+            this.PrimaryPersistence.Dispatcher.FavoritesChanged += args => updatesCount++;
+
+            this.PrimaryFavorites.UpdateFavoriteIcon(favorite, IMAGE_FILE);
+   
             Assert.AreEqual(0, updatesCount, FilePersisted.FavoritesTest.UPDATE_ICON_MESSAGE);
         }
 
