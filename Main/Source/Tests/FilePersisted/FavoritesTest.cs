@@ -33,7 +33,7 @@ namespace Tests.FilePersisted
         {
             var favorite = this.UpdateFavoriteIcon();
             Image favoriteIcon = this.Favorites.LoadFavoriteIcon(favorite);
-            ImageAssert.AssertExpectedIcon(this.TestContext.DeploymentDirectory, favoriteIcon);
+            ImageAssert.EqualsToExpectedIcon(this.TestContext.DeploymentDirectory, favoriteIcon);
         }
 
         private IFavorite UpdateFavoriteIcon()
@@ -55,8 +55,7 @@ namespace Tests.FilePersisted
             Image favoriteIcon = secondaryPersistence.Favorites.LoadFavoriteIcon(checkfavorite);
 
             string testDeploymentDir = this.TestContext.TestDeploymentDir;
-            bool iconEquals = ImageAssert.IconEquals(testDeploymentDir, favoriteIcon);
-            Assert.IsFalse(iconEquals, "UpdateIcon cant save favorite.");
+            ImageAssert.DoesntEqualsExpectedIcon(testDeploymentDir, favoriteIcon);
         }
 
         [DeploymentItem(ImageAssert.IMAGE_FILE)]
