@@ -166,7 +166,7 @@ namespace Tests.SqlPersisted
             Assert.IsNotNull(favoriteIcon, "Icon wasn't assigned successfully");
             var loadedIcon = this.SecondaryFavorites.LoadFavoriteIcon(checkFavorite);
             Assert.IsNotNull(loadedIcon, "Icon didn't reach the database");
-            ImageAssert.AssertExpectedIcon(this.TestContext.DeploymentDirectory, favoriteIcon);
+            ImageAssert.EqualsToExpectedIcon(this.TestContext.DeploymentDirectory, favoriteIcon);
         }
 
         [DeploymentItem(IMAGE_FILE)]
@@ -181,6 +181,22 @@ namespace Tests.SqlPersisted
             this.PrimaryFavorites.UpdateFavoriteIcon(favorite, IMAGE_FILE);
    
             Assert.AreEqual(0, updatesCount, FilePersisted.FavoritesTest.UPDATE_ICON_MESSAGE);
+        }
+
+        [Ignore] // TODO Fix the wrong implementation of UpdateIcon in Sql Favorites
+        [DeploymentItem(IMAGE_FILE)]
+        [TestMethod]
+        public void UpdateFavoriteIcon_DoesntStoreIconToDatabase()
+        {
+            IFavorite favorite = this.CreateTestFavorite();
+            this.PrimaryFavorites.Add(favorite);
+
+            this.PrimaryFavorites.UpdateFavoriteIcon(favorite, IMAGE_FILE);
+
+            IFavorite loaded = this.SecondaryFavorites.First();
+            Image loadedIcon = this.SecondaryFavorites.LoadFavoriteIcon(loaded);
+            string deploymentDirectory = this.TestContext.DeploymentDirectory;
+            ImageAssert.DoesntEqualsExpectedIcon(deploymentDirectory, loadedIcon);
         }
 
         [TestMethod]
