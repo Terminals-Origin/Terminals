@@ -46,12 +46,12 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void AddFavoriteTest()
+        public void AddTwoFavorites_AddPropertiesToDatabaseAndFiresEvent()
         {
             DbFavorite favorite = this.CreateTestFavorite();
             DbFavorite favorite2 = this.CreateTestFavorite();
             int before = this.CheckFavorites.Count();
-            this.PrimaryPersistence.Favorites.Add(favorite);
+            this.PrimaryFavorites.Add(favorite);
             this.PrimaryFavorites.Add(favorite2);
 
             int after = this.CheckFavorites.Count();
@@ -67,7 +67,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void DeleteFavoriteTest()
+        public void StoredFavorite_Delete_RemovesFromDatabaseTablesAndFiresEvent()
         {
             DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
             // force the password to be stored to ensure
@@ -89,7 +89,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void UpdateFavoriteTest()
+        public void VNCFavorite_Update_SavesPropertiesToDatabaseAndFiresEvents()
         {
             IFavorite favorite = this.AddFavoriteToPrimaryPersistence();
             TestConnectionManager.Instance.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
@@ -111,7 +111,7 @@ namespace Tests.SqlPersisted
         /// because this property is initialized using lazy loading
         /// </summary>
         [TestMethod]
-        public void DoubleUpdateFavoriteTest()
+        public void UpdateFavoriteThreeTimes_FiresEventsAndStoresSecurity()
         {
             IFavorite favorite = this.AddFavoriteToPrimaryPersistence();
             // first time change nothing to ensure, that dummy update doesn't fail.
@@ -132,7 +132,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void UpdateFavoriteWithGroupsTest()
+        public void AssignGroupToStoredFavorite_Update_SavesToDatabase()
         {
             IFavorite favorite = this.AddFavoriteToPrimaryPersistence();
             IGroup groupToDelete = this.PrimaryFactory.CreateGroup("TestGroupToDelete");
@@ -152,7 +152,7 @@ namespace Tests.SqlPersisted
 
         [DeploymentItem(IMAGE_FILE)]
         [TestMethod]
-        public void LoadSaveFavoriteIconsTest()
+        public void UpdateFavoriteIcon_StoresIconToDatabase()
         {
             IFavorite favorite = this.CreateTestFavorite();
             // try to access on not saved favorite
@@ -184,7 +184,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void UpdateProtocolTest()
+        public void VNCProtocolToRdp_ChangeProtocol_AllowesUpdatesRdpSecurity()
         {
             IFavorite favorite = this.CreateTestFavorite();
             // now it has RdpOptions
