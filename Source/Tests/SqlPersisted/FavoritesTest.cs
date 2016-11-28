@@ -159,6 +159,7 @@ namespace Tests.SqlPersisted
             this.PrimaryFavorites.Add(favorite);
 
             this.PrimaryFavorites.UpdateFavoriteIcon(favorite, IMAGE_FILE);
+            this.PrimaryFavorites.Update(favorite);
             Image favoriteIcon = this.PrimaryFavorites.LoadFavoriteIcon(favorite);
 
             DbFavorite checkFavorite = this.CheckFavorites.FirstOrDefault();
@@ -183,7 +184,6 @@ namespace Tests.SqlPersisted
             Assert.AreEqual(0, updatesCount, FilePersisted.FavoritesTest.UPDATE_ICON_MESSAGE);
         }
 
-        [Ignore] // TODO Fix the wrong implementation of UpdateIcon in Sql Favorites
         [DeploymentItem(IMAGE_FILE)]
         [TestMethod]
         public void UpdateFavoriteIcon_DoesntStoreIconToDatabase()

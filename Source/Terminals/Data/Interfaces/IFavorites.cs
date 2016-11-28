@@ -97,10 +97,11 @@ namespace Terminals.Data
         void ApplyUserNameToAllFavorites(List<IFavorite> selectedFavorites, string newUserName);
 
         /// <summary>
-        /// Stores new icon for selected favorite.
+        /// Assignes new icon to the favorite, but doesnt save it to the Persistence.
+        /// To save the icon see <see cref="Update"/> or <see cref="Add(IFavorite)"/>.
         /// </summary>
         /// <param name="favorite">Not null favorite to be updated.</param>
-        /// <param name="imageFilePath">Full path to the file to be applied as new favorite icon.</param>
+        /// <param name="imageFilePath">Not null, full path to the file to be applied as new favorite icon.</param>
         void UpdateFavoriteIcon(IFavorite favorite, string imageFilePath);
 
         /// <summary>
