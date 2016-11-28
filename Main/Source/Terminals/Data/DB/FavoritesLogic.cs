@@ -91,10 +91,19 @@ namespace Terminals.Data.DB
             {
                 List<DbFavorite> toAdd = favorites.Cast<DbFavorite>().ToList();
                 database.AddAll(toAdd);
+                this.UpdateIconInDatabase(database, toAdd);
                 database.SaveImmediatelyIfRequested();
                 database.Cache.DetachAll(toAdd);
                 this.cache.Add(toAdd);
                 this.dispatcher.ReportFavoritesAdded(favorites);
+            }
+        }
+
+        private void UpdateIconInDatabase(Database database, List<DbFavorite> favorites)
+        {
+            foreach (DbFavorite toUpdate in favorites)
+            {
+                this.favoriteIcons.UpdateImageInDatabase(toUpdate, database);
             }
         }
 
@@ -194,6 +203,7 @@ namespace Terminals.Data.DB
         {
             database.Cache.MarkFavoriteAsModified(favorite);
             database.SaveImmediatelyIfRequested();
+            this.favoriteIcons.UpdateImageInDatabase(favorite, database);
             database.Cache.DetachFavorite(favorite);
             this.cache.Update(favorite);
             this.dispatcher.ReportFavoriteUpdated(favorite);
@@ -319,11 +329,6 @@ namespace Terminals.Data.DB
             var toUpdate = favorite as DbFavorite;
             // todo what if the icon is assigned when copying favorite? It is not save this way.
             this.favoriteIcons.AssingNewIcon(toUpdate, imageFilePath);
-
-            using (Database database = DatabaseConnections.CreateInstance())
-            {
-                this.favoriteIcons.UpdateImageInDatabase(toUpdate, database);
-            }
         }
 
         public Image LoadFavoriteIcon(IFavorite favorite)
