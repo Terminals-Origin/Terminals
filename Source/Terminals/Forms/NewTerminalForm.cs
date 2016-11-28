@@ -65,7 +65,7 @@ namespace Terminals
         private void InitializeFavoritePropertiesControl()
         {
             this.validator = new NewTerminalFormValidator(this.persistence, this);
-            this.favoritePropertiesControl1.AssignPersistence(this.persistence);
+            this.favoritePropertiesControl1.AssignServices(this.persistence, this.connectionManager);
             this.favoritePropertiesControl1.SetOkButtonRequested += this.GeneralProperties_SetOkButtonRequested;
             this.favoritePropertiesControl1.RegisterValidations(this.validator);
             this.favoritePropertiesControl1.SetErrorProviderIconsAlignment(this.errorProvider);
