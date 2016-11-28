@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Connections;
@@ -16,7 +17,7 @@ namespace Terminals.Forms.EditFavorite
         private const string EXECUTE_NODE = "executeNode";
         private const string NOTES_NODE = "notesNode";
 
-        private readonly ConnectionManager connectionManager = ConnectionManager.Instance;
+        private ConnectionManager connectionManager;
 
         public event EventHandler SetOkButtonRequested
         {
@@ -59,7 +60,7 @@ namespace Terminals.Forms.EditFavorite
             string[] availablePlugins = connectionManager.GetAvailableProtocols();
             this.generalPanel1.AssingAvailablePlugins(availablePlugins);
             this.generalPanel1.ProtocolChanged += GenearalPanel1ProtocolChanged;
-            string firstPlugin = KnownConnectionConstants.RDP;
+            string firstPlugin = availablePlugins.First();
             this.GenearalPanel1ProtocolChanged(firstPlugin);
             this.groupsPanel1.BindGroups();
             this.generalPanel1.ServerNameChanged += this.protocolOptionsPanel1.OnServerNameChanged;
@@ -185,8 +186,9 @@ namespace Terminals.Forms.EditFavorite
             this.notesControl1.RegisterValidations(validator);
         }
 
-        internal void AssignPersistence(IPersistence persistence)
+        internal void AssignServices(IPersistence persistence, ConnectionManager connectionManager)
         {
+            this.connectionManager = connectionManager;
             this.generalPanel1.AssignPersistence(persistence);
             this.groupsPanel1.AssignPersistence(persistence);
             this.protocolOptionsPanel1.CredentialsFactory = new GuardedCredentialFactory(persistence.Security);

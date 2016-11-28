@@ -35,7 +35,7 @@ namespace Tests.UserInterface
         {
             Mock<IPersistence> persistenceStub = TestMocksFactory.CreatePersistence();
             this.irelevantPersistence = persistenceStub.Object;
-            this.propertiesControl.AssignPersistence(irelevantPersistence);
+            this.propertiesControl.AssignServices(irelevantPersistence, TestConnectionManager.Instance);
         }
 
         [TestMethod]
