@@ -327,7 +327,9 @@ namespace Terminals.Data.DB
         public void UpdateFavoriteIcon(IFavorite favorite, string imageFilePath)
         {
             var toUpdate = favorite as DbFavorite;
-            // todo what if the icon is assigned when copying favorite? It is not save this way.
+            if (toUpdate == null)
+                return;
+
             this.favoriteIcons.AssingNewIcon(toUpdate, imageFilePath);
         }
 
