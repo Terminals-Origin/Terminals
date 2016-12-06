@@ -1087,21 +1087,21 @@ namespace Terminals.Configuration
             }
         }
 
-        public string[] DisabledPlugins
+        public string[] EnabledPlugins
         {
             get
             {
-                return this.GetSection().DisabledPlugins.ToSortedArray();
+                return this.GetSection().EnabledPlugins.ToSortedArray();
             }
             set
             {
-                this.UpdateDisabledPlugins(value);
+                this.UpdateEnabledPlugins(value);
             }
         }
 
-        public void UpdateDisabledPlugins(string[] disabledPlugins)
+        public void UpdateEnabledPlugins(string[] disabledPlugins)
         {
-            MRUItemConfigurationElementCollection pluginsSection = this.GetSection().DisabledPlugins;
+            MRUItemConfigurationElementCollection pluginsSection = this.GetSection().EnabledPlugins;
             pluginsSection.Clear();
 
             foreach (string disabledPlugin in disabledPlugins)

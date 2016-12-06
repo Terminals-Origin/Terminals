@@ -26,20 +26,20 @@ namespace Terminals.Forms.OptionPanels
 
         private SelectedPlugin ToSelectedPlugin(PluginDefinition plugin)
         {
-            string[] disabledPlugins = this.settings.DisabledPlugins;
-            bool isEnabled = !disabledPlugins.Contains(plugin.FullPath);
+            string[] enabledPlugins = this.settings.EnabledPlugins;
+            bool isEnabled = enabledPlugins.Contains(plugin.FullPath);
             return new SelectedPlugin(plugin.Description, plugin.FullPath, isEnabled);
         }
 
         internal void SaveSelected(List<SelectedPlugin> allPlugins)
         {
-            string[] disabled = SelectDisabledPluginPaths(allPlugins);
-            this.settings.DisabledPlugins = disabled;
+            string[] enabledPlugins = SelectEnabledPluginPaths(allPlugins);
+            this.settings.EnabledPlugins = enabledPlugins;
         }
 
-        private static string[] SelectDisabledPluginPaths(List<SelectedPlugin> allPlugins)
+        private static string[] SelectEnabledPluginPaths(List<SelectedPlugin> allPlugins)
         {
-            return allPlugins.Where(p => !p.Enabled)
+            return allPlugins.Where(p => p.Enabled)
                 .Select(p => p.FullPath)
                 .ToArray();
         }
