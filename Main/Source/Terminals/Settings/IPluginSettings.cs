@@ -2,6 +2,6 @@ namespace Terminals.Configuration
 {
     internal interface IPluginSettings
     {
-        string[] DisabledPlugins { get; set; }
+        string[] EnabledPlugins { get; set; }
     }
 }
