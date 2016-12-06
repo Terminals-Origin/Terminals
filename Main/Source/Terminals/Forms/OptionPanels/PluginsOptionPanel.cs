@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Connections;
+using Terminals.Properties;
+using Settings = Terminals.Configuration.Settings;
 
 namespace Terminals.Forms.OptionPanels
 {
@@ -12,8 +14,9 @@ namespace Terminals.Forms.OptionPanels
 
         public PluginsOptionPanel()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
+            this.pluginsListbox.CheckOnClick = true;
             this.pluginsSelection = new PluginsSelection(Settings.Instance, new PluginsLoader());
         }
 
@@ -27,10 +30,7 @@ namespace Terminals.Forms.OptionPanels
 
         public void SaveSettings()
         {
-            this.UpdatePluginsFromUi();
-            List<SelectedPlugin> plugins = this.pluginsListbox.Items
-                .OfType<SelectedPlugin>()
-                .ToList();
+            List<SelectedPlugin> plugins = this.GetPluginsFromUI();
             this.pluginsSelection.SaveSelected(plugins);
         }
 
@@ -41,6 +41,28 @@ namespace Terminals.Forms.OptionPanels
                 var plugin = this.pluginsListbox.Items[index] as SelectedPlugin;
                 plugin.Enabled = this.pluginsListbox.GetItemChecked(index);
             }
+        }
+
+        
+        protected override void OnValidating(CancelEventArgs e)
+        {
+            base.OnValidating(e);
+            e.Cancel = !this.GetPluginsFromUI()
+                .Any(p => p.Enabled);
+
+            string errorMessage = string.Empty;
+            if (e.Cancel)
+                errorMessage = Resources.PluginSelectionErrorMessage;
+
+            this.errorProvider.SetError(this.pluginsListbox, errorMessage);
+        }
+
+        private List<SelectedPlugin> GetPluginsFromUI()
+        {
+            this.UpdatePluginsFromUi();
+            return this.pluginsListbox.Items
+                .OfType<SelectedPlugin>()
+                .ToList();
         }
     }
 }

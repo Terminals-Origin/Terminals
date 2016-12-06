@@ -28,8 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.descriptionLabel = new System.Windows.Forms.Label();
             this.pluginsListbox = new System.Windows.Forms.CheckedListBox();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // descriptionLabel
@@ -45,10 +48,15 @@
             // pluginsListbox
             // 
             this.pluginsListbox.FormattingEnabled = true;
+            this.errorProvider.SetIconAlignment(this.pluginsListbox, System.Windows.Forms.ErrorIconAlignment.TopRight);
             this.pluginsListbox.Location = new System.Drawing.Point(18, 65);
             this.pluginsListbox.Name = "pluginsListbox";
-            this.pluginsListbox.Size = new System.Drawing.Size(359, 124);
+            this.pluginsListbox.Size = new System.Drawing.Size(332, 124);
             this.pluginsListbox.TabIndex = 2;
+            // 
+            // errorProvider
+            // 
+            this.errorProvider.ContainerControl = this;
             // 
             // PluginsOptionPanel
             // 
@@ -58,6 +66,7 @@
             this.Controls.Add(this.descriptionLabel);
             this.Name = "PluginsOptionPanel";
             this.Size = new System.Drawing.Size(402, 300);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -66,5 +75,6 @@
         #endregion
         private System.Windows.Forms.Label descriptionLabel;
         private System.Windows.Forms.CheckedListBox pluginsListbox;
+        private System.Windows.Forms.ErrorProvider errorProvider;
     }
 }
