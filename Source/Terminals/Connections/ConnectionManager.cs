@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
+using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Integration.Export;
 
@@ -30,39 +31,16 @@ namespace Terminals.Connections
 
         private static class Nested
         {
-            internal static readonly ConnectionManager instance = new ConnectionManager();
+            internal static readonly ConnectionManager instance = new ConnectionManager(new PluginsLoader(Settings.Instance));
         }
 
         #endregion
 
-        public ConnectionManager(): this(LoadPlugins)
-        {
-        }
-
-        internal ConnectionManager(Func<IEnumerable<IConnectionPlugin>> loadPlugins)
-        {
-            IEnumerable<IConnectionPlugin> loaded = loadPlugins();
-            this.plugins = SortExternalPlugins(loaded);
-        }
-
-        private static IEnumerable<IConnectionPlugin> LoadPlugins()
+        internal ConnectionManager(IPluginsLoader loader)
         {
             // RAS, // this protocol doesnt fit to the concept and seems to be broken 
-            var plugins = new List<IConnectionPlugin>()
-            {
-                //{ new RdpConnectionPlugin() },
-                //{KnownConnectionConstants.HTTP, new HttpConnectionPlugin()},
-                //{KnownConnectionConstants.HTTPS, new HttpsConnectionPlugin()},
-                //{ VncConnectionPlugin.VNC, new VncConnectionPlugin() },
-                //{ VmrcConnectionPlugin.VMRC, new VmrcConnectionPlugin() },
-                //{TelnetConnectionPlugin.TELNET, new TelnetConnectionPlugin()},
-                //{SshConnectionPlugin.SSH, new SshConnectionPlugin()},
-                //{ICAConnectionPlugin.ICA_CITRIX, new ICAConnectionPlugin()}
-            };
-
-            var pluginLoader = new PluginsLoader();
-            plugins.AddRange(pluginLoader.Load());
-            return plugins;
+            IEnumerable<IConnectionPlugin> loaded = loader.Load();
+            this.plugins = SortExternalPlugins(loaded);
         }
 
         private static Dictionary<string, IConnectionPlugin> SortExternalPlugins(IEnumerable<IConnectionPlugin> plugins)

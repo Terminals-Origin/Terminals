@@ -1,4 +1,7 @@
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Terminals.Configuration;
+using Tests.FilePersisted;
 
 namespace Tests.Connections
 {
@@ -15,7 +18,7 @@ namespace Tests.Connections
     [DeploymentItem(WEB_PLUGIN, WEB_TARGET)]
     [DeploymentItem(RDP_PLUGIN, RDP_TARGET)]
     [TestClass]
-    public abstract class PluginBasedTests
+    public class PluginBasedTests
     {
         internal const string VNC_PLUGIN = "Terminals.Plugins.Vnc.dll";
 
@@ -40,5 +43,28 @@ namespace Tests.Connections
         internal const string RDP_PLUGIN = "Terminals.Plugins.Rdp.dll";
 
         internal const string RDP_TARGET = @"Plugins\Rdp";
+
+        public TestContext TestContext { get; set; }
+
+        protected void ClassInitialize()
+        {
+            string[] allAvailable = this.CreateAllAvailablePlugins();
+            FilePersistedTestLab.SetDefaultFileLocations();
+            Settings.Instance.EnabledPlugins = allAvailable;
+        }
+
+        protected string[] CreateAllAvailablePlugins()
+        {
+            string deploymentDirectory = this.TestContext.DeploymentDirectory;
+            return new string[]
+            {
+                Path.Combine(deploymentDirectory, VNC_TARGET, VNC_PLUGIN),
+                Path.Combine(deploymentDirectory, ICA_TARGET, ICA_PLUGIN),
+                Path.Combine(deploymentDirectory, TERMINAL_TARGET, TERMINAL_PLUGIN),
+                Path.Combine(deploymentDirectory, VMRC_TARGET, VMRC_PLUGIN),
+                Path.Combine(deploymentDirectory, WEB_TARGET, WEB_PLUGIN),
+                Path.Combine(deploymentDirectory, RDP_TARGET, RDP_PLUGIN),
+            };
+        }
     }
 }

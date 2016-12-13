@@ -17,7 +17,7 @@ namespace Terminals.Forms.OptionPanels
             this.InitializeComponent();
 
             this.pluginsListbox.CheckOnClick = true;
-            this.pluginsSelection = new PluginsSelection(Settings.Instance, new PluginsLoader());
+            this.pluginsSelection = new PluginsSelection(Settings.Instance, new PluginsLoader(Settings.Instance));
         }
 
         public void LoadSettings()

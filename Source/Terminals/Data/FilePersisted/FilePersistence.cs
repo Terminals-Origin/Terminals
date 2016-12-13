@@ -77,9 +77,9 @@ namespace Terminals.Data
         /// <summary>
         /// Try to reuse current security in case of changing persistence, because user is already authenticated
         /// </summary>
-        internal FilePersistence(PersistenceSecurity security)
+        internal FilePersistence(PersistenceSecurity security, FavoriteIcons favoriteIcons, ConnectionManager connectionManager)
             : this(security, new DataFileWatcher(Settings.Instance.FileLocations.Favorites),
-                  FavoriteIcons.Instance, ConnectionManager.Instance)
+                  favoriteIcons, connectionManager)
         {}
 
         /// <summary>

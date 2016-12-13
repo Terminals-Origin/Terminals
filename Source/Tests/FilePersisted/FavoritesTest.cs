@@ -159,7 +159,7 @@ namespace Tests.FilePersisted
 
         private FilePersistence InitializeSecondaryPersistence(TestFileWatch testFileWatch)
         {
-            var secondaryPersistence = new FilePersistence(new PersistenceSecurity(), testFileWatch, FavoriteIcons.Instance, TestConnectionManager.Instance);
+            FilePersistence secondaryPersistence = CreateFilePersistence(testFileWatch);
             // let the persistence load initial state
             secondaryPersistence.Initialize();
             secondaryPersistence.Dispatcher.FavoritesChanged += this.DispatcherOnFavoritesChanged;

@@ -86,12 +86,18 @@ namespace Tests.SqlPersisted
             this.CheckDatabase = DatabaseConnections.CreateInstance();
             this.CheckDatabase.UpdateMasterPassword(String.Empty);
 
-            this.PrimaryPersistence = new SqlPersistence(FavoriteIcons.Instance, TestConnectionManager.Instance);
+            this.PrimaryPersistence = CreateSqlPersistence();
             this.PrimaryPersistence.Initialize();
-            this.SecondaryPersistence = new SqlPersistence(FavoriteIcons.Instance, TestConnectionManager.Instance);
+            this.SecondaryPersistence = CreateSqlPersistence();
             this.SecondaryPersistence.Initialize();
 
             this.ClearTestLab(); // because of failed previous tests
+        }
+
+        private static SqlPersistence CreateSqlPersistence()
+        {
+            var icons = TestConnectionManager.CreateTestFavoriteIcons();
+            return new SqlPersistence(icons, TestConnectionManager.Instance);
         }
 
         protected void SetDeploymentDirConnectionString()

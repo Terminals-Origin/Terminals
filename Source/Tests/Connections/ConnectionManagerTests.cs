@@ -19,13 +19,19 @@ namespace Tests.Connections
     [TestClass]
     public class ConnectionManagerTests : PluginBasedTests
     {
-        private readonly ConnectionManager connectionManager = new ConnectionManager();
+        private ConnectionManager connectionManager;
 
         private const string PORTSMESSAGE = "All protocols have to be identified by default port and vice versa.";
 
         private const string UNKNOWN_PROTOCOL = "UNKNOWN_PROTOCOL";
 
-        public TestContext TestContext { get; set; }
+        [TestInitialize]
+        public void SetUp()
+        {
+            var allAvailable = this.CreateAllAvailablePlugins();
+            IPluginsLoader loader = PluginLoaderTests.CreateLoader(allAvailable);
+            this.connectionManager = new ConnectionManager(loader);
+        }
 
         /// <summary>
         /// this is a prerequisite test, to ensure all tests use expected data.
