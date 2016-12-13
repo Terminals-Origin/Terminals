@@ -5,5 +5,7 @@ namespace Terminals.Connections
     internal interface IPluginsLoader
     {
         IEnumerable<PluginDefinition> FindAvailablePlugins();
+
+        IEnumerable<IConnectionPlugin> Load();
     }
 }

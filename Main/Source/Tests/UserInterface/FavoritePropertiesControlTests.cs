@@ -20,8 +20,8 @@ namespace Tests.UserInterface
     {
         private const string EXPECTED_TEXT = "EXPECTED_TEXT";
         private const string MESSAGE = "Roundtrip should keep original value";
-        
-        private readonly FavoritePropertiesControl propertiesControl = new FavoritePropertiesControl();
+
+        private FavoritePropertiesControl propertiesControl;
 
         private readonly List<IGroup> groups = new List<IGroup>()
         {
@@ -33,9 +33,11 @@ namespace Tests.UserInterface
         [TestInitialize]
         public void SetUp()
         {
+            this.ClassInitialize();
+            this.propertiesControl = new FavoritePropertiesControl();
             Mock<IPersistence> persistenceStub = TestMocksFactory.CreatePersistence();
             this.irelevantPersistence = persistenceStub.Object;
-            this.propertiesControl.AssignServices(irelevantPersistence, TestConnectionManager.Instance);
+            this.propertiesControl.AssignServices(this.irelevantPersistence, TestConnectionManager.Instance);
         }
 
         [TestMethod]

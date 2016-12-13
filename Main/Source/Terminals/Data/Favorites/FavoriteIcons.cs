@@ -47,7 +47,7 @@ namespace Terminals.Data
             internal static readonly FavoriteIcons instance = new FavoriteIcons(ConnectionManager.Instance);
         }
 
-        public FavoriteIcons(ConnectionManager connectionManager)
+        internal FavoriteIcons(ConnectionManager connectionManager)
         {
             this.pluginIcons = connectionManager.GetPluginIcons();
         }

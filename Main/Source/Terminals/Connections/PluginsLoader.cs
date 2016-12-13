@@ -3,15 +3,35 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Terminals.Configuration;
 
 namespace Terminals.Connections
 {
     internal class PluginsLoader : IPluginsLoader
     {
+        private readonly string[] enabledPlugins;
+
+        public PluginsLoader(IPluginSettings settings)
+        {
+            this.enabledPlugins = settings.EnabledPlugins;
+        }
+
         public IEnumerable<IConnectionPlugin> Load()
         {
-            List<string> allPluginAssemblies = FindPluginAssemblies();
-            return allPluginAssemblies.SelectMany(LoadAssemblyPlugins).ToList();
+            if (enabledPlugins == null || !enabledPlugins.Any())
+                throw new ApplicationException("Application needs atleast one enabled plugin.");
+
+            List<string> allPluginAssemblies = FindPluginAssemblies()
+                .Where(enabledPlugins.Contains)
+                .ToList();
+
+            var availablePlugins = allPluginAssemblies.SelectMany(LoadAssemblyPlugins)
+                    .ToList();
+
+            if (!availablePlugins.Any())
+                throw new ApplicationException("No available protocol plugin was loaded.");
+
+            return availablePlugins;
         }
 
         private static IEnumerable<IConnectionPlugin> LoadAssemblyPlugins(string pluginFile)
@@ -32,7 +52,7 @@ namespace Terminals.Connections
 
         public IEnumerable<PluginDefinition> FindAvailablePlugins()
         {
-            List<string> allPluginAssemblies = FindPluginAssemblies();
+            IEnumerable<string> allPluginAssemblies = FindPluginAssemblies();
             return allPluginAssemblies.Select(LoadPlugDefinition)
                 .ToList();
         }
@@ -61,7 +81,7 @@ namespace Terminals.Connections
                    attribute.ConstructorArguments.Count == 1;
         }
 
-        private static List<string> FindPluginAssemblies()
+        private static IEnumerable<string> FindPluginAssemblies()
         {
             string[] pluginDirectories = FindPluginDirectories();
             return FindAllPluginAssemblies(pluginDirectories);
@@ -88,10 +108,9 @@ namespace Terminals.Connections
             }
         }
 
-        private static List<string> FindAllPluginAssemblies(string[] pluginDirectories)
+        private static IEnumerable<string> FindAllPluginAssemblies(string[] pluginDirectories)
         {
-            return pluginDirectories.SelectMany(FindPluginAssemblies)
-                .ToList();
+            return pluginDirectories.SelectMany(FindPluginAssemblies);
         }
 
         private static string[] FindPluginAssemblies(string pluginDirectory)

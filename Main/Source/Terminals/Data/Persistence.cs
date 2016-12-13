@@ -9,7 +9,11 @@ namespace Terminals.Data
     {
         private static Action fallbackPrompt; 
         private IPersistence persistence;
-     
+
+        private static readonly FavoriteIcons favoriteIcons = FavoriteIcons.Instance;
+
+        private static readonly ConnectionManager connectionManager = ConnectionManager.Instance;
+
         private Persistence()
         {
             try
@@ -27,9 +31,9 @@ namespace Terminals.Data
         private void InitializePersistence()
         {
             if (Settings.Instance.PersistenceType == FilePersistence.TYPE_ID)
-                this.persistence = new FilePersistence(new PersistenceSecurity());
+                this.persistence = new FilePersistence(new PersistenceSecurity(), favoriteIcons, connectionManager);
             else
-                this.persistence = new SqlPersistence(FavoriteIcons.Instance, ConnectionManager.Instance);
+                this.persistence = new SqlPersistence(favoriteIcons, connectionManager);
         }
 
         /// <summary>
@@ -39,7 +43,7 @@ namespace Terminals.Data
         {
             PromptForFallback();
             var newSecurity = new PersistenceSecurity(security);
-            var persistence = new FilePersistence(newSecurity);
+            var persistence = new FilePersistence(newSecurity, favoriteIcons, connectionManager);
             Settings.Instance.PersistenceSecurity = newSecurity;
             Nested.instance.persistence = persistence;
             persistence.Initialize();

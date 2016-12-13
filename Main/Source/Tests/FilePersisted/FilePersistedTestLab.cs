@@ -28,7 +28,13 @@ namespace Tests.FilePersisted
 
         internal static FilePersistence CreateFilePersistence()
         {
-            return new FilePersistence(new PersistenceSecurity(), new TestFileWatch(), FavoriteIcons.Instance, TestConnectionManager.Instance);
+            return CreateFilePersistence(new TestFileWatch());
+        }
+
+        internal static FilePersistence CreateFilePersistence(IDataFileWatcher fileWatcher)
+        {
+            var icons = TestConnectionManager.CreateTestFavoriteIcons();
+            return new FilePersistence(new PersistenceSecurity(), fileWatcher, icons, TestConnectionManager.Instance);
         }
 
         internal static void SetDefaultFileLocations()
