@@ -11,6 +11,8 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal partial class FavoritesTreeView : TreeView
     {
+        private IPersistence persistence;
+
         internal IFavorite SelectedFavorite
         {
             get
@@ -61,13 +63,15 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        internal IPersistence Persistence { get; set; }
-
         public FavoritesTreeView()
         {
             InitializeComponent();
+        }
 
-            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.Instance.GetProtocolIcons);
+        internal void AssignServices(IPersistence persistence, FavoriteIcons favoriteIcons)
+        {
+            this.persistence = persistence;
+            var iconsBuilder = new ProtocolImageListBuilder(favoriteIcons.GetProtocolIcons);
             iconsBuilder.Build(this.imageListIcons);
         }
 
@@ -154,7 +158,7 @@ namespace Terminals.Forms.Controls
         private TreeViewDragDrop CreateTreeViewDragDrop(DragEventArgs e)
         {
             var keyModifiers = new KeyModifiers();
-            return new TreeViewDragDrop(this.Persistence, e, keyModifiers,
+            return new TreeViewDragDrop(this.persistence, e, keyModifiers,
                 this.SelectedGroup, this.SelectedFavorite);
         }
     }

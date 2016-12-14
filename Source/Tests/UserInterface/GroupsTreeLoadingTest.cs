@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
 using Terminals.Forms.Controls;
+using Tests.Connections;
 
 namespace Tests.UserInterface
 {
@@ -107,7 +108,7 @@ namespace Tests.UserInterface
         public void LoadRecursiveLoadsCompleateSubtree()
         {
             var treeView = new TestTreeView();
-            var treeLoader = new FavoriteTreeListLoader(treeView, this.Persistence);
+            var treeLoader = new FavoriteTreeListLoader(treeView, this.Persistence, TestConnectionManager.CreateTestFavoriteIcons());
             treeLoader.LoadRootNodes(); // now we have 7 including Dummy nodes
             treeLoader.LoadGroupNodesRecursive();
             int allLoadedCount = treeView.GetNodeCount(true);

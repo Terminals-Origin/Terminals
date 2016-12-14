@@ -14,6 +14,8 @@ namespace Terminals.Forms.Controls
 
         private readonly ToolTipBuilder toolTipBuilder;
 
+        private readonly FavoriteIcons favoriteIcons;
+
         internal IEnumerable<FavoriteTreeNode> FavoriteNodes
         {
             get
@@ -30,10 +32,11 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        public TreeListNodes(TreeNodeCollection nodes, ToolTipBuilder toolTipBuilder)
+        public TreeListNodes(TreeNodeCollection nodes, ToolTipBuilder toolTipBuilder, FavoriteIcons favoriteIcons)
         {
             this.nodes = nodes;
             this.toolTipBuilder = toolTipBuilder;
+            this.favoriteIcons = favoriteIcons;
         }
 
         private static List<GroupTreeNode> FilterGroupNodes(TreeNodeCollection nodes)
@@ -142,7 +145,7 @@ namespace Terminals.Forms.Controls
         private void AddFavoriteNode(IFavorite favorite, int index = -1)
         {
             string toolTip = this.toolTipBuilder.BuildTooTip(favorite);
-            var favoriteTreeNode = new FavoriteTreeNode(favorite, toolTip);
+            var favoriteTreeNode = new FavoriteTreeNode(this.favoriteIcons, favorite, toolTip);
             this.InsertNodePreservingOrder(index, favoriteTreeNode);
         }
 

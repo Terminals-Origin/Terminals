@@ -24,6 +24,8 @@ namespace Terminals.Forms.Controls
 
         private readonly TreeNodeCollection nodes;
 
+        protected FavoriteIcons FavoriteIcons { get; set; }
+
         protected ToolTipBuilder ToolTipBuilder { get; private set; }
 
         protected TreeListNodes Nodes { get; private set; }
@@ -45,11 +47,13 @@ namespace Terminals.Forms.Controls
         /// Create new not root level container if parent is defined, otherwise
         /// create root level container. Than this is an entry point of the update.
         /// </summary>
-        protected TreeNodesLevelUpdate(TreeNodeCollection nodes, TChanges changes, ToolTipBuilder toolTipBuilder, GroupTreeNode parent = null)
+        protected TreeNodesLevelUpdate(FavoriteIcons favoriteIcons, TreeNodeCollection nodes, TChanges changes,
+            ToolTipBuilder toolTipBuilder, GroupTreeNode parent = null)
         {
             this.nodes = nodes;
+            this.FavoriteIcons = favoriteIcons;
             this.ToolTipBuilder = toolTipBuilder;
-            this.Nodes = new TreeListNodes(nodes, toolTipBuilder);
+            this.Nodes = new TreeListNodes(nodes, toolTipBuilder, favoriteIcons);
             this.Changes = changes;
             this.Parent = parent;
         }

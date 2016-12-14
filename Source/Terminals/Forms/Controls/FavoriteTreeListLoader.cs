@@ -23,6 +23,8 @@ namespace Terminals.Forms.Controls
 
         private readonly ToolTipBuilder toolTipBuilder;
 
+        private readonly FavoriteIcons favoriteIcons;
+
         private TreeNodeCollection RootNodes
         {
             get { return this.treeList.Nodes; }
@@ -40,9 +42,10 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        internal FavoriteTreeListLoader(FavoritesTreeView treeListToFill, IPersistence persistence)
+        internal FavoriteTreeListLoader(FavoritesTreeView treeListToFill, IPersistence persistence, FavoriteIcons favoriteIcons)
         {
             this.treeList = treeListToFill;
+            this.favoriteIcons = favoriteIcons;
             this.treeList.AfterExpand += new TreeViewEventHandler(this.OnTreeViewExpand);
 
             this.toolTipBuilder = new ToolTipBuilder(persistence.Security);
@@ -85,7 +88,7 @@ namespace Terminals.Forms.Controls
         {
             GroupTreeNode selectedGroup = this.treeList.FindSelectedGroupNode();
             IFavorite selectedFavorite = this.treeList.SelectedFavorite;
-            var updater = new FavoritesLevelUpdate(this.RootNodes, args, this.toolTipBuilder);
+            var updater = new FavoritesLevelUpdate(this.favoriteIcons, this.RootNodes, args, this.toolTipBuilder);
             updater.Run();
             this.treeList.RestoreSelectedFavorite(selectedGroup, selectedFavorite);
         }
@@ -98,7 +101,7 @@ namespace Terminals.Forms.Controls
             }
             else
             {
-                var levelParams = new GroupsLevelUpdate(this.RootNodes, args, this.toolTipBuilder);
+                var levelParams = new GroupsLevelUpdate(this.favoriteIcons, this.RootNodes, args, this.toolTipBuilder);
                 levelParams.Run();
             }
         }
@@ -108,7 +111,7 @@ namespace Terminals.Forms.Controls
             if (persistedGroups == null) // because of designer
                 return;
 
-            var nodes = new TreeListNodes(this.RootNodes, this.toolTipBuilder);
+            var nodes = new TreeListNodes(this.RootNodes, this.toolTipBuilder, this.favoriteIcons);
             // dont load everything, it is done by lazy loading after expand
             IOrderedEnumerable<IGroup> rootGroups = GetSortedRootGroups();
             nodes.InsertGroupNodes(rootGroups);
@@ -130,7 +133,7 @@ namespace Terminals.Forms.Controls
 
         internal void LoadGroupNodesRecursive()
         {
-            var rootNodes = new TreeListNodes(this.RootNodes, this.toolTipBuilder);
+            var rootNodes = new TreeListNodes(this.RootNodes, this.toolTipBuilder, this.favoriteIcons);
             this.LoadGroupNodesRecursive(rootNodes);
         }
 
@@ -139,7 +142,7 @@ namespace Terminals.Forms.Controls
             foreach (var groupNode in nodes.GroupNodes)
             {
                 this.LoadGroupNode(groupNode);
-                var childNodes = new TreeListNodes(groupNode.Nodes, this.toolTipBuilder);
+                var childNodes = new TreeListNodes(groupNode.Nodes, this.toolTipBuilder, this.favoriteIcons);
                 this.LoadGroupNodesRecursive(childNodes);
             }
         }
@@ -151,14 +154,14 @@ namespace Terminals.Forms.Controls
 
             groupNode.Nodes.Clear();
             this.AddGroupNodes(groupNode);
-            var nodes = new TreeListNodes(groupNode.Nodes, this.toolTipBuilder);
+            var nodes = new TreeListNodes(groupNode.Nodes, this.toolTipBuilder, this.favoriteIcons);
             nodes.AddFavoriteNodes(groupNode.Favorites);
         }
 
         private void AddGroupNodes(GroupTreeNode groupNode)
         {
             IEnumerable<IGroup> childGroups = this.GetChildGroups(groupNode.Group);
-            var nodes = new TreeListNodes(groupNode.Nodes, this.toolTipBuilder);
+            var nodes = new TreeListNodes(groupNode.Nodes, this.toolTipBuilder, this.favoriteIcons);
             nodes.InsertGroupNodes(childGroups);
         }
 

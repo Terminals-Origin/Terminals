@@ -12,8 +12,10 @@ namespace Terminals.Data
         private static readonly String terminalsReleasesFavoriteName = Program.Resources.GetString("TerminalsNews");
         private static readonly String terminalsReleasesUrl = Program.Resources.GetString("TerminalsURL");
 
-        private static readonly ConnectionManager connectionManager = ConnectionManager.Instance;
-
+        private static ConnectionManager GetConnectionManager()
+        {
+            return ConnectionManager.Instance;
+        }
 
         internal static string TerminalsReleasesFavoriteName
         {
@@ -45,7 +47,7 @@ namespace Terminals.Data
             newFavorite.DomainName = domain;
             newFavorite.Tags = DISCOVERED_CONNECTIONS;
             newFavorite.Port = port;
-            newFavorite.Protocol = connectionManager.GetPortName(port);
+            newFavorite.Protocol = GetConnectionManager().GetPortName(port);
             return newFavorite;
         }
 
@@ -72,7 +74,7 @@ namespace Terminals.Data
                 if (IPAddress.TryParse(server, out address))
                     name = Dns.GetHostEntry(address).HostName;
 
-                string portName = connectionManager.GetPortName(port);
+                string portName = GetConnectionManager().GetPortName(port);
                 return string.Format("{0}_{1}", name, portName);
             }
             catch // don't log dns lookups!
@@ -123,7 +125,7 @@ namespace Terminals.Data
             release.Name = TerminalsReleasesFavoriteName;
             release.ServerName = TerminalsReleasesUrl;
             release.Port = KnownConnectionConstants.HTTPPort;
-            connectionManager.ChangeProtocol(release, KnownConnectionConstants.HTTP);
+            GetConnectionManager().ChangeProtocol(release, KnownConnectionConstants.HTTP);
             return release;
         }
 

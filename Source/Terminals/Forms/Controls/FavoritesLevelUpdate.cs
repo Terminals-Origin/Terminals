@@ -43,16 +43,18 @@ namespace Terminals.Forms.Controls
         /// <summary>
         /// Create new not root level container
         /// </summary>
-        private FavoritesLevelUpdate(TreeNodeCollection nodes, FavoritesChangedEventArgs changes, GroupTreeNode parent, ToolTipBuilder toolTipBuilder)
-            : base(nodes, changes, toolTipBuilder, parent)
+        private FavoritesLevelUpdate(FavoriteIcons favoriteIcons, TreeNodeCollection nodes, FavoritesChangedEventArgs changes,
+            GroupTreeNode parent, ToolTipBuilder toolTipBuilder)
+            : base(favoriteIcons, nodes, changes, toolTipBuilder, parent)
         {
         }
 
         /// <summary>
         /// Create root level container. Parent is not defined. This is an entry point of the update.
         /// </summary>
-        internal FavoritesLevelUpdate(TreeNodeCollection nodes, FavoritesChangedEventArgs changes, ToolTipBuilder toolTipBuilder)
-            : base(nodes, changes, toolTipBuilder)
+        internal FavoritesLevelUpdate(FavoriteIcons favoriteIcons, TreeNodeCollection nodes, FavoritesChangedEventArgs changes,
+            ToolTipBuilder toolTipBuilder)
+            : base(favoriteIcons, nodes, changes, toolTipBuilder)
         {
         }
 
@@ -128,7 +130,7 @@ namespace Terminals.Forms.Controls
             // take only expanded nodes, for better performance and to protect the lazy loading
             foreach (GroupTreeNode groupNode in this.LoadedGroupNodes)
             {
-                var levelUpdate = new FavoritesLevelUpdate(groupNode.Nodes, this.Changes, groupNode, this.ToolTipBuilder);
+                var levelUpdate = new FavoritesLevelUpdate(this.FavoriteIcons, groupNode.Nodes, this.Changes, groupNode, this.ToolTipBuilder);
                 levelUpdate.Run();
             }
         }

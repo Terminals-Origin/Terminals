@@ -15,7 +15,7 @@ namespace Terminals.Forms.EditFavorite
     internal partial class GeneralPropertiesUserControl : UserControl
     {
         private readonly Settings settings = Settings.Instance;
-        private readonly ConnectionManager connectionManager = ConnectionManager.Instance;
+        private ConnectionManager connectionManager;
         private IFavorites favorites;
 
         internal string ServerNameText { get { return this.cmbServers.Text.Trim(); } }
@@ -79,9 +79,10 @@ namespace Terminals.Forms.EditFavorite
             errorProvider.SetIconAlignment(this.txtName, ErrorIconAlignment.MiddleLeft);
         }
 
-        internal void AssignPersistence(IPersistence persistence)
+        internal void AssignServices(IPersistence persistence, ConnectionManager connectionManager)
         {
             this.favorites = persistence.Favorites;
+            this.connectionManager = connectionManager;
             this.securityPanel1.AssignServices(persistence, this.settings);
         }
 

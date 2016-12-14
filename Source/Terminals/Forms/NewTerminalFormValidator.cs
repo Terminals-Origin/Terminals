@@ -22,11 +22,14 @@ namespace Terminals.Forms
 
         private readonly Dictionary<string, Control> validationBindings = new Dictionary<string, Control>();
 
-        public NewTerminalFormValidator(IPersistence persistence, INewTerminalForm form)
+        private readonly ConnectionManager connectionManager;
+
+        public NewTerminalFormValidator(IPersistence persistence, ConnectionManager connectionManager, INewTerminalForm form)
         {
             this.persistence = persistence;
             this.nameValidator = new FavoriteNameValidator(persistence);
             this.form = form;
+            this.connectionManager = connectionManager;
         }
 
         internal void RegisterValidationControl(string propertyName, Control control)
@@ -54,7 +57,7 @@ namespace Terminals.Forms
         {
             IFavorite favorite = this.persistence.Factory.CreateFavorite();
             this.form.FillFavoriteFromControls(favorite);
-            ValidationStates results = Validations.Validate(ConnectionManager.Instance, favorite);
+            ValidationStates results = Validations.Validate(this.connectionManager, favorite);
             this.UpdateControlsErrorByResults(results);
             bool nameValid = this.ValidateName(favorite);
             // check the results, not the bindings to be able to identify unbound property errors
@@ -116,7 +119,7 @@ namespace Terminals.Forms
         private bool IsServerNameValid()
         {
             string protocol = this.form.ProtocolText;
-            if (ConnectionManager.Instance.IsProtocolWebBased(protocol))
+            if (this.connectionManager.IsProtocolWebBased(protocol))
                 return true;
 
             return this.ServerNameInvalid();
