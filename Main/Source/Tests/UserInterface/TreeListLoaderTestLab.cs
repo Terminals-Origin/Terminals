@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
 using Terminals.Forms.Controls;
+using Tests.Connections;
 
 namespace Tests.UserInterface
 {
@@ -67,11 +68,12 @@ namespace Tests.UserInterface
         [TestInitialize]
         public void CreateTestTreeStructure()
         {
-            this.treeView.Persistence = this.Persistence;
+            var favoriteIcons = TestConnectionManager.CreateTestFavoriteIcons();
+            this.treeView.AssignServices(this.Persistence, favoriteIcons);
             this.CreateData();
 
             // loaded tree is needed for all tests, if if there is a "load all test", which tests next line only
-            this.treeLoader = new FavoriteTreeListLoader(this.treeView, this.Persistence);
+            this.treeLoader = new FavoriteTreeListLoader(this.treeView, this.Persistence, favoriteIcons);
             this.treeLoader.LoadRootNodes();
             this.treeView.ExpandAllTreeNodes();
         }

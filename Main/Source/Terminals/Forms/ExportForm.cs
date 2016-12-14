@@ -21,7 +21,7 @@ namespace Terminals.Forms
             this.persistence = persistence;
             this.InitializeComponent();
 
-            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence);
+            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence, FavoriteIcons.Instance);
             this.treeLoader.LoadRootNodes();
             this.exporters = new Exporters(this.persistence, ConnectionManager.Instance);
             this.saveFileDialog.Filter = this.exporters.GetProvidersDialogFilter();
@@ -29,7 +29,7 @@ namespace Terminals.Forms
 
         private void ExportForm_Load(object sender, EventArgs e)
         {
-            this.favsTree.Persistence = this.persistence;
+            this.favsTree.AssignServices(this.persistence, FavoriteIcons.Instance);
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Data.Credentials;
@@ -18,6 +17,8 @@ namespace Terminals.Forms.EditFavorite
         private const string NOTES_NODE = "notesNode";
 
         private ConnectionManager connectionManager;
+
+        private FavoriteIcons favoriteIcons;
 
         public event EventHandler SetOkButtonRequested
         {
@@ -47,8 +48,6 @@ namespace Terminals.Forms.EditFavorite
         {
             this.InitializeComponent();
 
-            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.Instance.GetProtocolIcons);
-            iconsBuilder.Build(this.treeIcons);
             this.generalPanel1.AssignRasControl(this.rasControl1);
         }
 
@@ -88,7 +87,7 @@ namespace Terminals.Forms.EditFavorite
 
         private void UpdateProtocolOptionsNodeIcons(string newProtocol)
         {
-            string imageKey = FavoriteIcons.Instance.GetTreeviewImageListKey(newProtocol);
+            string imageKey = this.favoriteIcons.GetTreeviewImageListKey(newProtocol);
             UpdateNodeIcon(this.ProtocolOptionsNode, imageKey);
         }
 
@@ -186,10 +185,13 @@ namespace Terminals.Forms.EditFavorite
             this.notesControl1.RegisterValidations(validator);
         }
 
-        internal void AssignServices(IPersistence persistence, ConnectionManager connectionManager)
+        internal void AssignServices(IPersistence persistence, ConnectionManager connectionManager, FavoriteIcons icons)
         {
             this.connectionManager = connectionManager;
-            this.generalPanel1.AssignPersistence(persistence);
+            this.favoriteIcons = icons;
+            var iconsBuilder = new ProtocolImageListBuilder(icons.GetProtocolIcons);
+            iconsBuilder.Build(this.treeIcons);
+            this.generalPanel1.AssignServices(persistence, connectionManager);
             this.groupsPanel1.AssignPersistence(persistence);
             this.protocolOptionsPanel1.CredentialsFactory = new GuardedCredentialFactory(persistence.Security);
         }

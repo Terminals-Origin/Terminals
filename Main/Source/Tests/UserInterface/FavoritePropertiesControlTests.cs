@@ -33,11 +33,11 @@ namespace Tests.UserInterface
         [TestInitialize]
         public void SetUp()
         {
-            this.ClassInitialize();
             this.propertiesControl = new FavoritePropertiesControl();
             Mock<IPersistence> persistenceStub = TestMocksFactory.CreatePersistence();
             this.irelevantPersistence = persistenceStub.Object;
-            this.propertiesControl.AssignServices(this.irelevantPersistence, TestConnectionManager.Instance);
+            FavoriteIcons favoriteIcons = TestConnectionManager.CreateTestFavoriteIcons();
+            this.propertiesControl.AssignServices(this.irelevantPersistence, TestConnectionManager.Instance, favoriteIcons);
         }
 
         [TestMethod]
@@ -111,7 +111,7 @@ namespace Tests.UserInterface
             var formStub = new Mock<INewTerminalForm>();
             // return RDP doesnt play rule, because the validation asks only for non web protocol
             formStub.SetupGet(form => form.PortText).Returns(KnownConnectionConstants.RDP);
-            var formValidator = new NewTerminalFormValidator(this.irelevantPersistence, formStub.Object);
+            var formValidator = new NewTerminalFormValidator(this.irelevantPersistence, TestConnectionManager.Instance, formStub.Object);
             this.propertiesControl.RegisterValidations(formValidator);
             this.propertiesControl.LoadContent();
         }

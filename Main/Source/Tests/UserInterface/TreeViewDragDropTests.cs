@@ -7,6 +7,7 @@ using Terminals;
 using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
+using Tests.Connections;
 using Tests.FilePersisted;
 
 namespace Tests.UserInterface
@@ -26,7 +27,7 @@ namespace Tests.UserInterface
         public void TestSetup()
         {
             this.sourceFavorite = this.AddFavorite("SourceFavorite");
-            this.sourceFavoriteNode = new FavoriteTreeNode(sourceFavorite, string.Empty);
+            this.sourceFavoriteNode = new FavoriteTreeNode(TestConnectionManager.CreateTestFavoriteIcons(), sourceFavorite, string.Empty);
             this.sourceGroup = this.AddNewGroup("SourceGroup");
             this.sourceGroupNode = new GroupTreeNode(sourceGroup);
             this.targetFavorite = this.AddFavorite("TargetFavorite");

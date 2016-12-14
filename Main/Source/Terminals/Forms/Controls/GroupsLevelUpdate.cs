@@ -35,16 +35,18 @@ namespace Terminals.Forms.Controls
         /// <summary>
         /// Create new not root level container
         /// </summary>
-        private GroupsLevelUpdate(TreeNodeCollection nodes, GroupsChangedArgs changes, GroupTreeNode parent, ToolTipBuilder toolTipBuilder)
-            : base(nodes, changes, toolTipBuilder, parent)
+        private GroupsLevelUpdate(FavoriteIcons favoriteIcons, TreeNodeCollection nodes, GroupsChangedArgs changes,
+            GroupTreeNode parent, ToolTipBuilder toolTipBuilder)
+            : base(favoriteIcons, nodes, changes, toolTipBuilder, parent)
         {
         }
 
         /// <summary>
         /// Create root level container. Parent is not defined. This is an entry point of the update.
         /// </summary>
-        internal GroupsLevelUpdate(TreeNodeCollection nodes, GroupsChangedArgs changes, ToolTipBuilder toolTipBuilder)
-            : base(nodes, changes, toolTipBuilder)
+        internal GroupsLevelUpdate(FavoriteIcons favoriteIcons, TreeNodeCollection nodes, GroupsChangedArgs changes,
+            ToolTipBuilder toolTipBuilder)
+            : base(favoriteIcons, nodes, changes, toolTipBuilder)
         {
         }
 
@@ -146,7 +148,7 @@ namespace Terminals.Forms.Controls
             if (this.CurrentNode.NotLoadedYet)
                 return;
 
-            var nextLevelUpdate = new GroupsLevelUpdate(this.CurrentNode.Nodes, this.Changes, this.CurrentNode, this.ToolTipBuilder);
+            var nextLevelUpdate = new GroupsLevelUpdate(this.FavoriteIcons, this.CurrentNode.Nodes, this.Changes, this.CurrentNode, this.ToolTipBuilder);
             nextLevelUpdate.Run();
         }
     }

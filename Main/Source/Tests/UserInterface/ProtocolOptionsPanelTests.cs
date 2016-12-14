@@ -40,7 +40,7 @@ namespace Tests.UserInterface
         {
             var irelevantPersistence = new Mock<IPersistence>().Object;
             var irelevantForm = new Mock<INewTerminalForm>().Object;
-            var validator = new NewTerminalFormValidator(irelevantPersistence, irelevantForm);
+            var validator = new NewTerminalFormValidator(irelevantPersistence, TestConnectionManager.Instance, irelevantForm);
             protocolPanel.RegisterValidations(validator);
             this.protocolPanel.CredentialsFactory = new GuardedCredentialFactory(persistenceSecurity);
         }

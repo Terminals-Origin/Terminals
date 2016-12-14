@@ -18,6 +18,8 @@ namespace Terminals.Forms.Controls
 
         private ToolTipBuilder toolTipBuilder;
 
+        private FavoriteIcons favoriteIcons;
+
         public HistoryTreeView()
         {
             InitializeComponent();
@@ -29,9 +31,10 @@ namespace Terminals.Forms.Controls
         /// <summary>
         /// Dont call from constructor to support designer
         /// </summary>
-        internal void Load(IPersistence persistence)
+        internal void Load(IPersistence persistence, FavoriteIcons favoriteIcons)
         {
             this.persistence = persistence;
+            this.favoriteIcons = favoriteIcons;
             this.toolTipBuilder = new ToolTipBuilder(this.persistence.Security);
             var connectionHistory = this.persistence.ConnectionHistory;
             connectionHistory.HistoryRecorded += new HistoryRecorded(this.HistoryRecorded);
@@ -111,7 +114,7 @@ namespace Terminals.Forms.Controls
             IFavorite favorite = args.Favorite;
             if (favorite != null) // shouldnt happen, because the favorite was actualy processed
             {
-                var nodes = new TreeListNodes(todayGroup.Nodes, this.toolTipBuilder);
+                var nodes = new TreeListNodes(todayGroup.Nodes, this.toolTipBuilder, this.favoriteIcons);
                 nodes.InsertFavorite(favorite);
             }
         }
@@ -145,7 +148,7 @@ namespace Terminals.Forms.Controls
             foreach (IFavorite favorite in groupFavorites)
             {
                 string toolTip = this.toolTipBuilder.BuildTooTip(favorite);
-                var favoriteNode = new FavoriteTreeNode(favorite, toolTip);
+                var favoriteNode = new FavoriteTreeNode(this.favoriteIcons, favorite, toolTip);
                 groupNode.Nodes.Add(favoriteNode);
             }
         }

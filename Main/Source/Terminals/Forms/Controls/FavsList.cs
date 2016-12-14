@@ -10,7 +10,6 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Data;
-using Terminals.Data.Credentials;
 using Terminals.Data.Validation;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
@@ -29,6 +28,8 @@ namespace Terminals
         private FavoriteRenameCommand renameCommand;
 
         private bool isRenaming;
+
+        private FavoriteIcons favoriteIcons = FavoriteIcons.Instance;
 
         internal IPersistence Persistence { get; set; }
 
@@ -70,10 +71,10 @@ namespace Terminals
 
         private void FavsList_Load(object sender, EventArgs e)
         {
-            this.favsTree.Persistence = this.Persistence;
-            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.Persistence);
+            this.favsTree.AssignServices(this.Persistence, this.favoriteIcons);
+            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.Persistence, this.favoriteIcons);
             this.treeLoader.LoadRootNodes();
-            this.historyTreeView.Load(this.Persistence);
+            this.historyTreeView.Load(this.Persistence, this.favoriteIcons);
             this.LoadState();
             this.favsTree.MouseUp += new MouseEventHandler(this.FavsTree_MouseUp);
             this.searchTextBox.LoadEvents(this.Persistence);

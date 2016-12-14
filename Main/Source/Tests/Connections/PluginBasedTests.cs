@@ -20,38 +20,31 @@ namespace Tests.Connections
     [TestClass]
     public class PluginBasedTests
     {
-        internal const string VNC_PLUGIN = "Terminals.Plugins.Vnc.dll";
-
-        internal const string VNC_TARGET = @"Plugins\Vnc";
-
-        internal const string ICA_PLUGIN = "Terminals.Plugins.Ica.dll";
-
-        internal const string ICA_TARGET = @"Plugins\Ica";
-
-        internal const string TERMINAL_PLUGIN = "Terminals.Plugins.Terminal.dll";
-
-        internal const string TERMINAL_TARGET = @"Plugins\Terminal";
-
-        internal const string VMRC_PLUGIN = "Terminals.Plugins.Vmrc.dll";
-
-        internal const string VMRC_TARGET = @"Plugins\Vmrc";
-
-        internal const string WEB_PLUGIN = "Terminals.Plugins.Web.dll";
-
-        internal const string WEB_TARGET = @"Plugins\Web";
-
-        internal const string RDP_PLUGIN = "Terminals.Plugins.Rdp.dll";
-
-        internal const string RDP_TARGET = @"Plugins\Rdp";
+        private const string VNC_PLUGIN = "Terminals.Plugins.Vnc.dll";
+        
+        private const string VNC_TARGET = @"Plugins\Vnc";
+        
+        private const string ICA_PLUGIN = "Terminals.Plugins.Ica.dll";
+        
+        private const string ICA_TARGET = @"Plugins\Ica";
+        
+        private const string TERMINAL_PLUGIN = "Terminals.Plugins.Terminal.dll";
+        
+        private const string TERMINAL_TARGET = @"Plugins\Terminal";
+        
+        private const string VMRC_PLUGIN = "Terminals.Plugins.Vmrc.dll";
+        
+        private const string VMRC_TARGET = @"Plugins\Vmrc";
+        
+        private const string WEB_PLUGIN = "Terminals.Plugins.Web.dll";
+        
+        private const string WEB_TARGET = @"Plugins\Web";
+        
+        private const string RDP_PLUGIN = "Terminals.Plugins.Rdp.dll";
+        
+        private const string RDP_TARGET = @"Plugins\Rdp";
 
         public TestContext TestContext { get; set; }
-
-        protected void ClassInitialize()
-        {
-            string[] allAvailable = this.CreateAllAvailablePlugins();
-            FilePersistedTestLab.SetDefaultFileLocations();
-            Settings.Instance.EnabledPlugins = allAvailable;
-        }
 
         protected string[] CreateAllAvailablePlugins()
         {

@@ -7,8 +7,11 @@ namespace Terminals.Forms.Controls
 {
     internal class FavoriteTreeNode : TreeNode
     {
-        internal FavoriteTreeNode(IFavorite favorite, string toolTip)
+        private readonly FavoriteIcons favoriteIcons;
+
+        internal FavoriteTreeNode(FavoriteIcons favoriteIcons, IFavorite favorite, string toolTip)
         {
+            this.favoriteIcons = favoriteIcons;
             this.UpdateByFavorite(favorite, toolTip);
         }
 
@@ -41,7 +44,7 @@ namespace Terminals.Forms.Controls
             this.Favorite = favorite;
             this.Tag = favorite; // temporary solution, for backward compatibility only
 
-            this.ImageKey = FavoriteIcons.Instance.GetTreeviewImageListKey(favorite.Protocol);
+            this.ImageKey = this.favoriteIcons.GetTreeviewImageListKey(favorite.Protocol);
             this.SelectedImageKey = this.ImageKey;
             // possible performance hit on SQL persistence, when loading details for each created favorite and also in menu loader
             this.ToolTipText = toolTip;
