@@ -24,14 +24,17 @@ namespace Terminals.Updates
 
         private AuthenticationPrompt prompt;
 
+        private readonly ConnectionManager connectionManager;
+
         /// <summary>
         /// Initialize new instance of the upgrade providing fresh not initialized persistence and password prompt.
         /// </summary>
         /// <param name="persistence">Not null,not authenticated, not initialized persistence</param>
         /// <param name="knowsUserPassword">Not null password prompt to obtain current master password from user</param>
-        internal FilesV2ContentUpgrade(IPersistence persistence, Func<bool, AuthenticationPrompt> knowsUserPassword)
+        internal FilesV2ContentUpgrade(IPersistence persistence, ConnectionManager connectionManager, Func<bool, AuthenticationPrompt> knowsUserPassword)
         {
             this.persistence = persistence;
+            this.connectionManager = connectionManager;
 
             // prevents ask for password two times
             this.passwordsUpdate = new PasswordsV2Update(retry =>
@@ -137,7 +140,7 @@ namespace Terminals.Updates
 
             foreach (FavoriteConfigurationElement favoriteConfigElement in settings.GetFavorites())
             {
-                IFavorite favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement, this.persistence, ConnectionManager.Instance);
+                IFavorite favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement, this.persistence, this.connectionManager);
                 ImportWithDialogs.AddFavoriteIntoGroups(this.persistence, favorite, tagsConvertert.ResolveTagsList(favoriteConfigElement));
                 this.persistence.Favorites.Add(favorite);
             }
