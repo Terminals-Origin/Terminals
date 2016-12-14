@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Security;
 
@@ -15,9 +16,12 @@ namespace Terminals.Updates
 
         private readonly Settings settings = Settings.Instance;
 
-        public UpdateConfig(IPersistence persistence)
+        private readonly ConnectionManager connectionManager;
+
+        public UpdateConfig(IPersistence persistence, ConnectionManager connectionManager)
         {
             this.persistence = persistence;
+            this.connectionManager = connectionManager;
         }
 
         /// <summary>
@@ -67,7 +71,7 @@ namespace Terminals.Updates
             // only this is already in use if started with default location
             MoveDataFile(FileLocations.CONFIG_FILENAME);
             settings.ForceReload();
-            var contentUpgrade = new FilesV2ContentUpgrade(this.persistence, RequestPassword.KnowsUserPassword);
+            var contentUpgrade = new FilesV2ContentUpgrade(this.persistence, this.connectionManager, RequestPassword.KnowsUserPassword);
             contentUpgrade.Run();
         }
 

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Terminals.CommandLine;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Security;
@@ -64,7 +65,7 @@ namespace Terminals
             // do it before config update, because it may import favorites from previous version
             Persistence.AssignFallbackPrompt(PersistenceFallback);
             // first touch of the Persistence instance.
-            var updateConfig = new UpdateConfig(Persistence.Instance);
+            var updateConfig = new UpdateConfig(Persistence.Instance, ConnectionManager.Instance);
             updateConfig.CheckConfigVersionUpdate();
         }
 
