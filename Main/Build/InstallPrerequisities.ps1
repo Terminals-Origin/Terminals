@@ -9,5 +9,6 @@
 choco install pscx -y;
 Import-Module "c:\Program Files (x86)\PowerShell Community Extensions\Pscx3\Pscx\pscx";
 
-# consider install also Wix toolset
+# All packages to install development environment:
 choco install wixtoolset -y;
+choco install checksum -y;

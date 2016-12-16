@@ -1,22 +1,37 @@
-﻿$packageName = 'terminals' # arbitrary name for the package, used in messages
-$installerType = 'msi' #only one of these: exe, msi, msu
-$url = 'http://terminals.codeplex.com/downloads/get/' # download url
-$silentArgs = '/qn /norestart' # "/s /S /q /Q /quiet /silent /SILENT /VERYSILENT" # try any of these to get the silent installer #msi is always /quiet
-$validExitCodes = @(0) #please insert other valid exit codes here, exit codes for ms http://msdn.microsoft.com/en-us/library/aa368542(VS.85).aspx
+﻿$packageName = 'terminals';
+$softwareName = 'terminals*';
+$installerType = 'MSI';
+$silentArgs = '/qn /norestart';
+$validExitCodes = @(0, 3010, 1605, 1614, 1641);
 
+$ErrorActionPreference = 'Stop';
+$uninstalled = $false;
+[array]$key = Get-UninstallRegistryKey -SoftwareName $softwareName;
 
+if ($key.Count -eq 1) {
+  $key | % { 
+    $file = "$($_.UninstallString)";
 
-try {
-    $chocTempDir = Join-Path $env:TEMP "chocolatey"
-	$tempDir = Join-Path $chocTempDir "$packageName"
-	if (![System.IO.Directory]::Exists($tempDir)) {[System.IO.Directory]::CreateDirectory($tempDir) | Out-Null}
-	$file = Join-Path $tempDir "$($packageName)Install.msi"
-	Write-Debug "Getting uninstall-package for $packageName :`'$file`', args: `'$silentArgs`' ";
-	Get-ChocolateyWebFile $packageName $file $url
-	$msiArgs = "/x `"$file`" $silentArgs"
-	Start-ChocolateyProcessAsAdmin "$msiArgs" 'msiexec' -validExitCodes $validExitCodes
-	write-host "$packageName has been uninstalled."
-  } catch {
-    Write-ChocolateyFailure $packageName $($_.Exception.Message)
-    throw
+    if ($installerType -eq 'MSI') {
+      $silentArgs = "$($_.PSChildName) $silentArgs";
+
+      $file = '';
+    }
+
+    Uninstall-ChocolateyPackage -PackageName $packageName `
+                                -FileType $installerType `
+                                -SilentArgs "$silentArgs" `
+                                -ValidExitCodes $validExitCodes `
+                                -File "$file";
+  }
+} elseif ($key.Count -eq 0) {
+  Write-Warning "$packageName has already been uninstalled by other means.";
+} elseif ($key.Count -gt 1) {
+  Write-Warning "$key.Count matches found!";
+  Write-Warning "To prevent accidental data loss, no programs will be uninstalled.";
+  Write-Warning "Please alert package maintainer the following keys were matched:";
+  $key | % {Write-Warning "- $_.DisplayName"};
 }
+
+
+
