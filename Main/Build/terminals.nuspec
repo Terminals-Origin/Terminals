@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>terminals</id>
+        <version>$version$</version>
+        <title>terminals</title>
+        <authors>jirkapok rob.chartier</authors>
+        <owners>jirkapok rob.chartier</owners>
+        <licenseUrl>https://terminals.codeplex.com/license</licenseUrl>
+        <projectUrl>https://terminals.codeplex.com/</projectUrl>
+        <iconUrl>http://download-codeplex.sec.s-msft.com/Download?ProjectName=terminals&amp;DownloadId=1624403</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Terminals is a secure, multi tab terminal services/remote desktop client. It uses Terminal Services ActiveX Client (mstscax.dll). Supported protocols: Windows remote desktop (RDP), VNC, VMRC. SSH, Telnet, RAS, ICA, Citrix, HTTP and HTTPs based viewers.</description>
+        <summary>This is a official Terminals msi installer package.</summary>
+        <releaseNotes />
+        <copyright />
+        <tags>terminals admin ssh vnc rdp</tags>
+    </metadata>
+    <files>
+        <file src="tools\chocolateyInstall.ps1" target="tools\chocolateyInstall.ps1" />
+        <file src="tools\chocolateyUninstall.ps1" target="tools\chocolateyUninstall.ps1" />
+    </files>
+</package>
