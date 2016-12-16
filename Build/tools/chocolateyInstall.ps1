@@ -1,6 +1,26 @@
-﻿$packageName = 'terminals' # arbitrary name for the package, used in messages
-$installerType = 'msi' #only one of these: exe, msi, msu
-$url = 'http://terminals.codeplex.com/downloads/get/' # download url
-$silentArgs = '/qn /norestart' # "/s /S /q /Q /quiet /silent /SILENT /VERYSILENT" # try any of these to get the silent installer #msi is always /quiet
-$validExitCodes = @(0) #please insert other valid exit codes here, exit codes for ms http://msdn.microsoft.com/en-us/library/aa368542(VS.85).aspx
-Install-ChocolateyPackage "$packageName" "$installerType" "$silentArgs" "$url" -validExitCodes $validExitCodes
+﻿$url = 'https://terminals.codeplex.com/downloads/get/';
+$checksum = '';
+
+$ErrorActionPreference = 'Stop';
+$packageName= 'terminals';
+$toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)";
+
+$packageArgs = @{
+  packageName   = $packageName
+  unzipLocation = $toolsDir
+  fileType      = 'msi'
+  url           = $url
+  url64bit      = ''
+
+  softwareName  = 'terminals*'
+
+  checksum      = $checksum
+  checksumType  = 'sha256'
+  checksum64    = ''
+  checksumType64= 'sha256'
+
+  silentArgs    = "/qn /norestart"
+  validExitCodes= @(0, 3010, 1641)
+};
+
+Install-ChocolateyPackage @packageArgs;
