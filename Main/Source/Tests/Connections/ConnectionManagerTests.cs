@@ -28,8 +28,7 @@ namespace Tests.Connections
         [TestInitialize]
         public void SetUp()
         {
-            var allAvailable = this.CreateAllAvailablePlugins();
-            IPluginsLoader loader = PluginLoaderTests.CreateLoader(allAvailable);
+            IPluginsLoader loader = PluginLoaderTests.CreateLoader(new string[0]);
             this.connectionManager = new ConnectionManager(loader);
         }
 

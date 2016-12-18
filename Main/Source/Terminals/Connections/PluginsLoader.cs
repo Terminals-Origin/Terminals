@@ -13,16 +13,13 @@ namespace Terminals.Connections
 
         public PluginsLoader(IPluginSettings settings)
         {
-            this.enabledPlugins = settings.EnabledPlugins;
+            this.enabledPlugins = settings.DisabledPlugins;
         }
 
         public IEnumerable<IConnectionPlugin> Load()
         {
-            if (enabledPlugins == null || !enabledPlugins.Any())
-                throw new ApplicationException("Application needs atleast one enabled plugin.");
-
             List<string> allPluginAssemblies = FindPluginAssemblies()
-                .Where(enabledPlugins.Contains)
+                .Where(p => !enabledPlugins.Contains(p))
                 .ToList();
 
             var availablePlugins = allPluginAssemblies.SelectMany(LoadAssemblyPlugins)

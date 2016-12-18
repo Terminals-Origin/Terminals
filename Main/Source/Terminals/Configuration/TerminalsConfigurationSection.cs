@@ -958,17 +958,19 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("enabledPlugins")]
+        private const string DISABLED_PLUGINS_NAME = "disabledPlugins";
+
+        [ConfigurationProperty(DISABLED_PLUGINS_NAME)]
         [ConfigurationCollection(typeof(MRUItemConfigurationElementCollection))]
-        public MRUItemConfigurationElementCollection EnabledPlugins
+        public MRUItemConfigurationElementCollection DisabledPlugins
         {
             get
             {
-                return (MRUItemConfigurationElementCollection)this["enabledPlugins"];
+                return (MRUItemConfigurationElementCollection)this[DISABLED_PLUGINS_NAME];
             }
             set
             {
-                this["enabledPlugins"] = value;
+                this[DISABLED_PLUGINS_NAME] = value;
             }
         }
 
