@@ -1087,11 +1087,11 @@ namespace Terminals.Configuration
             }
         }
 
-        public string[] EnabledPlugins
+        public string[] DisabledPlugins
         {
             get
             {
-                return this.GetSection().EnabledPlugins.ToSortedArray();
+                return this.GetSection().DisabledPlugins.ToSortedArray();
             }
             set
             {
@@ -1101,7 +1101,7 @@ namespace Terminals.Configuration
 
         public void UpdateEnabledPlugins(string[] disabledPlugins)
         {
-            MRUItemConfigurationElementCollection pluginsSection = this.GetSection().EnabledPlugins;
+            MRUItemConfigurationElementCollection pluginsSection = this.GetSection().DisabledPlugins;
             pluginsSection.Clear();
 
             foreach (string disabledPlugin in disabledPlugins)

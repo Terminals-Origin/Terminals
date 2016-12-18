@@ -27,37 +27,42 @@ namespace Tests.Connections
         [TestMethod]
         public void NoEnabledPlugins_Load_ThrowsApplicationException()
         {
-            var loader = CreateLoader(new string[0]);
+            var disabledPlugins = this.CreateAllAvailablePlugins();
+            var loader = CreateLoader(disabledPlugins);
             loader.Load();
         }
 
-        [ExpectedException(typeof(ApplicationException), NO_PLUGIN_ERRORMESSAGE)]
         [TestMethod]
-        public void NoAvailablePlugins_Load_ThrowsApplicationException()
+        public void UnknownDisabledPlugin_Load_IgnoresWrongPath()
         {
-            var loader = CreateLoader(new string[] { @"C:\PathTo\IncompatiblePluging.dll" });
-            loader.Load();
+            var disabled = new string[] { @"C:\PathTo\IncompatiblePluging.dll" };
+            this.AssertAllPluginsAreLoaded(disabled);
         }
 
         [TestMethod]
         public void FindAvailablePlugins_LoadsAllPlugins()
         {
-            var loader = CreateLoader(new string[0]);
+            this.AssertAllPluginsAreLoaded(new string[0]);
+        }
+
+        private void AssertAllPluginsAreLoaded(string[] disabledPlugins)
+        {
+            var loader = CreateLoader(disabledPlugins);
             IEnumerable<PluginDefinition> loaded = loader.FindAvailablePlugins();
             bool allValid = expectedPlugins.All(e => this.AssertLoadedPlugins(e, loaded));
             Assert.IsTrue(allValid, "All plugins have to be listed by plugin properties in options dialog.");
         }
 
-        internal static PluginsLoader CreateLoader(string[] enabledPlugins)
+        internal static PluginsLoader CreateLoader(string[] disabledPlugins)
         {
             var mockSettings = new Mock<IPluginSettings>();
-            mockSettings.SetupGet(s => s.EnabledPlugins).Returns(enabledPlugins);
+            mockSettings.SetupGet(s => s.DisabledPlugins).Returns(disabledPlugins);
             return new PluginsLoader(mockSettings.Object);
         }
 
         private bool AssertLoadedPlugins(Tuple<string, string> expected, IEnumerable<PluginDefinition> loadedDefinition)
         {
-            string message = string.Format("Expecting '{0}'", expected.Item1);
+            string message = string.Format("Loaded Plugins'{0}'", expected.Item1);
             Console.WriteLine(message);
             PluginDefinition definition = loadedDefinition.FirstOrDefault(d => d.Description == expected.Item1);
             return definition != null && definition.FullPath.Contains(expected.Item2);
