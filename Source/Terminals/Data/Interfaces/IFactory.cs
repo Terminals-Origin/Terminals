@@ -1,4 +1,6 @@
-﻿namespace Terminals.Data
+﻿using Terminals.Data.Interfaces;
+
+namespace Terminals.Data
 {
     /// <summary>
     /// Provides access to create persisted item from one place
@@ -25,5 +27,11 @@
         /// </summary>
         /// <returns>Not null newly created instance</returns>
         ICredentialSet CreateCredentialSet();
+
+        /// <summary>
+        /// Creates data validator conform with its persistence rules.
+        /// </summary>
+        /// <returns>Not null newly created instance</returns>
+        IDataValidator CreateValidator();
     }
 }

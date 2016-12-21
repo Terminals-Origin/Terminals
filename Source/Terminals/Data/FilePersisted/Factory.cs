@@ -1,6 +1,7 @@
 ﻿using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Data;
+using Terminals.Data.Interfaces;
 
 namespace Terminals
 {
@@ -40,6 +41,11 @@ namespace Terminals
         public ICredentialSet CreateCredentialSet()
         {
             return new CredentialSet();
+        }
+
+        public IDataValidator CreateValidator()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
