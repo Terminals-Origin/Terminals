@@ -38,9 +38,11 @@ namespace Tests.UserInterface
         [TestInitialize]
         public void SetUp()
         {
-            var irelevantPersistence = new Mock<IPersistence>().Object;
+            var irelevantPersistence = new Mock<IPersistence>();
+            irelevantPersistence.SetupGet(p => p.Factory)
+                .Returns(new Mock<IFactory>().Object);
             var irelevantForm = new Mock<INewTerminalForm>().Object;
-            var validator = new NewTerminalFormValidator(irelevantPersistence, TestConnectionManager.Instance, irelevantForm);
+            var validator = new NewTerminalFormValidator(irelevantPersistence.Object, TestConnectionManager.Instance, irelevantForm);
             protocolPanel.RegisterValidations(validator);
             this.protocolPanel.CredentialsFactory = new GuardedCredentialFactory(persistenceSecurity);
         }

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Windows.Forms;
 using Terminals.Connections;
 using Terminals.Data;
+using Terminals.Data.Interfaces;
 using Terminals.Data.Validation;
 
 namespace Terminals.Forms
@@ -24,9 +25,12 @@ namespace Terminals.Forms
 
         private readonly ConnectionManager connectionManager;
 
+        private readonly IDataValidator validator;
+
         public NewTerminalFormValidator(IPersistence persistence, ConnectionManager connectionManager, INewTerminalForm form)
         {
             this.persistence = persistence;
+            this.validator = persistence.Factory.CreateValidator();
             this.nameValidator = new FavoriteNameValidator(persistence);
             this.form = form;
             this.connectionManager = connectionManager;
@@ -57,7 +61,7 @@ namespace Terminals.Forms
         {
             IFavorite favorite = this.persistence.Factory.CreateFavorite();
             this.form.FillFavoriteFromControls(favorite);
-            ValidationStates results = Validations.Validate(this.connectionManager, favorite);
+            ValidationStates results = this.validator.Validate(this.connectionManager, favorite);
             this.UpdateControlsErrorByResults(results);
             bool nameValid = this.ValidateName(favorite);
             // check the results, not the bindings to be able to identify unbound property errors
