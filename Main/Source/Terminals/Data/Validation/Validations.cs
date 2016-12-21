@@ -7,6 +7,8 @@ using Terminals.Data.DB;
 
 namespace Terminals.Data.Validation
 {
+
+
     /// <summary>
     /// Stupid tranformations to validate input values when storing to the database
     /// </summary>

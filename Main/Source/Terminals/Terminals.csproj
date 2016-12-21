@@ -172,6 +172,7 @@
     <Compile Include="Data\DB\DbFavoriteImagesStore.cs" />
     <Compile Include="Data\Favorites\ToolTipBuilder.cs" />
     <Compile Include="Data\FilePersisted\FavoriteBatchUpdates.cs" />
+    <Compile Include="Data\Interfaces\IDataValidator.cs" />
     <Compile Include="Data\ModelConvertersTemplate.cs" />
     <Compile Include="Data\Validation\CredentialSetValidator.cs" />
     <Compile Include="Data\Validation\DbBeforeConnectExecuteValidator.cs" />

@@ -1,5 +1,6 @@
 ﻿using Terminals.Common.Connections;
 using Terminals.Connections;
+using Terminals.Data.Interfaces;
 
 namespace Terminals.Data.DB
 {
@@ -61,6 +62,11 @@ namespace Terminals.Data.DB
         public ICredentialSet CreateCredentialSet()
         {
             return new DbCredentialSet();
+        }
+
+        public IDataValidator CreateValidator()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
