@@ -179,7 +179,9 @@
     <Compile Include="Data\Validation\DbCredentialSetValidator.cs" />
     <Compile Include="Data\Validation\DbFavoriteValidator.cs" />
     <Compile Include="Data\Validation\DbNamedItemValidator.cs" />
+    <Compile Include="Data\Validation\DbValidations.cs" />
     <Compile Include="Data\Validation\FavoriteValidator.cs" />
+    <Compile Include="Data\Validation\FileValidations.cs" />
     <Compile Include="Data\Validation\NamedItemValidator.cs" />
     <Compile Include="Forms\FavoriteSorting.cs" />
     <Compile Include="Connections\ConnectionManager.cs" />

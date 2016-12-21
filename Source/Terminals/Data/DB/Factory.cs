@@ -1,6 +1,7 @@
 ﻿using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Data.Interfaces;
+using Terminals.Data.Validation;
 
 namespace Terminals.Data.DB
 {
@@ -66,7 +67,7 @@ namespace Terminals.Data.DB
 
         public IDataValidator CreateValidator()
         {
-            throw new System.NotImplementedException();
+            return new DbValidations(this.connectionManager);
         }
     }
 }

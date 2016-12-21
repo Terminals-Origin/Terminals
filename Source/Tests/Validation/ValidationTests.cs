@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
 using Terminals.Data.DB;
+using Terminals.Data.Interfaces;
 using Terminals.Data.Validation;
 using Tests.Connections;
 
@@ -101,19 +102,19 @@ namespace Tests.Validation
         [TestMethod]
         public void Credential_Validate_ReturnsError()
         {
-            AssertCredentialsValidation(new CredentialSet(), 1);
+            AssertCredentialsValidation(new FileValidations(null), new CredentialSet(), 1);
         }
 
         [TestMethod]
         public void DbCredential_Validate_ReturnsError()
         {
-            AssertCredentialsValidation(new DbCredentialSet(), 2);
+            AssertCredentialsValidation(new DbValidations(null), new DbCredentialSet(), 2);
         }
 
-        private static void AssertCredentialsValidation(ICredentialSet credentailSet, int expectedErrorsCount)
+        private static void AssertCredentialsValidation(IDataValidator validator, ICredentialSet credentailSet, int expectedErrorsCount)
         {
             credentailSet.Name = longText;
-            var results = Validations.Validate(credentailSet);
+            var results = validator.Validate(credentailSet);
             Assert.AreEqual(expectedErrorsCount, results.Count(), "CredentailSet validation failed");
         }
 
