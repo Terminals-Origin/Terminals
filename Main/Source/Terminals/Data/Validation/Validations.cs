@@ -4,15 +4,14 @@ using FluentValidation;
 using FluentValidation.Results;
 using Terminals.Connections;
 using Terminals.Data.DB;
+using Terminals.Data.Interfaces;
 
 namespace Terminals.Data.Validation
 {
-
-
     /// <summary>
     /// Stupid tranformations to validate input values when storing to the database
     /// </summary>
-    internal static class Validations
+    internal abstract class Validations : IDataValidator
     {
         internal const string MAX_255_CHARACTERS = "Property maximum lenght is 255 characters.";
 
@@ -24,6 +23,13 @@ namespace Terminals.Data.Validation
         /// Gets name of the "Name" property
         /// </summary>
         internal const string NAME_PROPERTY = "Name";
+
+        private readonly AbstractValidator<ICredentialSet> credentialSetValidator;
+
+        protected Validations(AbstractValidator<ICredentialSet> credentialSetValidator)
+        {
+            this.credentialSetValidator = credentialSetValidator;
+        }
 
         internal static ValidationStates Validate(ConnectionManager connectionManager, IFavorite favorite)
         {
@@ -37,7 +43,7 @@ namespace Terminals.Data.Validation
             return ValidateToStates(validator, favorite);
         }
 
-        internal static ValidationStates Validate(ICredentialSet credentialSet)
+        public ValidationStates Validate(ICredentialSet credentialSet)
         {
             AbstractValidator<ICredentialSet> validator;
 

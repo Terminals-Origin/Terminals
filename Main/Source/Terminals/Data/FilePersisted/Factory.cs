@@ -2,6 +2,7 @@
 using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Data.Interfaces;
+using Terminals.Data.Validation;
 
 namespace Terminals
 {
@@ -45,7 +46,7 @@ namespace Terminals
 
         public IDataValidator CreateValidator()
         {
-            throw new System.NotImplementedException();
+            return new FileValidations(this.connectionManager);
         }
     }
 }

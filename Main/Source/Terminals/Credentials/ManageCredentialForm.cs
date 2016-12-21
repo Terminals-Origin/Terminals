@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.Credentials;
-using Terminals.Data.Validation;
+using Terminals.Data.Interfaces;
 
 namespace Terminals.Credentials
 {
@@ -15,7 +15,9 @@ namespace Terminals.Credentials
         private readonly IPersistence persistence;
 
         private readonly ICredentialSet editedCredential;
-        
+
+        private readonly IDataValidator validator;
+
         private ICredentials Credentials
         {
             get { return this.persistence.Credentials; }
@@ -26,6 +28,7 @@ namespace Terminals.Credentials
             InitializeComponent();
            
             this.persistence = persistence;
+            this.validator = persistence.Factory.CreateValidator();
             this.editedCredential = editedCredential;
             this.credentialsPanel1.Settings = Settings.Instance;
             this.credentialsPanel1.tableLayoutPanel1.Location = new Point(78,0);
@@ -61,7 +64,7 @@ namespace Terminals.Credentials
         private bool ValidateNameAndUserName()
         {
             ICredentialSet prototype = this.CreateNewCredential();
-            var results = Validations.Validate(prototype);
+            var results = this.validator.Validate(prototype);
             string nameErrorMessage = results["Name"];
             this.errorProvider.SetError(this.NameTextbox, nameErrorMessage);
             // the validated object contains only encrypted properties.
