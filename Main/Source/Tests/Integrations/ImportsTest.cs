@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
-using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Data.Credentials;
 using Terminals.Forms.Controls;
@@ -181,13 +180,29 @@ namespace Tests.Integrations
                 "Imported favorites count doesn't match after second import");
         }
 
+        [TestMethod]
+        public void DisabledProtocol_ImportFavorite_IsntImported()
+        {
+            var toImport = new List<FavoriteConfigurationElement>()
+            {
+                new FavoriteConfigurationElement()
+                {
+                    Protocol = "Unknown",
+                    Name = "Irrelevant",
+                    ServerName = "Irrelevant"
+                }
+            };
+
+            InvokeTheImport(toImport, this.Persistence, rename);
+            Assert.AreEqual(0, this.PersistenceFavoritesCount, "Imports of unknown protocols are protected in validator.");
+        }
+
         private static bool InvokeTheImport(List<FavoriteConfigurationElement> toImport, IPersistence persistence,
             Func<int, DialogResult> strategy)
         {
             var moqInterface = new TestImportUi(strategy);
             var managedImport = new ImportWithDialogs(moqInterface, persistence, TestConnectionManager.Instance);
-            bool success = managedImport.Import(toImport);
-            return success;
+            return managedImport.Import(toImport);
         }
 
         private static int ExpectedFavoritesCount(List<FavoriteConfigurationElement> toImport)
