@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
-using Terminals.Integration;
 using Terminals.Integration.Import;
 using Terminals.Network;
 
@@ -22,6 +20,8 @@ namespace Terminals
 
         private readonly IPersistence persistence;
 
+        private readonly Importers importers;
+
         private IFavorites PersistedFavorites
         {
             get { return this.persistence.Favorites; }
@@ -33,8 +33,8 @@ namespace Terminals
 
             this.persistence = persistence;
             InitializeDataGrid();
-            var integrations = Integrations.CreateImporters(this.persistence);
-            ImportOpenFileDialog.Filter = integrations.GetProvidersDialogFilter();
+            this.importers = new Importers(this.persistence);
+            ImportOpenFileDialog.Filter = this.importers.GetProvidersDialogFilter();
             UpdateCountLabels();
         }
 
@@ -162,8 +162,7 @@ namespace Terminals
                 this.Refresh();
                 this.Cursor = Cursors.WaitCursor;
 
-                var integrations = Integrations.CreateImporters(this.persistence);
-                List<FavoriteConfigurationElement> favoritesToImport = integrations.ImportFavorites(filenames);
+                List<FavoriteConfigurationElement> favoritesToImport = this.importers.ImportFavorites(filenames);
                 ImportFavoritesWithManagerImport(favoritesToImport);
             }
         }

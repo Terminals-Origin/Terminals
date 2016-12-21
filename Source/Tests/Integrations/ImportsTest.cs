@@ -201,7 +201,7 @@ namespace Tests.Integrations
             string fileName = DUPLICIT_ITEMS_FILE)
         {
             string fullFileName = Path.Combine(path, fileName);
-            var importers = Terminals.Integration.Integrations.CreateImporters(persistence);
+            var importers = new Importers(persistence);
             return importers.ImportFavorites(fullFileName);
         }
     }
