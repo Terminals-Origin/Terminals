@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Terminals.Connections;
 using Terminals.Converters;
 using Terminals.Data;
+using Terminals.Data.Interfaces;
 using Terminals.Data.Validation;
 
 namespace Terminals.Forms.Controls
@@ -21,6 +22,8 @@ namespace Terminals.Forms.Controls
 
         private readonly ConnectionManager connectionManager;
 
+        private readonly IDataValidator validator;
+
         private IFavorites PersistedFavorites
         {
             get { return this.persistence.Favorites; }
@@ -35,6 +38,7 @@ namespace Terminals.Forms.Controls
         {
             this.importUi = importUi;
             this.persistence = persistence;
+            this.validator = persistence.Factory.CreateValidator();
             this.connectionManager = connectionManager;
         }
 
@@ -100,7 +104,7 @@ namespace Terminals.Forms.Controls
         private void TryProcessFavorite(ImportContext context)
         {
             context.ToPerisist = ModelConverterV1ToV2.ConvertToFavorite(context.ToImport, this.persistence, this.connectionManager);
-            ValidationStates results = Validations.Validate(connectionManager, context.ToPerisist);
+            ValidationStates results = this.validator.Validate(connectionManager, context.ToPerisist);
             if (results.Empty)
                 this.ProcessFavorite(context);
             else

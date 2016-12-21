@@ -31,7 +31,7 @@ namespace Terminals.Data.Validation
             this.credentialSetValidator = credentialSetValidator;
         }
 
-        internal static ValidationStates Validate(ConnectionManager connectionManager, IFavorite favorite)
+        public ValidationStates Validate(ConnectionManager connectionManager, IFavorite favorite)
         {
             AbstractValidator<IFavorite> validator;
 

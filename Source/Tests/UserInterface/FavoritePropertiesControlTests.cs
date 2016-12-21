@@ -35,6 +35,8 @@ namespace Tests.UserInterface
         {
             this.propertiesControl = new FavoritePropertiesControl();
             Mock<IPersistence> persistenceStub = TestMocksFactory.CreatePersistence();
+            persistenceStub.SetupGet(p => p.Factory)
+                .Returns(new Mock<IFactory>().Object);
             this.irelevantPersistence = persistenceStub.Object;
             FavoriteIcons favoriteIcons = TestConnectionManager.CreateTestFavoriteIcons();
             this.propertiesControl.AssignServices(this.irelevantPersistence, TestConnectionManager.Instance, favoriteIcons);
