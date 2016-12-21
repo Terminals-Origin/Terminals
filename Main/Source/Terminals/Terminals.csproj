@@ -547,7 +547,6 @@
     <Compile Include="Integration\IIntegration.cs" />
     <Compile Include="Integration\Import\ImportRdpRegistry.cs" />
     <Compile Include="Integration\Integration.cs" />
-    <Compile Include="Integration\Integrations.cs" />
     <Compile Include="Forms\OptionPanels\AmazonOptionPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

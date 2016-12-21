@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
-using Terminals.Integration;
+using Terminals.Integration.Import;
 
 namespace Terminals.Forms.Controls
 {
@@ -211,7 +211,7 @@ namespace Terminals.Forms.Controls
             if (files == null)
                 return;
 
-            var importers = Integrations.CreateImporters(this.persistence);
+            var importers = new Importers(this.persistence);
             List<FavoriteConfigurationElement> toImport = importers.ImportFavorites(files);
             this.ApplyTargetGroup(toImport);
             var managedImport = new ImportWithDialogs(parentForm, this.persistence);
