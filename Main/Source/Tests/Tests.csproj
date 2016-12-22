@@ -184,7 +184,9 @@
     <Compile Include="UserInterface\ToolTipBuilderTests.cs" />
     <Compile Include="UserInterface\VncMenuVisitorTests.cs" />
     <Compile Include="UserInterface\VmrcMenuVisitorTests.cs" />
+    <Compile Include="Validation\DbValidationTests.cs" />
     <Compile Include="Validation\FavoriteNameValidatorTests.cs" />
+    <Compile Include="Validation\FileValidationTests.cs" />
     <Compile Include="Validation\GroupNameValidatorTests.cs" />
     <Compile Include="UserInterface\FavoritesTreeLoadingTest.cs" />
     <Compile Include="UserInterface\GroupsTreeLoadingTest.cs" />
