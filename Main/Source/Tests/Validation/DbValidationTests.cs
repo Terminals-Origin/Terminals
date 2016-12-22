@@ -7,7 +7,7 @@ using Tests.Connections;
 namespace Tests.Validation
 {
     [TestClass]
-    internal class DbValidationTests : ValidationTests
+    public class DbValidationTests : ValidationTests
     {
         private readonly DbValidations validator = new DbValidations(TestConnectionManager.Instance);
 

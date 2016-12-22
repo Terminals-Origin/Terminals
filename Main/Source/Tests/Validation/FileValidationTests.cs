@@ -8,7 +8,7 @@ using Tests.Connections;
 namespace Tests.Validation
 {
     [TestClass]
-    internal class FileValidationTests : ValidationTests
+    public class FileValidationTests : ValidationTests
     {
         private readonly IDataValidator validator = new FileValidations(TestConnectionManager.Instance);
 
