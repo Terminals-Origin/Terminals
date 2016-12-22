@@ -2,7 +2,6 @@
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
-using Terminals.Connections;
 using Terminals.Data.Interfaces;
 
 namespace Terminals.Data.Validation
@@ -37,7 +36,7 @@ namespace Terminals.Data.Validation
             this.namedItemValidator = namedItemValidator;
         }
 
-        public ValidationStates Validate(ConnectionManager connectionManager, IFavorite favorite)
+        public ValidationStates Validate(IFavorite favorite)
         {
             return ValidateToStates(this.favoriteValidator, favorite);
         }

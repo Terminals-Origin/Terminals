@@ -61,7 +61,7 @@ namespace Terminals.Forms
         {
             IFavorite favorite = this.persistence.Factory.CreateFavorite();
             this.form.FillFavoriteFromControls(favorite);
-            ValidationStates results = this.validator.Validate(this.connectionManager, favorite);
+            ValidationStates results = this.validator.Validate(favorite);
             this.UpdateControlsErrorByResults(results);
             bool nameValid = this.ValidateName(favorite);
             // check the results, not the bindings to be able to identify unbound property errors
