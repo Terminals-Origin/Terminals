@@ -11,7 +11,8 @@
 
         private readonly IPersistence persistence;
 
-        internal GroupNameValidator(IPersistence persistence)
+        internal GroupNameValidator(IPersistence persistence) 
+            : base(persistence)
         {
             this.persistence = persistence;
         }

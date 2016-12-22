@@ -3,7 +3,6 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
 using Terminals.Connections;
-using Terminals.Data.DB;
 using Terminals.Data.Interfaces;
 
 namespace Terminals.Data.Validation
@@ -26,58 +25,36 @@ namespace Terminals.Data.Validation
 
         private readonly AbstractValidator<ICredentialSet> credentialSetValidator;
 
-        protected Validations(AbstractValidator<ICredentialSet> credentialSetValidator)
+        private readonly AbstractValidator<IFavorite> favoriteValidator;
+
+        private readonly NamedItemValidator<INamedItem> namedItemValidator;
+
+        protected Validations(AbstractValidator<ICredentialSet> credentialSetValidator,
+            AbstractValidator<IFavorite> favoriteValidator, NamedItemValidator<INamedItem> namedItemValidator)
         {
             this.credentialSetValidator = credentialSetValidator;
+            this.favoriteValidator = favoriteValidator;
+            this.namedItemValidator = namedItemValidator;
         }
 
         public ValidationStates Validate(ConnectionManager connectionManager, IFavorite favorite)
         {
-            AbstractValidator<IFavorite> validator;
-
-            if (favorite is DbFavorite)
-                validator = new DbFavoriteValidator(connectionManager);
-            else
-                validator = new FavoriteValidator(connectionManager);
-
-            return ValidateToStates(validator, favorite);
+            return ValidateToStates(this.favoriteValidator, favorite);
         }
 
         public ValidationStates Validate(ICredentialSet credentialSet)
         {
-            AbstractValidator<ICredentialSet> validator;
-
-            if (credentialSet is DbCredentialSet)
-                validator = new DbCredentialSetValidator();
-            else
-                validator = new CredentialSetValidator();
-
-            return ValidateToStates(validator, credentialSet);
+            return ValidateToStates(this.credentialSetValidator, credentialSet);
         }
 
-        internal static List<ValidationState> Validate(IGroup group)
+        public List<ValidationState> Validate(IGroup group)
         {
-            return ValidateNamedItem(group);
+            return Validate(this.namedItemValidator, group);
         }
 
-        internal static ValidationStates ValidateNameProperty(INamedItem toValidate)
+        public ValidationStates ValidateNameProperty(INamedItem toValidate)
         {
-            NamedItemValidator<INamedItem> validator = SelectValidator(toValidate);
-            return ValidateToStates(validator, toValidate);
-        }
-
-        private static List<ValidationState> ValidateNamedItem(INamedItem toValidate)
-        {
-            var validator = SelectValidator(toValidate);
-            return Validate(validator, toValidate);
-        }
-
-        private static NamedItemValidator<INamedItem> SelectValidator(INamedItem toValidate)
-        {
-            if (toValidate is DbGroup || toValidate is DbFavorite)
-                return new DbNamedItemValidator<INamedItem>();
-
-            return new NamedItemValidator<INamedItem>();
+            return ValidateToStates(this.namedItemValidator, toValidate);
         }
 
         private static ValidationStates ValidateToStates<TItem>(AbstractValidator<TItem> validator, TItem toValidate)
