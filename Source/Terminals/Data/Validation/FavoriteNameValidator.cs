@@ -11,6 +11,7 @@
         protected override string NotUniqueItemMessage { get { return NOT_UNIQUE; } }
 
         public FavoriteNameValidator(IPersistence persistence)
+            : base(persistence)
         {
             this.persistence = persistence;
         }

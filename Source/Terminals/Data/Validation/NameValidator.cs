@@ -1,4 +1,6 @@
-﻿namespace Terminals.Data.Validation
+﻿using Terminals.Data.Interfaces;
+
+namespace Terminals.Data.Validation
 {
     /// <summary>
     /// Template for validation of name property for new or existing store items.
@@ -7,7 +9,14 @@
     internal abstract class NameValidator<TItem>
         where TItem : class, IStoreIdEquals<TItem>, INamedItem 
     {
+        private readonly IDataValidator validator;
+
         protected abstract string NotUniqueItemMessage { get; }
+
+        protected NameValidator(IPersistence persistence)
+        {
+            this.validator = persistence.Factory.CreateValidator();
+        }
 
         /// <summary>
         /// Validates already present item before new name is assigned.
@@ -53,7 +62,7 @@
         internal string ValidateNameValue(string newName)
         {
             TItem item = this.CreateNewItem(newName);
-            var results = Validations.ValidateNameProperty(item);
+            var results = this.validator.ValidateNameProperty(item);
             return results[Validations.NAME_PROPERTY];
         }
 

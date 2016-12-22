@@ -83,19 +83,19 @@ namespace Tests.Validation
         [TestMethod]
         public void EmptyGroupName_ValidateGroup_ReturnsError()
         {
-            AssertGroupValidation(new Group());
+            AssertGroupValidation(new FileValidations(null), new Group());
         }
 
         [TestMethod]
         public void EmptyDbGroupName_ValidateGroup_ReturnsError()
         {
-            AssertGroupValidation(new DbGroup());
+            AssertGroupValidation(new DbValidations(null), new DbGroup());
         }
 
-        private static void AssertGroupValidation(IGroup group)
+        private static void AssertGroupValidation(IDataValidator validator, IGroup group)
         {
             group.Name = String.Empty;
-            var results = Validations.Validate(group);
+            var results = validator.Validate(group);
             Assert.AreEqual(1, results.Count, "Group name validation failed");
         }
 
@@ -123,7 +123,7 @@ namespace Tests.Validation
         {
             var group = new DbGroup();
             group.Name = longText;
-            AssertNameOnlyValidation(group);
+            AssertNameOnlyValidation(new DbValidations(null), group);
         }
 
         [TestMethod]
@@ -131,12 +131,12 @@ namespace Tests.Validation
         {
             var group = new Group();
             group.Name = string.Empty;
-            AssertNameOnlyValidation(group);
+            AssertNameOnlyValidation(new FileValidations(null), group);
         }
 
-        private static void AssertNameOnlyValidation(IGroup group)
+        private static void AssertNameOnlyValidation(IDataValidator validator, IGroup group)
         {
-            ValidationStates results = Validations.ValidateNameProperty(group);
+            ValidationStates results = validator.ValidateNameProperty(group);
             Assert.AreEqual(1, results.Count(), "Group name validation failed");
             Assert.AreEqual(Validations.NAME_PROPERTY, results.First().PropertyName, "Failed property is not a 'Name'");
         }
