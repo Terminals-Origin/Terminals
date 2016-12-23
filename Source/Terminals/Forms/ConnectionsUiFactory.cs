@@ -160,7 +160,7 @@ namespace Terminals.Forms
 
         internal void CreateReleaseTab()
         {
-            this.CreateTerminalTab(FavoritesFactory.CreateReleaseFavorite());
+            this.CreateTerminalTab(FavoritesFactory.CreateReleaseFavorite(this.persistence.Factory));
         }
 
         internal void CreateTerminalTab(IFavorite favorite)
