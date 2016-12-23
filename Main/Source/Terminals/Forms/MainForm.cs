@@ -16,7 +16,6 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Native;
-using Terminals.Network.Servers;
 using Terminals.Updates;
 using Settings = Terminals.Configuration.Settings;
 
@@ -464,7 +463,7 @@ namespace Terminals
 
         private void QuickConnect(String server, Int32 port, Boolean connectToConsole)
         {
-            IFavorite favorite = FavoritesFactory.GetOrCreateQuickConnectFavorite(server, connectToConsole, port);
+            IFavorite favorite = FavoritesFactory.GetOrCreateQuickConnectFavorite(this.persistence, server, connectToConsole, port);
             this.connectionsUiFactory.CreateTerminalTab(favorite);
         }
 

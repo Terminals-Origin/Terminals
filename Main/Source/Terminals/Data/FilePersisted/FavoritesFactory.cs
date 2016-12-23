@@ -27,16 +27,6 @@ namespace Terminals.Data
             get { return terminalsReleasesUrl; }
         }
 
-        private static IFavorites PersistedFavorites
-        {
-            get { return Persistence.Instance.Favorites; }
-        }
-
-        private static IFactory PersistenceFactory
-        {
-            get { return Persistence.Instance.Factory; }
-        }
-
         internal static FavoriteConfigurationElement CreateNewFavorite(string favoriteName, string server, int port,
             string domain, string userName)
         {
@@ -93,13 +83,13 @@ namespace Terminals.Data
         /// <param name="server">the RDP server name</param>
         /// <param name="connectToConsole">Flag used for ConnectToConsole RDP option</param>
         /// <param name="port">Number of port, which RDP service is listening on server "server"</param>
-        internal static IFavorite GetOrCreateQuickConnectFavorite(String server,
-            Boolean connectToConsole, Int32 port)
+        internal static IFavorite GetOrCreateQuickConnectFavorite(IPersistence persistence,
+            String server, Boolean connectToConsole, Int32 port)
         {
-            IFavorite favorite = PersistedFavorites[server];
+            IFavorite favorite = persistence.Favorites[server];
             if (favorite == null) //create a temporary favorite and connect to it
             {
-                favorite = PersistenceFactory.CreateFavorite();
+                favorite = persistence.Factory.CreateFavorite();
                 favorite.ServerName = server;
                 favorite.Name = server;
 
@@ -119,9 +109,9 @@ namespace Terminals.Data
         /// </summary>
         /// <returns>Not null, configured instance of connection favorite,
         /// which points to the terminals web site</returns>
-        internal static IFavorite CreateReleaseFavorite()
+        internal static IFavorite CreateReleaseFavorite(IFactory factory)
         {
-            IFavorite release = PersistenceFactory.CreateFavorite();
+            IFavorite release = factory.CreateFavorite();
             release.Name = TerminalsReleasesFavoriteName;
             release.ServerName = TerminalsReleasesUrl;
             release.Port = KnownConnectionConstants.HTTPPort;
