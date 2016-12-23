@@ -28,7 +28,7 @@ namespace Tests.UserInterface
     {
         private const int EXPECTED_NUMBER = 5;
         private const string PROTOCOL_MESSAGE = "Protocol Roundtrip has to preserve the property value";
-        private static readonly PersistenceSecurity persistenceSecurity = new PersistenceSecurity();
+        private static readonly IPersistence persistence = TestMocksFactory.CreatePersistence().Object;
 
         private readonly ConnectionManager connectionManager = TestConnectionManager.Instance;
 
@@ -38,13 +38,11 @@ namespace Tests.UserInterface
         [TestInitialize]
         public void SetUp()
         {
-            var irelevantPersistence = new Mock<IPersistence>();
-            irelevantPersistence.SetupGet(p => p.Factory)
-                .Returns(new Mock<IFactory>().Object);
+            var irrelevantPersistence = TestMocksFactory.CreatePersistence();
             var irelevantForm = new Mock<INewTerminalForm>().Object;
-            var validator = new NewTerminalFormValidator(irelevantPersistence.Object, TestConnectionManager.Instance, irelevantForm);
+            var validator = new NewTerminalFormValidator(irrelevantPersistence.Object, TestConnectionManager.Instance, irelevantForm);
             protocolPanel.RegisterValidations(validator);
-            this.protocolPanel.CredentialsFactory = new GuardedCredentialFactory(persistenceSecurity);
+            this.protocolPanel.CredentialsFactory = new GuardedCredentialFactory(irrelevantPersistence.Object);
         }
 
         // Rdp has 5 controls, so test separate roundtrip for selected property in each of them
@@ -102,16 +100,18 @@ namespace Tests.UserInterface
 
         private static string GetDomain(RdpOptions options)
         {
-            var guarded = new GuardedSecurity(persistenceSecurity, options.TsGateway.Security);
+            var guarded = new GuardedSecurity(persistence, options.TsGateway.Security);
             return guarded.Domain;
         }
 
         private static void ConfigureTsGateway(RdpOptions options, string newValue)
         {
             options.TsGateway.SeparateLogin = true;
-            var guarded = new GuardedSecurity(persistenceSecurity, options.TsGateway.Security);
+            var guarded = new GuardedSecurity(persistence, options.TsGateway.Security);
             guarded.Domain = newValue;
         }
+
+
 
         [TestMethod]
         public void Vnc_LoadSave_KeepsDisplayNumber()

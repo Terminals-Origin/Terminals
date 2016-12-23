@@ -15,7 +15,7 @@ namespace Terminals.Data
         protected ModelConvertersTemplate(IPersistence persistence, ConnectionManager connectionManager)
         {
             this.Persistence = persistence;
-            this.CredentialFactory = new GuardedCredentialFactory(this.Persistence.Security);
+            this.CredentialFactory = new GuardedCredentialFactory(this.Persistence);
             this.ConnectionManager = connectionManager;
         }
 

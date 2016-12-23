@@ -11,8 +11,6 @@ namespace Tests.UserInterface
     [TestClass]
     public class ToolTipBuilderTests
     {
-        private readonly PersistenceSecurity persistenceSecurity = new PersistenceSecurity();
-
         [TestInitialize]
         public void TestInitialize()
         {
@@ -43,7 +41,7 @@ namespace Tests.UserInterface
         private string BuildFavoriteToolTip()
         {
             IFavorite favorite = this.CreateTestFavorite();
-            var bulder = new ToolTipBuilder(this.persistenceSecurity);
+            var bulder = new ToolTipBuilder(new PersistenceSecurity());
             return bulder.BuildTooTip(favorite);
         }
 
@@ -52,7 +50,8 @@ namespace Tests.UserInterface
             List<IGroup> groups = CreateTestGroups();
             IFavorite favorite = TestMocksFactory.CreateFavorite(groups);
             favorite.ServerName = "TestServerName";
-            var guarded = new GuardedSecurity(this.persistenceSecurity, favorite.Security);
+            IPersistence persistence = TestMocksFactory.CreatePersistence().Object;
+            var guarded = new GuardedSecurity(persistence, favorite.Security);
             guarded.Domain = "TestDomain";
             guarded.UserName = "TestUser";
             favorite.Port = 9999;

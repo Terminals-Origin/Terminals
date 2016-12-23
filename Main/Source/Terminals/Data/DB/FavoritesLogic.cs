@@ -35,16 +35,15 @@ namespace Terminals.Data.DB
 
         private readonly DbFavoriteImagesStore favoriteIcons;
 
-        internal Favorites(Groups groups, StoredCredentials credentials,
-            PersistenceSecurity persistenceSecurity, DataDispatcher dispatcher,
+        internal Favorites(SqlPersistence persistence, Groups groups, StoredCredentials credentials,
             ConnectionManager connectionManager, FavoriteIcons favoriteIcons)
         {
             this.groups = groups;
             this.credentials = credentials;
-            this.dispatcher = dispatcher;
+            this.dispatcher = persistence.Dispatcher;
             this.connectionManager = connectionManager;
             this.favoriteIcons = new DbFavoriteImagesStore(this.dispatcher, favoriteIcons);
-            this.batchActions = new FavoritesBatchActions(this, this.cache, this.dispatcher, persistenceSecurity);
+            this.batchActions = new FavoritesBatchActions(this, this.cache, persistence);
         }
 
         IFavorite IFavorites.this[Guid favoriteId]

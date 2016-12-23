@@ -193,7 +193,7 @@ namespace Terminals.Forms.EditFavorite
             iconsBuilder.Build(this.treeIcons);
             this.generalPanel1.AssignServices(persistence, connectionManager);
             this.groupsPanel1.AssignPersistence(persistence);
-            this.protocolOptionsPanel1.CredentialsFactory = new GuardedCredentialFactory(persistence.Security);
+            this.protocolOptionsPanel1.CredentialsFactory = new GuardedCredentialFactory(persistence);
         }
 
         internal void SetErrorProviderIconsAlignment(ErrorProvider errorProvider)

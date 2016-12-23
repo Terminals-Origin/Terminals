@@ -6,11 +6,11 @@ namespace Terminals.Data.FilePersisted
 {
     internal class FavoriteBatchUpdates
     {
-        private readonly PersistenceSecurity persistenceSecurity;
+        private readonly IPersistence persistence;
 
-        public FavoriteBatchUpdates(PersistenceSecurity persistenceSecurity)
+        public FavoriteBatchUpdates(IPersistence persistence)
         {
-            this.persistenceSecurity = persistenceSecurity;
+            this.persistence = persistence;
         }
 
         internal virtual void SetPasswordToFavorites(List<IFavorite> selectedFavorites, string newPassword)
@@ -36,7 +36,7 @@ namespace Terminals.Data.FilePersisted
         {
             foreach (IFavorite favorite in selectedFavorites)
             {
-                var guarded = new GuardedSecurity(this.persistenceSecurity, favorite.Security);
+                var guarded = new GuardedSecurity(this.persistence, favorite.Security);
                 applyValue(guarded, newUserName);
             }
         }

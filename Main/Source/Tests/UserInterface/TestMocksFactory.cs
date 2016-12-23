@@ -19,6 +19,9 @@ namespace Tests.UserInterface
             persistenceStub.SetupGet(persistence => persistence.Groups).Returns(groupsStub.Object);
             var favoritesStub = new Mock<IFavorites>();
             persistenceStub.SetupGet(p => p.Favorites).Returns(favoritesStub.Object);
+            var factoryStub = new Mock<IFactory>();
+            persistenceStub.SetupGet(p => p.Factory).Returns(factoryStub.Object);
+
             return persistenceStub;
         }
 

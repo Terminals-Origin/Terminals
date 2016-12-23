@@ -193,7 +193,7 @@ namespace Terminals
             {
                 var options = state as Tuple<ShutdownCommands, IFavorite>;
 
-                if (options != null && RemoteManagement.ForceShutdown(this.Persistence.Security, options.Item2, options.Item1))
+                if (options != null && RemoteManagement.ForceShutdown(this.Persistence, options.Item2, options.Item1))
                     return "Terminals successfully sent the shutdown command.";
 
                 return shutdownFailMessage;

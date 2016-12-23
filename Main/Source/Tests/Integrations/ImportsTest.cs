@@ -94,7 +94,7 @@ namespace Tests.Integrations
 
         private static void AssertSecurityImported(IPersistence persistence, ISecurityOptions security)
         {
-            var guarded = new GuardedSecurity(persistence.Security, security);
+            var guarded = new GuardedSecurity(persistence, security);
             Assert.AreEqual(TEST_USERNAME, guarded.UserName);
             Assert.AreEqual(TEST_DOMAIN, guarded.Domain);
             Assert.AreEqual(TEST_PASSWORD, guarded.Password);
@@ -115,7 +115,7 @@ namespace Tests.Integrations
 
         private static void SetupSecurityValues(IPersistence persistence, ISecurityOptions security)
         {
-            var guarded = new GuardedSecurity(persistence.Security, security);
+            var guarded = new GuardedSecurity(persistence, security);
             guarded.UserName = TEST_USERNAME;
             guarded.Domain = TEST_DOMAIN;
             guarded.Password = TEST_PASSWORD;

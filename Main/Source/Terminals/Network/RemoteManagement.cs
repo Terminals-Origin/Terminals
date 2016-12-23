@@ -24,9 +24,9 @@ namespace Terminals.Network
     /// </summary>
     internal static class RemoteManagement
     {
-        internal static bool ForceShutdown(PersistenceSecurity persistenceSecurity, IFavorite favorite, ShutdownCommands shutdownCommand)
+        internal static bool ForceShutdown(IPersistence persistence, IFavorite favorite, ShutdownCommands shutdownCommand)
         {
-            var guarded = new GuardedSecurity(persistenceSecurity, favorite.Security);
+            var guarded = new GuardedSecurity(persistence, favorite.Security);
             var security = guarded.GetResolvedCredentials();
             var credentials = new NetworkCredential(security.UserName, security.Password, security.Domain);
             return ForceShutdown(favorite.ServerName, shutdownCommand, credentials) == 0;
