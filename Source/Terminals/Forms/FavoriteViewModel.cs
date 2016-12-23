@@ -63,7 +63,7 @@ namespace Terminals.Forms
         {
             this.Favorite = favorite;
             this.storedCredentials = persistence.Credentials;
-            this.guarded = new GuardedSecurity(persistence.Security, favorite.Security);
+            this.guarded = new GuardedSecurity(persistence, favorite.Security);
         }
     }
 }

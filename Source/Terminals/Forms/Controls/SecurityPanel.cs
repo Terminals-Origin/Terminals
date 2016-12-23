@@ -61,7 +61,7 @@ namespace Terminals.Forms.Controls
         {
             ICredentialSet selectedCredential = this.credentialDropdown.SelectedItem as ICredentialSet;
             security.Credential = selectedCredential == null ? Guid.Empty : selectedCredential.Id;
-            var guarded = new GuardedSecurity(this.persistence.Security, security);
+            var guarded = new GuardedSecurity(this.persistence, security);
             this.credentialsPanel1.SaveUserAndDomain(guarded);
 
             if (savePassword)
@@ -116,7 +116,7 @@ namespace Terminals.Forms.Controls
 
         internal void LoadFrom(ISecurityOptions security)
         {
-            var guarded = new GuardedSecurity(this.persistence.Security, security);
+            var guarded = new GuardedSecurity(this.persistence, security);
             this.credentialsPanel1.LoadFrom(guarded);
         }
     }

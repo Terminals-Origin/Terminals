@@ -15,13 +15,12 @@ namespace Terminals.Data.DB
         private readonly EntitiesCache<DbFavorite> cache;
         private readonly DataDispatcher dispatcher;
 
-        internal FavoritesBatchActions(Favorites favorites, EntitiesCache<DbFavorite> cache,
-            DataDispatcher dispatcher, PersistenceSecurity persistenceSecurity)
-            : base(persistenceSecurity)
+        internal FavoritesBatchActions(Favorites favorites, EntitiesCache<DbFavorite> cache, IPersistence persistence)
+            : base(persistence)
         {
             this.favorites = favorites;
             this.cache = cache;
-            this.dispatcher = dispatcher;
+            this.dispatcher = persistence.Dispatcher;
         }
 
         internal override void ApplyUserNameToFavorites(List<IFavorite> selectedFavorites, string newUserName)

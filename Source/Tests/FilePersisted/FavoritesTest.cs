@@ -102,18 +102,18 @@ namespace Tests.FilePersisted
             // now it has RdpOptions
             TestConnectionManager.Instance.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
             this.Favorites.Update(favorite);
-            AssertRdpSecurity(this.Persistence.Security, favorite);
+            AssertRdpSecurity(this.Persistence, favorite);
         }
 
         /// <summary>
         /// Checks, if Gateway has still assigned persistence security, to be able work with passwords.
         /// </summary>
-        internal static void AssertRdpSecurity(PersistenceSecurity persistenceSecurity, IFavorite favorite)
+        internal static void AssertRdpSecurity(IPersistence persistence, IFavorite favorite)
         {
             TestConnectionManager.Instance.ChangeProtocol(favorite, KnownConnectionConstants.RDP);
             var rdpOptions = favorite.ProtocolProperties as RdpOptions;
             
-            var guarded = new GuardedSecurity(persistenceSecurity, rdpOptions.TsGateway.Security);
+            var guarded = new GuardedSecurity(persistence, rdpOptions.TsGateway.Security);
             guarded.Password = "aaa"; // shouldn't fail
         }
 

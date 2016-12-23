@@ -31,7 +31,7 @@ namespace Terminals.Forms
             this.mainForm = mainForm;
             this.terminalsControler = terminalsControler;
             this.persistence = persistence;
-            this.guardedCredentialFactory = new GuardedCredentialFactory(this.persistence.Security);
+            this.guardedCredentialFactory = new GuardedCredentialFactory(this.persistence);
         }
 
         internal void CreateCaptureManagerTab()

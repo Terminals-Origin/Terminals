@@ -2,21 +2,21 @@ namespace Terminals.Data.Credentials
 {
     internal class GuardedCredentialFactory: IGuardedCredentialFactory
     {
-        private readonly PersistenceSecurity persistenceSecurity;
+        private readonly IPersistence persistence;
 
-        public GuardedCredentialFactory(PersistenceSecurity persistenceSecurity)
+        public GuardedCredentialFactory(IPersistence persistence)
         {
-            this.persistenceSecurity = persistenceSecurity;
+            this.persistence = persistence;
         }
 
         public IGuardedCredential CreateCredential(ICredentialBase credential)
         {
-            return new GuardedCredential(credential, this.persistenceSecurity);
+            return new GuardedCredential(credential, this.persistence.Security);
         }
 
         public IGuardedSecurity CreateSecurityOptoins(ISecurityOptions securityOptions)
         {
-            return new GuardedSecurity(this.persistenceSecurity, securityOptions);
+            return new GuardedSecurity(this.persistence, securityOptions);
         }
     }
 }

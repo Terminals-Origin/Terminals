@@ -21,17 +21,14 @@ namespace Terminals.Data
 
         private readonly FavoriteBatchUpdates batchUpdates;
 
-        private readonly PersistenceSecurity security;
-
         internal Favorites(FilePersistence persistence, FavoriteIcons favoriteIcons)
         {
             this.persistence = persistence;
             this.favoriteIcons = favoriteIcons;
-            this.security = persistence.Security;
             this.dispatcher = persistence.Dispatcher;
             this.groups = this.persistence.GroupsStore;
             this.cache = new Dictionary<Guid,IFavorite>();
-            this.batchUpdates = new FavoriteBatchUpdates(persistence.Security);
+            this.batchUpdates = new FavoriteBatchUpdates(persistence);
         }
 
         private bool AddToCache(IFavorite favorite)
@@ -156,7 +153,7 @@ namespace Terminals.Data
         {
             foreach (Favorite favorite in this)
             {
-                var guarded = new GuardedSecurity(this.security, favorite.Security);
+                var guarded = this.CreateGuardedSecurity(favorite.Security);
                 guarded.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
                 this.UpdatePasswordsInProtocolProperties(favorite.ProtocolProperties, newKeyMaterial);
             }
@@ -168,9 +165,14 @@ namespace Terminals.Data
             if (options != null)
             {
                 SecurityOptions securityOptions = options.GetSecurity();
-                var guarded = new GuardedSecurity(this.security, securityOptions);
+                var guarded = this.CreateGuardedSecurity(securityOptions);
                 guarded.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             }
+        }
+
+        private GuardedSecurity CreateGuardedSecurity(SecurityOptions favoriteSecurity)
+        {
+            return new GuardedSecurity(this.persistence, favoriteSecurity);
         }
 
         #region IFavorites members

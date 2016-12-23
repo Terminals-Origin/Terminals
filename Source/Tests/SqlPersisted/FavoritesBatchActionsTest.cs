@@ -46,7 +46,7 @@ namespace Tests.SqlPersisted
 
             foreach (IFavorite secondaryFavorite in SecondaryFavorites)
             {
-                var guarded = new GuardedSecurity(this.PrimaryPersistence.Security, secondaryFavorite.Security);
+                var guarded = new GuardedSecurity(this.PrimaryPersistence, secondaryFavorite.Security);
                 Assert.AreEqual(VALIDATION_VALUE, guarded.UserName, "User name was not set properly to all favorites");
             }
         }
@@ -94,7 +94,7 @@ namespace Tests.SqlPersisted
 
         private GuardedSecurity CreateGuardedSecurity(IFavorite favorite)
         {
-            return new GuardedSecurity(this.SecondaryPersistence.Security, favorite.Security);
+            return new GuardedSecurity(this.SecondaryPersistence, favorite.Security);
         }
 
         [TestMethod]

@@ -5,33 +5,39 @@ namespace Terminals.Data.Credentials
 {
     internal class GuardedSecurity : GuardedCredential, IGuardedSecurity
     {
+        private readonly ICredentials credentials;
+
         private readonly ISecurityOptions securityOptions;
 
-        internal GuardedSecurity(PersistenceSecurity persistenceSecurity, ISecurityOptions securityOptions)
-            :base(securityOptions, persistenceSecurity)
+        private readonly IPersistence persistence;
+
+        internal GuardedSecurity(IPersistence persistence, ISecurityOptions securityOptions)
+            :base(securityOptions, persistence.Security)
         {
+            this.persistence = persistence;
+            this.credentials = persistence.Credentials;
             this.securityOptions = securityOptions;
         }
 
         public IGuardedSecurity GetResolvedCredentials()
         {
             var resolved = new SecurityOptions();
-            IGuardedSecurity result = new GuardedSecurity(this.PersistenceSecurity, resolved);
+            IGuardedSecurity result = new GuardedSecurity(this.persistence, resolved);
             this.ResolveCredentials(resolved, this.securityOptions.Credential);
             return result;
         }
 
         public void ResolveCredentials(ISecurityOptions result, Guid credentialId)
         {
-            ICredentialSet source = Persistence.Instance.Credentials[credentialId];
+            ICredentialSet source = this.credentials[credentialId];
             this.UpdateFromCredential(source, result);
-            UpdateFromDefaultValues(result);
+            this.UpdateFromDefaultValues(result);
         }
 
-        private static void UpdateFromDefaultValues(ICredentialBase target)
+        private void UpdateFromDefaultValues(ICredentialBase target)
         {
             Settings settings = Settings.Instance;
-            var guarded = new GuardedCredential(target, Persistence.Instance.Security);
+            var guarded = new GuardedCredential(target, this.PersistenceSecurity);
 
             if (string.IsNullOrEmpty(guarded.Domain))
                 guarded.Domain = settings.DefaultDomain;

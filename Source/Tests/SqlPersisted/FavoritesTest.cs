@@ -117,7 +117,7 @@ namespace Tests.SqlPersisted
             // first time change nothing to ensure, that dummy update doesn't fail.
             // EF Security.CachedCredentials property is still null.
             this.PrimaryFavorites.Update(favorite);
-            var guarded = new GuardedSecurity(this.PrimaryPersistence.Security, favorite.Security);
+            var guarded = new GuardedSecurity(this.PrimaryPersistence, favorite.Security);
 
             // now assign new values to security and commit it as newly added, should not fail
             guarded.UserName = VALIDATION_VALUE;
@@ -206,7 +206,7 @@ namespace Tests.SqlPersisted
             // now it has RdpOptions
             TestConnectionManager.Instance.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
             this.PrimaryFavorites.Update(favorite);
-            FilePersisted.FavoritesTest.AssertRdpSecurity(this.PrimaryPersistence.Security, favorite);
+            FilePersisted.FavoritesTest.AssertRdpSecurity(this.PrimaryPersistence, favorite);
         }
     }
 }
