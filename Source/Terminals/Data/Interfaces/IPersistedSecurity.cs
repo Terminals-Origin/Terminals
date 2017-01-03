@@ -14,6 +14,7 @@
         /// <summary>
         /// Does initial steps after access to persistence was validated
         /// </summary>
-        void Initialize();
+        /// <returns>True, if initialization was successful, otherwise false.</returns>
+        bool Initialize();
     }
 }

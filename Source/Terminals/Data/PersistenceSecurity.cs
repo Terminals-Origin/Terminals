@@ -55,7 +55,7 @@ namespace Terminals.Data
             var authentication = new AuthenticationSequence(this.IsMasterPasswordValid, knowsUserPassword);
             this.isAuthenticated = authentication.AuthenticateIfRequired();
             if (this.isAuthenticated)
-              this.persistence.Initialize();
+              this.isAuthenticated = this.persistence.Initialize();
 
             return this.isAuthenticated;
         }

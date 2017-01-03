@@ -93,10 +93,10 @@ namespace Terminals.Data.DB
             this.reLoadClock.Start();
         }
 
-        public void Initialize()
+        public bool Initialize()
         {
             if(!this.TryInitializeDatabase())
-                return;
+                return false;
 
             this.groups = new Groups();
             this.credentials = new StoredCredentials(this.Dispatcher);
@@ -104,6 +104,7 @@ namespace Terminals.Data.DB
             this.groups.AssignStores(this.Dispatcher, this.favorites);
             this.connectionHistory = new ConnectionHistory(this.favorites, this.Dispatcher);
             this.Factory = new Factory(this.groups, this.favorites, this.credentials, this.Dispatcher, this.connectionManager);
+            return true;
         }
 
         private bool TryInitializeDatabase()
@@ -111,13 +112,14 @@ namespace Terminals.Data.DB
             if (DatabaseConnections.TestConnection())
             {
                 bool updatedKey = this.security.UpdateDatabaseKey();
+
                 if (updatedKey)
+                {
+                    // UpgradeDatabaseVersion();
                     return true;
-                // UpgradeDatabaseVersion();
+                }
             }
 
-            Logging.Fatal("SQL Persistence layer failed to load. Fall back to File persistence");
-            Persistence.FallBackToPrimaryPersistence(this.Security);
             return false;
         }
 

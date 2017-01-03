@@ -97,6 +97,7 @@ namespace Tests.SqlPersisted
         private static SqlPersistence CreateSqlPersistence()
         {
             var icons = TestConnectionManager.CreateTestFavoriteIcons();
+            Action<PersistenceSecurity> fail = ps => Assert.Fail("Sql persistence wasnt initialized.");
             return new SqlPersistence(icons, TestConnectionManager.Instance);
         }
 

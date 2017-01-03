@@ -47,25 +47,27 @@ namespace Terminals
             
             if (commandLine.SingleInstance && SingleInstanceApplication.Instance.NotifyExisting(commandLine))
                 return;
+            
             Logging.Info("Start state 6 Complete: Set Single instance mode");
-            TryUpdateConfig();
-            Logging.Info("Start state 7 Complete: Configuration upgrade");
 
-            ShowFirstRunWizard();
-            StartMainForm(commandLine);
+            var persistenceFactory = new PersistenceFactory();
+            // do it before config update, because it may import favorites from previous version
+            IPersistence persistence = persistenceFactory.CreatePersistence();
+            Logging.Info("Start state 7 Complete: Initilizing Persistence");
+
+            TryUpdateConfig(persistence);
+            Logging.Info("Start state 8 Complete: Configuration upgrade");
+
+            ShowFirstRunWizard(persistence);
+            StartMainForm(persistenceFactory, persistence, commandLine);
 
             Logging.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
                 Info.TitleVersion));
         }
 
-        private static void TryUpdateConfig()
+        private static void TryUpdateConfig(IPersistence persistence)
         {
-            // moved into separate method till persistence is implemented as singleton, because of optimization
-            // the Persistence class is touched before the FileLocations are realy set.
-            // do it before config update, because it may import favorites from previous version
-            Persistence.AssignFallbackPrompt(PersistenceFallback);
-            // first touch of the Persistence instance.
-            var updateConfig = new UpdateConfig(Persistence.Instance, ConnectionManager.Instance);
+            var updateConfig = new UpdateConfig(persistence, ConnectionManager.Instance);
             updateConfig.CheckConfigVersionUpdate();
         }
 
@@ -108,27 +110,33 @@ namespace Terminals
         }
 
 
-        private static void ShowFirstRunWizard()
+        private static void ShowFirstRunWizard(IPersistence persistence)
         {
             if (Settings.Instance.ShowWizard)
             {
                 //settings file doesn't exist
-                using (var wzrd = new FirstRunWizard(Persistence.Instance))
+                using (var wzrd = new FirstRunWizard(persistence))
                     wzrd.ShowDialog();
             }
         }
 
-        private static void StartMainForm(CommandLineArgs commandLine)
+        private static void StartMainForm(PersistenceFactory persistenceFactory, IPersistence persistence, CommandLineArgs commandLine)
         {
-            IPersistence persistence = Persistence.Instance;
             PersistenceErrorForm.RegisterDataEventHandler(persistence.Dispatcher);
-            if (persistence.Security.Authenticate(RequestPassword.KnowsUserPassword))
-                RunMainForm(commandLine);
+            if (!persistence.Security.Authenticate(RequestPassword.KnowsUserPassword))
+            {
+                if (PersistenceFallback())
+                    persistence = persistenceFactory.FallBackToPrimaryPersistence(persistence.Security);
+                else
+                    Environment.Exit(-1);
+            }
+
+            RunMainForm(persistence, commandLine);
         }
 
-        private static void RunMainForm(CommandLineArgs commandLine)
+        private static void RunMainForm(IPersistence persistence, CommandLineArgs commandLine)
         {
-            var mainForm = new MainForm(Persistence.Instance);
+            var mainForm = new MainForm(persistence);
             SingleInstanceApplication.Instance.Initialize(mainForm, commandLine);
             mainForm.HandleCommandLineActions(commandLine);
             Application.Run(mainForm);
@@ -168,15 +176,14 @@ namespace Terminals
             return commandline;
         }
 
-        private static void PersistenceFallback()
+        private static bool PersistenceFallback()
         {
             const string MESSAGE = "Do you wan't to start with local files store?\r\n" +
                                    "Yes - start with files store (You will be able to fix the configuration.)\r\n" +
                                    "No - Exit application";
             DialogResult fallback = MessageBox.Show(MESSAGE, "Terminals database connection failed",
                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-            if (fallback == DialogResult.No)
-                Environment.Exit(-1);
+            return fallback == DialogResult.Yes;
         }
     }
 }

@@ -149,13 +149,14 @@ namespace Terminals.Data
             this.Dispatcher.EndDelayedUpdate();
         }
 
-        public void Initialize()
+        public bool Initialize()
         {
             this.storedCredentials.Initialize();
             FavoritesFile file = this.LoadFile();
             this.groups.AddAllToCache(file.Groups.Cast<IGroup>().ToList());
             this.favorites.AddAllToCache(file.Favorites.Cast<IFavorite>().ToList());
             this.UpdateFavoritesInGroups(file.FavoritesInGroups);
+            return true;
         }
 
         public void UpdatePasswordsByNewMasterPassword(string newMasterKey)
