@@ -7,11 +7,18 @@ namespace Terminals.Data
 {
     internal class PersistenceFactory
     {
-        private static readonly Settings settings = Settings.Instance;
+        private readonly Settings settings;
 
-        private static readonly FavoriteIcons favoriteIcons = FavoriteIcons.Instance;
+        private readonly FavoriteIcons favoriteIcons;
 
-        private static readonly ConnectionManager connectionManager = ConnectionManager.Instance;
+        private readonly ConnectionManager connectionManager;
+
+        public PersistenceFactory(Settings settings, ConnectionManager connectionManager, FavoriteIcons favoriteIcons)
+        {
+            this.settings = settings;
+            this.favoriteIcons = favoriteIcons;
+            this.connectionManager = connectionManager;
+        }
 
         internal IPersistence CreatePersistence()
         {

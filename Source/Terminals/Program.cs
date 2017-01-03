@@ -50,12 +50,13 @@ namespace Terminals
             
             Logging.Info("Start state 6 Complete: Set Single instance mode");
 
-            var persistenceFactory = new PersistenceFactory();
+            var connectionManager = ConnectionManager.Instance;
+            var persistenceFactory = new PersistenceFactory(Settings.Instance, connectionManager, FavoriteIcons.Instance);
             // do it before config update, because it may import favorites from previous version
             IPersistence persistence = persistenceFactory.CreatePersistence();
             Logging.Info("Start state 7 Complete: Initilizing Persistence");
 
-            TryUpdateConfig(persistence);
+            TryUpdateConfig(persistence, connectionManager);
             Logging.Info("Start state 8 Complete: Configuration upgrade");
 
             ShowFirstRunWizard(persistence);
@@ -65,9 +66,9 @@ namespace Terminals
                 Info.TitleVersion));
         }
 
-        private static void TryUpdateConfig(IPersistence persistence)
+        private static void TryUpdateConfig(IPersistence persistence, ConnectionManager connectionManager)
         {
-            var updateConfig = new UpdateConfig(persistence, ConnectionManager.Instance);
+            var updateConfig = new UpdateConfig(persistence, connectionManager);
             updateConfig.CheckConfigVersionUpdate();
         }
 
