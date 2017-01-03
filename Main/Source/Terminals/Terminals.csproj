@@ -478,7 +478,7 @@
     <Compile Include="Data\Interfaces\IFavorites.cs" />
     <Compile Include="Data\Interfaces\IGroups.cs" />
     <Compile Include="Data\Interfaces\IPersistence.cs" />
-    <Compile Include="Data\Persistence.cs" />
+    <Compile Include="Data\PersistenceFactory.cs" />
     <Compile Include="Data\FilePersisted\Groups.cs" />
     <Compile Include="Data\FilePersisted\Favorites.cs" />
     <Compile Include="Forms\ChangePassword.cs">
