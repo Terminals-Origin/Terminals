@@ -76,7 +76,7 @@ namespace Terminals
 
         private void InitScanManager()
         {
-            this.manager = new NetworkScanManager();
+            this.manager = new NetworkScanManager(this.connectionManager);
             this.manager.OnAddressScanHit += new NetworkScanHandler(this.manager_OnScanHit);
             this.manager.OnAddressScanFinished += new NetworkScanHandler(this.manager_OnAddresScanFinished);
         }
