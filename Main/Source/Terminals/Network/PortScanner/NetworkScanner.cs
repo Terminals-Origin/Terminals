@@ -22,14 +22,17 @@ namespace Terminals
 
         private readonly Server server;
 
-        internal NetworkScanner(IPersistence persistence)
+        private readonly ConnectionManager connectionManager;
+
+        internal NetworkScanner(IPersistence persistence, ConnectionManager connectionManager)
         {
             InitializeComponent();
 
-            this.checkListPorts.DataSource = ConnectionManager.Instance.GetAvailableProtocols();
-            this.CheckAllPorts();
             this.persistence = persistence;
-            this.server = new Server(persistence);
+            this.connectionManager = connectionManager;
+            this.checkListPorts.DataSource = this.connectionManager.GetAvailableProtocols();
+            this.CheckAllPorts();
+            this.server = new Server(persistence, this.connectionManager);
             FillTextBoxesFromLocalIp();
             InitScanManager();
             this.gridScanResults.AutoGenerateColumns = false;
@@ -112,7 +115,7 @@ namespace Terminals
         private List<int> GetSelectedPorts()
         {
             return checkListPorts.CheckedItems.OfType<string>()
-                .Select(ConnectionManager.Instance.GetPort)
+                .Select(this.connectionManager.GetPort)
                 .ToList();
         }
 

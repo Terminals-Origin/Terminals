@@ -51,6 +51,8 @@ namespace Terminals
 
         private readonly ToolTipBuilder toolTipBuilder;
 
+        private readonly ConnectionManager connectionManager;
+
         #endregion
 
         #region Properties
@@ -147,11 +149,13 @@ namespace Terminals
 
         #region Constuctors
 
-        public MainForm(IPersistence persistence)
+        public MainForm(IPersistence persistence, ConnectionManager connectionManager)
         {
             try
             {
                 this.persistence = persistence;
+                this.connectionManager = connectionManager;
+
                 this.toolTipBuilder = new ToolTipBuilder(this.persistence.Security);
                 settings.StartDelayedUpdate();
 
@@ -1431,7 +1435,7 @@ namespace Terminals
 
         private OrganizeFavoritesForm CreateOrganizeFavoritesForm()
         {
-            var organizeForm = new OrganizeFavoritesForm(this.persistence);
+            var organizeForm = new OrganizeFavoritesForm(this.persistence, this.connectionManager);
             organizeForm.AssignConnectionsUiFactory(this.connectionsUiFactory);
             return organizeForm;
         }

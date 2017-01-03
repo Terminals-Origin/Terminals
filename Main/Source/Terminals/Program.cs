@@ -60,6 +60,7 @@ namespace Terminals
             Logging.Info("Start state 8 Complete: Configuration upgrade");
 
             ShowFirstRunWizard(persistence, connectionManager);
+            RunMainForm(persistence, connectionManager, commandLine);
             StartMainForm(persistenceFactory, persistence, commandLine);
 
             Logging.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
@@ -131,13 +132,11 @@ namespace Terminals
                 else
                     Environment.Exit(-1);
             }
-
-            RunMainForm(persistence, commandLine);
         }
 
-        private static void RunMainForm(IPersistence persistence, CommandLineArgs commandLine)
+        private static void RunMainForm(IPersistence persistence, ConnectionManager connectionManager, CommandLineArgs commandLine)
         {
-            var mainForm = new MainForm(persistence);
+            var mainForm = new MainForm(persistence, connectionManager);
             SingleInstanceApplication.Instance.Initialize(mainForm, commandLine);
             mainForm.HandleCommandLineActions(commandLine);
             Application.Run(mainForm);
