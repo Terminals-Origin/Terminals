@@ -87,9 +87,7 @@ namespace Tests.SqlPersisted
             this.CheckDatabase.UpdateMasterPassword(String.Empty);
 
             this.PrimaryPersistence = CreateSqlPersistence();
-            this.PrimaryPersistence.Initialize();
             this.SecondaryPersistence = CreateSqlPersistence();
-            this.SecondaryPersistence.Initialize();
 
             this.ClearTestLab(); // because of failed previous tests
         }
@@ -97,8 +95,9 @@ namespace Tests.SqlPersisted
         private static SqlPersistence CreateSqlPersistence()
         {
             var icons = TestConnectionManager.CreateTestFavoriteIcons();
-            Action<PersistenceSecurity> fail = ps => Assert.Fail("Sql persistence wasnt initialized.");
-            return new SqlPersistence(icons, TestConnectionManager.Instance);
+            var persistence = new SqlPersistence(icons, TestConnectionManager.Instance);
+            persistence.Initialize();
+            return persistence;
         }
 
         protected void SetDeploymentDirConnectionString()
