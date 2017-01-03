@@ -59,7 +59,7 @@ namespace Terminals
             TryUpdateConfig(persistence, connectionManager);
             Logging.Info("Start state 8 Complete: Configuration upgrade");
 
-            ShowFirstRunWizard(persistence);
+            ShowFirstRunWizard(persistence, connectionManager);
             StartMainForm(persistenceFactory, persistence, commandLine);
 
             Logging.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
@@ -111,12 +111,12 @@ namespace Terminals
         }
 
 
-        private static void ShowFirstRunWizard(IPersistence persistence)
+        private static void ShowFirstRunWizard(IPersistence persistence, ConnectionManager connectionManager)
         {
             if (Settings.Instance.ShowWizard)
             {
                 //settings file doesn't exist
-                using (var wzrd = new FirstRunWizard(persistence))
+                using (var wzrd = new FirstRunWizard(persistence, connectionManager))
                     wzrd.ShowDialog();
             }
         }

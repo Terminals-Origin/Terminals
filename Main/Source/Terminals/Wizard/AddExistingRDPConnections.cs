@@ -21,6 +21,8 @@ namespace Terminals.Wizard
         private int _pendingRequests = 0;
         private object _uiElementsLock = new object();
 
+        private ConnectionManager connectionManager;
+
         public delegate void DiscoveryCompleted();
         public event DiscoveryCompleted OnDiscoveryCompleted;
 
@@ -44,8 +46,9 @@ namespace Terminals.Wizard
             }
         }
 
-        public void StartImport()
+        public void StartImport(ConnectionManager connectionManager)
         {
+            this.connectionManager = connectionManager;
             ImportFromRegistry();
             ScanInterfaceList();
         }
@@ -154,7 +157,7 @@ namespace Terminals.Wizard
 
                 IPAddress address = (IPAddress)machine;
                 _scannerList.Add(scanner);
-                scanner.StartScan(address, ConnectionManager.Instance.SupportedPorts(), 1000, 100, true);
+                scanner.StartScan(address, this.connectionManager.SupportedPorts(), 1000, 100, true);
                 _scannerCount++;
             }
             catch (Exception)
@@ -195,7 +198,7 @@ namespace Terminals.Wizard
         {
             try
             {
-                string protocol = ConnectionManager.Instance.GetPortName(endPoint.Port);
+                string protocol = this.connectionManager.GetPortName(endPoint.Port);
                 string serverName = endPoint.Address.ToString();
                 string connectionName = String.Format("{0}_{1}", serverName, protocol);
                 FavoriteConfigurationElement newFavorite =

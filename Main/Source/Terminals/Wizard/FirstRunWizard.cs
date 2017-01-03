@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms.Controls;
 using Terminals.Wizard;
@@ -29,12 +30,15 @@ namespace Terminals
         private CommonOptions co = new CommonOptions();
         private DefaultCredentials dc = new DefaultCredentials();
 
-        public FirstRunWizard(IPersistence persistence)
+        private readonly ConnectionManager connectionManager;
+
+        public FirstRunWizard(IPersistence persistence, ConnectionManager connectionManager)
         {
             InitializeComponent();
             rdp.OnDiscoveryCompleted += new AddExistingRDPConnections.DiscoveryCompleted(rdp_OnDiscoveryCompleted);
             miv = new MethodInvoker(DiscoComplete);
             this.persistence = persistence;
+            this.connectionManager = connectionManager;
             this.mp.AssignPersistence(persistence);
         }
 
@@ -99,7 +103,7 @@ namespace Terminals
                 this.panel1.Controls.Clear();
                 this.rdp.Dock = DockStyle.Fill;
                 this.panel1.Controls.Add(this.rdp);
-                this.rdp.StartImport();
+                this.rdp.StartImport(this.connectionManager);
                 this.SelectedForm = WizardForms.Scanner;
             }
             else
