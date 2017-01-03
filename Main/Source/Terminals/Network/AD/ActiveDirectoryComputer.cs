@@ -77,7 +77,7 @@ namespace Terminals.Network
             }
         }
 
-        internal FavoriteConfigurationElement ToFavorite(String domain)
+        internal FavoriteConfigurationElement ToFavorite(ConnectionManager connectionManager, string domain)
         {
             FavoriteConfigurationElement favorite = new FavoriteConfigurationElement(this.ComputerName);
             favorite.Name = this.ComputerName;
@@ -85,7 +85,7 @@ namespace Terminals.Network
             favorite.UserName = Environment.UserName;
             favorite.DomainName = domain;
             favorite.Tags = this.Tags;
-            favorite.Port = ConnectionManager.Instance.GetPort(this.Protocol);
+            favorite.Port = connectionManager.GetPort(this.Protocol);
             favorite.Protocol = this.Protocol;
             favorite.Notes = this.Notes;
             return favorite;

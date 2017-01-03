@@ -316,7 +316,7 @@ namespace Terminals
 
         private void ScanActiveDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var activeDirectoryForm = new ImportFromAD(this.persistence))
+            using (var activeDirectoryForm = new ImportFromAD(this.persistence, this.connectionManager))
             {
                 activeDirectoryForm.ShowDialog();
                 this.UpdateFavoritesBindingSource();
