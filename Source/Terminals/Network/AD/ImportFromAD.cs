@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms.Controls;
 
@@ -11,17 +12,20 @@ namespace Terminals.Network
     {
         private readonly IPersistence persistence;
 
+        private readonly ConnectionManager connectionManager;
+
         private readonly Settings settings = Settings.Instance;
 
         private readonly ActiveDirectoryClient adClient;
 
         private string defautlDomainName;
 
-        public ImportFromAD(IPersistence persistence)
+        public ImportFromAD(IPersistence persistence, ConnectionManager connectionManager)
         {
             InitializeComponent();
 
             this.persistence = persistence;
+            this.connectionManager = connectionManager;
             this.gridComputers.AutoGenerateColumns = false;
 
             adClient = new ActiveDirectoryClient();
@@ -138,7 +142,7 @@ namespace Terminals.Network
             foreach (DataGridViewRow computerRow in this.gridComputers.SelectedRows)
             {
                 ActiveDirectoryComputer computer = computerRow.DataBoundItem as ActiveDirectoryComputer;
-                FavoriteConfigurationElement newFavorite = computer.ToFavorite(domain);
+                FavoriteConfigurationElement newFavorite = computer.ToFavorite(this.connectionManager, domain);
                 favoritesToImport.Add(newFavorite);
             }
             return favoritesToImport;
