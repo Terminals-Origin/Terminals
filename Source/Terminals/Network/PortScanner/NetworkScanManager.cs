@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using Terminals.Connections;
 
 namespace Terminals.Scanner
 {    
@@ -50,6 +51,14 @@ namespace Terminals.Scanner
         }
 
         private Boolean scanIsRunning = false;
+
+        private readonly ConnectionManager connectionManager;
+
+        public NetworkScanManager(ConnectionManager connectionManager)
+        {
+            this.connectionManager = connectionManager;
+        }
+
         internal bool ScanIsRunning
         {
             get
@@ -104,7 +113,7 @@ namespace Terminals.Scanner
 
         private void AddItemToScan(List<Int32> portList, String ipAdddress)
         {
-            NetworkScanItem item = new NetworkScanItem(ipAdddress, portList);
+            var item = new NetworkScanItem(this.connectionManager, ipAdddress, portList);
             this.scanItems.Add(item);
         }
 

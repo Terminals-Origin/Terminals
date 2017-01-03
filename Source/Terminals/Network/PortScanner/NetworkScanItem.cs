@@ -21,6 +21,9 @@ namespace Terminals.Scanner
         private List<Int32> ports;
 
         private Boolean cancelationPending;
+
+        private readonly ConnectionManager connectionManager;
+
         private Boolean CancelationPending
         {
             get
@@ -32,10 +35,11 @@ namespace Terminals.Scanner
             }
         }
 
-        internal NetworkScanItem(String iPAddress, List<Int32> ports)
+        internal NetworkScanItem(ConnectionManager connectionManager, String iPAddress, List<Int32> ports)
         {
             this.iPAddress = iPAddress;
             this.ports = ports;
+            this.connectionManager = connectionManager;
         }
 
         public override string ToString()
@@ -130,7 +134,7 @@ namespace Terminals.Scanner
 
             if (socket != null && socket.Connected)
             {
-                var detector = new ServiceDetector(ConnectionManager.Instance);
+                var detector = new ServiceDetector(this.connectionManager);
                 var serviceName = detector.ResolveServiceName(this.iPAddress, connectionState.Port);
                 FireOnScanHit(connectionState.Port, serviceName);
             }
