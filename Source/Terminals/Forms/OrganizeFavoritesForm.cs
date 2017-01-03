@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
@@ -22,16 +23,19 @@ namespace Terminals
 
         private readonly Importers importers;
 
+        private readonly ConnectionManager connectionManager;
+
         private IFavorites PersistedFavorites
         {
             get { return this.persistence.Favorites; }
         }
 
-        internal OrganizeFavoritesForm(IPersistence persistence)
+        internal OrganizeFavoritesForm(IPersistence persistence, ConnectionManager connectionManager)
         {
             InitializeComponent();
 
             this.persistence = persistence;
+            this.connectionManager = connectionManager;
             InitializeDataGrid();
             this.importers = new Importers(this.persistence);
             ImportOpenFileDialog.Filter = this.importers.GetProvidersDialogFilter();
@@ -321,7 +325,7 @@ namespace Terminals
 
         private void ScanNetworkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var networkScanForm = new NetworkScanner(this.persistence))
+            using (var networkScanForm = new NetworkScanner(this.persistence, this.connectionManager))
             {
                 networkScanForm.ShowDialog();
                 this.UpdateFavoritesBindingSource();

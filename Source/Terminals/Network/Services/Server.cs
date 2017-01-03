@@ -15,13 +15,16 @@ namespace Terminals.Network
     {
         private readonly IPersistence persistence;
 
+        private readonly ConnectionManager connectionManager;
+
         private readonly TcpListener server = new TcpListener(IPAddress.Any, SERVER_PORT);
         internal const int SERVER_PORT = 1216;
         public bool ServerOnline { get; private set; }
 
-        public Server(IPersistence persistence)
+        public Server(IPersistence persistence, ConnectionManager connectionManager)
         {
             this.persistence = persistence;
+            this.connectionManager = connectionManager;
         }
 
         public void Stop()
@@ -76,7 +79,7 @@ namespace Terminals.Network
             
             foreach (IFavorite favorite in favoritesToShare)
             {
-                FavoriteConfigurationElement configFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, persistence, ConnectionManager.Instance);
+                FavoriteConfigurationElement configFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, persistence, this.connectionManager);
                 list.Add(SharedFavorite.ConvertFromFavorite(this.persistence, configFavorite));
             }
             return list;
