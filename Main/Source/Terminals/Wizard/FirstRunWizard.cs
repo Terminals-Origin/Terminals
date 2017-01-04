@@ -198,7 +198,7 @@ namespace Terminals
                 if (MessageBox.Show(message, "Terminals Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     List<FavoriteConfigurationElement> favoritesToImport = this.rdp.DiscoveredConnections.ToList();
-                    var managedImport = new ImportWithDialogs(this, this.persistence);
+                    var managedImport = new ImportWithDialogs(this, this.persistence, this.connectionManager);
                     managedImport.Import(favoritesToImport);
                 }
             }

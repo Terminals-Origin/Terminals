@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.Connections;
 using Terminals.Data;
 
 namespace Terminals.Forms.Controls
@@ -12,6 +13,8 @@ namespace Terminals.Forms.Controls
     internal partial class FavoritesTreeView : TreeView
     {
         private IPersistence persistence;
+
+        private ConnectionManager connectionManager;
 
         internal IFavorite SelectedFavorite
         {
@@ -68,9 +71,10 @@ namespace Terminals.Forms.Controls
             InitializeComponent();
         }
 
-        internal void AssignServices(IPersistence persistence, FavoriteIcons favoriteIcons)
+        internal void AssignServices(IPersistence persistence, FavoriteIcons favoriteIcons, ConnectionManager connectionManager)
         {
             this.persistence = persistence;
+            this.connectionManager = connectionManager;
             var iconsBuilder = new ProtocolImageListBuilder(favoriteIcons.GetProtocolIcons);
             iconsBuilder.Build(this.imageListIcons);
         }
@@ -158,7 +162,7 @@ namespace Terminals.Forms.Controls
         private TreeViewDragDrop CreateTreeViewDragDrop(DragEventArgs e)
         {
             var keyModifiers = new KeyModifiers();
-            return new TreeViewDragDrop(this.persistence, e, keyModifiers,
+            return new TreeViewDragDrop(this.persistence, this.connectionManager, e, keyModifiers,
                 this.SelectedGroup, this.SelectedFavorite);
         }
     }

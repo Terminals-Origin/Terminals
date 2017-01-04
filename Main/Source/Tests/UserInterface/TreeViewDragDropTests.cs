@@ -60,7 +60,7 @@ namespace Tests.UserInterface
         {
             DragEventArgs args = CreateDragArguments(this.sourceGroupNode);
             var keyModifiers = new TestKeyModifiers();
-            var dragdrop = new TreeViewDragDrop(this.Persistence, args, keyModifiers, null, this.targetFavorite);
+            var dragdrop = new TreeViewDragDrop(this.Persistence, TestConnectionManager.Instance, args, keyModifiers, null, this.targetFavorite);
             Assert.AreEqual(DragDropEffects.None, dragdrop.Effect);
         }
 
@@ -133,7 +133,7 @@ namespace Tests.UserInterface
             this.Persistence.Favorites.UpdateFavorite(this.sourceFavorite, new List<IGroup>() { this.sourceGroup });
             var args = CreateDragArguments(this.sourceFavoriteNode);
             args.Effect = DragDropEffects.Move;
-            var dragdrop = new TreeViewDragDrop(this.Persistence, args, new TestKeyModifiers(), null, null);
+            var dragdrop = new TreeViewDragDrop(this.Persistence, TestConnectionManager.Instance, args, new TestKeyModifiers(), null, null);
             dragdrop.Drop(null);
             Assert.IsFalse(this.sourceFavorite.Groups.Any(), "Favorite cant be listed in any group");
         }
@@ -167,21 +167,21 @@ namespace Tests.UserInterface
         {
             var args = CreateDragArguments(this.sourceGroupNode);
             var keyModifiers = new TestKeyModifiers();
-            return new TreeViewDragDrop(this.Persistence, args, keyModifiers, targetGroup, null);
+            return new TreeViewDragDrop(this.Persistence, TestConnectionManager.Instance, args, keyModifiers, targetGroup, null);
         }
 
         private TreeViewDragDrop CreateFavoriteDragDrop(IFavorite target)
         {
             var args = CreateDragArguments(this.sourceFavoriteNode);
             var keyModifiers = new TestKeyModifiers();
-            return new TreeViewDragDrop(this.Persistence, args, keyModifiers, null, target);
+            return new TreeViewDragDrop(this.Persistence, TestConnectionManager.Instance, args, keyModifiers, null, target);
         }
 
         private TreeViewDragDrop CreateValidFavoriteDrag(bool withShift, bool withControl)
         {
             var args = CreateDragArguments(this.sourceFavoriteNode);
             var keyModifiers = new TestKeyModifiers() { WithControl = withControl, WithShift = withShift };
-            return new TreeViewDragDrop(this.Persistence, args, keyModifiers, this.targetGroup, null);
+            return new TreeViewDragDrop(this.Persistence, TestConnectionManager.Instance, args, keyModifiers, this.targetGroup, null);
         }
 
         private TreeViewDragDrop CreateValidFavoriteDrop(DragDropEffects effect)
@@ -189,7 +189,7 @@ namespace Tests.UserInterface
             var args = CreateDragArguments(this.sourceFavoriteNode);
             args.Effect = effect; // for drop the effect isnt obtained from current state, but from the arguments
             var keyModifiers = new TestKeyModifiers();
-            return new TreeViewDragDrop(this.Persistence, args, keyModifiers, this.targetGroup, null);
+            return new TreeViewDragDrop(this.Persistence, TestConnectionManager.Instance, args, keyModifiers, this.targetGroup, null);
         }
 
         private static DragEventArgs CreateDragArguments(object source)

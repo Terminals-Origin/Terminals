@@ -173,7 +173,7 @@ namespace Terminals
 
         private void ImportFavoritesWithManagerImport(List<FavoriteConfigurationElement> favoritesToImport)
         {
-            var managedImport = new ImportWithDialogs(this, this.persistence);
+            var managedImport = new ImportWithDialogs(this, this.persistence, this.connectionManager);
             bool imported = managedImport.Import(favoritesToImport);
             if (imported)
                 this.UpdateFavoritesBindingSource();
@@ -350,7 +350,7 @@ namespace Terminals
 
         private void ExportToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frm = new ExportForm(this.persistence))
+            using (var frm = new ExportForm(this.persistence, this.connectionManager))
                 frm.ShowDialog();
         }
 

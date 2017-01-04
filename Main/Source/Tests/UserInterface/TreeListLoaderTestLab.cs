@@ -69,7 +69,7 @@ namespace Tests.UserInterface
         public void CreateTestTreeStructure()
         {
             var favoriteIcons = TestConnectionManager.CreateTestFavoriteIcons();
-            this.treeView.AssignServices(this.Persistence, favoriteIcons);
+            this.treeView.AssignServices(this.Persistence, favoriteIcons, TestConnectionManager.Instance);
             this.CreateData();
 
             // loaded tree is needed for all tests, if if there is a "load all test", which tests next line only
