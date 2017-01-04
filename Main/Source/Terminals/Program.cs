@@ -60,8 +60,8 @@ namespace Terminals
             Logging.Info("Start state 8 Complete: Configuration upgrade");
 
             ShowFirstRunWizard(persistence, connectionManager);
+            persistence = AuthenticateByMasterPassword(persistenceFactory, persistence);
             RunMainForm(persistence, connectionManager, commandLine);
-            StartMainForm(persistenceFactory, persistence, commandLine);
 
             Logging.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
                 Info.TitleVersion));
@@ -122,16 +122,20 @@ namespace Terminals
             }
         }
 
-        private static void StartMainForm(PersistenceFactory persistenceFactory, IPersistence persistence, CommandLineArgs commandLine)
+        private static IPersistence AuthenticateByMasterPassword(PersistenceFactory persistenceFactory, IPersistence persistence)
         {
+            IPersistence newPersistence = persistence;
             PersistenceErrorForm.RegisterDataEventHandler(persistence.Dispatcher);
+
             if (!persistence.Security.Authenticate(RequestPassword.KnowsUserPassword))
             {
                 if (PersistenceFallback())
-                    persistence = persistenceFactory.FallBackToPrimaryPersistence(persistence.Security);
+                    newPersistence = persistenceFactory.FallBackToPrimaryPersistence(persistence.Security);
                 else
                     Environment.Exit(-1);
             }
+
+            return newPersistence;
         }
 
         private static void RunMainForm(IPersistence persistence, ConnectionManager connectionManager, CommandLineArgs commandLine)
