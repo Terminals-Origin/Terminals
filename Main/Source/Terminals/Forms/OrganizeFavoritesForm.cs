@@ -78,7 +78,7 @@ namespace Terminals
 
         private void EditFavorite(IFavorite favorite)
         {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, favorite))
+            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, favorite))
             {
                 if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
                 {
@@ -230,7 +230,7 @@ namespace Terminals
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, String.Empty))
+            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, String.Empty))
             {
                 if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
                 {

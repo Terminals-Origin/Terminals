@@ -31,11 +31,13 @@ namespace Terminals
 
         private FavoriteIcons favoriteIcons = FavoriteIcons.Instance;
 
-        internal IPersistence Persistence { get; set; }
+        private ConnectionManager connectionManager;
+
+        private IPersistence persistence;
 
         private IFavorites PersistedFavorites
         {
-            get { return this.Persistence.Favorites; }
+            get { return this.persistence.Favorites; }
         }
 
         public FavsList()
@@ -47,6 +49,12 @@ namespace Terminals
             Native.Methods.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
 
             this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
+        }
+
+        internal void AssignServices(IPersistence persistence, ConnectionManager connectionManager)
+        {
+            this.persistence = persistence;
+            this.connectionManager = connectionManager;
         }
 
         #region Private methods
@@ -71,16 +79,16 @@ namespace Terminals
 
         private void FavsList_Load(object sender, EventArgs e)
         {
-            this.favsTree.AssignServices(this.Persistence, this.favoriteIcons);
-            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.Persistence, this.favoriteIcons);
+            this.favsTree.AssignServices(this.persistence, this.favoriteIcons);
+            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence, this.favoriteIcons);
             this.treeLoader.LoadRootNodes();
-            this.historyTreeView.Load(this.Persistence, this.favoriteIcons);
+            this.historyTreeView.Load(this.persistence, this.favoriteIcons);
             this.LoadState();
             this.favsTree.MouseUp += new MouseEventHandler(this.FavsTree_MouseUp);
-            this.searchTextBox.LoadEvents(this.Persistence);
+            this.searchTextBox.LoadEvents(this.persistence);
             // hadle events
-            this.searchPanel1.LoadEvents(this.Persistence);
-            this.renameCommand = new FavoriteRenameCommand(this.Persistence, new RenameService(this.Persistence.Favorites));
+            this.searchPanel1.LoadEvents(this.persistence);
+            this.renameCommand = new FavoriteRenameCommand(this.persistence, new RenameService(this.persistence.Favorites));
         }
 
         private void HistoryTreeView_DoubleClick(object sender, EventArgs e)
@@ -117,7 +125,7 @@ namespace Terminals
 
         private void CreateFavoriteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmNewTerminal = new NewTerminalForm(this.Persistence, string.Empty))
+            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, string.Empty))
             {
                 var groupNode = this.favsTree.SelectedGroupNode;
                 if (groupNode != null)
@@ -136,7 +144,7 @@ namespace Terminals
 
         private void ShowManageTerminalForm(IFavorite favorite)
         {
-            using (var frmNewTerminal = new NewTerminalForm(this.Persistence, favorite))
+            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, favorite))
             {
                 TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
 
@@ -193,7 +201,7 @@ namespace Terminals
             {
                 var options = state as Tuple<ShutdownCommands, IFavorite>;
 
-                if (options != null && RemoteManagement.ForceShutdown(this.Persistence, options.Item2, options.Item1))
+                if (options != null && RemoteManagement.ForceShutdown(this.persistence, options.Item2, options.Item1))
                     return "Terminals successfully sent the shutdown command.";
 
                 return shutdownFailMessage;
@@ -282,7 +290,7 @@ namespace Terminals
 
         private void ConnectToFavoritesExtra(List<IFavorite> selectedFavorites)
         {
-            using (var usrForm = new ConnectExtraForm(this.Persistence))
+            using (var usrForm = new ConnectExtraForm(this.persistence))
             {
                 if (usrForm.ShowDialog() != DialogResult.OK)
                     return;
@@ -320,7 +328,7 @@ namespace Terminals
             InputBoxResult result = this.PromptForVariableChange(VARIABLE);
             if (result.ReturnCode == DialogResult.OK)
             {
-                ICredentialSet credential = this.Persistence.Credentials[result.Text];
+                ICredentialSet credential = this.persistence.Credentials[result.Text];
                 if (credential == null)
                 {
                     MessageBox.Show("The credential you specified does not exist.");
@@ -405,7 +413,7 @@ namespace Terminals
             if (result == DialogResult.Yes)
             {
                 List<IFavorite> selectedFavorites = this.StartBatchUpdate();
-                this.Persistence.Favorites.Delete(selectedFavorites);
+                this.persistence.Favorites.Delete(selectedFavorites);
                 if (this.ParentForm != null)
                     this.ParentForm.Cursor = Cursors.Default;
                 MessageBox.Show("Delete all Favorites by group Complete.");
@@ -477,7 +485,7 @@ namespace Terminals
         {
             var groupNode = this.favsTree.SelectedGroupNode;
             if (groupNode != null && OrganizeFavoritesForm.AskIfRealyDelete("group"))
-                this.Persistence.Groups.Delete(groupNode.Group);
+                this.persistence.Groups.Delete(groupNode.Group);
         }
 
         private void DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -486,7 +494,7 @@ namespace Terminals
             if (selected == null)
                 return;
 
-            var copyCommand = new CopyFavoriteCommand(this.Persistence);
+            var copyCommand = new CopyFavoriteCommand(this.persistence);
             copyCommand.Copy(selected);
         }
 
@@ -530,7 +538,7 @@ namespace Terminals
         private void ClearHistoryButton_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            this.Persistence.ConnectionHistory.Clear();
+            this.persistence.ConnectionHistory.Clear();
             this.Cursor = Cursors.Default;
         }
 
@@ -593,7 +601,7 @@ namespace Terminals
 
         private void SheduleRename(IGroup group, NodeLabelEditEventArgs e)
         {
-            var groupValidator = new GroupNameValidator(this.Persistence);
+            var groupValidator = new GroupNameValidator(this.persistence);
             string errorMessage = groupValidator.ValidateCurrent(group, e.Label);
             if (string.IsNullOrEmpty(errorMessage))
             {
@@ -610,7 +618,7 @@ namespace Terminals
         private void RenameGroup(IGroup group, string newName)
         {
             group.Name = newName;
-            this.Persistence.Groups.Update(group);
+            this.persistence.Groups.Update(group);
         }
 
         private void SearchPanel1_ResultListAfterLabelEdit(object sender, LabelEditEventArgs e)
@@ -697,15 +705,15 @@ namespace Terminals
         {
             // backup the selected tree node, because it will be replaced later by focus of NewGroupForm
             GroupTreeNode parentGroupNode = this.favsTree.SelectedGroupNode;
-            string newGroupName = NewGroupForm.AskFroGroupName(this.Persistence);
+            string newGroupName = NewGroupForm.AskFroGroupName(this.persistence);
             if (string.IsNullOrEmpty(newGroupName))
                 return;
 
-            IGroup newGroup = this.Persistence.Factory.CreateGroup(newGroupName);
+            IGroup newGroup = this.persistence.Factory.CreateGroup(newGroupName);
             if (parentGroupNode != null)
                 newGroup.Parent = parentGroupNode.Group;
 
-            this.Persistence.Groups.Add(newGroup);
+            this.persistence.Groups.Add(newGroup);
         }
 
         #region searchTextBox events
