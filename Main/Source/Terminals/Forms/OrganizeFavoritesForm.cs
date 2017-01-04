@@ -334,7 +334,7 @@ namespace Terminals
 
         private void ScanRegistryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<FavoriteConfigurationElement> favoritesToImport = ImportRdpRegistry.Import();
+            List<FavoriteConfigurationElement> favoritesToImport = ImportRdpRegistry.Import(this.connectionManager);
             ImportFavoritesWithManagerImport(favoritesToImport);
         }
 
