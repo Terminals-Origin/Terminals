@@ -55,7 +55,7 @@ namespace Terminals.Wizard
 
         private void ImportFromRegistry()
         {
-            List<FavoriteConfigurationElement> favoritesFromRegistry = ImportRdpRegistry.Import();
+            List<FavoriteConfigurationElement> favoritesFromRegistry = ImportRdpRegistry.Import(this.connectionManager);
             lock (this.DiscoveredConnections)
             {
                 this.DiscoveredConnections.AddRange(favoritesFromRegistry);
@@ -202,7 +202,7 @@ namespace Terminals.Wizard
                 string serverName = endPoint.Address.ToString();
                 string connectionName = String.Format("{0}_{1}", serverName, protocol);
                 FavoriteConfigurationElement newFavorite =
-                    FavoritesFactory.CreateNewFavorite(connectionName, serverName, endPoint.Port);
+                    FavoritesFactory.CreateNewFavorite(this.connectionManager, connectionName, serverName, endPoint.Port);
 
                 AddFavoriteToDiscovered(newFavorite);
             }

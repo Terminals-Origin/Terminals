@@ -164,7 +164,7 @@ namespace Terminals.Forms
 
         internal void CreateReleaseTab()
         {
-            this.CreateTerminalTab(FavoritesFactory.CreateReleaseFavorite(this.persistence.Factory));
+            this.CreateTerminalTab(FavoritesFactory.CreateReleaseFavorite(this.persistence.Factory, this.connectionManager));
         }
 
         internal void CreateTerminalTab(IFavorite favorite)
@@ -244,7 +244,7 @@ namespace Terminals.Forms
 
         private Connection CreateConnection(IFavorite favorite, TerminalTabControlItem terminalTabPage, MainForm parentForm)
         {
-            Connection conn = ConnectionManager.Instance.CreateConnection(favorite);
+            Connection conn = this.connectionManager.CreateConnection(favorite);
             conn.Favorite = favorite;
 
             var consumer = conn as ISettingsConsumer;

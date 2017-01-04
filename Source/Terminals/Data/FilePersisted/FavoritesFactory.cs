@@ -12,11 +12,6 @@ namespace Terminals.Data
         private static readonly String terminalsReleasesFavoriteName = Program.Resources.GetString("TerminalsNews");
         private static readonly String terminalsReleasesUrl = Program.Resources.GetString("TerminalsURL");
 
-        private static ConnectionManager GetConnectionManager()
-        {
-            return ConnectionManager.Instance;
-        }
-
         internal static string TerminalsReleasesFavoriteName
         {
             get { return terminalsReleasesFavoriteName; }
@@ -27,25 +22,27 @@ namespace Terminals.Data
             get { return terminalsReleasesUrl; }
         }
 
-        internal static FavoriteConfigurationElement CreateNewFavorite(string favoriteName, string server, int port,
+        internal static FavoriteConfigurationElement CreateNewFavorite(ConnectionManager connectionManager, 
+            string favoriteName, string server, int port,
             string domain, string userName)
         {
-            FavoriteConfigurationElement newFavorite = new FavoriteConfigurationElement();
+            var newFavorite = new FavoriteConfigurationElement();
             newFavorite.Name = favoriteName;
             newFavorite.ServerName = server;
             newFavorite.UserName = userName;
             newFavorite.DomainName = domain;
             newFavorite.Tags = DISCOVERED_CONNECTIONS;
             newFavorite.Port = port;
-            newFavorite.Protocol = GetConnectionManager().GetPortName(port);
+            newFavorite.Protocol = connectionManager.GetPortName(port);
             return newFavorite;
         }
 
-        internal static FavoriteConfigurationElement CreateNewFavorite(string favoriteName, string server, int port)
+        internal static FavoriteConfigurationElement CreateNewFavorite(ConnectionManager connectionManager, 
+            string favoriteName, string server, int port)
         {
-            string name = GetHostName(server, favoriteName, port);
+            string name = GetHostName(connectionManager, server, favoriteName, port);
             string domainName = GetCurrentDomainName(server);
-            return CreateNewFavorite(name, server, port, domainName, Environment.UserName);
+            return CreateNewFavorite(connectionManager, name, server, port, domainName, Environment.UserName);
         }
 
         private static string GetCurrentDomainName(string server)
@@ -56,7 +53,7 @@ namespace Terminals.Data
             return server;
         }
 
-        private static string GetHostName(string server, string name, int port)
+        private static string GetHostName(ConnectionManager connectionManager, string server, string name, int port)
         {
             try
             {
@@ -64,7 +61,7 @@ namespace Terminals.Data
                 if (IPAddress.TryParse(server, out address))
                     name = Dns.GetHostEntry(address).HostName;
 
-                string portName = GetConnectionManager().GetPortName(port);
+                string portName = connectionManager.GetPortName(port);
                 return string.Format("{0}_{1}", name, portName);
             }
             catch // don't log dns lookups!
@@ -109,13 +106,13 @@ namespace Terminals.Data
         /// </summary>
         /// <returns>Not null, configured instance of connection favorite,
         /// which points to the terminals web site</returns>
-        internal static IFavorite CreateReleaseFavorite(IFactory factory)
+        internal static IFavorite CreateReleaseFavorite(IFactory factory, ConnectionManager connectionManager)
         {
             IFavorite release = factory.CreateFavorite();
             release.Name = TerminalsReleasesFavoriteName;
             release.ServerName = TerminalsReleasesUrl;
             release.Port = KnownConnectionConstants.HTTPPort;
-            GetConnectionManager().ChangeProtocol(release, KnownConnectionConstants.HTTP);
+            connectionManager.ChangeProtocol(release, KnownConnectionConstants.HTTP);
             return release;
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Win32;
 using Terminals.Common.Connections;
+using Terminals.Connections;
 using Terminals.Data;
 
 namespace Terminals.Integration.Import
@@ -21,14 +22,14 @@ namespace Terminals.Integration.Import
         /// Reads favorites from the registry. Reads serverName, domain and user name.
         /// </summary>
         /// <returns>Not null collection of favorites. Empty collection by exception.</returns>
-        internal static List<FavoriteConfigurationElement> Import()
+        internal static List<FavoriteConfigurationElement> Import(ConnectionManager connectionManager)
         {
             try
             {
                 using (RegistryKey favoritesKey = Registry.CurrentUser.OpenSubKey(REGISTRY_KEY))
                 {
                    if (favoritesKey != null)
-                    return ImportFavoritesFromSubKeys(favoritesKey); 
+                    return ImportFavoritesFromSubKeys(connectionManager, favoritesKey); 
                 }
             }
             catch (Exception e)
@@ -39,7 +40,7 @@ namespace Terminals.Integration.Import
             return new List<FavoriteConfigurationElement>();
         }
 
-        private static List<FavoriteConfigurationElement> ImportFavoritesFromSubKeys(RegistryKey favoritesKey)
+        private static List<FavoriteConfigurationElement> ImportFavoritesFromSubKeys(ConnectionManager connectionManager, RegistryKey favoritesKey)
         {
             var registryFavorites = new List<FavoriteConfigurationElement>();
             foreach (string favoriteKeyName in favoritesKey.GetSubKeyNames())
@@ -49,14 +50,14 @@ namespace Terminals.Integration.Import
                     if (favoriteKey == null)
                         continue;
 
-                    registryFavorites.Add(ImportRdpKey(favoriteKey, favoriteKeyName));
+                    registryFavorites.Add(ImportRdpKey(connectionManager, favoriteKey, favoriteKeyName));
                 }
             }
 
             return registryFavorites;
         }
 
-        private static FavoriteConfigurationElement ImportRdpKey(RegistryKey favoriteKey, string favoriteName)
+        private static FavoriteConfigurationElement ImportRdpKey(ConnectionManager connectionManager, RegistryKey favoriteKey, string favoriteName)
         {
             string userKey = favoriteKey.GetValue("UsernameHint", string.Empty).ToString();
             string domainName = string.Empty;
@@ -68,7 +69,7 @@ namespace Terminals.Integration.Import
                 userName = userKey.Substring(slashIndex + 1, userKey.Length - slashIndex - 1);   
             }
 
-            return FavoritesFactory.CreateNewFavorite(favoriteName, favoriteName,
+            return FavoritesFactory.CreateNewFavorite(connectionManager, favoriteName, favoriteName,
                 KnownConnectionConstants.RDPPort, domainName, userName);
         }
     }
