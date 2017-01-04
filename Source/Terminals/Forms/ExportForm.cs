@@ -16,20 +16,23 @@ namespace Terminals.Forms
         private readonly FavoriteTreeListLoader treeLoader;
         private readonly Exporters exporters;
 
-        public ExportForm(IPersistence persistence)
+        private readonly ConnectionManager connectionManager;
+
+        public ExportForm(IPersistence persistence, ConnectionManager connectionManager)
         {
             this.persistence = persistence;
             this.InitializeComponent();
 
             this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence, FavoriteIcons.Instance);
             this.treeLoader.LoadRootNodes();
-            this.exporters = new Exporters(this.persistence, ConnectionManager.Instance);
+            this.connectionManager = connectionManager;
+            this.exporters = new Exporters(this.persistence, this.connectionManager);
             this.saveFileDialog.Filter = this.exporters.GetProvidersDialogFilter();
         }
 
         private void ExportForm_Load(object sender, EventArgs e)
         {
-            this.favsTree.AssignServices(this.persistence, FavoriteIcons.Instance);
+            this.favsTree.AssignServices(this.persistence, FavoriteIcons.Instance, this.connectionManager);
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
@@ -75,7 +78,7 @@ namespace Terminals.Forms
         private List<FavoriteConfigurationElement> ConvertFavoritesToExport(List<IFavorite> favorites)
         {
             return favorites.Distinct()
-                .Select(favorite => ModelConverterV2ToV1.ConvertToFavorite(favorite, this.persistence, ConnectionManager.Instance))
+                .Select(favorite => ModelConverterV2ToV1.ConvertToFavorite(favorite, this.persistence, this.connectionManager))
                 .ToList();
         }
 

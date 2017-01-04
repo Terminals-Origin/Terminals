@@ -79,7 +79,7 @@ namespace Terminals
 
         private void FavsList_Load(object sender, EventArgs e)
         {
-            this.favsTree.AssignServices(this.persistence, this.favoriteIcons);
+            this.favsTree.AssignServices(this.persistence, this.favoriteIcons, this.connectionManager);
             this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence, this.favoriteIcons);
             this.treeLoader.LoadRootNodes();
             this.historyTreeView.Load(this.persistence, this.favoriteIcons);

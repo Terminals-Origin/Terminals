@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Integration.Import;
 
@@ -17,6 +18,8 @@ namespace Terminals.Forms.Controls
         private readonly IDataObject data;
 
         private readonly IPersistence persistence;
+
+        private readonly ConnectionManager connectinManager;
 
         internal CopyFavoriteCommand CopyCommnad { get; set; }
 
@@ -65,12 +68,14 @@ namespace Terminals.Forms.Controls
 
         private Action<Form> tryDrop= form => { };
 
-        internal TreeViewDragDrop(IPersistence persistence, DragEventArgs dragArguments,
-            IKeyModifiers keyModifiers, IGroup targetGroup, IFavorite targetFavorite)
+        internal TreeViewDragDrop(IPersistence persistence, ConnectionManager connectinManager,
+            DragEventArgs dragArguments, IKeyModifiers keyModifiers, 
+            IGroup targetGroup, IFavorite targetFavorite)
         {
             this.Effect = DragDropEffects.None;
             this.data = dragArguments.Data;
             this.persistence = persistence;
+            this.connectinManager = connectinManager;
             this.CopyCommnad = new CopyFavoriteCommand(this.persistence);
             this.keyModifiers = keyModifiers;
             this.targetGroup = targetGroup;
@@ -214,7 +219,7 @@ namespace Terminals.Forms.Controls
             var importers = new Importers(this.persistence);
             List<FavoriteConfigurationElement> toImport = importers.ImportFavorites(files);
             this.ApplyTargetGroup(toImport);
-            var managedImport = new ImportWithDialogs(parentForm, this.persistence);
+            var managedImport = new ImportWithDialogs(parentForm, this.persistence, this.connectinManager);
             managedImport.Import(toImport);
         }
 

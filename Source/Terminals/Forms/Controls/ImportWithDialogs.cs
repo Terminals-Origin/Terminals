@@ -29,8 +29,8 @@ namespace Terminals.Forms.Controls
             get { return this.persistence.Favorites; }
         }
 
-        internal ImportWithDialogs(Form sourceForm, IPersistence persistence)
-            : this(new FormsImportUi(sourceForm), persistence, ConnectionManager.Instance)
+        internal ImportWithDialogs(Form sourceForm, IPersistence persistence, ConnectionManager connectionManager)
+            : this(new FormsImportUi(sourceForm), persistence, connectionManager)
         {
         }
 
