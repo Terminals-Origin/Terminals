@@ -26,11 +26,15 @@ namespace Terminals.Forms
 
         private readonly GuardedCredentialFactory guardedCredentialFactory;
 
-        internal ConnectionsUiFactory(MainForm mainForm, TerminalTabsSelectionControler terminalsControler, IPersistence persistence)
+        private readonly ConnectionManager connectionManager;
+
+        internal ConnectionsUiFactory(MainForm mainForm, TerminalTabsSelectionControler terminalsControler,
+            IPersistence persistence, ConnectionManager connectionManager)
         {
             this.mainForm = mainForm;
             this.terminalsControler = terminalsControler;
             this.persistence = persistence;
+            this.connectionManager = connectionManager;
             this.guardedCredentialFactory = new GuardedCredentialFactory(this.persistence);
         }
 
@@ -144,7 +148,7 @@ namespace Terminals.Forms
 
         internal void CreateNewTerminal(String name = null)
         {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, name))
+            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, name))
             {
                 TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
                 if (result != TerminalFormDialogResult.Cancel)

@@ -167,7 +167,7 @@ namespace Terminals
                 this.formSettings = new FormSettings(this);
                 this.tabsFilter = new TabControlFilter(this.tcTerminals);
                 this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals, this.persistence);
-                this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler, this.persistence);
+                this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler, this.persistence, this.connectionManager);
                 this.terminalsControler.AssingUiFactory(this.connectionsUiFactory);
                 this.toolbarExtenders = ConnectionManager.Instance.CreateToolbarExtensions(this.terminalsControler);
 
@@ -181,7 +181,7 @@ namespace Terminals
                 this.favoriteToolBar.Visible = this.toolStripMenuItemShowHideFavoriteToolbar.Checked;
                 this.fullScreenSwitch = new MainFormFullScreenSwitch(this);
                 this.tabControlRemover = new TabControlRemover(this.settings, this, this.terminalsControler, this.tcTerminals);
-                this.favsList1.Persistence = this.persistence;
+                this.favsList1.AssignServices(this.persistence, this.connectionManager);
                 this.AssignToolStripsToContainer();
                 this.ApplyControlsEnableAndVisibleState();
 

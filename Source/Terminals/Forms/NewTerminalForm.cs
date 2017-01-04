@@ -18,7 +18,7 @@ namespace Terminals
 
         private NewTerminalFormValidator validator;
 
-        private readonly ConnectionManager connectionManager = ConnectionManager.Instance;
+        private readonly ConnectionManager connectionManager;
 
         public Guid EditedId { get; private set; }
 
@@ -41,24 +41,25 @@ namespace Terminals
 
         internal IFavorite Favorite { get; private set; }
 
-        public NewTerminalForm(IPersistence persistence, String serverName)
-            : this()
+        public NewTerminalForm(IPersistence persistence, ConnectionManager connectionManager, string serverName)
+            : this(connectionManager)
         {
             this.persistence = persistence;
             this.InitializeFavoritePropertiesControl();
             this.Init(null, serverName);
         }
 
-        public NewTerminalForm(IPersistence persistence, IFavorite favorite)
-            : this()
+        public NewTerminalForm(IPersistence persistence, ConnectionManager connectionManager, IFavorite favorite)
+            : this(connectionManager)
         {
             this.persistence = persistence;
             this.InitializeFavoritePropertiesControl();
             this.Init(favorite, String.Empty);
         }
 
-        private NewTerminalForm()
+        private NewTerminalForm(ConnectionManager connectionManager)
         {
+            this.connectionManager = connectionManager;
             this.InitializeComponent();
         }
 
