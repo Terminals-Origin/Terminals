@@ -1,3 +1,4 @@
+using System.Text;
 using Terminals.Data;
 
 namespace Terminals.Plugins.Putty
@@ -20,44 +21,44 @@ namespace Terminals.Plugins.Putty
 
             var puttyOptions = favorite.ProtocolProperties as PuttyOptions;
 
-            var args = string.Empty;
+            var args = new StringBuilder();
 
             // 3.8.3.1 -load: load a saved session
             if (!string.IsNullOrEmpty(puttyOptions.SessionName))
-                args += string.Format(" -load \"{0}\"", puttyOptions.SessionName);
+                args.AppendFormat(" -load \"{0}\"", puttyOptions.SessionName);
 
             // 3.8.3.2 Selecting a protocol: -ssh, -telnet, -rlogin, -raw -serial
-            args += " -ssh";
+            args.Append(" -ssh");
 
             // -l: specify a login name
             if (!string.IsNullOrEmpty(userName))
-                args += " -l " + userName;
+                args.Append(" -l " + userName);
 
             // 3.8.3.5 -L, -R and -D: set up port forwardings
             // not right now
 
 
             // 3.8.3.7 -P: specify a port number
-            args += " -P " + favorite.Port;
+            args.AppendFormat(" -P {0}", favorite.Port);
 
             // 3.8.3.8 -pw: specify a password
             if (!string.IsNullOrEmpty(userPassword))
-                args += " -pw " + userPassword; 
+                args.Append(" -pw " + userPassword); 
 
             // 3.8.3.11 -X and -x: control X11 forwarding
             if (puttyOptions.X11Forwarding)
-                args += " -X ";
+                args.Append(" -X");
             else
-                args += " -x ";
+                args.Append(" -x");
 
             // 3.8.3.11 -X and -x: control X11 forwarding
             if (puttyOptions.EnableCompression)
-                args += " -C ";
+                args.Append(" -C");
 
 
-            args += " " + favorite.ServerName;
+            args.Append(" " + favorite.ServerName);
 
-            return args;
+            return args.ToString();
 
         }
     }

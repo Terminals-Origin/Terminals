@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Terminals.Connections;
@@ -17,11 +18,68 @@ namespace Terminals.Plugins.Putty
         private bool windowCaptured = false;
         private Process puttyProcess;
 
-        private bool IsPuttyReady {
-            get {
+        private bool IsPuttyReady
+        {
+            get
+            {
                 return windowCaptured && null != puttyProcess && !puttyProcess.HasExited;
             }
         }
+
+        public override bool Connected
+        {
+            get
+            {
+                return (IsPuttyReady && puttyProcess != null && !puttyProcess.HasExited);
+            }
+        }
+
+        public bool FullScreen
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                if (value)
+                    SendFocusToPutty();
+            }
+        }
+
+        public string Server
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string Domain
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool ConnectToConsole
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
 
         public PuttyConnection()
         {
@@ -39,11 +97,12 @@ namespace Terminals.Plugins.Putty
         {
             if (IsPuttyReady)
             {
-                this.Invoke(new ThreadStart(() => {
+                this.Invoke(new ThreadStart(() =>
+                {
                     NativeMethods.SetForegroundWindow(puttyProcess.MainWindowHandle);
                     NativeMethods.SetFocus(puttyProcess.MainWindowHandle);
                 }));
-                
+
             }
         }
 
@@ -57,7 +116,6 @@ namespace Terminals.Plugins.Putty
             if (null != this.ParentForm)
                 ((Form)this.ParentForm).ResizeEnd += PuttyConnection_ResizeEnd;
         }
-        
 
         private void ClipPutty()
         {
@@ -75,14 +133,14 @@ namespace Terminals.Plugins.Putty
                 Point referencePoint1 = new Point(clientRect.Width, clientRect.Height);
                 NativeMethods.ClientToScreen(puttyProcess.MainWindowHandle, ref referencePoint1);
 
-                var top = (referencePoint0.Y - windowRect.Top);
-                var left = (referencePoint0.X - windowRect.Left);
+                int top = (referencePoint0.Y - windowRect.Top);
+                int left = (referencePoint0.X - windowRect.Left);
 
-                var right = windowRect.Right - referencePoint1.X; // right contains the width of the scrool that should be shown
-                var bottom = windowRect.Bottom - referencePoint1.Y;
+                int right = windowRect.Right - referencePoint1.X; // right contains the width of the scrool that should be shown
+                int bottom = windowRect.Bottom - referencePoint1.Y;
 
-                var width = this.Width + left + left; // + right ( using doubled left )
-                var height = this.Height + top + bottom;
+                int width = this.Width + left + left; // + right ( using doubled left )
+                int height = this.Height + top + bottom;
 
                 NativeMethods.SetWindowPos(puttyProcess.MainWindowHandle, IntPtr.Zero, -left, -top, width, height, NativeMethods.SetWindowPosFlags.FrameChanged | NativeMethods.SetWindowPosFlags.DoNotActivate);
             }
@@ -91,9 +149,9 @@ namespace Terminals.Plugins.Putty
 
         private void AdjustWindowStyle(IntPtr handle)
         {
-            uint lStyle = NativeMethods.GetWindowLong(handle, (int) NativeMethods.WindowLongParam.GWL_STYLE);
+            uint lStyle = NativeMethods.GetWindowLong(handle, (int)NativeMethods.WindowLongParam.GWL_STYLE);
             NativeMethods.WindowStyles flagsToDisable = ~(NativeMethods.WindowStyles.WS_CAPTION | NativeMethods.WindowStyles.WS_THICKFRAME | NativeMethods.WindowStyles.WS_MINIMIZE | NativeMethods.WindowStyles.WS_MAXIMIZE | NativeMethods.WindowStyles.WS_SYSMENU);
-            lStyle &= (uint) flagsToDisable;
+            lStyle &= (uint)flagsToDisable;
             NativeMethods.SetWindowLong(handle, (int)NativeMethods.WindowLongParam.GWL_STYLE, lStyle);
 
             uint lExStyle = NativeMethods.GetWindowLong(handle, (int)NativeMethods.WindowLongParam.GWL_EXSTYLE);
@@ -103,53 +161,13 @@ namespace Terminals.Plugins.Putty
         }
 
 
-        public override bool Connected {
-            get {
-                return (IsPuttyReady && puttyProcess != null && !puttyProcess.HasExited);
-            }
-        }
 
-        public bool FullScreen {
-            get {
-                throw new NotImplementedException();
-            }
-
-            set {
-                if (value)
-                    SendFocusToPutty();
-            }
-        }
-
-        public string Server {
-            get {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string UserName {
-            get {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string Domain {
-            get {
-                throw new NotImplementedException();
-            }
-        }
-
-        public bool ConnectToConsole {
-            get {
-                throw new NotImplementedException();
-            }
-        }
 
         public override bool Connect()
         {
             ((Form)this.ParentForm).ResizeEnd += PuttyConnection_ResizeEnd;
-            var o = this.Favorite.ProtocolProperties;
             this.Dock = DockStyle.Fill;
-            
+
             LaunchPutty();
 
             return true;
@@ -162,7 +180,7 @@ namespace Terminals.Plugins.Putty
 
         internal string GetPuttyBinaryPath()
         {
-            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), 
+            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 "Resources", PUTTY_BINARY);
         }
 
@@ -198,5 +216,6 @@ namespace Terminals.Plugins.Putty
         {
             SendFocusToPutty();
         }
+
     }
 }

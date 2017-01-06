@@ -1,6 +1,4 @@
-﻿using System;
-using Terminals.Common.Connections;
-using Terminals.Data;
+﻿using Terminals.Common.Connections;
 
 namespace Terminals.Plugins.Putty
 {

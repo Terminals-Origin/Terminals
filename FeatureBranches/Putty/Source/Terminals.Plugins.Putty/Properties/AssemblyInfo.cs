@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 
 [assembly: AssemblyTitle("Terminals.Plugins.Putty")]
-[assembly: AssemblyDescription("ICA")]
+[assembly: AssemblyDescription("Putty")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCulture("")]
 
