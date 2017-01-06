@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Terminals.Connections;
 using Terminals.Data;
+using Terminals.Native;
 
 namespace Terminals.Plugins.Putty
 {
@@ -99,8 +100,8 @@ namespace Terminals.Plugins.Putty
             {
                 this.Invoke(new ThreadStart(() =>
                 {
-                    NativeMethods.SetForegroundWindow(puttyProcess.MainWindowHandle);
-                    NativeMethods.SetFocus(puttyProcess.MainWindowHandle);
+                    Methods.SetForegroundWindow(puttyProcess.MainWindowHandle);
+                    Methods.SetFocus(puttyProcess.MainWindowHandle);
                 }));
 
             }
@@ -121,17 +122,15 @@ namespace Terminals.Plugins.Putty
         {
             if (IsPuttyReady)
             {
-                NativeMethods.RECT windowRect;
-                NativeMethods.GetWindowRect(puttyProcess.MainWindowHandle, out windowRect);
+                Rectangle windowRect = Methods.GetWindowRect(puttyProcess.MainWindowHandle);
 
-                NativeMethods.RECT clientRect;
-                NativeMethods.GetClientRect(puttyProcess.MainWindowHandle, out clientRect);
+                Rectangle clientRect = Methods.GetClientRect(puttyProcess.MainWindowHandle);
 
                 Point referencePoint0 = new Point(0, 0);
-                NativeMethods.ClientToScreen(puttyProcess.MainWindowHandle, ref referencePoint0);
+                Methods.ClientToScreen(puttyProcess.MainWindowHandle, ref referencePoint0);
 
                 Point referencePoint1 = new Point(clientRect.Width, clientRect.Height);
-                NativeMethods.ClientToScreen(puttyProcess.MainWindowHandle, ref referencePoint1);
+                Methods.ClientToScreen(puttyProcess.MainWindowHandle, ref referencePoint1);
 
                 int top = (referencePoint0.Y - windowRect.Top);
                 int left = (referencePoint0.X - windowRect.Left);
@@ -142,22 +141,22 @@ namespace Terminals.Plugins.Putty
                 int width = this.Width + left + left; // + right ( using doubled left )
                 int height = this.Height + top + bottom;
 
-                NativeMethods.SetWindowPos(puttyProcess.MainWindowHandle, IntPtr.Zero, -left, -top, width, height, NativeMethods.SetWindowPosFlags.FrameChanged | NativeMethods.SetWindowPosFlags.DoNotActivate);
+                Methods.SetWindowPos(puttyProcess.MainWindowHandle, IntPtr.Zero, -left, -top, width, height, SetWindowPosFlags.FrameChanged | SetWindowPosFlags.DoNotActivate);
             }
         }
 
 
         private void AdjustWindowStyle(IntPtr handle)
         {
-            uint lStyle = NativeMethods.GetWindowLong(handle, (int)NativeMethods.WindowLongParam.GWL_STYLE);
-            NativeMethods.WindowStyles flagsToDisable = ~(NativeMethods.WindowStyles.WS_CAPTION | NativeMethods.WindowStyles.WS_THICKFRAME | NativeMethods.WindowStyles.WS_MINIMIZE | NativeMethods.WindowStyles.WS_MAXIMIZE | NativeMethods.WindowStyles.WS_SYSMENU);
+            uint lStyle = Methods.GetWindowLong(handle, (int) WindowLongParam.GWL_STYLE);
+            WindowStyles flagsToDisable = ~(WindowStyles.WS_CAPTION | WindowStyles.WS_THICKFRAME | WindowStyles.WS_MINIMIZE | WindowStyles.WS_MAXIMIZE | WindowStyles.WS_SYSMENU);
             lStyle &= (uint)flagsToDisable;
-            NativeMethods.SetWindowLong(handle, (int)NativeMethods.WindowLongParam.GWL_STYLE, lStyle);
+            Methods.SetWindowLong(handle, (int)WindowLongParam.GWL_STYLE, lStyle);
 
-            uint lExStyle = NativeMethods.GetWindowLong(handle, (int)NativeMethods.WindowLongParam.GWL_EXSTYLE);
-            NativeMethods.WindowExStyles flagsToDisableEx = ~(NativeMethods.WindowExStyles.WS_EX_DLGMODALFRAME | NativeMethods.WindowExStyles.WS_EX_CLIENTEDGE | NativeMethods.WindowExStyles.WS_EX_STATICEDGE);
+            uint lExStyle = Methods.GetWindowLong(handle, (int)WindowLongParam.GWL_EXSTYLE);
+            WindowExStyles flagsToDisableEx = ~(WindowExStyles.WS_EX_DLGMODALFRAME | WindowExStyles.WS_EX_CLIENTEDGE | WindowExStyles.WS_EX_STATICEDGE);
             lExStyle &= (uint)flagsToDisableEx;
-            NativeMethods.SetWindowLong(handle, (int)NativeMethods.WindowLongParam.GWL_EXSTYLE, lExStyle);
+            Methods.SetWindowLong(handle, (int)WindowLongParam.GWL_EXSTYLE, lExStyle);
         }
 
 
@@ -197,7 +196,7 @@ namespace Terminals.Plugins.Putty
             puttyProcess.WaitForInputIdle();
 
             AdjustWindowStyle(puttyProcess.MainWindowHandle);
-            NativeMethods.SetParent(puttyProcess.MainWindowHandle, this.Handle);
+            Methods.SetParent(puttyProcess.MainWindowHandle, this.Handle);
 
             windowCaptured = true;
 

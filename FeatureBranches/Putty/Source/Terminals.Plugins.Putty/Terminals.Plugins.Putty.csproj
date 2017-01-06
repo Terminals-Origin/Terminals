@@ -48,7 +48,6 @@
       <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ArgumentsBuilder.cs" />
-    <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PuttyConnection.cs">
       <SubType>Component</SubType>
