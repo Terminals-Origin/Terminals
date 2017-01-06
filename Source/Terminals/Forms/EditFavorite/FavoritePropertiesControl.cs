@@ -56,11 +56,9 @@ namespace Terminals.Forms.EditFavorite
             this.DockAllPanels();
             this.HideAllPanels();
 
-            string[] availablePlugins = connectionManager.GetAvailableProtocols();
+            this.generalPanel1.ProtocolChanged += this.GenearalPanel1ProtocolChanged;
+            string[] availablePlugins = this.connectionManager.GetAvailableProtocols();
             this.generalPanel1.AssingAvailablePlugins(availablePlugins);
-            this.generalPanel1.ProtocolChanged += GenearalPanel1ProtocolChanged;
-            string firstPlugin = availablePlugins.First();
-            this.GenearalPanel1ProtocolChanged(firstPlugin);
             this.groupsPanel1.BindGroups();
             this.generalPanel1.ServerNameChanged += this.protocolOptionsPanel1.OnServerNameChanged;
             this.treeView.SelectedNode = this.treeView.Nodes[0];

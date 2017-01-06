@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Common.Converters;
@@ -348,8 +349,11 @@ namespace Terminals.Forms.EditFavorite
         internal void AssingAvailablePlugins(string[] protocols)
         {
             this.ProtocolComboBox.DataSource = protocols;
-            // for dynamicaly loaded plugins, this needs to be done later
-            this.ProtocolComboBox.SelectedIndex = 0;
+            int rdpIndex = protocols.ToList().IndexOf(KnownConnectionConstants.RDP);
+
+            if (rdpIndex >= 0)
+                this.ProtocolComboBox.SelectedIndex = rdpIndex;
+
             this.canValidate = true;
         }
     }
