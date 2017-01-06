@@ -118,6 +118,9 @@ namespace Terminals
                                                        NewWindow = this.NewWindow,
                                                        Notes = this.Notes,
                                                        OverallTimeout = this.OverallTimeout,
+                                                       PuttyEnableCompression = this.PuttyEnableCompression,
+                                                       PuttySessionName = this.PuttySessionName,
+                                                       PuttyX11Forwarding = this.PuttyX11Forwarding,
                                                        Port = this.Port,
                                                        Protocol = this.Protocol,
                                                        RedirectClipboard = this.RedirectClipboard,
@@ -156,7 +159,7 @@ namespace Terminals
                                                        VncAutoScale = this.VncAutoScale,
                                                        VncDisplayNumber = this.VncDisplayNumber,
                                                        VncViewOnly = this.VncViewOnly,
-                                                       SSHKeyFile = this.SSHKeyFile
+                                                       SSHKeyFile = this.SSHKeyFile,
                                                    };
             return fav;
 
@@ -581,6 +584,35 @@ namespace Terminals
             set
             {
                 this["ICAApplicationPath"] = value;
+            }
+        }
+
+
+        [ConfigurationProperty("puttySessionName")]
+        public String PuttySessionName {
+            get {
+                return (String)this["puttySessionName"];
+            }
+            set {
+                this["puttySessionName"] = value;
+            }
+        }
+        [ConfigurationProperty("puttyX11Forwarding")]
+        public Boolean PuttyX11Forwarding {
+            get {
+                return (Boolean)this["puttyX11Forwarding"];
+            }
+            set {
+                this["puttyX11Forwarding"] = value;
+            }
+        }
+        [ConfigurationProperty("puttyEnableCompression")]
+        public Boolean PuttyEnableCompression {
+            get {
+                return (Boolean)this["puttyEnableCompression"];
+            }
+            set {
+                this["puttyEnableCompression"] = value;
             }
         }
 

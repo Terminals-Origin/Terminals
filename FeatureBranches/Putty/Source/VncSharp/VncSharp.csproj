@@ -18,7 +18,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <SccProjectName>%24/Terminals/Main/Source/VncSharp</SccProjectName>
+    <SccProjectName>%24/Terminals/FeatureBranches/Putty/Source/VncSharp</SccProjectName>
     <SccLocalPath>.</SccLocalPath>
     <SccAuxPath>https://tfs.codeplex.com/tfs/TFS01</SccAuxPath>
     <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>

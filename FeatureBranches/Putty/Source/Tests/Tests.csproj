@@ -150,6 +150,7 @@
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />
     <Compile Include="FilePersisted\SearchEngineTest.cs" />
     <Compile Include="Configuration\FavoriteConfigurationElementTests.cs" />
+    <Compile Include="Putty\PuttyTests.cs" />
     <Compile Include="SqlPersisted\ComparersTest.cs" />
     <Compile Include="SqlPersisted\FavoriteCopiesTest.cs" />
     <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />
@@ -240,6 +241,10 @@
     <ProjectReference Include="..\Terminals.Plugins.Ica\Terminals.Plugins.Ica.csproj">
       <Project>{bb4a4cc7-c449-4f81-8395-7806cc1bdfa8}</Project>
       <Name>Terminals.Plugins.Ica</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Putty\Terminals.Plugins.Putty.csproj">
+      <Project>{449DC14A-7C3F-4BE5-BA39-4AFD1C5404E6}</Project>
+      <Name>Terminals.Plugins.Putty</Name>
     </ProjectReference>
     <ProjectReference Include="..\Terminals.Plugins.Rdp\Terminals.Plugins.Rdp.csproj">
       <Project>{f0c60ed2-9a47-4364-af57-505bc3e953d5}</Project>
