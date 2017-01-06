@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RDCMan schemaVersion="1">
+    <version>2.2</version>
+    <file>
+        <properties>
+            <name>RdcManGroupsEmpty</name>
+            <expanded>False</expanded>
+            <comment />
+            <logonCredentials inherit="FromParent" />
+            <connectionSettings inherit="FromParent" />
+            <gatewaySettings inherit="FromParent" />
+            <remoteDesktop inherit="FromParent" />
+            <localResources inherit="FromParent" />
+            <securitySettings inherit="FromParent" />
+            <displaySettings inherit="FromParent" />
+        </properties>
+    </file>
+</RDCMan>

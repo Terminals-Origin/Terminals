@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <UI>
+            <Dialog Id="InstallTypeDlg" Width="370" Height="270" Title="!(loc.InstallDirDlg_Title)">
+                <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)" />
+                <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+                <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+                    <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+                </Control>
+
+                <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="Select installation scenario you want to use" />
+                <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="{\WixUI_Font_Title}Installation type" />
+                <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.InstallDirDlgBannerBitmap)" />
+                <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+                <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+              <Control Id="FolderLabel" Type="Text" X="20" Y="60" Width="290" Height="60" NoPrefix="yes" Text="Some administrators require to install a portable application, which allows you to store all data in application folder, so you can use the application from that folder for example on removable media. Install the application on local computer allows you to store the application data in your profile, protected agains other users."/>
+              <Control Id="InstallTypeControl" Type="RadioButtonGroup" X="20" Y="120" Width="320" Height="100" Property="INSTALLTYPE" Text="aaa">
+                <RadioButtonGroup Property="INSTALLTYPE">
+                  <RadioButton X="20" Y="0" Height="18"  Width="200" Value="1" Text="Install on this computer" />
+                  <RadioButton X="20" Y="30" Height="18"  Width="200" Value="0" Text="Install portable version" />
+                </RadioButtonGroup>
+              </Control>
+            </Dialog>
+        </UI>
+    </Fragment>
+</Wix>

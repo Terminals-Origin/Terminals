@@ -1,0 +1,970 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="Model1StoreContainer">
+          <EntitySet Name="BeforeConnectExecute" EntityType="Model1.Store.BeforeConnectExecute" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CredentialBase" EntityType="Model1.Store.CredentialBase" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Credentials" EntityType="Model1.Store.Credentials" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DisplayOptions" EntityType="Model1.Store.DisplayOptions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Favorites" EntityType="Model1.Store.Favorites" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FavoritesInGroup" EntityType="Model1.Store.FavoritesInGroup" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Groups" EntityType="Model1.Store.Groups" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Security" EntityType="Model1.Store.Security" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_BeforeConnectExecute_BeforeConnectExecute" Association="Model1.Store.FK_BeforeConnectExecute_BeforeConnectExecute">
+            <End Role="Favorites" EntitySet="Favorites" />
+            <End Role="BeforeConnectExecute" EntitySet="BeforeConnectExecute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Credentials_CredentialBase" Association="Model1.Store.FK_Credentials_CredentialBase">
+            <End Role="CredentialBase" EntitySet="CredentialBase" />
+            <End Role="Credentials" EntitySet="Credentials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DisplayOptions_Favorites" Association="Model1.Store.FK_DisplayOptions_Favorites">
+            <End Role="Favorites" EntitySet="Favorites" />
+            <End Role="DisplayOptions" EntitySet="DisplayOptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FavoritesInGroup_Favorites" Association="Model1.Store.FK_FavoritesInGroup_Favorites">
+            <End Role="Favorites" EntitySet="Favorites" />
+            <End Role="FavoritesInGroup" EntitySet="FavoritesInGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FavoritesInGroup_Groups" Association="Model1.Store.FK_FavoritesInGroup_Groups">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="FavoritesInGroup" EntitySet="FavoritesInGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Groups_Groups" Association="Model1.Store.FK_Groups_Groups">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Groups1" EntitySet="Groups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Security_CredentialBase" Association="Model1.Store.FK_Security_CredentialBase">
+            <End Role="CredentialBase" EntitySet="CredentialBase" />
+            <End Role="Security" EntitySet="Security" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Security_Favorites" Association="Model1.Store.FK_Security_Favorites">
+            <End Role="Favorites" EntitySet="Favorites" />
+            <End Role="Security" EntitySet="Security" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="BeforeConnectExecute">
+          <Key>
+            <PropertyRef Name="FavoriteId" />
+          </Key>
+          <Property Name="FavoriteId" Type="int" Nullable="false" />
+          <Property Name="Enabled" Type="bit" Nullable="false" />
+          <Property Name="Command" Type="nvarchar" MaxLength="255" />
+          <Property Name="CommandArguments" Type="nvarchar" MaxLength="255" />
+          <Property Name="InitialDirectory" Type="nvarchar" MaxLength="255" />
+          <Property Name="WaitForExit" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CredentialBase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="EncryptedUserName" Type="nvarchar(max)" />
+          <Property Name="EncryptedDomain" Type="nvarchar(max)" />
+          <Property Name="EncryptedPassword" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Credentials">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="DisplayOptions">
+          <Key>
+            <PropertyRef Name="FavoriteId" />
+          </Key>
+          <Property Name="FavoriteId" Type="int" Nullable="false" />
+          <Property Name="Height" Type="int" />
+          <Property Name="Width" Type="int" />
+          <Property Name="Size" Type="tinyint" />
+          <Property Name="Colors" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="Favorites">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="Protocol" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="Port" Type="int" Nullable="false" />
+          <Property Name="ServerName" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="NewWindow" Type="bit" Nullable="false" />
+          <Property Name="DesktopShare" Type="nvarchar" MaxLength="255" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+          <Property Name="ProtocolProperties" Type="xml" />
+          <Property Name="IconData" Type="varbinary(max)" />
+          <Property Name="Version" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="FavoritesInGroup">
+          <Key>
+            <PropertyRef Name="FavoriteId" />
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="FavoriteId" Type="int" Nullable="false" />
+          <Property Name="GroupId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="Version" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Security">
+          <Key>
+            <PropertyRef Name="FavoriteId" />
+          </Key>
+          <Property Name="FavoriteId" Type="int" Nullable="false" />
+          <Property Name="CredentialId" Type="int" />
+          <Property Name="CredentialBaseId" Type="int" />
+        </EntityType>
+        <Association Name="FK_BeforeConnectExecute_BeforeConnectExecute">
+          <End Role="Favorites" Type="Model1.Store.Favorites" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="BeforeConnectExecute" Type="Model1.Store.BeforeConnectExecute" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Favorites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BeforeConnectExecute">
+              <PropertyRef Name="FavoriteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Credentials_CredentialBase">
+          <End Role="CredentialBase" Type="Model1.Store.CredentialBase" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Credentials" Type="Model1.Store.Credentials" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CredentialBase">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Credentials">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DisplayOptions_Favorites">
+          <End Role="Favorites" Type="Model1.Store.Favorites" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DisplayOptions" Type="Model1.Store.DisplayOptions" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Favorites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DisplayOptions">
+              <PropertyRef Name="FavoriteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FavoritesInGroup_Favorites">
+          <End Role="Favorites" Type="Model1.Store.Favorites" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FavoritesInGroup" Type="Model1.Store.FavoritesInGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Favorites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FavoritesInGroup">
+              <PropertyRef Name="FavoriteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FavoritesInGroup_Groups">
+          <End Role="Groups" Type="Model1.Store.Groups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FavoritesInGroup" Type="Model1.Store.FavoritesInGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FavoritesInGroup">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Groups_Groups">
+          <End Role="Groups" Type="Model1.Store.Groups" Multiplicity="0..1" />
+          <End Role="Groups1" Type="Model1.Store.Groups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Groups1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Security_CredentialBase">
+          <End Role="CredentialBase" Type="Model1.Store.CredentialBase" Multiplicity="0..1" />
+          <End Role="Security" Type="Model1.Store.Security" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CredentialBase">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Security">
+              <PropertyRef Name="CredentialBaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Security_Favorites">
+          <End Role="Favorites" Type="Model1.Store.Favorites" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Security" Type="Model1.Store.Security" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Favorites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Security">
+              <PropertyRef Name="FavoriteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ClearHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="DeleteBeforeConnectExecute" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteCredentialBase" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteCredentials" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteDisplayOptions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteFavorite" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteFavoritesInGroup" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="GroupId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteGroup" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="ParentId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteSecurity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="Credential" Type="int" Mode="In" />
+          <Parameter Name="CredentialBaseId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetFavoriteGroups" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="favoriteId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetFavoriteIcon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetFavoriteProtocolProperties" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetFavoritesHistoryByDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="From" Type="datetime" Mode="In" />
+          <Parameter Name="To" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="GetFavoritesInGroup" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="groupId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetMasterPasswordKey" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="InsertBeforeConnectExecute" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="Enabled" Type="bit" Mode="In" />
+          <Parameter Name="Command" Type="nvarchar" Mode="In" />
+          <Parameter Name="CommandArguments" Type="nvarchar" Mode="In" />
+          <Parameter Name="InitialDirectory" Type="nvarchar" Mode="In" />
+          <Parameter Name="WaitForExit" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="InsertCredentialBase" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EncryptedUserName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EncryptedDomain" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EncryptedPassword" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="InsertCredentials" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="EncryptedUserName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EncryptedDomain" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EncryptedPassword" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="InsertDisplayOptions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="Height" Type="int" Mode="In" />
+          <Parameter Name="Width" Type="int" Mode="In" />
+          <Parameter Name="Size" Type="tinyint" Mode="In" />
+          <Parameter Name="Colors" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="InsertFavorite" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Protocol" Type="nvarchar" Mode="In" />
+          <Parameter Name="Port" Type="int" Mode="In" />
+          <Parameter Name="ServerName" Type="nvarchar" Mode="In" />
+          <Parameter Name="NewWindow" Type="bit" Mode="In" />
+          <Parameter Name="DesktopShare" Type="nvarchar" Mode="In" />
+          <Parameter Name="Notes" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="InsertFavoritesInGroup" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="GroupId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertGroup" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ParentId" Type="int" Mode="In" />
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="InsertHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="Date" Type="datetime" Mode="In" />
+          <Parameter Name="UserSid" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="InsertSecurity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="CredentialId" Type="int" Mode="In" />
+          <Parameter Name="CredentialBaseId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SetFavoriteIcon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="IconData" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="UpdateBeforeConnectExecute" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="Enabled" Type="bit" Mode="In" />
+          <Parameter Name="Command" Type="nvarchar" Mode="In" />
+          <Parameter Name="CommandArguments" Type="nvarchar" Mode="In" />
+          <Parameter Name="InitialDirectory" Type="nvarchar" Mode="In" />
+          <Parameter Name="WaitForExit" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="UpdateCredentialBase" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="EncryptedUserName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EncryptedDomain" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EncryptedPassword" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="UpdateCredentials" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="EncryptedUserName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EncryptedDomain" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EncryptedPassword" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="UpdateDisplayOptions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="Height" Type="int" Mode="In" />
+          <Parameter Name="Width" Type="int" Mode="In" />
+          <Parameter Name="Size" Type="tinyint" Mode="In" />
+          <Parameter Name="Colors" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="UpdateFavorite" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Protocol" Type="nvarchar" Mode="In" />
+          <Parameter Name="Port" Type="int" Mode="In" />
+          <Parameter Name="ServerName" Type="nvarchar" Mode="In" />
+          <Parameter Name="NewWindow" Type="bit" Mode="In" />
+          <Parameter Name="DesktopShare" Type="nvarchar" Mode="In" />
+          <Parameter Name="Notes" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UpdateFavoriteProtocolProperties" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="ProtocolProperties" Type="xml" Mode="In" />
+        </Function>
+        <Function Name="UpdateGroup" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="ParentId" Type="int" Mode="In" />
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UpdateMasterPasswordKey" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NewKey" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="UpdateSecurity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="CredentialId" Type="int" Mode="In" />
+          <Parameter Name="CredentialBaseId" Type="int" Mode="In" />
+        </Function>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Terminals.Data.DB" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="Database" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" b:LazyLoadingEnabled="true" xmlns:b="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+          <EntitySet Name="BeforeConnectExecute" EntityType="Terminals.Data.DB.DbBeforeConnectExecute" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="CredentialBase" EntityType="Terminals.Data.DB.DbCredentialBase" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="DisplayOptions" EntityType="Terminals.Data.DB.DbDisplayOptions" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="Favorites" EntityType="Terminals.Data.DB.DbFavorite" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="Groups" EntityType="Terminals.Data.DB.DbGroup" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="Security" EntityType="Terminals.Data.DB.DbSecurityOptions" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <AssociationSet Name="FK_BeforeConnectExecute_BeforeConnectExecute" Association="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute">
+            <End Role="Favorites" EntitySet="Favorites" />
+            <End Role="BeforeConnectExecute" EntitySet="BeforeConnectExecute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Security_Credentials" Association="Terminals.Data.DB.FK_Security_Credentials">
+            <End Role="Credentials" EntitySet="CredentialBase" />
+            <End Role="Security" EntitySet="Security" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DisplayOptions_Favorites" Association="Terminals.Data.DB.FK_DisplayOptions_Favorites">
+            <End Role="Favorites" EntitySet="Favorites" />
+            <End Role="DisplayOptions" EntitySet="DisplayOptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Security_Favorites" Association="Terminals.Data.DB.FK_Security_Favorites">
+            <End Role="Favorites" EntitySet="Favorites" />
+            <End Role="Security" EntitySet="Security" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Groups_Groups" Association="Terminals.Data.DB.FK_Groups_Groups">
+            <End Role="Parents" EntitySet="Groups" />
+            <End Role="Childs" EntitySet="Groups" />
+          </AssociationSet>
+          <AssociationSet Name="FavoritesInGroup" Association="Terminals.Data.DB.FavoritesInGroup">
+            <End Role="Favorites" EntitySet="Favorites" />
+            <End Role="Groups" EntitySet="Groups" />
+          </AssociationSet>
+          <FunctionImport Name="GetFavoriteProtocolProperties" ReturnType="Collection(String)" a:MethodAccess="Private">
+          <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFavoritesHistoryByDate" ReturnType="Collection(Int32)" a:MethodAccess="Internal">
+            <Parameter Name="From" Mode="In" Type="DateTime" />
+            <Parameter Name="To" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="InsertHistory" a:MethodAccess="Internal">
+            <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+            <Parameter Name="Date" Mode="In" Type="DateTime" />
+            <Parameter Name="UserSid" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateFavoriteProtocolProperties" a:MethodAccess="Internal">
+            <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+            <Parameter Name="ProtocolProperties" Mode="In" Type="String" />
+          </FunctionImport>
+          <AssociationSet Name="FK_Security_CredentialBase" Association="Terminals.Data.DB.FK_Security_CredentialBase">
+            <End Role="CredentialBase" EntitySet="CredentialBase" />
+            <End Role="SecurityOptions" EntitySet="Security" />
+          </AssociationSet>
+          <FunctionImport Name="UpdateMasterPasswordKey" a:MethodAccess="Private">
+          <Parameter Name="NewKey" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetMasterPasswordKey" ReturnType="Collection(String)" a:MethodAccess="Private" />
+          <FunctionImport Name="SetFavoriteIcon">
+            <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+            <Parameter Name="IconData" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="GetFavoriteIcon" ReturnType="Collection(Binary)" a:MethodAccess="Private">
+          <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFavoritesInGroup" ReturnType="Collection(Int32)">
+          <Parameter Name="groupId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFavoriteGroups" ReturnType="Collection(Int32)">
+          <Parameter Name="favoriteId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertFavoritesInGroup">
+            <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+            <Parameter Name="GroupId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteFavoritesInGroup">
+            <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+            <Parameter Name="GroupId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ClearHistory" />
+        </EntityContainer>
+        <EntityType Name="DbBeforeConnectExecute" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="FavoriteId" />
+          </Key>
+          <Property Type="Int32" Name="FavoriteId" Nullable="false" />
+          <Property Type="Boolean" Name="Execute" Nullable="false" />
+          <Property Type="String" Name="Command" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CommandArguments" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="InitialDirectory" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="WaitForExit" Nullable="false" />
+          <NavigationProperty Name="Favorite" Relationship="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute" FromRole="BeforeConnectExecute" ToRole="Favorites" />
+        </EntityType>
+        <EntityType Name="DbCredentialBase" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="String" Name="EncryptedUserName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EncryptedDomain" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EncryptedPassword" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Security" Relationship="Terminals.Data.DB.FK_Security_CredentialBase" FromRole="CredentialBase" ToRole="SecurityOptions" />
+        </EntityType>
+        <EntityType Name="DbCredentialSet" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" BaseType="Terminals.Data.DB.DbCredentialBase">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DbDisplayOptions" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="FavoriteId" />
+          </Key>
+          <Property Type="Int32" Name="FavoriteId" Nullable="false" />
+          <Property Type="Int32" Name="Height" />
+          <Property Type="Int32" Name="Width" />
+          <Property Type="Byte" Name="Size" />
+          <Property Type="Byte" Name="Colors" />
+          <NavigationProperty Name="Favorite" Relationship="Terminals.Data.DB.FK_DisplayOptions_Favorites" FromRole="DisplayOptions" ToRole="Favorites" />
+        </EntityType>
+        <EntityType Name="DbFavorite" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Protocol" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Port" Nullable="false" />
+          <Property Type="String" Name="ServerName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="NewWindow" Nullable="false" />
+          <Property Type="String" Name="DesktopShare" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Notes" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ExecuteBeforeConnect" Relationship="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute" FromRole="Favorites" ToRole="BeforeConnectExecute" />
+          <NavigationProperty Name="Display" Relationship="Terminals.Data.DB.FK_DisplayOptions_Favorites" FromRole="Favorites" ToRole="DisplayOptions" />
+          <NavigationProperty Name="Security" Relationship="Terminals.Data.DB.FK_Security_Favorites" FromRole="Favorites" ToRole="Security" />
+          <NavigationProperty Name="Groups" Relationship="Terminals.Data.DB.FavoritesInGroup" FromRole="Favorites" ToRole="Groups" />
+          <Property Type="Binary" Name="IconData" MaxLength="Max" FixedLength="false" />
+          <Property Type="Binary" Name="Version" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        </EntityType>
+        <EntityType Name="DbGroup" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ChildGroups" Relationship="Terminals.Data.DB.FK_Groups_Groups" FromRole="Parents" ToRole="Childs" />
+          <NavigationProperty Name="ParentGroup" Relationship="Terminals.Data.DB.FK_Groups_Groups" FromRole="Childs" ToRole="Parents" />
+          <NavigationProperty Name="Favorites" Relationship="Terminals.Data.DB.FavoritesInGroup" FromRole="Groups" ToRole="Favorites" />
+          <Property Type="Binary" Name="Version" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        </EntityType>
+        <EntityType Name="DbSecurityOptions" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="FavoriteId" />
+          </Key>
+          <Property Type="Int32" Name="FavoriteId" Nullable="false" />
+          <NavigationProperty Name="CredentialSet" Relationship="Terminals.Data.DB.FK_Security_Credentials" FromRole="Security" ToRole="Credentials" />
+          <NavigationProperty Name="Favorite" Relationship="Terminals.Data.DB.FK_Security_Favorites" FromRole="Security" ToRole="Favorites" />
+          <NavigationProperty Name="CredentialBase" Relationship="Terminals.Data.DB.FK_Security_CredentialBase" FromRole="SecurityOptions" ToRole="CredentialBase" />
+        </EntityType>
+        <Association Name="FK_BeforeConnectExecute_BeforeConnectExecute">
+          <End Type="Terminals.Data.DB.DbFavorite" Role="Favorites" Multiplicity="1" />
+          <End Type="Terminals.Data.DB.DbBeforeConnectExecute" Role="BeforeConnectExecute" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Favorites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BeforeConnectExecute">
+              <PropertyRef Name="FavoriteId" />
+            </Dependent>
+          </ReferentialConstraint>
+          
+        </Association>
+        <Association Name="FK_Security_Credentials">
+          <End Type="Terminals.Data.DB.DbCredentialSet" Role="Credentials" Multiplicity="0..1" />
+          <End Type="Terminals.Data.DB.DbSecurityOptions" Role="Security" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_DisplayOptions_Favorites">
+          <End Type="Terminals.Data.DB.DbFavorite" Role="Favorites" Multiplicity="1" />
+          <End Type="Terminals.Data.DB.DbDisplayOptions" Role="DisplayOptions" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Favorites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DisplayOptions">
+              <PropertyRef Name="FavoriteId" />
+            </Dependent>
+          </ReferentialConstraint>
+          
+        </Association>
+        <Association Name="FK_Security_Favorites">
+          <End Type="Terminals.Data.DB.DbFavorite" Role="Favorites" Multiplicity="1" />
+          <End Type="Terminals.Data.DB.DbSecurityOptions" Role="Security" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Favorites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Security">
+              <PropertyRef Name="FavoriteId" />
+            </Dependent>
+          </ReferentialConstraint>
+          
+        </Association>
+        <Association Name="FK_Groups_Groups">
+          <End Type="Terminals.Data.DB.DbGroup" Role="Parents" Multiplicity="0..1" />
+          <End Type="Terminals.Data.DB.DbGroup" Role="Childs" Multiplicity="*" />
+        </Association>
+        <Association Name="FavoritesInGroup">
+          <End Type="Terminals.Data.DB.DbFavorite" Role="Favorites" Multiplicity="*" >
+          </End>
+          <End Type="Terminals.Data.DB.DbGroup" Role="Groups" Multiplicity="*" >
+          </End>
+        </Association>
+        <Association Name="FK_Security_CredentialBase">
+          <End Type="Terminals.Data.DB.DbCredentialBase" Role="CredentialBase" Multiplicity="0..1" />
+          <End Type="Terminals.Data.DB.DbSecurityOptions" Role="SecurityOptions" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <Alias Key="Model" Value="Model1" />
+        <Alias Key="Target" Value="Model1.Store" />
+        <EntityContainerMapping CdmEntityContainer="Database" StorageEntityContainer="Model1StoreContainer">
+          <EntitySetMapping Name="BeforeConnectExecute">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DbBeforeConnectExecute">
+              <MappingFragment StoreEntitySet="BeforeConnectExecute">
+                <ScalarProperty Name="WaitForExit" ColumnName="WaitForExit" />
+                <ScalarProperty Name="InitialDirectory" ColumnName="InitialDirectory" />
+                <ScalarProperty Name="CommandArguments" ColumnName="CommandArguments" />
+                <ScalarProperty Name="Command" ColumnName="Command" />
+                <ScalarProperty Name="Execute" ColumnName="Enabled" />
+                <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DbBeforeConnectExecute">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model1.Store.InsertBeforeConnectExecute">
+                  <ScalarProperty Name="WaitForExit" ParameterName="WaitForExit" />
+                  <ScalarProperty Name="InitialDirectory" ParameterName="InitialDirectory" />
+                  <ScalarProperty Name="CommandArguments" ParameterName="CommandArguments" />
+                  <ScalarProperty Name="Command" ParameterName="Command" />
+                  <ScalarProperty Name="Execute" ParameterName="Enabled" />
+                  <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model1.Store.UpdateBeforeConnectExecute">
+                  <ScalarProperty Name="WaitForExit" ParameterName="WaitForExit" Version="Current" />
+                  <ScalarProperty Name="InitialDirectory" ParameterName="InitialDirectory" Version="Current" />
+                  <ScalarProperty Name="CommandArguments" ParameterName="CommandArguments" Version="Current" />
+                  <ScalarProperty Name="Command" ParameterName="Command" Version="Current" />
+                  <ScalarProperty Name="Execute" ParameterName="Enabled" Version="Current" />
+                  <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="Model1.Store.DeleteBeforeConnectExecute">
+                  <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CredentialBase">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DbCredentialBase">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model1.Store.InsertCredentialBase">
+                  <ScalarProperty Name="EncryptedDomain" ParameterName="EncryptedDomain" />
+                  <ScalarProperty Name="EncryptedUserName" ParameterName="EncryptedUserName" />
+                  <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" />
+                  <ResultBinding Name="Id" ColumnName="Id" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model1.Store.UpdateCredentialBase">
+                  <ScalarProperty Name="EncryptedDomain" ParameterName="EncryptedDomain" Version="Current" />
+                  <ScalarProperty Name="EncryptedUserName" ParameterName="EncryptedUserName" Version="Current" />
+                  <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" Version="Current" />
+                  <ScalarProperty Name="Id" ParameterName="Id" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="Model1.Store.DeleteCredentialBase">
+                  <ScalarProperty Name="Id" ParameterName="Id" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DbCredentialSet" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model1.Store.InsertCredentials">
+                  <ScalarProperty Name="EncryptedDomain" ParameterName="EncryptedDomain" />
+                  <ScalarProperty Name="EncryptedUserName" ParameterName="EncryptedUserName" />
+                  <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" />
+                  <ScalarProperty Name="Name" ParameterName="Name" />
+                  <ResultBinding Name="Id" ColumnName="Id" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model1.Store.UpdateCredentials">
+                  <ScalarProperty Name="EncryptedDomain" ParameterName="EncryptedDomain" Version="Current" />
+                  <ScalarProperty Name="EncryptedUserName" ParameterName="EncryptedUserName" Version="Current" />
+                  <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" Version="Current" />
+                  <ScalarProperty Name="Id" ParameterName="Id" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="Model1.Store.DeleteCredentials">
+                  <ScalarProperty Name="Id" ParameterName="Id" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(Terminals.Data.DB.DbCredentialBase)">
+              <MappingFragment StoreEntitySet="CredentialBase">
+                <ScalarProperty Name="EncryptedDomain" ColumnName="EncryptedDomain" />
+                <ScalarProperty Name="EncryptedUserName" ColumnName="EncryptedUserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EncryptedPassword" ColumnName="EncryptedPassword" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(Terminals.Data.DB.DbCredentialSet)">
+              <MappingFragment StoreEntitySet="Credentials">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+              </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DisplayOptions">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DbDisplayOptions">
+              <MappingFragment StoreEntitySet="DisplayOptions">
+                <ScalarProperty Name="Colors" ColumnName="Colors" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DbDisplayOptions">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model1.Store.InsertDisplayOptions">
+                  <ScalarProperty Name="Colors" ParameterName="Colors" />
+                  <ScalarProperty Name="Size" ParameterName="Size" />
+                  <ScalarProperty Name="Width" ParameterName="Width" />
+                  <ScalarProperty Name="Height" ParameterName="Height" />
+                  <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model1.Store.UpdateDisplayOptions">
+                  <ScalarProperty Name="Colors" ParameterName="Colors" Version="Current" />
+                  <ScalarProperty Name="Size" ParameterName="Size" Version="Current" />
+                  <ScalarProperty Name="Width" ParameterName="Width" Version="Current" />
+                  <ScalarProperty Name="Height" ParameterName="Height" Version="Current" />
+                  <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="Model1.Store.DeleteDisplayOptions">
+                  <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Favorites">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DbFavorite">
+              <MappingFragment StoreEntitySet="Favorites">
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="IconData" ColumnName="IconData" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="DesktopShare" ColumnName="DesktopShare" />
+                <ScalarProperty Name="NewWindow" ColumnName="NewWindow" />
+                <ScalarProperty Name="ServerName" ColumnName="ServerName" />
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="Protocol" ColumnName="Protocol" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DbFavorite">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model1.Store.InsertFavorite">
+                  <ScalarProperty Name="Notes" ParameterName="Notes" />
+                  <ScalarProperty Name="DesktopShare" ParameterName="DesktopShare" />
+                  <ScalarProperty Name="NewWindow" ParameterName="NewWindow" />
+                  <ScalarProperty Name="ServerName" ParameterName="ServerName" />
+                  <ScalarProperty Name="Port" ParameterName="Port" />
+                  <ScalarProperty Name="Protocol" ParameterName="Protocol" />
+                  <ScalarProperty Name="Name" ParameterName="Name" />
+                  <ResultBinding Name="Id" ColumnName="Id" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model1.Store.UpdateFavorite">
+                  <ScalarProperty Name="Notes" ParameterName="Notes" Version="Current" />
+                  <ScalarProperty Name="DesktopShare" ParameterName="DesktopShare" Version="Current" />
+                  <ScalarProperty Name="NewWindow" ParameterName="NewWindow" Version="Current" />
+                  <ScalarProperty Name="ServerName" ParameterName="ServerName" Version="Current" />
+                  <ScalarProperty Name="Port" ParameterName="Port" Version="Current" />
+                  <ScalarProperty Name="Protocol" ParameterName="Protocol" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
+                  <ScalarProperty Name="Id" ParameterName="Id" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="Model1.Store.DeleteFavorite">
+                  <ScalarProperty Name="Id" ParameterName="Id" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DbGroup">
+              <MappingFragment StoreEntitySet="Groups">
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DbGroup">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model1.Store.InsertGroup">
+                  <AssociationEnd AssociationSet="FK_Groups_Groups" From="Childs" To="Parents">
+                    <ScalarProperty Name="Id" ParameterName="ParentId" />
+                  </AssociationEnd>
+                  <ScalarProperty Name="Name" ParameterName="Name" />
+                  <ResultBinding Name="Id" ColumnName="Id" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model1.Store.UpdateGroup">
+                  <AssociationEnd AssociationSet="FK_Groups_Groups" From="Childs" To="Parents">
+                    <ScalarProperty Name="Id" ParameterName="ParentId" Version="Current" />
+                  </AssociationEnd>
+                  <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
+                  <ScalarProperty Name="Id" ParameterName="Id" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="Model1.Store.DeleteGroup">
+                  <AssociationEnd AssociationSet="FK_Groups_Groups" From="Childs" To="Parents">
+                    <ScalarProperty Name="Id" ParameterName="ParentId" />
+                  </AssociationEnd>
+                  <ScalarProperty Name="Id" ParameterName="Id" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Security">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DbSecurityOptions">
+              <MappingFragment StoreEntitySet="Security">
+                <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DbSecurityOptions">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model1.Store.InsertSecurity">
+                  <AssociationEnd AssociationSet="FK_Security_CredentialBase" From="SecurityOptions" To="CredentialBase">
+                    <ScalarProperty Name="Id" ParameterName="CredentialBaseId" />
+                  </AssociationEnd>
+                  <AssociationEnd AssociationSet="FK_Security_Credentials" From="Security" To="Credentials">
+                    <ScalarProperty Name="Id" ParameterName="CredentialId" />
+                  </AssociationEnd>
+                  <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model1.Store.UpdateSecurity">
+                  <AssociationEnd AssociationSet="FK_Security_CredentialBase" From="SecurityOptions" To="CredentialBase">
+                    <ScalarProperty Name="Id" ParameterName="CredentialBaseId" Version="Current" />
+                  </AssociationEnd>
+                  <AssociationEnd AssociationSet="FK_Security_Credentials" From="Security" To="Credentials">
+                    <ScalarProperty Name="Id" ParameterName="CredentialId" Version="Current" />
+                  </AssociationEnd>
+                  <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="Model1.Store.DeleteSecurity">
+                  <AssociationEnd AssociationSet="FK_Security_CredentialBase" From="SecurityOptions" To="CredentialBase">
+                    <ScalarProperty Name="Id" ParameterName="CredentialBaseId" />
+                  </AssociationEnd>
+                  <AssociationEnd AssociationSet="FK_Security_Credentials" From="Security" To="Credentials">
+                    <ScalarProperty Name="Id" ParameterName="Credential" />
+                  </AssociationEnd>
+                  <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_Groups_Groups" TypeName="Terminals.Data.DB.FK_Groups_Groups" StoreEntitySet="Groups">
+            <EndProperty Name="Childs">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Parents">
+              <ScalarProperty Name="Id" ColumnName="ParentId" />
+            </EndProperty>
+            <Condition ColumnName="ParentId" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FavoritesInGroup" TypeName="Terminals.Data.DB.FavoritesInGroup" StoreEntitySet="FavoritesInGroup">
+            <EndProperty Name="Groups">
+              <ScalarProperty Name="Id" ColumnName="GroupId" />
+            </EndProperty>
+            <EndProperty Name="Favorites">
+              <ScalarProperty Name="Id" ColumnName="FavoriteId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="GetFavoriteProtocolProperties" FunctionName="Model1.Store.GetFavoriteProtocolProperties" />
+          <FunctionImportMapping FunctionImportName="GetFavoritesHistoryByDate" FunctionName="Model1.Store.GetFavoritesHistoryByDate" />
+          <FunctionImportMapping FunctionImportName="InsertHistory" FunctionName="Model1.Store.InsertHistory" />
+          <AssociationSetMapping Name="FK_Security_Credentials" TypeName="Terminals.Data.DB.FK_Security_Credentials" StoreEntitySet="Security">
+            <EndProperty Name="Credentials">
+              <ScalarProperty Name="Id" ColumnName="CredentialId" />
+            </EndProperty>
+            <EndProperty Name="Security">
+              <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
+            </EndProperty>
+            <Condition ColumnName="CredentialId" IsNull="false" />
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="UpdateFavoriteProtocolProperties" FunctionName="Model1.Store.UpdateFavoriteProtocolProperties" />
+          <AssociationSetMapping Name="FK_Security_CredentialBase" TypeName="Terminals.Data.DB.FK_Security_CredentialBase" StoreEntitySet="Security">
+            <EndProperty Name="SecurityOptions">
+              <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
+            </EndProperty>
+            <EndProperty Name="CredentialBase">
+              <ScalarProperty Name="Id" ColumnName="CredentialBaseId" />
+            </EndProperty>
+            <Condition ColumnName="CredentialBaseId" IsNull="false" />
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="UpdateMasterPasswordKey" FunctionName="Model1.Store.UpdateMasterPasswordKey" />
+          <FunctionImportMapping FunctionImportName="GetMasterPasswordKey" FunctionName="Model1.Store.GetMasterPasswordKey" />
+          <FunctionImportMapping FunctionImportName="SetFavoriteIcon" FunctionName="Model1.Store.SetFavoriteIcon" />
+          <FunctionImportMapping FunctionImportName="GetFavoriteIcon" FunctionName="Model1.Store.GetFavoriteIcon" />
+          <FunctionImportMapping FunctionImportName="GetFavoritesInGroup" FunctionName="Model1.Store.GetFavoritesInGroup" />
+          <FunctionImportMapping FunctionImportName="GetFavoriteGroups" FunctionName="Model1.Store.GetFavoriteGroups" />
+          <FunctionImportMapping FunctionImportName="InsertFavoritesInGroup" FunctionName="Model1.Store.InsertFavoritesInGroup" />
+          <FunctionImportMapping FunctionImportName="DeleteFavoritesInGroup" FunctionName="Model1.Store.DeleteFavoritesInGroup" />
+          <FunctionImportMapping FunctionImportName="ClearHistory" FunctionName="Model1.Store.ClearHistory" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer>
+    <edmx:Connection>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="Model1" xmlns="http://schemas.microsoft.com/ado/2008/10/edmx" ZoomLevel="108">
+        <EntityTypeShape EntityType="Terminals.Data.DB.DbBeforeConnectExecute" Width="2" PointX="4.625" PointY="4.125" Height="2.0853483072916674" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.DbCredentialBase" Width="1.75" PointX="0.5" PointY="4" Height="1.9802864583333335" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.DbCredentialSet" Width="1.5" PointX="0.625" PointY="0.5" Height="1.0992643229166668" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.DbDisplayOptions" Width="1.5" PointX="6.875" PointY="4.125" Height="1.9210009765625031" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.DbFavorite" Width="1.75" PointX="4.625" PointY="0.5" Height="3.2357796223958331" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.DbGroup" Width="1.5" PointX="6.875" PointY="0.5" Height="1.7566536458333335" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.DbSecurityOptions" Width="1.75" PointX="2.75" PointY="4.125" Height="1.5923063151041665" />
+        <AssociationConnector Association="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute">
+          <ConnectorPoint PointX="5.5" PointY="3.4070849609375" />
+          <ConnectorPoint PointX="5.5" PointY="4.125" />
+        </AssociationConnector>
+        <AssociationConnector Association="Terminals.Data.DB.FK_Security_Credentials" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.125" PointY="1.0496321614583333" />
+          <ConnectorPoint PointX="3.1547340751458477" PointY="1.0496321614583333" />
+          <ConnectorPoint PointX="3.1547340751458477" PointY="4.125" />
+        </AssociationConnector>
+        <AssociationConnector Association="Terminals.Data.DB.FK_DisplayOptions_Favorites" ManuallyRouted="true">
+          <ConnectorPoint PointX="6.375" PointY="3.3501610218394893" />
+          <ConnectorPoint PointX="7.1409615384615392" PointY="3.3501610218394893" />
+          <ConnectorPoint PointX="7.1409615384615392" PointY="4.125" />
+        </AssociationConnector>
+        <AssociationConnector Association="Terminals.Data.DB.FK_Security_Favorites">
+          <ConnectorPoint PointX="4.625" PointY="2.2283585611979166" />
+          <ConnectorPoint PointX="3.858619537572924" PointY="2.2283585611979166" />
+          <ConnectorPoint PointX="3.858619537572924" PointY="4.125" />
+        </AssociationConnector>
+        <AssociationConnector Association="Terminals.Data.DB.FK_Groups_Groups">
+          <ConnectorPoint PointX="7.4069230769230776" PointY="2.2566536458333335" />
+          <ConnectorPoint PointX="7.4069230769230776" PointY="2.5066536458333335" />
+          <ConnectorPoint PointX="7.8534615384615387" PointY="2.5066536458333335" />
+          <ConnectorPoint PointX="7.8534615384615387" PointY="2.2566536458333335" />
+        </AssociationConnector>
+        <AssociationConnector Association="Terminals.Data.DB.FavoritesInGroup">
+          <ConnectorPoint PointX="6.375" PointY="1.3783268229166668" />
+          <ConnectorPoint PointX="6.875" PointY="1.3783268229166668" />
+        </AssociationConnector>
+        <InheritanceConnector EntityType="Terminals.Data.DB.DbCredentialSet" ManuallyRouted="false" >
+          <ConnectorPoint PointX="1.375" PointY="4" />
+          <ConnectorPoint PointX="1.375" PointY="1.7110807291666668" />
+        </InheritanceConnector>
+        <AssociationConnector Association="Terminals.Data.DB.FK_Security_CredentialBase" >
+          <ConnectorPoint PointX="2.25" PointY="5.0189925130208337" />
+          <ConnectorPoint PointX="2.75" PointY="5.0189925130208337" />
+        </AssociationConnector>
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

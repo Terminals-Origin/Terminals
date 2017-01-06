@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1F720FD0-21A5-4BED-90F6-02CDABB8854D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Terminals.Common</RootNamespace>
+    <AssemblyName>Terminals.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
+      <Link>Properties\Common.AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Configuration\AuthMethod.cs" />
+    <Compile Include="Configuration\KeysSection.cs" />
+    <Compile Include="Connections\IOptionsConverter.cs" />
+    <Compile Include="Connections\IOptionsConverterFactory.cs" />
+    <Compile Include="Connections\OptionsConversionContext.cs" />
+    <Compile Include="Connections\OptionsConverterTemplate.cs" />
+    <Compile Include="Converters\IRelativeUrlProvider.cs" />
+    <Compile Include="Converters\UrlConverter.cs" />
+    <Compile Include="Data\Favorites\CredentialBase.cs" />
+    <Compile Include="Data\Favorites\IContainsCredentials.cs" />
+    <Compile Include="Data\Favorites\IForceConsoleOptions.cs" />
+    <Compile Include="Data\Favorites\SecurityOptions.cs" />
+    <Compile Include="Data\Interfaces\IGuardedCredential.cs" />
+    <Compile Include="Data\Interfaces\IGuardedCredentialFactory.cs" />
+    <Compile Include="Data\Interfaces\IGuardedSecurity.cs" />
+    <Compile Include="Forms\CredentialsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CredentialsPanel.Designer.cs">
+      <DependentUpon>CredentialsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EditFavorite\ISupportsSecurityControl.cs" />
+    <Compile Include="Forms\InputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InputBox.Designer.cs">
+      <DependentUpon>InputBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InputBoxResult.cs" />
+    <Compile Include="Configuration\IMRUSettings.cs" />
+    <Compile Include="Configuration\IRequiresMRUSettings.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="TerminalsServices\Client.cs" />
+    <Compile Include="TerminalsServices\ConnectionStates.cs" />
+    <Compile Include="Connections\IConnectionExtra.cs" />
+    <Compile Include="Converters\ColorParser.cs" />
+    <Compile Include="Configuration\Colors.cs" />
+    <Compile Include="Connections\Connection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Connections\DesktopSizeCalculator.cs" />
+    <Compile Include="Connections\IConnection.cs" />
+    <Compile Include="Connections\IConnectionMainView.cs" />
+    <Compile Include="Connections\IConnectionPlugin.cs" />
+    <Compile Include="Connections\ICurrenctConnectionProvider.cs" />
+    <Compile Include="Connections\IExtraDetection.cs" />
+    <Compile Include="Connections\IOptionsExporterFactory.cs" />
+    <Compile Include="Connections\IToolbarExtender.cs" />
+    <Compile Include="Connections\IToolbarExtenderFactory.cs" />
+    <Compile Include="Connections\KnownConnectionConstants.cs" />
+    <Compile Include="Configuration\FavoriteConfigurationElement.cs" />
+    <Compile Include="Connections\SHFileOperationWrapper.cs" />
+    <Compile Include="Converters\FontParser.cs" />
+    <Compile Include="Configuration\PerfomanceOptions.cs" />
+    <Compile Include="Configuration\DesktopSize.cs" />
+    <Compile Include="Data\Interfaces\IBeforeConnectExecuteOptions.cs" />
+    <Compile Include="Data\Interfaces\ICredentialBase.cs" />
+    <Compile Include="Data\Interfaces\ICredentialSet.cs" />
+    <Compile Include="Data\Interfaces\IDisplayOptions.cs" />
+    <Compile Include="Data\Interfaces\IFavorite.cs" />
+    <Compile Include="Data\Interfaces\IGroup.cs" />
+    <Compile Include="Data\Interfaces\INamedItem.cs" />
+    <Compile Include="Data\Interfaces\ISecurityOptions.cs" />
+    <Compile Include="Data\Interfaces\IStoreIdEquals.cs" />
+    <Compile Include="Forms\EditFavorite\IProtocolObserver.cs" />
+    <Compile Include="Forms\EditFavorite\IValidatedProtocolControl.cs" />
+    <Compile Include="Configuration\IConnectionSettings.cs" />
+    <Compile Include="Configuration\ISettingsConsumer.cs" />
+    <Compile Include="Native\Enums.cs" />
+    <Compile Include="Integration\Export\IExportOptionsContext.cs" />
+    <Compile Include="Integration\Export\ITerminalsOptionsExport.cs" />
+    <Compile Include="Forms\EditFavorite\IProtocolOptionsControl.cs" />
+    <Compile Include="Native\Methods.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Converters\TextConverter.cs" />
+    <Compile Include="Configuration\RemoteSounds.cs" />
+    <Compile Include="Data\Favorites\ProtocolOptions.cs" />
+    <Compile Include="Native\Structs.cs" />
+    <Compile Include="Native\Wow.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TerminalsServices\GatewayCredentialsSources.cs" />
+    <Compile Include="TerminalsServices\Session.cs" />
+    <Compile Include="TerminalsServices\SessionProcess.cs" />
+    <Compile Include="TerminalsServices\TerminalServer.cs" />
+    <Compile Include="TerminalsServices\TerminalServicesAPI.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Connections\Connection.resx">
+      <DependentUpon>Connection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CredentialsPanel.resx">
+      <DependentUpon>CredentialsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InputBox.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\terminalsicon.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

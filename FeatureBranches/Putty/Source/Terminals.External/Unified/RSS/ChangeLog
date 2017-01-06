@@ -1,0 +1,91 @@
+2004-05-20 Ben Maurer  <bmaurer@users.sourceforge.net>
+
+	* RssReader.cs, RssWriter.cs: Patches from Miguel de Icaza.
+
+2004-05-20 Ben Maurer  <bmaurer@users.sourceforge.net>
+
+	* Shared/DBBool.cs: make ToString here give off what we need.
+	For some reason, monologue has always needed this. I forget why.
+	* RssReader.cs: cleaner error messages here.
+
+2003-11-11	George Tsiokos		<george@tsiokos.com>
+
+	* RssFeed.cs: Fixed RssFeed.Read(HttpWebRequest method call
+	* Updated license in all .cs files
+
+2003-11-07	George Tsiokos		<george@tsiokos.com>
+
+	* RssReader.cs: Fixed bug #786462 & #791816
+
+2003-11-04	George Tsiokos		<george@tsiokos.com>
+
+	* RssFeed.cs: Added features #786222 & #830192, removed #745183
+	  Full control over HttpRequest and writing feeds with specified
+	  encoding. HttpProxy property has been removed.
+
+2003-08-02	George Tsiokos		<george@tsiokos.com>
+
+	* RssFeed.cs: Fixed bug #752156
+	* RssFeedCollection.cs: Fixed bug #762377
+	* RssReader.cs: Fixed bug #762383
+	* RssWriter.cs: Fixed bug #763276
+	* RssReader.cs: Fixed bug #795516
+
+2003-07-13	George Tsiokos		<george@tsiokos.com>
+
+	* MakeFile: Removed RssCompact.cs - Should only be used when compiling
+	  for the .net compact framework.
+	
+2003-06-14	Robert A. Wlodarczyk	<rwlodarczyk@users.sourceforge.net>
+
+        * RssBlogChannel.cs: Added support for the blogChannel RSS Module
+        * RssCreativeCommon.cs: Added support for the creativeCommon RSS Module
+        * RssPhotoAlbum.cs: Added support for the photoAlbum RSS Module
+        * RssWriter.cs: Small modification for RSS Module support
+
+2003-06-04	George Tsiokos		<george@tsiokos.com>
+
+	* MakeFile: Updated for file moves
+	* RssWriter.cs: Logic error fix
+
+2003-06-03	George Tsiokos		<george@tsiokos.com>
+
+	* RssModule.cs: Modified method override to one supported by .NETCF
+	* Moved RssChannel.cs into RssChannel directory
+	* Moved RssItem.cs into RssItem directory
+	* Moved RssElement.cs into Shared directory
+	* Moved RssCompact.cs into Shared directory
+	* RSS.NET.csproj: Updated for file moves
+	* RSSCF.csdproj: Updated for file moves
+
+2003-06-14	Robert A. Wlodarczyk	<rwlodarczyk@users.sourceforge.net>
+
+        * RssModule.cs: Initial implementation of RSS Modules for RSS.NET
+        * RssModuleItem.cs: Initial implementation of RSS Modules for RSS.NET
+        * RssModuleCollection.cs: Support collection needed for RSS Modules support
+        * RssModuleItemCollection.cs: Support collection needed for RSS Modules support
+        * RssModuleItemCollectionCollection.cs: Support collection needed for RSS Modules support
+        * RssWriter.cs: Initial support for RSS Modules
+
+2003-06-02	George Tsiokos		<george@tsiokos.com>
+
+	* RssWriter.cs: Support for each RSS version, Added some missing
+	  elements under RssItem, Removed rssGenerator method
+
+2003-05-31	George Tsiokos		<george@tsiokos.com>
+
+	* RSSCF.csdproj: Added C# Device Project - RSS.NET Compact Framework
+	* RssCompact.cs: Added code comments
+	* MakeFile: Removed RssCompact.cs (not needed)
+
+2003-05-30	George Tsiokos		<george@tsiokos.com>
+
+	* RssFeed.cs: Added support for proxy servers
+	* RssCompact.cs: Added licence comments
+
+2003-05-29	George Tsiokos		<george@tsiokos.com>
+
+	* Begin ChangeLog. RSS 0.86 BETA
+
+RSS.NET (http://rss-net.sourceforge.net/)
+Copyright © 2002, 2003 George Tsiokos. All Rights Reserved.

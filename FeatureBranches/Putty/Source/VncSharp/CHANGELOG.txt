@@ -1,0 +1,70 @@
+Change Log
+----------
+
+* Version 1.0
+
+- Added ZRLE (Grégoire Pailler) using the BSD licensed zlib.NET version 1.04 (http://www.componentace.com/zlib_NET.htm)
+- Added support for 8-bit colour depth (Grégoire Pailler)
+- Added scaling (Grégoire Pailler)
+- Added SetScalingMode() to switch at runtime from clipped to scaled and vice versa
+- Added override to SendSpecialKeys() to allow explicit release (Grégoire Pailler)
+- Added code signing so the control will work in VS.NET 2005/2008
+- Added Desktop image property
+- Added more overloads to Connect()
+- Added FillRemoteClipboard() so local clipboard text can be sent to server for pasting
+- Added ClipboardChanged event so clients can determine when remote clipboard data is available
+- Fixed overflow bug when dealing with unsigned bytes
+- Fixed bug when dragging windows to the bottom of the screen (Grégoire Pailler)
+- Fixed bugs when connecting to Apple's OS X implementation of the VNC server ("RFB" 3.889)
+- Fixed bug with clipboard and threading (Grégoire Pailler)
+- General code clean-up to remove dead code
+- Switched from NAnt to Visual Studio Solution file
+- Updated C# example
+- Created VB.NET example
+
+* Version 0.9
+
+- Added View Only mode
+- Fixed CopyRect "ghosting" bug (Peter Wentworth)
+- Fixed RemoteDesktop Select() bug (Edward Cooke)
+- Added readonly RemoteDesktop.Hostname property (Edward Cooke)
+- Fixed Alt/CTRL key handling in RemoteDesktop (Edward Cooke)
+
+- Added NAnt build files
+
+* Version 0.88.0
+
+- Corrected RFB protocol bug in connection code (affected protocol 3.8 with NO password)
+- Added buffers to reduce load on gc
+- Removed redundant thread locking (all writes on same thread now)
+- Refactored pixel reading code to improve speed
+- Keyboard management code clean-up (Aulofee.com)
+
+* Version 0.85.2
+
+- Fixed bug in VncClient.Disconnect for UltraVNC so that it won't block on worker.Join(). (Simon Phillips)
+
+* Version 0.85.1
+
+- Fix DES password encryption so it will work under .NET Framework 2.0
+
+* Version 0.85
+
+- Added binary for .NET Framework 2.0
+- Numerous coding and performance updates
+- Added support for UltraVNC (server wrongly reports protocol version 3.6 instead of 3.3)
+- Fixed tread termination code to poll more frequently when watching for updates
+- Fixed Dispose and other memory related issues throughout code
+- Added Connection State checking
+- Fixed Mouse Pointer code to work properly in Design/Runtime modes
+- Fixed NullReference bug in RemoteDesktop.OnPaint when control is not connected
+- Fixed Disconnect bug so that client can close connection without crashing
+- Fixed Connect bug where client had to call Connect in a form's Constructor
+- Stopped requesting CORRE encoding due to bugs in various server implementations
+- Added support for sending common Special Key combos (e.g., CTRL+ALT+DEL)
+- Added support for Full Screen update requests in RemoteDesktop
+
+* Version 0.8
+
+- Initial release
+- CoRRE contributed by Chuck Borgh and Matt Cyr

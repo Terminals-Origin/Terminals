@@ -1,0 +1,361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{81B4C28B-5B10-4A53-B0AC-9E8F72733139}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Tests</RootNamespace>
+    <AssemblyName>Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AWSSDK, Version=1.3.10.0, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL" />
+    <Reference Include="AxInterop.MSTSCLib">
+      <HintPath>..\Terminals\bin\Debug\AxInterop.MSTSCLib.dll</HintPath>
+    </Reference>
+    <Reference Include="AxInterop.VMRCClientControlLib">
+      <HintPath>..\..\Resources\Libraries\VMRC\AxInterop.VMRCClientControlLib.dll</HintPath>
+    </Reference>
+    <Reference Include="AxWFICALib">
+      <HintPath>..\..\Resources\Libraries\Citrix\AxWFICALib.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="FlickrNet">
+      <HintPath>..\..\Resources\Libraries\Flicker\FlickrNet.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\Resources\Libraries\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.VMRCClientControlLib">
+      <HintPath>..\..\Resources\Libraries\VMRC\Interop.VMRCClientControlLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1408.0717\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="MSTSCLib">
+      <HintPath>..\Terminals\bin\Debug\MSTSCLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="TransPort2006">
+      <HintPath>..\..\Resources\Libraries\TransPort2006\TransPort2006.dll</HintPath>
+    </Reference>
+    <Reference Include="TransPort2006.Design">
+      <HintPath>..\..\Resources\Libraries\TransPort2006\TransPort2006.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph">
+      <HintPath>..\..\Resources\Libraries\ZedGraph\ZedGraph.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CustomSetupAction\UpgradeConfigFiles.cs">
+      <Link>UpgradeConfigFiles.cs</Link>
+    </Compile>
+    <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
+      <Link>Properties\Common.AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Commands\TestRenameService.cs" />
+    <Compile Include="Commands\FavoriteRenameCommandTests.cs" />
+    <Compile Include="Configuration\ConfigurationSettingsTests.cs" />
+    <Compile Include="Connections\ConnecitonStateDetectorTests.cs" />
+    <Compile Include="Connections\ConnectionTests.cs" />
+    <Compile Include="Connections\DesktopSharesTests.cs" />
+    <Compile Include="Connections\MockConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Connections\ConnectionManagerTests.cs" />
+    <Compile Include="Connections\ConnectionManagerOtionsTests.cs" />
+    <Compile Include="Connections\FavoriteSerializerTests.cs" />
+    <Compile Include="Connections\PluginBasedTests.cs" />
+    <Compile Include="Connections\PluginLoaderTests.cs" />
+    <Compile Include="Connections\TestConnectionManager.cs" />
+    <Compile Include="FilePersisted\FavoritesTest.cs" />
+    <Compile Include="FilePersisted\FilePersistedTestLab.cs" />
+    <Compile Include="FilePersisted\GroupsTest.cs" />
+    <Compile Include="FilePersisted\GroupsTestLab.cs" />
+    <Compile Include="Helpers\ImageAssert.cs" />
+    <Compile Include="FilePersisted\TestFileWatch.cs" />
+    <Compile Include="FilePersisted\TestImportUi.cs" />
+    <Compile Include="Integrations\RdcManImporterTests.cs" />
+    <Compile Include="Integrations\ExportRdpTest.cs" />
+    <Compile Include="Integrations\ImportRdpTest.cs" />
+    <Compile Include="Integrations\ExportTerminalsTests.cs" />
+    <Compile Include="Network\ServiceDetectorTests.cs" />
+    <Compile Include="Passwords\PasswordUpgradesTests.cs" />
+    <Compile Include="FilePersisted\SearchEngineTest.cs" />
+    <Compile Include="Configuration\FavoriteConfigurationElementTests.cs" />
+    <Compile Include="SqlPersisted\ComparersTest.cs" />
+    <Compile Include="SqlPersisted\FavoriteCopiesTest.cs" />
+    <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />
+    <Compile Include="FilePersisted\FilesHistoryTest.cs" />
+    <Compile Include="FilePersisted\InjectionDateTime.cs" />
+    <Compile Include="Integrations\ImportsTest.cs" />
+    <Compile Include="Passwords\PasswordTests.cs" />
+    <Compile Include="SqlPersisted\ConcurentUpdatesTest.cs" />
+    <Compile Include="SqlPersisted\ConnectionsHistoryTest.cs" />
+    <Compile Include="SqlPersisted\GroupsTest.cs" />
+    <Compile Include="SqlPersisted\FavoritesTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlPersisted\ImportsTest.cs" />
+    <Compile Include="SqlPersisted\SecurityTests.cs" />
+    <Compile Include="SqlPersisted\ServerInstancesSearcherTests.cs" />
+    <Compile Include="SqlPersisted\TestsLab.cs" />
+    <Compile Include="SqlPersisted\CredentialsTest.cs" />
+    <Compile Include="CustomSetupActionTest.cs" />
+    <Compile Include="UserInterface\MenuVisitorSut.cs" />
+    <Compile Include="UserInterface\MockChildProtocolControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserInterface\TestMocksFactory.cs" />
+    <Compile Include="UserInterface\ToolStripSettingsTest.cs" />
+    <Compile Include="UserInterface\FavoritePropertiesControlTests.cs" />
+    <Compile Include="UserInterface\ProtocolOptionsPanelTests.cs" />
+    <Compile Include="UserInterface\CredentialPanelTests.cs" />
+    <Compile Include="UserInterface\CaptureManagerTests.cs" />
+    <Compile Include="UserInterface\RdpMenuVisitorTests.cs" />
+    <Compile Include="UserInterface\ProtocolImageListBuilderTests.cs" />
+    <Compile Include="UserInterface\FavoriteIconsTests.cs" />
+    <Compile Include="UserInterface\ToolTipBuilderTests.cs" />
+    <Compile Include="UserInterface\VncMenuVisitorTests.cs" />
+    <Compile Include="UserInterface\VmrcMenuVisitorTests.cs" />
+    <Compile Include="Validation\DbValidationTests.cs" />
+    <Compile Include="Validation\FavoriteNameValidatorTests.cs" />
+    <Compile Include="Validation\FileValidationTests.cs" />
+    <Compile Include="Validation\GroupNameValidatorTests.cs" />
+    <Compile Include="UserInterface\FavoritesTreeLoadingTest.cs" />
+    <Compile Include="UserInterface\GroupsTreeLoadingTest.cs" />
+    <Compile Include="UserInterface\TestKeyModifiers.cs" />
+    <Compile Include="UserInterface\TestTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserInterface\TreeListLoaderTestLab.cs" />
+    <Compile Include="UserInterface\TreeViewDragDropTests.cs" />
+    <Compile Include="Validation\NameValidatorTestLab.cs" />
+    <Compile Include="Validation\ValidationTests.cs" />
+    <Compile Include="UpdateManagerTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Granados\Granados.csproj">
+      <Project>{9780D85D-2E12-4747-9E08-DEDB95A71FC3}</Project>
+      <Name>Granados</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HexEditor\HexEditor.csproj">
+      <Project>{405E4F74-CE98-4BDC-8B78-F3293F4F7BBF}</Project>
+      <Name>HexEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Metro\Metro.csproj">
+      <Project>{4F3A4024-5A19-4F08-823A-B75D6AFE5CD8}</Project>
+      <Name>Metro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharpPcap\SharpPcap.csproj">
+      <Project>{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}</Project>
+      <Name>SharpPcap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SqlScriptRunner\SqlScriptRunner.csproj">
+      <Project>{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}</Project>
+      <Name>SqlScriptRunner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SSHClient\SSHClient.csproj">
+      <Project>{6F218F20-AE4B-4966-A821-4BDE214B8BFF}</Project>
+      <Name>SSHClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TabControl\TabControl.csproj">
+      <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>
+      <Name>TabControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TerminalEmulator\TerminalEmulator.csproj">
+      <Project>{933C6FDB-9617-4F19-89AF-C5D373F88479}</Project>
+      <Name>TerminalEmulator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">
+      <Project>{1f720fd0-21a5-4bed-90f6-02cdabb8854d}</Project>
+      <Name>Terminals.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Ica\Terminals.Plugins.Ica.csproj">
+      <Project>{bb4a4cc7-c449-4f81-8395-7806cc1bdfa8}</Project>
+      <Name>Terminals.Plugins.Ica</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Rdp\Terminals.Plugins.Rdp.csproj">
+      <Project>{f0c60ed2-9a47-4364-af57-505bc3e953d5}</Project>
+      <Name>Terminals.Plugins.Rdp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Terminal\Terminals.Plugins.Terminal.csproj">
+      <Project>{8e972a0c-57e2-4e5c-9ef5-d7cd681188c5}</Project>
+      <Name>Terminals.Plugins.Terminal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Vmrc\Terminals.Plugins.Vmrc.csproj">
+      <Project>{c841ccf6-4793-41b7-835e-f749e2525963}</Project>
+      <Name>Terminals.Plugins.Vmrc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Vnc\Terminals.Plugins.Vnc.csproj">
+      <Project>{123562C5-8D66-4E30-9676-D47B4C03EE7F}</Project>
+      <Name>Terminals.Plugins.Vnc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminals.Plugins.Web\Terminals.Plugins.Web.csproj">
+      <Project>{278face8-1579-4c13-ae59-1b24a7091cfc}</Project>
+      <Name>Terminals.Plugins.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminals\Terminals.csproj">
+      <Project>{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}</Project>
+      <Name>Terminals</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VncSharp\VncSharp.csproj">
+      <Project>{E0695F0F-0FAF-44BC-AE55-A1FCBFE70271}</Project>
+      <Name>VncSharp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Resources\Libraries\mstsc\MSTSCLib.dll">
+      <Link>MSTSCLib.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Resources\TestData\EmptyCredentials.xml">
+      <Link>EmptyCredentials.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Resources\TestData\Issue_21279_import_800_items.xml">
+      <Link>Issue_21279_import_800_items.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Resources\Database\Terminals.mdf">
+      <Link>Terminals.mdf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Resources\Database\Terminals_log.LDF">
+      <Link>Terminals_log.LDF</Link>
+      <DependentUpon>Terminals.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Resources\TestData\NoMasterCredentials.xml">
+      <Link>NoMasterCredentials.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Resources\TestData\SecuredCredentials.xml">
+      <Link>SecuredCredentials.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Terminals\Resources\ControlPanel.png">
+      <Link>ControlPanel.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resources\TestData\EmptyTerminals.config">
+      <Link>EmptyTerminals.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Resources\TestData\NoMasterTerminals.config">
+      <Link>NoMasterTerminals.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Resources\TestData\RdcManGroupsAndFavorites.rdg">
+      <Link>RdcManGroupsAndFavorites.rdg</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Resources\TestData\RdcManGroupsEmpty.rdg">
+      <Link>RdcManGroupsEmpty.rdg</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Resources\TestData\RdcManInheritedProperties.rdg">
+      <Link>RdcManInheritedProperties.rdg</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Resources\TestData\RdcManRootServers.rdg">
+      <Link>RdcManRootServers.rdg</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Resources\TestData\SecuredTerminals.config">
+      <Link>SecuredTerminals.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Resources\TestData\Terminals.config">
+      <Link>Terminals.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="App.config" />
+    <None Include="Terminals.exe.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

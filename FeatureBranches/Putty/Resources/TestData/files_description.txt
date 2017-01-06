@@ -1,0 +1,23 @@
+TRY TO KEEP THIS FILE UP TO DATE!
+
+Terminals.config - Default empty config file. Doesnt contain version number.
+
+Credentials.xml - Credentials version 2 example file. Each user has encrypted password using empty master password.
+The credential password is always identical to the user name.
+
+History.xml - example version 2 historical data.
+
+Issue_21279_import_800_items.xml - 887 terminals version 2 favorites. Contains duplicities, so the real unique favorites count is 507 only.
+
+SecuredTerminals.config - Version 2 config file, which contains two favorites "computer" with stored password "testPassword" and second "computer2" with reference to credentialSet defined in SecuredCredentials.xml.
+Master password is "testMaster".
+
+SecuredCredentials.xml - Credentials version 2 example file. One test Credential, password identical to the user name. Password is encrypted by SecuredTerminals.config.
+
+EmptyTerminals.config - V2.0 empty config file. Contains version number. Used to check upgrade of emtpy file.
+
+EmptyCredentials.xml - V2.0 emtpy credentials file.
+
+NoMasterTerminals.config - Identical to SecuredTerminals.config, but no master password is set
+
+NoMasterCredentials.xml - Identical to  SecuredCredentials.xml, but no master password is set
