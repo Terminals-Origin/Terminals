@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TabControl</RootNamespace>
     <AssemblyName>TabControl</AssemblyName>
-    <SccProjectName>%24/Terminals/Main/Source/TabControl</SccProjectName>
+    <SccProjectName>%24/Terminals/FeatureBranches/Putty/Source/TabControl</SccProjectName>
     <SccLocalPath>.</SccLocalPath>
     <SccAuxPath>https://tfs.codeplex.com/tfs/TFS01</SccAuxPath>
     <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
