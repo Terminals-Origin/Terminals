@@ -151,6 +151,7 @@
     <Compile Include="FilePersisted\SearchEngineTest.cs" />
     <Compile Include="Configuration\FavoriteConfigurationElementTests.cs" />
     <Compile Include="Putty\PuttyTests.cs" />
+    <Compile Include="Putty\ArgumentBuilderTests.cs" />
     <Compile Include="SqlPersisted\ComparersTest.cs" />
     <Compile Include="SqlPersisted\FavoriteCopiesTest.cs" />
     <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />
