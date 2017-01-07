@@ -28,13 +28,16 @@ namespace Terminals.Forms
 
         private readonly ConnectionManager connectionManager;
 
+        private readonly FavoriteIcons favoriteIcons;
+
         internal ConnectionsUiFactory(MainForm mainForm, TerminalTabsSelectionControler terminalsControler,
-            IPersistence persistence, ConnectionManager connectionManager)
+            IPersistence persistence, ConnectionManager connectionManager, FavoriteIcons favoriteIcons)
         {
             this.mainForm = mainForm;
             this.terminalsControler = terminalsControler;
             this.persistence = persistence;
             this.connectionManager = connectionManager;
+            this.favoriteIcons = favoriteIcons;
             this.guardedCredentialFactory = new GuardedCredentialFactory(this.persistence);
         }
 
@@ -148,7 +151,7 @@ namespace Terminals.Forms
 
         internal void CreateNewTerminal(String name = null)
         {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, name))
+            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, name))
             {
                 TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
                 if (result != TerminalFormDialogResult.Cancel)

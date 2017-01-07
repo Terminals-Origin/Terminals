@@ -13,6 +13,8 @@ namespace Terminals.Forms.Controls
 
         private ToolTipBuilder toolTipBuilder;
 
+        private FavoriteIcons favoriteIcons;
+
         /// <summary>
         /// Gets or sets the context menu, which will be shown, when selected item is clicked.
         /// Needs to be public get and set to be available in designer.
@@ -90,14 +92,16 @@ namespace Terminals.Forms.Controls
         {
             InitializeComponent();
 
-            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.Instance.GetProtocolIcons);
-            iconsBuilder.Build(this.protocolsImageList);
+
         }
 
-        internal void LoadEvents(IPersistence persistence)
+        internal void LoadEvents(IPersistence persistence, FavoriteIcons favoriteIcons)
         {
             this.persistence = persistence;
+            this.favoriteIcons = favoriteIcons;
             this.toolTipBuilder = new ToolTipBuilder(this.persistence.Security);
+            var iconsBuilder = new ProtocolImageListBuilder(favoriteIcons.GetProtocolIcons);
+            iconsBuilder.Build(this.protocolsImageList);
             this.LoadAll();
         }
        
@@ -107,7 +111,7 @@ namespace Terminals.Forms.Controls
             item.Tag = favorite;
             item.Text = favorite.Name;
             item.ToolTipText = this.toolTipBuilder.BuildTooTip(favorite);
-            item.ImageKey = FavoriteIcons.Instance.GetTreeviewImageListKey(favorite.Protocol);
+            item.ImageKey = this.favoriteIcons.GetTreeviewImageListKey(favorite.Protocol);
             return item;
         }
 

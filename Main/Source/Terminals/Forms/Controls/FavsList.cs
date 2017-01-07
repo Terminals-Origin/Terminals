@@ -29,7 +29,7 @@ namespace Terminals
 
         private bool isRenaming;
 
-        private FavoriteIcons favoriteIcons = FavoriteIcons.Instance;
+        private FavoriteIcons favoriteIcons;
 
         private ConnectionManager connectionManager;
 
@@ -51,10 +51,11 @@ namespace Terminals
             this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
         }
 
-        internal void AssignServices(IPersistence persistence, ConnectionManager connectionManager)
+        internal void AssignServices(IPersistence persistence, ConnectionManager connectionManager, FavoriteIcons favoriteIcons)
         {
             this.persistence = persistence;
             this.connectionManager = connectionManager;
+            this.favoriteIcons = favoriteIcons;
         }
 
         #region Private methods
@@ -87,7 +88,7 @@ namespace Terminals
             this.favsTree.MouseUp += new MouseEventHandler(this.FavsTree_MouseUp);
             this.searchTextBox.LoadEvents(this.persistence);
             // hadle events
-            this.searchPanel1.LoadEvents(this.persistence);
+            this.searchPanel1.LoadEvents(this.persistence, this.favoriteIcons);
             this.renameCommand = new FavoriteRenameCommand(this.persistence, new RenameService(this.persistence.Favorites));
         }
 
@@ -125,7 +126,7 @@ namespace Terminals
 
         private void CreateFavoriteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, string.Empty))
+            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, string.Empty))
             {
                 var groupNode = this.favsTree.SelectedGroupNode;
                 if (groupNode != null)
@@ -144,7 +145,7 @@ namespace Terminals
 
         private void ShowManageTerminalForm(IFavorite favorite)
         {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, favorite))
+            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, favorite))
             {
                 TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
 

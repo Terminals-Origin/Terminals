@@ -30,10 +30,10 @@ namespace Terminals.Forms.Controls
             InitializeComponent();
         }
 
-        internal void LoadEvents(IPersistence persistence)
+        internal void LoadEvents(IPersistence persistence, FavoriteIcons favoriteIcons)
         {
             this.searchBox.LoadEvents(persistence);
-            this.searchResultsPanel.LoadEvents(persistence);
+            this.searchResultsPanel.LoadEvents(persistence, favoriteIcons);
         }
 
         internal void UnLoadEvents()

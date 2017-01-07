@@ -10,9 +10,13 @@ namespace Terminals
     {
         private readonly IPersistence persistence;
 
-        internal OrganizeGroupsForm(IPersistence persistence)
+        private readonly FavoriteIcons favoriteIcons;
+
+        internal OrganizeGroupsForm(IPersistence persistence, FavoriteIcons favoriteIcons)
         {
             this.persistence = persistence;
+            this.favoriteIcons = favoriteIcons;
+
             InitializeComponent();
 
             this.gridGroups.AutoGenerateColumns = false;
@@ -76,7 +80,7 @@ namespace Terminals
 
         private void AddFavoritesToGroup(IGroup group)
         {
-            using (var frmAddConnection = new AddConnectionForm(this.persistence))
+            using (var frmAddConnection = new AddConnectionForm(this.persistence, this.favoriteIcons))
             {
                 if (frmAddConnection.ShowDialog() == DialogResult.OK)
                 {

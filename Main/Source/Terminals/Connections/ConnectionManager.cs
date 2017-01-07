@@ -16,26 +16,6 @@ namespace Terminals.Connections
 
         private readonly Dictionary<string, IConnectionPlugin> plugins;
 
-        #region Thread safe singleton with lazy loading
-
-        /// <summary>
-        /// Gets the thread safe singleton instance. Use only for startup procedure, will removed in the future.
-        /// </summary>
-        public static ConnectionManager Instance
-        {
-            get
-            {
-                return Nested.instance;
-            }
-        }
-
-        private static class Nested
-        {
-            internal static readonly ConnectionManager instance = new ConnectionManager(new PluginsLoader(Settings.Instance));
-        }
-
-        #endregion
-
         internal ConnectionManager(IPluginsLoader loader)
         {
             // RAS, // this protocol doesnt fit to the concept and seems to be broken 
