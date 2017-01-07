@@ -50,8 +50,9 @@ namespace Terminals
             
             Logging.Info("Start state 6 Complete: Set Single instance mode");
 
-            var connectionManager = ConnectionManager.Instance;
-            var persistenceFactory = new PersistenceFactory(Settings.Instance, connectionManager, FavoriteIcons.Instance);
+            var connectionManager = new ConnectionManager(new PluginsLoader(Settings.Instance));
+            var favoriteIcons = new FavoriteIcons(connectionManager);
+            var persistenceFactory = new PersistenceFactory(Settings.Instance, connectionManager, favoriteIcons);
             // do it before config update, because it may import favorites from previous version
             IPersistence persistence = persistenceFactory.CreatePersistence();
             Logging.Info("Start state 7 Complete: Initilizing Persistence");
@@ -61,7 +62,7 @@ namespace Terminals
 
             ShowFirstRunWizard(persistence, connectionManager);
             persistence = AuthenticateByMasterPassword(persistenceFactory, persistence);
-            RunMainForm(persistence, connectionManager, commandLine);
+            RunMainForm(persistence, connectionManager, favoriteIcons, commandLine);
 
             Logging.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
                 Info.TitleVersion));
@@ -138,9 +139,10 @@ namespace Terminals
             return newPersistence;
         }
 
-        private static void RunMainForm(IPersistence persistence, ConnectionManager connectionManager, CommandLineArgs commandLine)
+        private static void RunMainForm(IPersistence persistence, ConnectionManager connectionManager,
+            FavoriteIcons favoriteIcons, CommandLineArgs commandLine)
         {
-            var mainForm = new MainForm(persistence, connectionManager);
+            var mainForm = new MainForm(persistence, connectionManager, favoriteIcons);
             SingleInstanceApplication.Instance.Initialize(mainForm, commandLine);
             mainForm.HandleCommandLineActions(commandLine);
             Application.Run(mainForm);

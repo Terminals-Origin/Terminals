@@ -25,17 +25,20 @@ namespace Terminals
 
         private readonly ConnectionManager connectionManager;
 
+        private readonly FavoriteIcons favoriteIcons;
+
         private IFavorites PersistedFavorites
         {
             get { return this.persistence.Favorites; }
         }
 
-        internal OrganizeFavoritesForm(IPersistence persistence, ConnectionManager connectionManager)
+        internal OrganizeFavoritesForm(IPersistence persistence, ConnectionManager connectionManager, FavoriteIcons favoriteIcons)
         {
             InitializeComponent();
 
             this.persistence = persistence;
             this.connectionManager = connectionManager;
+            this.favoriteIcons = favoriteIcons;
             InitializeDataGrid();
             this.importers = new Importers(this.persistence);
             ImportOpenFileDialog.Filter = this.importers.GetProvidersDialogFilter();
@@ -78,12 +81,9 @@ namespace Terminals
 
         private void EditFavorite(IFavorite favorite)
         {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, favorite))
+            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, favorite))
             {
-                if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
-                {
-                    UpdateFavoritesBindingSource();
-                }
+                this.ShowTerminalForm(frmNewTerminal);
             }
         }
 
@@ -230,12 +230,17 @@ namespace Terminals
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, String.Empty))
+            using (var newTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, String.Empty))
             {
-                if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
-                {
-                    UpdateFavoritesBindingSource();
-                }
+                this.ShowTerminalForm(newTerminal);
+            }
+        }
+
+        private void ShowTerminalForm(NewTerminalForm frmNewTerminal)
+        {
+            if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
+            {
+                this.UpdateFavoritesBindingSource();
             }
         }
 
@@ -350,7 +355,7 @@ namespace Terminals
 
         private void ExportToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frm = new ExportForm(this.persistence, this.connectionManager))
+            using (var frm = new ExportForm(this.persistence, this.connectionManager, this.favoriteIcons))
                 frm.ShowDialog();
         }
 
