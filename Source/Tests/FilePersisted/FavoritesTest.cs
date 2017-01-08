@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Common.Connections;
+using Terminals.Connections;
+using Terminals.Connections.Rdp;
 using Terminals.Connections.VNC;
 using Terminals.Data;
 using Terminals.Data.Credentials;
@@ -43,6 +45,30 @@ namespace Tests.FilePersisted
             return favorite;
         }
 
+        [Ignore] // Feature not finished yet
+        [TestMethod]
+        public void DisabledPlugins_LoadFavorites_ReturnsOnlyAvailableProtocols()
+        {
+            this.AddFavorite("FavoriteRDP");
+            var favoriteVnc = this.AddFavorite("FavoriteVnc");
+            TestConnectionManager.Instance.ChangeProtocol(favoriteVnc, "VNC");
+            this.Favorites.Update(favoriteVnc);
+            FilePersistence limitedPersistence = CreateLimitedPersistence();
+            bool areRdpOnly = limitedPersistence.Favorites.All(f => f.Protocol == KnownConnectionConstants.RDP);
+            Assert.IsTrue(areRdpOnly, "Persistence should filter protocol types, which is not able to handle.");
+        }
+
+        private static FilePersistence CreateLimitedPersistence()
+        {
+            var plugins = new List<IConnectionPlugin>()
+            {
+                new RdpConnectionPlugin(),
+            };
+
+            ConnectionManager limited = TestConnectionManager.CreateConnectionManager(plugins);
+            return CreateFilePersistence(limited);
+        }
+
         [DeploymentItem(ImageAssert.IMAGE_FILE)]
         [TestMethod]
         public void CustomIcon_UpdateFavoriteIcon_DoesntSaveFavorite()
@@ -50,7 +76,6 @@ namespace Tests.FilePersisted
             var favorite = this.AddFavorite();
             this.Favorites.UpdateFavoriteIcon(favorite, ImageAssert.IMAGE_FILE);
             FilePersistence secondaryPersistence = CreateFilePersistence();
-            secondaryPersistence.Initialize();
             IFavorite checkfavorite = secondaryPersistence.Favorites.FirstOrDefault();
             Image favoriteIcon = secondaryPersistence.Favorites.LoadFavoriteIcon(checkfavorite);
 
@@ -87,7 +112,6 @@ namespace Tests.FilePersisted
         private static IFavorite LoadFavoriteFromSecondaryPersistence()
         {
             FilePersistence secondaryPersistence = CreateFilePersistence();
-            secondaryPersistence.Initialize();
             return secondaryPersistence.Favorites.FirstOrDefault();
         }
 
@@ -160,8 +184,6 @@ namespace Tests.FilePersisted
         private FilePersistence InitializeSecondaryPersistence(TestFileWatch testFileWatch)
         {
             FilePersistence secondaryPersistence = CreateFilePersistence(testFileWatch);
-            // let the persistence load initial state
-            secondaryPersistence.Initialize();
             secondaryPersistence.Dispatcher.FavoritesChanged += this.DispatcherOnFavoritesChanged;
             secondaryPersistence.Dispatcher.GroupsChanged += this.DispatcherOnGroupsChanged;
             return secondaryPersistence;

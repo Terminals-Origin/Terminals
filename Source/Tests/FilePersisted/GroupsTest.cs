@@ -135,8 +135,7 @@ namespace Tests.FilePersisted
 
         private static IGroup GetFromSecondaryPersistence()
         {
-            var secondaryPersistence = FilePersistedTestLab.CreateFilePersistence();
-            secondaryPersistence.Initialize();
+            var secondaryPersistence = CreateFilePersistence();
             return secondaryPersistence.Groups[GROUP_NAME2];
         }
     }

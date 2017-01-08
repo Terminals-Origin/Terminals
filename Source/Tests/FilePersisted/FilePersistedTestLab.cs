@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
 using Tests.Connections;
 
@@ -23,7 +24,11 @@ namespace Tests.FilePersisted
             SetDefaultFileLocations();
             File.Delete(settings.FileLocations.Favorites);
             this.Persistence = CreateFilePersistence();
-            this.Persistence.Initialize();
+        }
+
+        internal static FilePersistence CreateFilePersistence(ConnectionManager connectionManager)
+        {
+            return CreateFilePersistence(new TestFileWatch(), connectionManager);
         }
 
         internal static FilePersistence CreateFilePersistence()
@@ -33,8 +38,20 @@ namespace Tests.FilePersisted
 
         internal static FilePersistence CreateFilePersistence(IDataFileWatcher fileWatcher)
         {
+            return CreateFilePersistence(fileWatcher, TestConnectionManager.Instance);
+        }
+
+        private static FilePersistence CreateFilePersistence(IDataFileWatcher fileWatcher, ConnectionManager connectionManager)
+        {
+            FilePersistence persistence = CreateNotInitializedFilePersistence(fileWatcher, connectionManager);
+            persistence.Initialize();
+            return persistence;
+        }
+
+        internal static FilePersistence CreateNotInitializedFilePersistence(IDataFileWatcher fileWatcher, ConnectionManager connectionManager)
+        {
             var icons = TestConnectionManager.CreateTestFavoriteIcons();
-            return new FilePersistence(new PersistenceSecurity(), fileWatcher, icons, TestConnectionManager.Instance);
+            return new FilePersistence(new PersistenceSecurity(), fileWatcher, icons, connectionManager);
         }
 
         internal static void SetDefaultFileLocations()

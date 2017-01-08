@@ -99,8 +99,9 @@ namespace Tests.Passwords
 
         private IPersistence RunUpgrade()
         {
-            var persistence = FilePersistedTestLab.CreateFilePersistence();
-            var contentUpgrade = new FilesV2ContentUpgrade(persistence, TestConnectionManager.Instance, GetMasterPassword);
+            var connectionManager = TestConnectionManager.Instance;
+            var persistence = FilePersistedTestLab.CreateNotInitializedFilePersistence(new TestFileWatch(), connectionManager);
+            var contentUpgrade = new FilesV2ContentUpgrade(persistence, connectionManager, GetMasterPassword);
             contentUpgrade.Run();
             settings.ForceReload(); // because we changed its file, while upgrading
             return persistence;
