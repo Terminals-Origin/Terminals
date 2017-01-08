@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Properties;
 using Settings = Terminals.Configuration.Settings;
@@ -63,6 +64,15 @@ namespace Terminals.Forms.OptionPanels
             return this.pluginsListbox.Items
                 .OfType<SelectedPlugin>()
                 .ToList();
+        }
+
+        private void PluginsListbox_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            var item = this.pluginsListbox.Items[e.Index] as SelectedPlugin;
+            if (item != null && item.Description.Contains(KnownConnectionConstants.RDP))
+            {
+                e.NewValue = CheckState.Indeterminate;
+            }
         }
     }
 }
