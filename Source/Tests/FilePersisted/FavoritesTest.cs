@@ -20,6 +20,8 @@ namespace Tests.FilePersisted
     {
         internal const string UPDATE_ICON_MESSAGE = "Favorite update has to be reported only once during save of favorite.";
 
+        private const string VNCFAVORITE_NAME = "FavoriteVnc";
+
         private Guid addedFavoriteId;
         private Guid updatedFavoriteId;
         private Guid deletedFavoriteId;
@@ -45,17 +47,35 @@ namespace Tests.FilePersisted
             return favorite;
         }
 
-        [Ignore] // Feature not finished yet
         [TestMethod]
         public void DisabledPlugins_LoadFavorites_ReturnsOnlyAvailableProtocols()
         {
-            this.AddFavorite("FavoriteRDP");
-            var favoriteVnc = this.AddFavorite("FavoriteVnc");
-            TestConnectionManager.Instance.ChangeProtocol(favoriteVnc, "VNC");
-            this.Favorites.Update(favoriteVnc);
+            this.AddVncRdpFavorites();
             FilePersistence limitedPersistence = CreateLimitedPersistence();
             bool areRdpOnly = limitedPersistence.Favorites.All(f => f.Protocol == KnownConnectionConstants.RDP);
             Assert.IsTrue(areRdpOnly, "Persistence should filter protocol types, which is not able to handle.");
+        }
+
+        [Ignore] // TODO finish the test by appending filtered data from previous deserialization.
+        [TestMethod]
+        public void DisabledPlugins_SaveFavorites_UnknownProtocolsArePreserved()
+        {
+            this.AddVncRdpFavorites();
+            FilePersistence limitedPersistence = CreateLimitedPersistence();
+            var favorite = limitedPersistence.Favorites.First();
+            favorite.Notes = "dummy change";
+            limitedPersistence.Favorites.Update(favorite);
+            var secondary = CreateFilePersistence();
+            bool keepsUnknown = secondary.Favorites.Any(f => f.Protocol == "VNC");
+            Assert.IsTrue(keepsUnknown, "Persistence is not able to serialize unknown protocols.");
+        }
+
+        private void AddVncRdpFavorites()
+        {
+            this.AddFavorite("FavoriteRDP");
+            var favoriteVnc = this.AddFavorite(VNCFAVORITE_NAME);
+            TestConnectionManager.Instance.ChangeProtocol(favoriteVnc, "VNC");
+            this.Favorites.Update(favoriteVnc);
         }
 
         private static FilePersistence CreateLimitedPersistence()

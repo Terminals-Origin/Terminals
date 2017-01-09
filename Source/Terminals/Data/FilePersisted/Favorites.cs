@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data.Credentials;
 using Terminals.Data.FilePersisted;
 
@@ -16,15 +17,18 @@ namespace Terminals.Data
 
         private readonly FavoriteIcons favoriteIcons;
 
+        private readonly ConnectionManager connectionManager;
+
         private readonly Groups groups;
         private readonly Dictionary<Guid, IFavorite> cache;
 
         private readonly FavoriteBatchUpdates batchUpdates;
 
-        internal Favorites(FilePersistence persistence, FavoriteIcons favoriteIcons)
+        internal Favorites(FilePersistence persistence, FavoriteIcons favoriteIcons, ConnectionManager connectionManager)
         {
             this.persistence = persistence;
             this.favoriteIcons = favoriteIcons;
+            this.connectionManager = connectionManager;
             this.dispatcher = persistence.Dispatcher;
             this.groups = this.persistence.GroupsStore;
             this.cache = new Dictionary<Guid,IFavorite>();
@@ -43,12 +47,20 @@ namespace Terminals.Data
         internal List<IFavorite> AddAllToCache(List<IFavorite> favorites)
         {
             var added = new List<IFavorite>();
-            foreach (IFavorite favorite in favorites)
+            var onlyKnownProtocols = this.FilterOnlyKnownProtocols(favorites);
+
+            foreach (IFavorite favorite in onlyKnownProtocols)
             {
                 if (this.AddToCache(favorite))
                     added.Add(favorite);
             }
             return added;
+        }
+
+        private IEnumerable<IFavorite> FilterOnlyKnownProtocols(List<IFavorite> favorites)
+        {
+            string[] availableProtocols = this.connectionManager.GetAvailableProtocols();
+            return favorites.Where(f => availableProtocols.Contains(f.Protocol));
         }
 
         private bool DeleteFromCache(IFavorite favorite)
@@ -191,8 +203,7 @@ namespace Terminals.Data
         {
             get
             {
-                return this.cache.Values
-                    .FirstOrDefault(favorite => favorite.Name
+                return this.FirstOrDefault(favorite => favorite.Name
                         .Equals(favoriteName, StringComparison.CurrentCultureIgnoreCase));
             }
         }
@@ -275,7 +286,7 @@ namespace Terminals.Data
 
         public SortableList<IFavorite> ToList()
         {
-            return new SortableList<IFavorite>(this.cache.Values);
+            return new SortableList<IFavorite>(this);
         }
 
         public SortableList<IFavorite> ToListOrderedByDefaultSorting()

@@ -206,5 +206,12 @@ namespace Terminals.Connections
             ProtocolOptions options = this.UpdateProtocolPropertiesByProtocol(protocol, favorite.ProtocolProperties);
             favorite.ChangeProtocol(protocol, options);
         }
+
+        public override string ToString()
+        {
+            string[] loadedProtocols = this.GetAvailableProtocols();
+            string pluginsLabel = string.Join(",", loadedProtocols);
+            return string.Format("ConnectionManager:{0}", pluginsLabel);
+        }
     }
 }
