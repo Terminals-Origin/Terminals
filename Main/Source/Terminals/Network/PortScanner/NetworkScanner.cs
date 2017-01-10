@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using System.Net.NetworkInformation;
 using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms.Controls;
@@ -42,7 +41,7 @@ namespace Terminals
 
         private void FillTextBoxesFromLocalIp()
         {
-            string localIP = TryGetLocalIP();
+            string localIP = NetworkAdapters.TryGetIPv4LocalAddress();
             string[] ipList = localIP.Split('.');
             this.ATextbox.Text = ipList[0];
             this.BTextbox.Text = ipList[1];
@@ -50,28 +49,6 @@ namespace Terminals
             this.DTextbox.Text = "1";
             this.ETextbox.Text = "255";
             this.ServerAddressLabel.Text = localIP;
-        }
-
-        private static String TryGetLocalIP()
-        {   
-            string localIP = "127.0.0.1";
-            try
-            {
-                NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
-                foreach (NetworkInterface nic in nics)
-                {
-                    if (nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
-                    {
-                        localIP = nic.GetIPProperties().GatewayAddresses[0].Address.ToString();
-                        break;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Logging.Error("Network Scanner Failed to Initialize", e);
-            }
-            return localIP;
         }
 
         private void InitScanManager()
