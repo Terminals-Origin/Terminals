@@ -29,23 +29,7 @@ namespace Terminals.Data
             }
         }
 
-        private Dictionary<string, Image> pluginIcons;
-
-        /// <summary>
-        /// Gets the thread safe singleton instance. Use only for startup procedure, will removed in the future.
-        /// </summary>
-        public static FavoriteIcons Instance
-        {
-            get
-            {
-                return Nested.instance;
-            }
-        }
-
-        private static class Nested
-        {
-            internal static readonly FavoriteIcons instance = new FavoriteIcons(ConnectionManager.Instance);
-        }
+        private readonly Dictionary<string, Image> pluginIcons;
 
         internal FavoriteIcons(ConnectionManager connectionManager)
         {

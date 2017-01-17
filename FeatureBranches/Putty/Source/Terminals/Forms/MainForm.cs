@@ -53,6 +53,8 @@ namespace Terminals
 
         private readonly ConnectionManager connectionManager;
 
+        private FavoriteIcons favoriteIcons;
+
         #endregion
 
         #region Properties
@@ -149,12 +151,13 @@ namespace Terminals
 
         #region Constuctors
 
-        public MainForm(IPersistence persistence, ConnectionManager connectionManager)
+        public MainForm(IPersistence persistence, ConnectionManager connectionManager, FavoriteIcons favoriteIcons)
         {
             try
             {
                 this.persistence = persistence;
                 this.connectionManager = connectionManager;
+                this.favoriteIcons = favoriteIcons;
 
                 this.toolTipBuilder = new ToolTipBuilder(this.persistence.Security);
                 settings.StartDelayedUpdate();
@@ -167,7 +170,8 @@ namespace Terminals
                 this.formSettings = new FormSettings(this);
                 this.tabsFilter = new TabControlFilter(this.tcTerminals);
                 this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals, this.persistence);
-                this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler, this.persistence, this.connectionManager);
+                this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler,
+                    this.persistence, this.connectionManager, this.favoriteIcons);
                 this.terminalsControler.AssingUiFactory(this.connectionsUiFactory);
                 this.toolbarExtenders = this.connectionManager.CreateToolbarExtensions(this.terminalsControler);
 
@@ -181,7 +185,7 @@ namespace Terminals
                 this.favoriteToolBar.Visible = this.toolStripMenuItemShowHideFavoriteToolbar.Checked;
                 this.fullScreenSwitch = new MainFormFullScreenSwitch(this);
                 this.tabControlRemover = new TabControlRemover(this.settings, this, this.terminalsControler, this.tcTerminals);
-                this.favsList1.AssignServices(this.persistence, this.connectionManager);
+                this.favsList1.AssignServices(this.persistence, this.connectionManager, favoriteIcons);
                 this.AssignToolStripsToContainer();
                 this.ApplyControlsEnableAndVisibleState();
 
@@ -1016,7 +1020,7 @@ namespace Terminals
 
         private void OrganizeGroupsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmOrganizeGroups = new OrganizeGroupsForm(this.persistence))
+            using (var frmOrganizeGroups = new OrganizeGroupsForm(this.persistence, this.favoriteIcons))
             {
                 frmOrganizeGroups.ShowDialog();
                 this.menuLoader.LoadGroups();
@@ -1412,7 +1416,7 @@ namespace Terminals
 
         private void ExportConnectionsListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frm = new ExportForm(this.persistence, this.connectionManager))
+            using (var frm = new ExportForm(this.persistence, this.connectionManager, this.favoriteIcons))
                 frm.ShowDialog();
         }
 
@@ -1435,7 +1439,7 @@ namespace Terminals
 
         private OrganizeFavoritesForm CreateOrganizeFavoritesForm()
         {
-            var organizeForm = new OrganizeFavoritesForm(this.persistence, this.connectionManager);
+            var organizeForm = new OrganizeFavoritesForm(this.persistence, this.connectionManager, this.favoriteIcons);
             organizeForm.AssignConnectionsUiFactory(this.connectionsUiFactory);
             return organizeForm;
         }

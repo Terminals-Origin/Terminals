@@ -26,6 +26,7 @@ namespace Terminals.Plugins.Putty
             if (null != puttyOptions)
             {
                 this.cmbSessionName.Text = puttyOptions.SessionName;
+                this.checkBoxVerbose.Checked = puttyOptions.Verbose;
             }
         }
 
@@ -36,6 +37,7 @@ namespace Terminals.Plugins.Putty
             if (null != puttyOptions)
             {
                 puttyOptions.SessionName = this.cmbSessionName.Text;
+                puttyOptions.Verbose = this.checkBoxVerbose.Checked;
             }
         }
     }

@@ -36,6 +36,7 @@ namespace Terminals.Plugins.Putty
         {
             this.cmbSessionName = new System.Windows.Forms.ComboBox();
             this.labelSession = new System.Windows.Forms.Label();
+            this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cmbSessionName
@@ -55,13 +56,24 @@ namespace Terminals.Plugins.Putty
             this.labelSession.TabIndex = 1;
             this.labelSession.Text = "Session";
             // 
-            // PuttyOptionsControl
+            // checkBoxVerbose
+            // 
+            this.checkBoxVerbose.AutoSize = true;
+            this.checkBoxVerbose.Location = new System.Drawing.Point(6, 89);
+            this.checkBoxVerbose.Name = "checkBoxVerbose";
+            this.checkBoxVerbose.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxVerbose.TabIndex = 5;
+            this.checkBoxVerbose.Text = "Verbose";
+            this.checkBoxVerbose.UseVisualStyleBackColor = true;
+            // 
+            // TelnetOptionsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.checkBoxVerbose);
             this.Controls.Add(this.labelSession);
             this.Controls.Add(this.cmbSessionName);
-            this.Name = "PuttyOptionsControl";
+            this.Name = "TelnetOptionsControl";
             this.Size = new System.Drawing.Size(650, 443);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -71,5 +83,7 @@ namespace Terminals.Plugins.Putty
 
 
         #endregion
+
+        private CheckBox checkBoxVerbose;
     }
 }

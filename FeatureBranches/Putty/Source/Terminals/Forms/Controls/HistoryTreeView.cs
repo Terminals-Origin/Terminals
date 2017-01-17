@@ -23,9 +23,6 @@ namespace Terminals.Forms.Controls
         public HistoryTreeView()
         {
             InitializeComponent();
-
-            var iconsBuilder = new ProtocolImageListBuilder(FavoriteIcons.Instance.GetProtocolIcons);
-            iconsBuilder.Build(this.imageListIcons);
         }
 
         /// <summary>
@@ -39,6 +36,10 @@ namespace Terminals.Forms.Controls
             var connectionHistory = this.persistence.ConnectionHistory;
             connectionHistory.HistoryRecorded += new HistoryRecorded(this.HistoryRecorded);
             connectionHistory.HistoryClear += new Action(this.ConnectionHistory_HistoryClear);
+
+            var iconsBuilder = new ProtocolImageListBuilder(favoriteIcons.GetProtocolIcons);
+            iconsBuilder.Build(this.imageListIcons);
+
             // init groups before loading the history to prevent to run the callback earlier
             InitializeTimeLineTreeNodes();
         }

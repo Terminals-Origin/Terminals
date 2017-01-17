@@ -53,6 +53,9 @@ namespace Terminals.Plugins.Putty
             // 3.8.3.2 Selecting a protocol: -ssh, -telnet, -rlogin, -raw -serial
             args.Append(" -telnet");
 
+            // 3.8.3.3 -v: increase verbosity
+            if (telnetOptions.Verbose)
+                args.Append(" -v");
 
             // 3.8.3.7 -P: specify a port number
             if (favorite.Port > 0)
@@ -78,6 +81,10 @@ namespace Terminals.Plugins.Putty
             // 3.8.3.2 Selecting a protocol: -ssh, -telnet, -rlogin, -raw -serial
             args.Append(" -ssh");
 
+            // 3.8.3.3 -v: increase verbosity
+            if (sshOptions.Verbose)
+                args.Append(" -v");
+
             // -l: specify a login name
             if (!string.IsNullOrEmpty(userName))
                 args.Append(" -l " + userName);
@@ -94,6 +101,7 @@ namespace Terminals.Plugins.Putty
             if (!string.IsNullOrEmpty(userPassword))
                 args.Append(" -pw " + userPassword);
 
+            // 3.8.3.9 -agent and -noagent: control use of Pageant for authentication
             // 3.8.3.11 -X and -x: control X11 forwarding
             if (sshOptions.X11Forwarding)
                 args.Append(" -X");

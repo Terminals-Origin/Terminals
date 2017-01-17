@@ -9,5 +9,7 @@ namespace Terminals.Plugins.Putty
     {
         public string SessionName { get; set; }
 
+        public bool Verbose { get; set; }
+
     }
 }

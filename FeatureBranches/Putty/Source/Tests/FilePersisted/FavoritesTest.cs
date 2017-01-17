@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Common.Connections;
+using Terminals.Connections;
+using Terminals.Connections.Rdp;
 using Terminals.Connections.VNC;
 using Terminals.Data;
 using Terminals.Data.Credentials;
@@ -17,6 +19,8 @@ namespace Tests.FilePersisted
     public class FavoritesTest : FilePersistedTestLab
     {
         internal const string UPDATE_ICON_MESSAGE = "Favorite update has to be reported only once during save of favorite.";
+
+        private const string VNCFAVORITE_NAME = "FavoriteVnc";
 
         private Guid addedFavoriteId;
         private Guid updatedFavoriteId;
@@ -43,6 +47,48 @@ namespace Tests.FilePersisted
             return favorite;
         }
 
+        [TestMethod]
+        public void DisabledPlugins_LoadFavorites_ReturnsOnlyAvailableProtocols()
+        {
+            this.AddVncRdpFavorites();
+            FilePersistence limitedPersistence = CreateLimitedPersistence();
+            bool areRdpOnly = limitedPersistence.Favorites.All(f => f.Protocol == KnownConnectionConstants.RDP);
+            Assert.IsTrue(areRdpOnly, "Persistence should filter protocol types, which is not able to handle.");
+        }
+
+        [Ignore] // TODO finish the test by appending filtered data from previous deserialization.
+        [TestMethod]
+        public void DisabledPlugins_SaveFavorites_UnknownProtocolsArePreserved()
+        {
+            this.AddVncRdpFavorites();
+            FilePersistence limitedPersistence = CreateLimitedPersistence();
+            var favorite = limitedPersistence.Favorites.First();
+            favorite.Notes = "dummy change";
+            limitedPersistence.Favorites.Update(favorite);
+            var secondary = CreateFilePersistence();
+            bool keepsUnknown = secondary.Favorites.Any(f => f.Protocol == "VNC");
+            Assert.IsTrue(keepsUnknown, "Persistence is not able to serialize unknown protocols.");
+        }
+
+        private void AddVncRdpFavorites()
+        {
+            this.AddFavorite("FavoriteRDP");
+            var favoriteVnc = this.AddFavorite(VNCFAVORITE_NAME);
+            TestConnectionManager.Instance.ChangeProtocol(favoriteVnc, "VNC");
+            this.Favorites.Update(favoriteVnc);
+        }
+
+        private static FilePersistence CreateLimitedPersistence()
+        {
+            var plugins = new List<IConnectionPlugin>()
+            {
+                new RdpConnectionPlugin(),
+            };
+
+            ConnectionManager limited = TestConnectionManager.CreateConnectionManager(plugins);
+            return CreateFilePersistence(limited);
+        }
+
         [DeploymentItem(ImageAssert.IMAGE_FILE)]
         [TestMethod]
         public void CustomIcon_UpdateFavoriteIcon_DoesntSaveFavorite()
@@ -50,7 +96,6 @@ namespace Tests.FilePersisted
             var favorite = this.AddFavorite();
             this.Favorites.UpdateFavoriteIcon(favorite, ImageAssert.IMAGE_FILE);
             FilePersistence secondaryPersistence = CreateFilePersistence();
-            secondaryPersistence.Initialize();
             IFavorite checkfavorite = secondaryPersistence.Favorites.FirstOrDefault();
             Image favoriteIcon = secondaryPersistence.Favorites.LoadFavoriteIcon(checkfavorite);
 
@@ -87,7 +132,6 @@ namespace Tests.FilePersisted
         private static IFavorite LoadFavoriteFromSecondaryPersistence()
         {
             FilePersistence secondaryPersistence = CreateFilePersistence();
-            secondaryPersistence.Initialize();
             return secondaryPersistence.Favorites.FirstOrDefault();
         }
 
@@ -160,8 +204,6 @@ namespace Tests.FilePersisted
         private FilePersistence InitializeSecondaryPersistence(TestFileWatch testFileWatch)
         {
             FilePersistence secondaryPersistence = CreateFilePersistence(testFileWatch);
-            // let the persistence load initial state
-            secondaryPersistence.Initialize();
             secondaryPersistence.Dispatcher.FavoritesChanged += this.DispatcherOnFavoritesChanged;
             secondaryPersistence.Dispatcher.GroupsChanged += this.DispatcherOnGroupsChanged;
             return secondaryPersistence;

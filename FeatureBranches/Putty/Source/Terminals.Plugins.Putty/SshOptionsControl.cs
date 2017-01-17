@@ -28,6 +28,7 @@ namespace Terminals.Plugins.Putty
                 this.checkBoxX11Forwarding.Checked = sshOptions.X11Forwarding;
                 this.checkBoxCompression.Checked = sshOptions.EnableCompression;
                 this.cmbSessionName.Text = sshOptions.SessionName;
+                this.checkBoxVerbose.Checked = sshOptions.Verbose;
             }
         }
 
@@ -40,6 +41,7 @@ namespace Terminals.Plugins.Putty
                 sshOptions.X11Forwarding = this.checkBoxX11Forwarding.Checked;
                 sshOptions.EnableCompression = this.checkBoxCompression.Checked;
                 sshOptions.SessionName = this.cmbSessionName.Text;
+                sshOptions.Verbose = this.checkBoxVerbose.Checked;
             }
         }
     }

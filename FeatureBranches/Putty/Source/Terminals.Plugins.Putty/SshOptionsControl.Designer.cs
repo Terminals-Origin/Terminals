@@ -36,14 +36,11 @@ namespace Terminals.Plugins.Putty
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-
-
             this.cmbSessionName = new System.Windows.Forms.ComboBox();
             this.labelSession = new System.Windows.Forms.Label();
             this.checkBoxX11Forwarding = new System.Windows.Forms.CheckBox();
             this.checkBoxCompression = new System.Windows.Forms.CheckBox();
+            this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cmbSessionName
@@ -83,13 +80,26 @@ namespace Terminals.Plugins.Putty
             this.checkBoxCompression.Text = "Enable compression";
             this.checkBoxCompression.UseVisualStyleBackColor = true;
             // 
-            // PuttyOptionsControl
+            // checkBoxVerbose
             // 
+            this.checkBoxVerbose.AutoSize = true;
+            this.checkBoxVerbose.Location = new System.Drawing.Point(6, 129);
+            this.checkBoxVerbose.Name = "checkBoxVerbose";
+            this.checkBoxVerbose.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxVerbose.TabIndex = 4;
+            this.checkBoxVerbose.Text = "Verbose";
+            this.checkBoxVerbose.UseVisualStyleBackColor = true;
+            // 
+            // SshOptionsControl
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.checkBoxVerbose);
             this.Controls.Add(this.checkBoxCompression);
             this.Controls.Add(this.checkBoxX11Forwarding);
             this.Controls.Add(this.labelSession);
             this.Controls.Add(this.cmbSessionName);
-            this.Name = "PuttyOptionsControl";
+            this.Name = "SshOptionsControl";
             this.Size = new System.Drawing.Size(650, 443);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -99,5 +109,7 @@ namespace Terminals.Plugins.Putty
 
 
         #endregion
+
+        private CheckBox checkBoxVerbose;
     }
 }

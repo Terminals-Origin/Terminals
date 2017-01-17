@@ -94,7 +94,7 @@ namespace Terminals.Data
             this.Dispatcher = new DataDispatcher();
             this.storedCredentials = new StoredCredentials(security);
             this.groups = new Groups(this);
-            this.favorites = new Favorites(this, favoriteIcons);
+            this.favorites = new Favorites(this, favoriteIcons, connectionManager);
             this.connectionHistory = new ConnectionHistory(this.favorites);
             this.factory = new Factory(this.groups, this.Dispatcher,  connectionManager);
             this.InitializeFileWatch(fileWatcher);

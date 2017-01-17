@@ -25,9 +25,7 @@ namespace Tests.Connections
             new ICAConnectionPlugin()
         };
 
-        private static readonly Mock<IPluginsLoader> mockLoader = CreateMockLoader();
-
-        private static readonly ConnectionManager instance = new ConnectionManager(mockLoader.Object);
+        private static readonly ConnectionManager instance = CreateConnectionManager(connectionPlugins);
 
         /// <summary>
         /// Gets instance of manager configured by staticaly loaded plugins.
@@ -35,7 +33,13 @@ namespace Tests.Connections
         /// </summary>
         public static ConnectionManager Instance { get { return instance; } }
 
-        private static Mock<IPluginsLoader> CreateMockLoader()
+        internal static ConnectionManager CreateConnectionManager(List<IConnectionPlugin> connectionPlugins)
+        {
+            var mockLoader = CreateMockLoader(connectionPlugins);
+            return new ConnectionManager(mockLoader.Object);
+        }
+
+        private static Mock<IPluginsLoader> CreateMockLoader(List<IConnectionPlugin> connectionPlugins)
         {
             var mockLoader = new Mock<IPluginsLoader>();
             mockLoader.Setup(l => l.Load())

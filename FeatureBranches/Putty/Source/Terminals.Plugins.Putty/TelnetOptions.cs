@@ -9,7 +9,8 @@ namespace Terminals.Plugins.Putty
         {
             return new TelnetOptions()
             {
-                SessionName = this.SessionName
+                SessionName = this.SessionName,
+                Verbose = this.Verbose
             };
         }
     }

@@ -12,6 +12,7 @@ namespace Terminals.Plugins.Putty
             return new SshOptions()
             {
                 SessionName = this.SessionName,
+                Verbose = this.Verbose,
                 X11Forwarding = this.X11Forwarding,
                 EnableCompression = this.EnableCompression
             };

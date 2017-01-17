@@ -32,6 +32,8 @@ namespace Terminals
 
         private readonly IPersistence persistence;
 
+        private readonly FavoriteIcons favoriteIcons;
+
         private IFavorites PersistedFavorites
         {
             get { return this.persistence.Favorites; }
@@ -41,32 +43,32 @@ namespace Terminals
 
         internal IFavorite Favorite { get; private set; }
 
-        public NewTerminalForm(IPersistence persistence, ConnectionManager connectionManager, string serverName)
-            : this(connectionManager)
+        public NewTerminalForm(IPersistence persistence, ConnectionManager connectionManager, FavoriteIcons favoriteIcons, string serverName)
+            : this(persistence, connectionManager, favoriteIcons)
         {
-            this.persistence = persistence;
-            this.InitializeFavoritePropertiesControl();
-            this.Init(null, serverName);
+            this.Init(serverName);
         }
 
-        public NewTerminalForm(IPersistence persistence, ConnectionManager connectionManager, IFavorite favorite)
-            : this(connectionManager)
+        public NewTerminalForm(IPersistence persistence, ConnectionManager connectionManager, FavoriteIcons favoriteIcons, IFavorite favorite)
+            : this(persistence, connectionManager, favoriteIcons)
         {
-            this.persistence = persistence;
-            this.InitializeFavoritePropertiesControl();
-            this.Init(favorite, String.Empty);
+            this.Init(favorite);
         }
 
-        private NewTerminalForm(ConnectionManager connectionManager)
+        private NewTerminalForm(IPersistence persistence, ConnectionManager connectionManager, FavoriteIcons favoriteIcons)
         {
+            this.persistence = persistence;
             this.connectionManager = connectionManager;
+            this.favoriteIcons = favoriteIcons;
             this.InitializeComponent();
+            this.InitializeFavoritePropertiesControl();
+
         }
 
         private void InitializeFavoritePropertiesControl()
         {
             this.validator = new NewTerminalFormValidator(this.persistence, this.connectionManager, this);
-            this.favoritePropertiesControl1.AssignServices(this.persistence, this.connectionManager, FavoriteIcons.Instance);
+            this.favoritePropertiesControl1.AssignServices(this.persistence, this.connectionManager, this.favoriteIcons);
             this.favoritePropertiesControl1.SetOkButtonRequested += this.GeneralProperties_SetOkButtonRequested;
             this.favoritePropertiesControl1.RegisterValidations(this.validator);
             this.favoritePropertiesControl1.SetErrorProviderIconsAlignment(this.errorProvider);
@@ -157,38 +159,39 @@ namespace Terminals
             if (this.FillFavorite(false))
             {
                 this.EditedId = Guid.Empty;
-                this.Init(null, String.Empty);
+                this.Init(String.Empty);
                 this.favoritePropertiesControl1.FocusServers();
             }
         }
 
-        private void Init(IFavorite favorite, String serverName)
+        private void Init(IFavorite favorite)
+        {
+            this.InitMruAndButtons();
+            this.EditedId = favorite.Id;
+            this.Text = "Edit Connection";
+            this.favoritePropertiesControl1.LoadFrom(favorite);
+        }
+
+        private void Init(string serverName)
+        {
+            this.InitMruAndButtons();
+            this.favoritePropertiesControl1.FillCredentialsCombobox(Guid.Empty);
+
+            var defaultSavedFavorite = this.settings.GetDefaultFavorite();
+            if (defaultSavedFavorite != null)
+            {
+                var defaultFavorite = ModelConverterV1ToV2.ConvertToFavorite(defaultSavedFavorite, this.persistence, this.connectionManager);
+                this.favoritePropertiesControl1.LoadFrom(defaultFavorite);
+            }
+
+            this.favoritePropertiesControl1.FillServerName(serverName);
+        }
+
+        private void InitMruAndButtons()
         {
             this.favoritePropertiesControl1.LoadMRUs();
             this.SetOkButtonState();
-
-            if (favorite == null)
-            {
-                this.favoritePropertiesControl1.FillCredentialsCombobox(Guid.Empty);
-
-                var defaultSavedFavorite = settings.GetDefaultFavorite();
-                if (defaultSavedFavorite != null)
-                {
-                    var defaultFavorite = ModelConverterV1ToV2.ConvertToFavorite(defaultSavedFavorite, this.persistence, this.connectionManager);
-                    this.favoritePropertiesControl1.LoadFrom(defaultFavorite);
-                }
-
-                this.favoritePropertiesControl1.FillServerName(serverName);
-            }
-            else
-            {
-                this.EditedId = favorite.Id;
-                this.Text = "Edit Connection";
-                this.favoritePropertiesControl1.LoadFrom(favorite);
-            }
         }
-
-        #region Refactoring finished
 
         internal void AssingSelectedGroup(IGroup group)
         {
@@ -330,7 +333,5 @@ namespace Terminals
         {
             return this.favoritePropertiesControl1.GetFullUrlFromHttpTextBox();
         }
-
-        #endregion
     }
 }

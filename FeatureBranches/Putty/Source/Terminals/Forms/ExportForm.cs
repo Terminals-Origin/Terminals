@@ -18,21 +18,24 @@ namespace Terminals.Forms
 
         private readonly ConnectionManager connectionManager;
 
-        public ExportForm(IPersistence persistence, ConnectionManager connectionManager)
+        private readonly FavoriteIcons favoriteIcons;
+
+        public ExportForm(IPersistence persistence, ConnectionManager connectionManager, FavoriteIcons favoriteIcons)
         {
             this.persistence = persistence;
             this.InitializeComponent();
 
-            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence, FavoriteIcons.Instance);
+            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence, this.favoriteIcons);
             this.treeLoader.LoadRootNodes();
             this.connectionManager = connectionManager;
+            this.favoriteIcons = favoriteIcons;
             this.exporters = new Exporters(this.persistence, this.connectionManager);
             this.saveFileDialog.Filter = this.exporters.GetProvidersDialogFilter();
         }
 
         private void ExportForm_Load(object sender, EventArgs e)
         {
-            this.favsTree.AssignServices(this.persistence, FavoriteIcons.Instance, this.connectionManager);
+            this.favsTree.AssignServices(this.persistence, this.favoriteIcons, this.connectionManager);
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
