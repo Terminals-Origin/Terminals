@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Connections;
@@ -6,15 +7,22 @@ using Terminals.Data;
 
 namespace Terminals.Plugins.Putty
 {
-    internal class PuttyConnectionPlugin : IConnectionPlugin, IOptionsConverterFactory
+    internal class TelnetConnectionPlugin : IConnectionPlugin, IOptionsConverterFactory
     {
-        internal const int SSHPort = 22;
-        internal const string SSH = "Putty SSH";
+        internal const int TelnetPort = 23;
+        internal const string TELNET = "PuttyTelnet";
 
-        public int Port { get { return SSHPort; } }
+        public int Port { get { return TelnetPort; } }
 
-        public string PortName { get {return SSH; } }
+        public string PortName { get {return TELNET; } }
 
+        public static Image TreeIconTelnet
+        {
+            get
+            {
+                return Connection.Terminalsicon;
+            }
+        }
         public Connection CreateConnection()
         {
             return new PuttyConnection();
@@ -22,17 +30,17 @@ namespace Terminals.Plugins.Putty
 
         public ProtocolOptions CreateOptions()
         {
-            return new PuttyOptions();
+            return new TelnetOptions();
         }
 
         public Control[] CreateOptionsControls()
         {
-            return new Control[] { new PuttyOptionsControl() { Name = "Putty SSH" } };
+            return new Control[] { new TelnetOptionsControl() { Name = "Putty Telnet" } };
         }
 
         public IOptionsConverter CreatOptionsConverter()
         {
-            return new PuttyOptionsConverter();
+            return new TelnetOptionsConverter();
         }
 
         //TODO(JRG): Get putty icon
@@ -43,7 +51,7 @@ namespace Terminals.Plugins.Putty
 
         public Type GetOptionsType()
         {
-            return typeof(PuttyOptions);
+            return typeof(TelnetOptions);
         }
     }
 }

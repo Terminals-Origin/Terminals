@@ -150,8 +150,10 @@
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />
     <Compile Include="FilePersisted\SearchEngineTest.cs" />
     <Compile Include="Configuration\FavoriteConfigurationElementTests.cs" />
+    <Compile Include="Putty\ArgumentBuilderSshTests.cs" />
+    <Compile Include="Putty\PuttyRegistryTests.cs" />
     <Compile Include="Putty\PuttyTests.cs" />
-    <Compile Include="Putty\ArgumentBuilderTests.cs" />
+    <Compile Include="Putty\ArgumentBuilderTelnetTests.cs" />
     <Compile Include="SqlPersisted\ComparersTest.cs" />
     <Compile Include="SqlPersisted\FavoriteCopiesTest.cs" />
     <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />
@@ -250,10 +252,6 @@
     <ProjectReference Include="..\Terminals.Plugins.Rdp\Terminals.Plugins.Rdp.csproj">
       <Project>{f0c60ed2-9a47-4364-af57-505bc3e953d5}</Project>
       <Name>Terminals.Plugins.Rdp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Terminals.Plugins.Terminal\Terminals.Plugins.Terminal.csproj">
-      <Project>{8e972a0c-57e2-4e5c-9ef5-d7cd681188c5}</Project>
-      <Name>Terminals.Plugins.Terminal</Name>
     </ProjectReference>
     <ProjectReference Include="..\Terminals.Plugins.Vmrc\Terminals.Plugins.Vmrc.csproj">
       <Project>{c841ccf6-4793-41b7-835e-f749e2525963}</Project>

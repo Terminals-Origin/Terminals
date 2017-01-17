@@ -7,12 +7,12 @@ using Moq;
 using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Connections.ICA;
-using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
 using Terminals.Data;
 using Terminals.Integration.Export;
+using Terminals.Plugins.Putty;
 
 namespace Tests.Connections
 {
@@ -51,14 +51,14 @@ namespace Tests.Connections
                 new Tuple<string, Type>(VncConnectionPlugin.VNC, typeof(VNCConnection)),
                 // VMRCConnection creation may fail in some test runners.
                 //new Tuple<string, Type>(VmrcConnectionPlugin.VMRC, typeof(VMRCConnection)),
-                new Tuple<string, Type>(TelnetConnectionPlugin.TELNET, typeof(TerminalConnection)),
-                new Tuple<string, Type>(SshConnectionPlugin.SSH, typeof(TerminalConnection)),
+                new Tuple<string, Type>(TelnetConnectionPlugin.TELNET, typeof(PuttyConnection)),
+                new Tuple<string, Type>(SshConnectionPlugin.SSH, typeof(PuttyConnection)),
                 new Tuple<string, Type>(KnownConnectionConstants.HTTP, typeof(HTTPConnection)),
                 new Tuple<string, Type>(KnownConnectionConstants.HTTPS, typeof(HTTPConnection)),
                 new Tuple<string, Type>(ICAConnectionPlugin.ICA_CITRIX, typeof(ICAConnection))
             };
 
-            var allValid = testData.All(this.AssertCratedConnection);
+            var allValid = testData.All(this.AssertCreatedConnection);
             Assert.IsTrue(allValid, "User would be unable to connect.");
         }
 
@@ -66,11 +66,11 @@ namespace Tests.Connections
         public void UnknownProtocol_CreateConnection_CreatesRdpConnection()
         {
             var testCase = new Tuple<string, Type>("UnknownProtocol", typeof(Connection));
-            var isValid = AssertCratedConnection(testCase);
+            var isValid = AssertCreatedConnection(testCase);
             Assert.IsTrue(isValid, "For unknown protocol we fall back to RdpConnection.");
         }
 
-        private bool AssertCratedConnection(Tuple<string, Type> testCase)
+        private bool AssertCreatedConnection(Tuple<string, Type> testCase)
         {
             var mockFavorite = new Mock<IFavorite>();
             mockFavorite.SetupGet(f => f.Protocol).Returns(testCase.Item1);
@@ -244,8 +244,8 @@ namespace Tests.Connections
                 new Tuple<string, int, string>(KnownConnectionConstants.RDP, 5, "Terminals.Forms.EditFavorite.RdpDisplayControl"),
                 new Tuple<string, int, string>(VncConnectionPlugin.VNC, 1, "Terminals.Forms.EditFavorite.VncControl"),
                 new Tuple<string, int, string>(VmrcConnectionPlugin.VMRC, 1, "Terminals.Forms.EditFavorite.VmrcControl"),
-                new Tuple<string, int, string>(TelnetConnectionPlugin.TELNET, 1, "Terminals.ConsolePreferences"),
-                new Tuple<string, int, string>(SshConnectionPlugin.SSH, 2, "Terminals.ConsolePreferences"),
+                new Tuple<string, int, string>(TelnetConnectionPlugin.TELNET, 1, "Terminals.Plugins.Putty.TelnetOptionsControl"),
+                new Tuple<string, int, string>(SshConnectionPlugin.SSH, 1, "Terminals.Plugins.Putty.SshOptionsControl"),
                 new Tuple<string, int, string>(ICAConnectionPlugin.ICA_CITRIX, 1, "Terminals.Forms.EditFavorite.CitrixControl")
             };
         }
@@ -335,9 +335,9 @@ namespace Tests.Connections
                 new Tuple<int, IEnumerable<string>>(VncConnectionPlugin.VncPort,
                     new List<string>() { "Terminals.Connections.VNC.VncConnectionPlugin", "Terminals.Connections.VMRC.VmrcConnectionPlugin"}),
                 new Tuple<int, IEnumerable<string>>(TelnetConnectionPlugin.TelnetPort, 
-                    new List<string>() { "Terminals.Connections.Terminal.TelnetConnectionPlugin"}),
+                    new List<string>() { "Terminals.Plugins.Putty.TelnetConnectionPlugin"}),
                 new Tuple<int, IEnumerable<string>>(SshConnectionPlugin.SSHPort, 
-                    new List<string>() { "Terminals.Connections.Terminal.SshConnectionPlugin"}),
+                    new List<string>() { "Terminals.Plugins.Putty.SshConnectionPlugin"}),
                 new Tuple<int, IEnumerable<string>>(KnownConnectionConstants.HTTPPort, 
                     new List<string>() { "Terminals.Connections.Web.HttpConnectionPlugin"}),
                 new Tuple<int, IEnumerable<string>>(HttpsConnectionPlugin.HTTPSPort, 

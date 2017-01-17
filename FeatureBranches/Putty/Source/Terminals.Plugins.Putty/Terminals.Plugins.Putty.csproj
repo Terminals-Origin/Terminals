@@ -52,15 +52,26 @@
     <Compile Include="PuttyConnection.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PuttyConnectionPlugin.cs" />
-    <Compile Include="PuttyOptions.cs" />
-    <Compile Include="PuttyOptionsControl.cs">
+    <Compile Include="SshOptions.cs" />
+    <Compile Include="TelnetOptionsConverter.cs" />
+    <Compile Include="TelnetOptions.cs" />
+    <Compile Include="TelnetOptionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PuttyOptionsControl.Designer.cs">
-      <DependentUpon>PuttyOptionsControl.cs</DependentUpon>
+    <Compile Include="TelnetOptionsControl.Designer.cs">
+      <DependentUpon>TelnetOptionsControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="PuttyOptionsConverter.cs" />
+    <Compile Include="TelnetConnectionPlugin.cs" />
+    <Compile Include="SshConnectionPlugin.cs" />
+    <Compile Include="PuttyOptions.cs" />
+    <Compile Include="SshOptionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SshOptionsControl.Designer.cs">
+      <DependentUpon>SshOptionsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SshOptionsConverter.cs" />
+    <Compile Include="PuttyRegistry.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">
@@ -69,14 +80,23 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="PuttyOptionsControl.resx">
-      <DependentUpon>PuttyOptionsControl.cs</DependentUpon>
+    <EmbeddedResource Include="TelnetOptionsControl.resx">
+      <DependentUpon>TelnetOptionsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SshOptionsControl.resx">
+      <DependentUpon>SshOptionsControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Resources\Libraries\Putty\pageant.exe">
+      <Link>Resources\pageant.exe</Link>
+    </Content>
     <Content Include="..\..\Resources\Libraries\Putty\putty.exe">
       <Link>Resources\putty.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Resources\Libraries\Putty\puttygen.exe">
+      <Link>Resources\puttygen.exe</Link>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

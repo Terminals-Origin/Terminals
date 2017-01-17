@@ -6,7 +6,6 @@ using Moq;
 using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Connections.ICA;
-using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
 using Terminals.Data;
@@ -15,6 +14,7 @@ using Terminals.Forms;
 using Terminals.Forms.EditFavorite;
 using Tests.Connections;
 using Tests.FilePersisted;
+using Terminals.Plugins.Putty;
 
 namespace Tests.UserInterface
 {
@@ -126,20 +126,25 @@ namespace Tests.UserInterface
         public void SSh_LoadSave_KeepsSSHKeyFile()
         {
             // because of statics used in Settings.SshKeys
-            FilePersistedTestLab.SetDefaultFileLocations();
-            this.AssertExpectedPropertyValue<SshOptions, string>(SshConnectionPlugin.SSH,
-                  (options, newValue) => options.SSHKeyFile = newValue,
-                  options => options.SSHKeyFile,
-                  "ExpectedKeyFile");
+            //FilePersistedTestLab.SetDefaultFileLocations();
+            //this.AssertExpectedPropertyValue<SshOptions, string>(SshConnectionPlugin.SSH,
+            //      (options, newValue) => options.SSHKeyFile = newValue,
+            //      options => options.SSHKeyFile,
+            //      "ExpectedKeyFile");
+
+
+            throw new NotImplementedException();
         }
 
         [TestMethod]
         public void Telnet_LoadSave_KeepsColumns()
         {
-            this.AssertExpectedPropertyValue<ConsoleOptions, int>(TelnetConnectionPlugin.TELNET,
-                  (options, newValue) => options.Columns = newValue,
-                  options => options.Columns,
-                  EXPECTED_NUMBER);
+            //this.AssertExpectedPropertyValue<TelnetOptions, int>(TelnetConnectionPlugin.TELNET,
+            //      (options, newValue) => options.Columns = newValue,
+            //      options => options.Columns,
+            //      EXPECTED_NUMBER);
+
+            throw new NotImplementedException();
         }
 
         [TestMethod]

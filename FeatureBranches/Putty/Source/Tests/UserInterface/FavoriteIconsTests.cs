@@ -7,12 +7,12 @@ using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Connections.ICA;
 using Terminals.Connections.Rdp;
-using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
 using Terminals.Data;
 using Tests.Connections;
+using Terminals.Plugins.Putty;
 
 namespace Tests.UserInterface
 {
@@ -36,8 +36,8 @@ namespace Tests.UserInterface
             {
                 new Tuple<string, string>(KnownConnectionConstants.RDP, "treeIcon_RDP"),
                 new Tuple<string, string>(VncConnectionPlugin.VNC, "treeIcon_VNC"),
-                new Tuple<string, string>(SshConnectionPlugin.SSH, "treeIcon_SSH"),
-                new Tuple<string, string>(TelnetConnectionPlugin.TELNET, "treeIcon_Telnet"),
+                new Tuple<string, string>(SshConnectionPlugin.SSH, "treeIcon_PuttySSH"),
+                new Tuple<string, string>(TelnetConnectionPlugin.TELNET, "treeIcon_PuttyTelnet"),
                 new Tuple<string, string>(KnownConnectionConstants.HTTP, "treeIcon_HTTP"),
                 new Tuple<string, string>(KnownConnectionConstants.HTTPS, "treeIcon_HTTPS"),
 

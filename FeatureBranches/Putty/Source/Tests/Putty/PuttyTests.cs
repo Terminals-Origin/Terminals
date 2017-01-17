@@ -8,12 +8,13 @@ namespace Tests.Putty
     [TestClass]
     public class PuttyTests
     {
+        
 
         [TestMethod]
-        public void EnsurePuttyBinary()
+        public void EnsurePuttyBinaryInResources()
         {
             PuttyConnection puttyConnection = new PuttyConnection();
-            Assert.IsTrue(File.Exists(puttyConnection.GetPuttyBinaryPath()));
+            Assert.IsTrue(puttyConnection.GetPuttyBinaryPath().EndsWith(@"Resources\" + PuttyConnection.PUTTY_BINARY));
         }
 
 

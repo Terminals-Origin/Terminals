@@ -4,12 +4,19 @@ using Terminals.Forms.EditFavorite;
 
 namespace Terminals.Plugins.Putty
 {
-    public partial class PuttyOptionsControl : UserControl, IProtocolOptionsControl
+    public partial class TelnetOptionsControl : UserControl, IProtocolOptionsControl
     {
 
-        public PuttyOptionsControl()
+        internal string[] SessionList { get; set; }
+
+        public TelnetOptionsControl()
         {
             InitializeComponent();
+            this.SessionList = new PuttyRegistry().GetSessions();
+
+            BindingSource bs = new BindingSource();
+            bs.DataSource = this.SessionList;
+            this.cmbSessionName.DataSource = bs;
         }
 
         public void LoadFrom(IFavorite favorite)
@@ -18,8 +25,6 @@ namespace Terminals.Plugins.Putty
 
             if (null != puttyOptions)
             {
-                this.checkBoxX11Forwarding.Checked = puttyOptions.X11Forwarding;
-                this.checkBoxCompression.Checked = puttyOptions.EnableCompression;
                 this.cmbSessionName.Text = puttyOptions.SessionName;
             }
         }
@@ -30,8 +35,6 @@ namespace Terminals.Plugins.Putty
 
             if (null != puttyOptions)
             {
-                puttyOptions.X11Forwarding = this.checkBoxX11Forwarding.Checked;
-                puttyOptions.EnableCompression = this.checkBoxCompression.Checked;
                 puttyOptions.SessionName = this.cmbSessionName.Text;
             }
         }

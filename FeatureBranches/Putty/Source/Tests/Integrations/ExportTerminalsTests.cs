@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
 using Terminals.Common.Connections;
 using Terminals.Connections.ICA;
-using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
 using Terminals.Data;
@@ -13,6 +12,7 @@ using Terminals.Integration.Export;
 using Terminals.Integration.Import;
 using Tests.Connections;
 using Tests.UserInterface;
+using Terminals.Plugins.Putty;
 
 namespace Tests.Integrations
 {

@@ -6,9 +6,9 @@ using Moq;
 using Terminals;
 using Terminals.Configuration;
 using Terminals.Connections;
-using Terminals.Connections.Terminal;
 using Terminals.Data;
 using Tests.FilePersisted;
+using Terminals.Plugins.Putty;
 
 namespace Tests
 {

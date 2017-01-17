@@ -14,7 +14,7 @@ namespace Terminals.Plugins.Putty
 {
     internal class PuttyConnection : Connection, IConnectionExtra
     {
-        const string PUTTY_BINARY = "putty.exe";
+        public const string PUTTY_BINARY = "putty.exe";
 
         private bool windowCaptured = false;
         private Process puttyProcess;
@@ -179,8 +179,11 @@ namespace Terminals.Plugins.Putty
 
         internal string GetPuttyBinaryPath()
         {
-            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                "Resources", PUTTY_BINARY);
+            return GetPuttyBinaryPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+        }
+        internal string GetPuttyBinaryPath(string baseLocation)
+        {
+            return Path.Combine(baseLocation, "Resources", PUTTY_BINARY);
         }
 
         private void LaunchPutty()
