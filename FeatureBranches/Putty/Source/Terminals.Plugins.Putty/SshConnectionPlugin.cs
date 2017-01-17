@@ -4,24 +4,21 @@ using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Data;
+using Terminals.Plugins.Putty.Properties;
 
 namespace Terminals.Plugins.Putty
 {
     internal class SshConnectionPlugin : IConnectionPlugin, IOptionsConverterFactory
     {
         internal const int SSHPort = 22;
-        internal const string SSH = "PuttySSH";
+        internal const string SSH = "SSH";
 
         public int Port { get { return SSHPort; } }
 
         public string PortName { get {return SSH; } }
 
-        public static Image TreeIconSsh
-        {
-            get {
-                return Connection.Terminalsicon;
-            }
-        }
+        internal static readonly Image TreeIconSsh = Resources.treeIcon_ssh;
+
 
         public Connection CreateConnection()
         {
@@ -35,7 +32,7 @@ namespace Terminals.Plugins.Putty
 
         public Control[] CreateOptionsControls()
         {
-            return new Control[] { new SshOptionsControl() { Name = "Putty SSH" } };
+            return new Control[] { new SshOptionsControl() { Name = "SSH" } };
         }
 
         public IOptionsConverter CreatOptionsConverter()
@@ -43,10 +40,9 @@ namespace Terminals.Plugins.Putty
             return new SshOptionsConverter();
         }
 
-        //TODO(JRG): Get putty icon
-        public System.Drawing.Image GetIcon()
+        public Image GetIcon()
         {
-            return Connection.Terminalsicon; 
+            return TreeIconSsh; 
         }
 
         public Type GetOptionsType()

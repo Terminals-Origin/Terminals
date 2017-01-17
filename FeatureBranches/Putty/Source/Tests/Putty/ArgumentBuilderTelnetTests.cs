@@ -10,7 +10,7 @@ namespace Tests.Putty
     public class ArgumentBuilderTelnetTests
     {
         [TestMethod]
-        public void ValidFavoriteAndCredentials_Build_ReturnsAllTelnetArguments()
+        public void LoadSession()
         {
             var credentials = new Mock<IGuardedSecurity>();
             var favorite = new Mock<IFavorite>();
@@ -22,7 +22,7 @@ namespace Tests.Putty
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
             string arguments = builder.Build();
-            Assert.AreEqual(" -load \"session\" -telnet server", arguments, "All arguments need to be used from favorite and its credentials");
+            Assert.AreEqual(" -load \"session\" -telnet server", arguments, "Arguments weren't built as expected");
         }
 
 
@@ -43,6 +43,24 @@ namespace Tests.Putty
             string arguments = builder.Build();
         }
 
+        [TestMethod]
+        public void Check_Verbose()
+        {
+            var credentials = new Mock<IGuardedSecurity>();
+            var favorite = new Mock<IFavorite>();
+
+            credentials.Setup(a => a.UserName).Returns("user");
+            credentials.Setup(a => a.Password).Returns("password");
+
+            favorite.Setup(p => p.Protocol).Returns(SshConnectionPlugin.SSH);
+            favorite.Setup(p => p.ServerName).Returns("server");
+            favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions() { SessionName = "session", Verbose = true });
+
+            var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
+
+            string arguments = builder.Build();
+            Assert.IsTrue(arguments.IndexOf(" -v ") > -1, "-v should be present.");
+        }
     }
 }
 

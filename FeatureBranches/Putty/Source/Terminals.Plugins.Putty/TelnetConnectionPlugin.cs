@@ -4,25 +4,21 @@ using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Data;
+using Terminals.Plugins.Putty.Properties;
 
 namespace Terminals.Plugins.Putty
 {
     internal class TelnetConnectionPlugin : IConnectionPlugin, IOptionsConverterFactory
     {
         internal const int TelnetPort = 23;
-        internal const string TELNET = "PuttyTelnet";
+        internal const string TELNET = "Telnet";
 
         public int Port { get { return TelnetPort; } }
 
         public string PortName { get {return TELNET; } }
 
-        public static Image TreeIconTelnet
-        {
-            get
-            {
-                return Connection.Terminalsicon;
-            }
-        }
+        internal static readonly Image TreeIconTelnet = Resources.treeIcon_telnet;
+
         public Connection CreateConnection()
         {
             return new PuttyConnection();
@@ -35,7 +31,7 @@ namespace Terminals.Plugins.Putty
 
         public Control[] CreateOptionsControls()
         {
-            return new Control[] { new TelnetOptionsControl() { Name = "Putty Telnet" } };
+            return new Control[] { new TelnetOptionsControl() { Name = "Telnet" } };
         }
 
         public IOptionsConverter CreatOptionsConverter()
@@ -43,10 +39,9 @@ namespace Terminals.Plugins.Putty
             return new TelnetOptionsConverter();
         }
 
-        //TODO(JRG): Get putty icon
-        public System.Drawing.Image GetIcon()
+        public Image GetIcon()
         {
-            return Connection.Terminalsicon; 
+            return TreeIconTelnet; 
         }
 
         public Type GetOptionsType()

@@ -85,13 +85,15 @@ namespace Terminals.Plugins.Putty
             if (sshOptions.Verbose)
                 args.Append(" -v");
 
-            // -l: specify a login name
+            // 3.8.3.4 -l: specify a login name
             if (!string.IsNullOrEmpty(userName))
                 args.Append(" -l " + userName);
 
             // 3.8.3.5 -L, -R and -D: set up port forwardings
-            // not right now
+            // not right now, supported via session config
 
+            // 3.8.3.6 -m: read a remote command or script from a file
+            // not right now
 
             // 3.8.3.7 -P: specify a port number
             if (favorite.Port > 0)
@@ -102,15 +104,32 @@ namespace Terminals.Plugins.Putty
                 args.Append(" -pw " + userPassword);
 
             // 3.8.3.9 -agent and -noagent: control use of Pageant for authentication
+            if (sshOptions.EnablePagentAuthentication)
+                args.Append(" -agent");
+            else
+                args.Append(" -noagent");
+
+            // 3.8.3.10 -A and -a: control agent forwarding
+            if (sshOptions.EnablePagentForwarding)
+                args.Append(" -A");
+            else
+                args.Append(" -a");
+
             // 3.8.3.11 -X and -x: control X11 forwarding
             if (sshOptions.X11Forwarding)
                 args.Append(" -X");
             else
                 args.Append(" -x");
 
-            // 3.8.3.11 -X and -x: control X11 forwarding
+            // 3.8.3.15 -C: enable compression
             if (sshOptions.EnableCompression)
                 args.Append(" -C");
+
+            // 3.8.3.16 -1 and -2: specify an SSH protocol version
+            if (sshOptions.SshVersion == SshVersion.SshVersion1)
+                args.Append(" -1");
+            else if (sshOptions.SshVersion == SshVersion.SshVersion2)
+                args.Append(" -2");
 
             args.Append(" " + favorite.ServerName);
 

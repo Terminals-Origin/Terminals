@@ -17,6 +17,8 @@ namespace Terminals.Plugins.Putty
             BindingSource bs = new BindingSource();
             bs.DataSource = this.SessionList;
             this.cmbSessionName.DataSource = bs;
+            this.cmbSessionName.SelectedItem = null;
+
         }
 
         public void LoadFrom(IFavorite favorite)

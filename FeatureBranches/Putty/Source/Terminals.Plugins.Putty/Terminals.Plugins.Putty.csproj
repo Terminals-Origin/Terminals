@@ -52,7 +52,13 @@
     <Compile Include="PuttyConnection.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SshOptions.cs" />
+    <Compile Include="SshVersion.cs" />
     <Compile Include="TelnetOptionsConverter.cs" />
     <Compile Include="TelnetOptions.cs" />
     <Compile Include="TelnetOptionsControl.cs">
@@ -80,6 +86,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="TelnetOptionsControl.resx">
       <DependentUpon>TelnetOptionsControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -98,6 +108,8 @@
     <Content Include="..\..\Resources\Libraries\Putty\puttygen.exe">
       <Link>Resources\puttygen.exe</Link>
     </Content>
+    <None Include="Resources\treeIcon_ssh.png" />
+    <None Include="Resources\treeIcon_telnet.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
