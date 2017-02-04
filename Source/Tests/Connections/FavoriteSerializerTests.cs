@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Common.Connections;
 using Terminals.Connections.ICA;
@@ -16,6 +19,32 @@ namespace Tests.Connections
     {
         private const string FILE_NAME = "SerializationTest.xml";
 
+        private const string VNC_ELEMENT = @"
+     <Favorite id=""d0a609d9-09a4-4f8d-8ed3-e58048a2369d"" xmlns=""http://Terminals.codeplex.com"">
+      <Protocol>VNC</Protocol>
+      <Port>3389</Port>
+      <Security />
+      <NewWindow>false</NewWindow>
+      <ExecuteBeforeConnect>
+        <Execute>false</Execute>
+        <WaitForExit>false</WaitForExit>
+      </ExecuteBeforeConnect>
+      <Display>
+        <Height>0</Height>
+        <Width>0</Width>
+        <DesktopSize>FitToWindow</DesktopSize>
+        <Colors>Bits32</Colors>
+      </Display>
+      <VncOptions>
+        <AutoScale>false</AutoScale>
+        <ViewOnly>false</ViewOnly>
+        <DisplayNumber>0</DisplayNumber>
+      </VncOptions>
+    </Favorite>";
+
+        private static readonly XElement vncCachedFavorite = XDocument.Parse(VNC_ELEMENT).Root;
+
+
         private static readonly Tuple<string, Type>[] testCases = new Tuple<string, Type>[]
         {
             new Tuple<string, Type>(KnownConnectionConstants.RDP, typeof(RdpOptions)),
@@ -27,6 +56,22 @@ namespace Tests.Connections
             new Tuple<string, Type>(KnownConnectionConstants.HTTPS, typeof(WebOptions)),
             new Tuple<string, Type>(ICAConnectionPlugin.ICA_CITRIX, typeof(ICAOptions))
         };
+
+        [TestMethod]
+        public void RdpOnlyPluginAndCachedVncXml_Serialize_SavesUnknonwCachedFavorite()
+        {
+            var rdpOnlyManager = TestConnectionManager.CreateRdpOnlyManager();
+            FavoritesFile file = CreateTestFile(KnownConnectionConstants.RDP);
+            var unknownFavorites = new List<XElement>() { vncCachedFavorite };
+            var context = new SerializationContext(file, unknownFavorites);
+            var limitedSerializer = new FavoritesFileSerializer(rdpOnlyManager);
+
+            limitedSerializer.SerializeContext(context, FILE_NAME);
+            string saved = File.ReadAllText(FILE_NAME);
+
+            bool savedVnc = saved.Contains("<Protocol>VNC</Protocol>");
+            Assert.IsTrue(savedVnc, "The saved content has to contain both elemente");
+        }
 
         [TestMethod]
         public void RdpOnlyPlugin_Deserialize_LoadsVncAsUnknown()
