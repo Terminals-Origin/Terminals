@@ -28,7 +28,6 @@ namespace Tests.Connections
             new Tuple<string, Type>(ICAConnectionPlugin.ICA_CITRIX, typeof(ICAOptions))
         };
 
-        [Ignore] // TODO not finished filtering of favorites
         [TestMethod]
         public void RdpOnlyPlugin_Deserialize_LoadsVncAsUnknown()
         {
