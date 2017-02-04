@@ -5,7 +5,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Terminals.Connections;
-using Unified;
 
 namespace Terminals.Data.FilePersisted
 {
@@ -20,24 +19,38 @@ namespace Terminals.Data.FilePersisted
 
         public void SerializeContext(SerializationContext context, string fileName)
         {
+            try
+            {
+                this.TrySerialize(context, fileName);
+            }
+            catch (Exception exception)
+            {
+                Logging.Error("Unable to save favorites file." , exception);
+            }
+        }
+
+        private void TrySerialize(SerializationContext context, string fileName)
+        {
             var document = new XDocument();
+            this.Serialize(context, document);
+            FavoritesXmlFile file = FavoritesXmlFile.CreateDocument(document);
+            file.AppendUnknownFavorites(context.Unknown);
+            document.Save(fileName);
+        }
+
+        private void Serialize(SerializationContext context, XDocument document)
+        {
             using (XmlWriter writer = document.CreateWriter())
             {
                 XmlSerializer serializer = this.CreateSerializer();
                 serializer.Serialize(writer, context.File);
             }
-
-            FavoritesXmlFile file = FavoritesXmlFile.CreateDocument(document);
-            file.AppendUnknownFavorites(context.Unknown);
-
-
-            document.Save(fileName);
         }
 
         public void SerializeToXml(FavoritesFile fileContent, string fileLocation)
         {
             XmlAttributeOverrides attributes = this.CreateAttributes();
-            Serialize.SerializeXMLToDisk(fileContent, fileLocation, attributes);
+            Unified.Serialize.SerializeXMLToDisk(fileContent, fileLocation, attributes);
         }
 
         public SerializationContext DeserializeContext(string fileLocation)
@@ -80,7 +93,7 @@ namespace Terminals.Data.FilePersisted
         public FavoritesFile Deserialize(string fileLocation)
         {
             XmlAttributeOverrides attributes = this.CreateAttributes();
-            object deserialized = Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile), attributes);
+            object deserialized = Unified.Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile), attributes);
             return deserialized as FavoritesFile;
         }
 
