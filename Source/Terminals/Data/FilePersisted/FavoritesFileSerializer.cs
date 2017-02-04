@@ -16,20 +16,28 @@ namespace Terminals.Data.FilePersisted
 
         public void SerializeToXml(FavoritesFile fileContent, string fileLocation)
         {
-            XmlAttributeOverrides attributes = CreateAttributes();
+            XmlAttributeOverrides attributes = this.CreateAttributes();
             Serialize.SerializeXMLToDisk(fileContent, fileLocation, attributes);
+        }
+
+        public SerializationContext DeserializeContext(string fileLocation)
+        {
+            XmlAttributeOverrides attributes = this.CreateAttributes();
+            object deserialized = Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile), attributes);
+            var file = deserialized as FavoritesFile;
+            return new SerializationContext(file);
         }
 
         public FavoritesFile Deserialize(string fileLocation)
         {
-            XmlAttributeOverrides attributes = CreateAttributes();
+            XmlAttributeOverrides attributes = this.CreateAttributes();
             object deserialized = Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile), attributes);
             return deserialized as FavoritesFile;
         }
 
         private XmlAttributeOverrides CreateAttributes()
         {
-            Type[] extraTypes = connectinManager.GetAllKnownProtocolOptionTypes();
+            Type[] extraTypes = this.connectinManager.GetAllKnownProtocolOptionTypes();
             var attributeOverrides = new XmlAttributeOverrides();
             var listAttribs = new XmlAttributes();
 
