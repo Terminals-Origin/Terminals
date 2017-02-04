@@ -172,6 +172,7 @@
     <Compile Include="Data\DB\DbFavoriteImagesStore.cs" />
     <Compile Include="Data\Favorites\ToolTipBuilder.cs" />
     <Compile Include="Data\FilePersisted\FavoriteBatchUpdates.cs" />
+    <Compile Include="Data\FilePersisted\FavoritesXmlFile.cs" />
     <Compile Include="Data\FilePersisted\SerializationContext.cs" />
     <Compile Include="Data\Interfaces\IDataValidator.cs" />
     <Compile Include="Data\ModelConvertersTemplate.cs" />

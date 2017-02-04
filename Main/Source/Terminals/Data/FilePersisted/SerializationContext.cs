@@ -9,10 +9,15 @@ namespace Terminals.Data.FilePersisted
 
         public List<XElement> Unknown { get; private set; }
 
-        public SerializationContext(FavoritesFile file)
+        public SerializationContext()
+            : this(new FavoritesFile(), new List<XElement>())
+        {
+        }
+
+        public SerializationContext(FavoritesFile file, List<XElement> unknownFavorites)
         {
             this.File = file;
-            this.Unknown = new List<XElement>();
+            this.Unknown = unknownFavorites;
         }
     }
 }

@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using Terminals.Connections;
 using Unified;
@@ -22,10 +26,32 @@ namespace Terminals.Data.FilePersisted
 
         public SerializationContext DeserializeContext(string fileLocation)
         {
+            try
+            {
+                if (!File.Exists(fileLocation))
+                    return new SerializationContext();
+
+                return this.TryDeserializeContext(fileLocation);
+            }
+            catch
+            {
+                return new SerializationContext();
+            }
+        }
+
+        private SerializationContext TryDeserializeContext(string fileLocation)
+        {
+            var availableProtocols = this.connectinManager.GetAvailableProtocols();
+            FavoritesXmlFile document = FavoritesXmlFile.LoadXmlDocument(fileLocation, availableProtocols);
+            List<XElement> unknownFavorites = document.RemoveUnknownFavorites();
             XmlAttributeOverrides attributes = this.CreateAttributes();
-            object deserialized = Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile), attributes);
-            var file = deserialized as FavoritesFile;
-            return new SerializationContext(file);
+            var serializer = new XmlSerializer(typeof(FavoritesFile), attributes);
+            var loaded = serializer.Deserialize(document.CreateReader()) as FavoritesFile;
+
+            if (loaded != null)
+                return new SerializationContext(loaded, unknownFavorites);
+
+            return new SerializationContext();
         }
 
         public FavoritesFile Deserialize(string fileLocation)
