@@ -63,7 +63,7 @@ namespace Tests.FilePersisted
             this.AddVncRdpFavorites();
             FilePersistence limitedPersistence = CreateLimitedPersistence();
             var favorite = limitedPersistence.Favorites.First();
-            favorite.Notes = "dummy change";
+            favorite.Notes = "irrelevant change";
             limitedPersistence.Favorites.Update(favorite);
             var secondary = CreateFilePersistence();
             bool keepsUnknown = secondary.Favorites.Any(f => f.Protocol == "VNC");
@@ -80,12 +80,7 @@ namespace Tests.FilePersisted
 
         private static FilePersistence CreateLimitedPersistence()
         {
-            var plugins = new List<IConnectionPlugin>()
-            {
-                new RdpConnectionPlugin(),
-            };
-
-            ConnectionManager limited = TestConnectionManager.CreateConnectionManager(plugins);
+            ConnectionManager limited = TestConnectionManager.CreateRdpOnlyManager();
             return CreateFilePersistence(limited);
         }
 

@@ -33,6 +33,16 @@ namespace Tests.Connections
         /// </summary>
         public static ConnectionManager Instance { get { return instance; } }
 
+        internal static ConnectionManager CreateRdpOnlyManager()
+        {
+            var plugins = new List<IConnectionPlugin>()
+            {
+                new RdpConnectionPlugin(),
+            };
+
+            return CreateConnectionManager(plugins);
+        }
+
         internal static ConnectionManager CreateConnectionManager(List<IConnectionPlugin> connectionPlugins)
         {
             var mockLoader = CreateMockLoader(connectionPlugins);
