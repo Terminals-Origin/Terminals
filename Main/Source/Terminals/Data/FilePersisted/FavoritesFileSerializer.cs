@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Terminals.Connections;
@@ -16,6 +16,22 @@ namespace Terminals.Data.FilePersisted
         public FavoritesFileSerializer(ConnectionManager connectinManager)
         {
             this.connectinManager = connectinManager;
+        }
+
+        public void SerializeContext(SerializationContext context, string fileName)
+        {
+            var document = new XDocument();
+            using (XmlWriter writer = document.CreateWriter())
+            {
+                XmlSerializer serializer = this.CreateSerializer();
+                serializer.Serialize(writer, context.File);
+            }
+
+            FavoritesXmlFile file = FavoritesXmlFile.CreateDocument(document);
+            file.AppendUnknownFavorites(context.Unknown);
+
+
+            document.Save(fileName);
         }
 
         public void SerializeToXml(FavoritesFile fileContent, string fileLocation)
@@ -42,11 +58,10 @@ namespace Terminals.Data.FilePersisted
         private SerializationContext TryDeserializeContext(string fileLocation)
         {
             var availableProtocols = this.connectinManager.GetAvailableProtocols();
-            FavoritesXmlFile document = FavoritesXmlFile.LoadXmlDocument(fileLocation, availableProtocols);
-            List<XElement> unknownFavorites = document.RemoveUnknownFavorites();
-            XmlAttributeOverrides attributes = this.CreateAttributes();
-            var serializer = new XmlSerializer(typeof(FavoritesFile), attributes);
-            var loaded = serializer.Deserialize(document.CreateReader()) as FavoritesFile;
+            FavoritesXmlFile document = FavoritesXmlFile.LoadXmlDocument(fileLocation);
+            List<XElement> unknownFavorites = document.RemoveUnknownFavorites(availableProtocols);
+            XmlSerializer serializer = this.CreateSerializer();
+            FavoritesFile loaded = DeSerialize(document, serializer);
 
             if (loaded != null)
                 return new SerializationContext(loaded, unknownFavorites);
@@ -54,11 +69,25 @@ namespace Terminals.Data.FilePersisted
             return new SerializationContext();
         }
 
+        private static FavoritesFile DeSerialize(FavoritesXmlFile document, XmlSerializer serializer)
+        {
+            using (XmlReader xmlReader = document.CreateReader())
+            {
+                return serializer.Deserialize(xmlReader) as FavoritesFile;
+            }
+        }
+
         public FavoritesFile Deserialize(string fileLocation)
         {
             XmlAttributeOverrides attributes = this.CreateAttributes();
             object deserialized = Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile), attributes);
             return deserialized as FavoritesFile;
+        }
+
+        private XmlSerializer CreateSerializer()
+        {
+            XmlAttributeOverrides attributes = this.CreateAttributes();
+            return new XmlSerializer(typeof(FavoritesFile), attributes);
         }
 
         private XmlAttributeOverrides CreateAttributes()

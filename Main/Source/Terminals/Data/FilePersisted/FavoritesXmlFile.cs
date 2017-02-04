@@ -9,13 +9,11 @@ namespace Terminals.Data.FilePersisted
     internal class FavoritesXmlFile
     {
         private readonly XmlNamespaceManager namespaceManager;
-        private readonly string[] availableProtocols;
         private readonly XDocument document;
 
-        private FavoritesXmlFile(XDocument document, string[] availableProtocols)
+        private FavoritesXmlFile(XDocument document)
         {
             this.document = document;
-            this.availableProtocols = availableProtocols;
             this.namespaceManager = CreateNameSpaceManager();
         }
 
@@ -28,29 +26,45 @@ namespace Terminals.Data.FilePersisted
             return nameSpaceManager;
         }
 
-        internal static FavoritesXmlFile LoadXmlDocument(string fileLocation, string[] availableProtocols)
+        internal static FavoritesXmlFile LoadXmlDocument(string fileLocation)
         {
             var document = XDocument.Load(fileLocation);
-            return new FavoritesXmlFile(document, availableProtocols);
+            return CreateDocument(document);
         }
 
-        internal List<XElement> RemoveUnknownFavorites()
+        internal static FavoritesXmlFile CreateDocument(XDocument source)
         {
-            IEnumerable<XElement> favorites = this.document.XPathSelectElements("//t:Favorite", this.namespaceManager);
-            List<XElement> toFilter = favorites.Where(this.IsUnknownProtocol).ToList();
+            return new FavoritesXmlFile(source);
+        }
+
+        internal List<XElement> RemoveUnknownFavorites(string[] availableProtocols)
+        {
+            IEnumerable<XElement> favorites = this.SelectElements("//t:Favorite");
+            List<XElement> toFilter = favorites.Where(f => this.IsUnknownProtocol(f, availableProtocols)).ToList();
             toFilter.ForEach(f => f.Remove());
             return toFilter;
         }
 
-        private bool IsUnknownProtocol(XElement favoriteElement)
+        private bool IsUnknownProtocol(XElement favoriteElement, string[] availableProtocols)
         {
             var protocol = favoriteElement.XPathSelectElements("t:Protocol", this.namespaceManager).First();
-            return !this.availableProtocols.Contains(protocol.Value);
+            return !availableProtocols.Contains(protocol.Value);
         }
 
-        public XmlReader CreateReader()
+        internal XmlReader CreateReader()
         {
             return this.document.CreateReader();
+        }
+
+        internal void AppendUnknownFavorites(List<XElement> unknownFavorites)
+        {
+            XElement favorites = this.SelectElements("//t:Favorites").First();
+            favorites.Add(unknownFavorites);
+        }
+
+        private IEnumerable<XElement> SelectElements(string filter)
+        {
+            return this.document.XPathSelectElements(filter, this.namespaceManager);
         }
     }
 }
