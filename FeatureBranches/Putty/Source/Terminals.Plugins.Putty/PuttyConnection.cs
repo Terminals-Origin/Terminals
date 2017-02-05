@@ -17,6 +17,7 @@ namespace Terminals.Plugins.Putty
         public const string PUTTY_BINARY = "putty.exe";
 
         private bool windowCaptured = false;
+        private bool fullScreen = false;
         private Process puttyProcess;
 
         private bool IsPuttyReady
@@ -39,12 +40,13 @@ namespace Terminals.Plugins.Putty
         {
             get
             {
-                throw new NotImplementedException();
+                return fullScreen;
             }
 
             set
             {
-                if (value)
+                fullScreen = value;
+                if (fullScreen)
                     SendFocusToPutty();
             }
         }

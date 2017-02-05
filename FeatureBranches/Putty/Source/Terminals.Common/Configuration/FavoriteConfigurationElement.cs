@@ -118,9 +118,13 @@ namespace Terminals
                                                        NewWindow = this.NewWindow,
                                                        Notes = this.Notes,
                                                        OverallTimeout = this.OverallTimeout,
-                                                       PuttyEnableCompression = this.PuttyEnableCompression,
-                                                       PuttySessionName = this.PuttySessionName,
-                                                       PuttyX11Forwarding = this.PuttyX11Forwarding,
+                                                       SshSessionName = this.SshSessionName,
+                                                       SshVerbose = this.SshVerbose,
+                                                       SshEnablePagentAuthentication = this.SshEnablePagentAuthentication,
+                                                       SshEnablePagentForwarding = this.SshEnablePagentForwarding,
+                                                       SshX11Forwarding = this.SshX11Forwarding,
+                                                       SshEnableCompression = this.SshEnableCompression,
+                                                       SshVersion = this.SshVersion,
                                                        Port = this.Port,
                                                        Protocol = this.Protocol,
                                                        RedirectClipboard = this.RedirectClipboard,
@@ -160,6 +164,8 @@ namespace Terminals
                                                        VncDisplayNumber = this.VncDisplayNumber,
                                                        VncViewOnly = this.VncViewOnly,
                                                        SSHKeyFile = this.SSHKeyFile,
+                                                       TelnetSessionName = this.TelnetSessionName,
+                                                       TelnetVerbose = this.TelnetVerbose
                                                    };
             return fav;
 
@@ -588,33 +594,93 @@ namespace Terminals
         }
 
 
-        [ConfigurationProperty("puttySessionName")]
-        public String PuttySessionName {
+        [ConfigurationProperty("sshSessionName")]
+        public String SshSessionName {
             get {
-                return (String)this["puttySessionName"];
+                return (String)this["sshSessionName"];
             }
             set {
-                this["puttySessionName"] = value;
+                this["sshSessionName"] = value;
             }
         }
-        [ConfigurationProperty("puttyX11Forwarding")]
-        public Boolean PuttyX11Forwarding {
+        [ConfigurationProperty("sshVerbose", IsRequired = false, DefaultValue = false)]
+        public bool SshVerbose {
             get {
-                return (Boolean)this["puttyX11Forwarding"];
+                return (Boolean)this["sshVerbose"];
             }
             set {
-                this["puttyX11Forwarding"] = value;
+                this["sshVerbose"] = value;
             }
         }
-        [ConfigurationProperty("puttyEnableCompression")]
-        public Boolean PuttyEnableCompression {
+
+        [ConfigurationProperty("sshEnablePagentAuthentication", IsRequired = false, DefaultValue = false)]
+        public bool SshEnablePagentAuthentication {
             get {
-                return (Boolean)this["puttyEnableCompression"];
+                return (Boolean)this["sshEnablePagentAuthentication"];
             }
             set {
-                this["puttyEnableCompression"] = value;
+                this["sshEnablePagentAuthentication"] = value;
             }
         }
+
+        [ConfigurationProperty("sshEnablePagentForwarding", IsRequired = false, DefaultValue = false)]
+        public bool SshEnablePagentForwarding {
+            get {
+                return (Boolean)this["sshEnablePagentForwarding"];
+            }
+            set {
+                this["sshEnablePagentForwarding"] = value;
+            }
+        }
+
+        [ConfigurationProperty("sshX11Forwarding", IsRequired = false, DefaultValue = false)]
+        public Boolean SshX11Forwarding {
+            get {
+                return (Boolean)this["sshX11Forwarding"];
+            }
+            set {
+                this["sshX11Forwarding"] = value;
+            }
+        }
+        [ConfigurationProperty("sshEnableCompression", IsRequired = false, DefaultValue = false)]
+        public Boolean SshEnableCompression {
+            get {
+                return (Boolean)this["sshEnableCompression"];
+            }
+            set {
+                this["sshEnableCompression"] = value;
+            }
+        }
+
+        [ConfigurationProperty("sshVersion", IsRequired = true, DefaultValue = 0)]
+        public byte SshVersion {
+            get {
+                return (byte)this["sshVersion"];
+            }
+            set {
+                this["sshVersion"] = value;
+            }
+        }
+
+        [ConfigurationProperty("telnetSessionName")]
+        public String TelnetSessionName {
+            get {
+                return (String)this["telnetSessionName"];
+            }
+            set {
+                this["telnetSessionName"] = value;
+            }
+        }
+        [ConfigurationProperty("telnetVerbose", IsRequired = false, DefaultValue = false)]
+        public bool TelnetVerbose {
+            get {
+                return (Boolean)this["telnetVerbose"];
+            }
+            set {
+                this["telnetVerbose"] = value;
+            }
+        }
+
 
         [ConfigurationProperty("vmrcreducedcolorsmode", IsRequired = false, DefaultValue = false)]
         public Boolean VMRCReducedColorsMode
@@ -1034,7 +1100,7 @@ namespace Terminals
                     }
                     */
 
-                    String[] driveArray = redirectedDrives.Split(";".ToCharArray());
+        String[] driveArray = redirectedDrives.Split(";".ToCharArray());
                     foreach (String drive in driveArray)
                     {
                         outputList.Add(drive);

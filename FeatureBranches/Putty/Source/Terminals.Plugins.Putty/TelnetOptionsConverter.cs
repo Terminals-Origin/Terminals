@@ -6,12 +6,14 @@ namespace Terminals.Plugins.Putty
     {
         protected override void FromConfigFavorite(FavoriteConfigurationElement source, TelnetOptions options)
         {
-            options.SessionName = source.PuttySessionName;
+            options.SessionName = source.TelnetSessionName;
+            options.Verbose = source.TelnetVerbose;
         }
 
         protected override void ToConfigFavorite(FavoriteConfigurationElement destination, TelnetOptions options)
         {
-            destination.PuttySessionName = options.SessionName;
+            destination.TelnetSessionName = options.SessionName;
+            destination.TelnetVerbose = options.Verbose;
         }
     }
 }
