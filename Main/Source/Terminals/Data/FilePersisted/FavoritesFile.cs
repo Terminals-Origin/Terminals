@@ -25,5 +25,12 @@ namespace Terminals.Data
             this.Groups = new Group[0];
             this.FavoritesInGroups = new FavoritesInGroup[0];
         }
+
+        public override string ToString()
+        {
+            int favoritesCount = this.Favorites.Length;
+            int groupsCount = this.Groups.Length;
+            return string.Format("FavoritesFile:Favorites='{0}',Groups='{1}'", favoritesCount, groupsCount);
+        }
     }
 }
