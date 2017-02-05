@@ -19,5 +19,12 @@ namespace Terminals.Data.FilePersisted
             this.File = file;
             this.Unknown = unknownFavorites;
         }
+
+        public override string ToString()
+        {
+            int favoritesCount = this.File.Favorites.Length;
+            int unknownCount = this.Unknown.Count;
+            return string.Format("SerializationContext:Unknowns='{0}',Known='{1}'", unknownCount, favoritesCount);
+        }
     }
 }
