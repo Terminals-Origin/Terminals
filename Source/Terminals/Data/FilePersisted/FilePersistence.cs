@@ -75,6 +75,10 @@ namespace Terminals.Data
 
         private readonly FavoritesFileSerializer serializer;
 
+        private readonly SerializationContextBuilder contextBuilder;
+
+        private List<XElement> cachedUnknownFavorites = new List<XElement>();
+
         /// <summary>
         /// Try to reuse current security in case of changing persistence, because user is already authenticated
         /// </summary>
@@ -98,6 +102,7 @@ namespace Terminals.Data
             this.favorites = new Favorites(this, favoriteIcons, connectionManager);
             this.connectionHistory = new ConnectionHistory(this.favorites);
             this.factory = new Factory(this.groups, this.Dispatcher,  connectionManager);
+            this.contextBuilder = new SerializationContextBuilder(this.groups, this.favorites, this.Dispatcher);
             this.InitializeFileWatch(fileWatcher);
         }
 
@@ -177,53 +182,29 @@ namespace Terminals.Data
 
         private FavoritesFile LoadFile()
         {
+            var loaded = this.TryLoadFile();
+            this.cachedUnknownFavorites = loaded.Unknown;
+            this.contextBuilder.AssignServices(loaded.File);
+            return loaded.File;
+        }
+
+        private SerializationContext TryLoadFile()
+        {
             try
             {
                 this.fileLock.WaitOne();
-                return this.LoadFileContent();
+                string fileLocation = this.fileLocations.Favorites;
+                return this.serializer.Deserialize(fileLocation);
             }
             catch (Exception exception)
             {
                 Logging.Error("File persistence was unable to load Favorites.xml", exception);
-                return new FavoritesFile();
+                return new SerializationContext();
             }
             finally
             {
                 this.fileLock.ReleaseMutex();
                 Debug.WriteLine("Favorite file was loaded.");
-            }
-        }
-
-        private List<XElement> cachedUnknownFavorites = new List<XElement>();
-
-        private FavoritesFile LoadFileContent()
-        {
-            string fileLocation = this.fileLocations.Favorites;
-            SerializationContext context = this.serializer.Deserialize(fileLocation);
-            this.cachedUnknownFavorites = context.Unknown;
-            this.AssignGroupsToFileContent(context.File);
-            return context.File;
-        }
-
-        private void AssignGroupsToFileContent(FavoritesFile file)
-        {
-            this.AssignStoresToFavorites(file.Favorites);
-            this.AssignGroupsToFavorites(file.Groups);
-        }
-
-        private void AssignGroupsToFavorites(Group[] fileGroups)
-        {
-            foreach (Group group in fileGroups)
-            {
-                group.AssignStores(this.groups, this.Dispatcher);
-            }
-        }
-
-        private void AssignStoresToFavorites(Favorite[] fileFavorites)
-        {
-            foreach (Favorite favorite in fileFavorites)
-            {
-                favorite.AssignStores(this.groups);
             }
         }
 
@@ -262,12 +243,16 @@ namespace Terminals.Data
 
         private void Save()
         {
+            SerializationContext context = this.contextBuilder.CreateDataFromCache(this.cachedUnknownFavorites);
+            this.TrySave(context);
+        }
+
+        private void TrySave(SerializationContext context)
+        {
             try
             {
                 this.fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
-                FavoritesFile persistenceFile = this.CreatePersistenceFileFromCache();
-                var context = new SerializationContext(persistenceFile, this.cachedUnknownFavorites);
                 string fileLocation = this.fileLocations.Favorites;
                 this.serializer.Serialize(context, fileLocation);
             }
@@ -281,28 +266,6 @@ namespace Terminals.Data
                 this.fileLock.ReleaseMutex();
                 Debug.WriteLine("Favorite file was saved.");
             }
-        }
-
-        private FavoritesFile CreatePersistenceFileFromCache()
-        {
-            return new FavoritesFile
-              {
-                  Favorites = this.Favorites.Cast<Favorite>().ToArray(),
-                  Groups = this.Groups.Cast<Group>().ToArray(),
-                  FavoritesInGroups = this.GetFavoriteInGroups()
-              };
-        }
-
-        private FavoritesInGroup[] GetFavoriteInGroups()
-        {
-            List<FavoritesInGroup> references = new List<FavoritesInGroup>();
-            foreach (Group group in this.Groups)
-            {
-                FavoritesInGroup groupReferences = group.GetGroupReferences();
-                references.Add(groupReferences);
-            }
-
-            return references.ToArray();
         }
     }
 }
