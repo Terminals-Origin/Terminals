@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Xml.Linq;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data.FilePersisted;
@@ -193,15 +194,15 @@ namespace Terminals.Data
             }
         }
 
+        private List<XElement> cachedUnknownFavorites = new List<XElement>();
+
         private FavoritesFile LoadFileContent()
         {
             string fileLocation = this.fileLocations.Favorites;
-            object fileContent = this.serializer.Deserialize(fileLocation);
-            var file = fileContent as FavoritesFile;
-            if (file == null)
-                file = new FavoritesFile();
-            this.AssignGroupsToFileContent(file);
-            return file;
+            SerializationContext context = this.serializer.Deserialize(fileLocation);
+            this.cachedUnknownFavorites = context.Unknown;
+            this.AssignGroupsToFileContent(context.File);
+            return context.File;
         }
 
         private void AssignGroupsToFileContent(FavoritesFile file)
@@ -266,8 +267,9 @@ namespace Terminals.Data
                 this.fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
                 FavoritesFile persistenceFile = this.CreatePersistenceFileFromCache();
+                var context = new SerializationContext(persistenceFile, this.cachedUnknownFavorites);
                 string fileLocation = this.fileLocations.Favorites;
-                this.serializer.SerializeToXml(persistenceFile, fileLocation);
+                this.serializer.Serialize(context, fileLocation);
             }
             catch (Exception exception)
             {

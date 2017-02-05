@@ -56,7 +56,6 @@ namespace Tests.FilePersisted
             Assert.IsTrue(areRdpOnly, "Persistence should filter protocol types, which is not able to handle.");
         }
 
-        [Ignore] // TODO finish the test by appending filtered data from previous deserialization.
         [TestMethod]
         public void DisabledPlugins_SaveFavorites_UnknownProtocolsArePreserved()
         {

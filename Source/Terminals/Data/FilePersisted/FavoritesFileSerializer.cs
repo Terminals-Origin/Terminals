@@ -12,12 +12,12 @@ namespace Terminals.Data.FilePersisted
     {
         private readonly ConnectionManager connectinManager;
 
-        public FavoritesFileSerializer(ConnectionManager connectinManager)
+        internal FavoritesFileSerializer(ConnectionManager connectinManager)
         {
             this.connectinManager = connectinManager;
         }
 
-        public void SerializeContext(SerializationContext context, string fileName)
+        internal void Serialize(SerializationContext context, string fileName)
         {
             try
             {
@@ -47,20 +47,14 @@ namespace Terminals.Data.FilePersisted
             }
         }
 
-        public void SerializeToXml(FavoritesFile fileContent, string fileLocation)
-        {
-            XmlAttributeOverrides attributes = this.CreateAttributes();
-            Unified.Serialize.SerializeXMLToDisk(fileContent, fileLocation, attributes);
-        }
-
-        public SerializationContext DeserializeContext(string fileLocation)
+        internal SerializationContext Deserialize(string fileLocation)
         {
             try
             {
                 if (!File.Exists(fileLocation))
                     return new SerializationContext();
 
-                return this.TryDeserializeContext(fileLocation);
+                return this.TryDeserialize(fileLocation);
             }
             catch
             {
@@ -68,7 +62,7 @@ namespace Terminals.Data.FilePersisted
             }
         }
 
-        private SerializationContext TryDeserializeContext(string fileLocation)
+        private SerializationContext TryDeserialize(string fileLocation)
         {
             var availableProtocols = this.connectinManager.GetAvailableProtocols();
             FavoritesXmlFile document = FavoritesXmlFile.LoadXmlDocument(fileLocation);
@@ -88,13 +82,6 @@ namespace Terminals.Data.FilePersisted
             {
                 return serializer.Deserialize(xmlReader) as FavoritesFile;
             }
-        }
-
-        public FavoritesFile Deserialize(string fileLocation)
-        {
-            XmlAttributeOverrides attributes = this.CreateAttributes();
-            object deserialized = Unified.Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile), attributes);
-            return deserialized as FavoritesFile;
         }
 
         private XmlSerializer CreateSerializer()
