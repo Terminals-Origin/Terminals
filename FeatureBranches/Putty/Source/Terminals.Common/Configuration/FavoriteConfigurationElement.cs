@@ -652,7 +652,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("sshVersion", IsRequired = true, DefaultValue = 0)]
+        [ConfigurationProperty("sshVersion", IsRequired = true, DefaultValue = (byte)0)]
         public byte SshVersion {
             get {
                 return (byte)this["sshVersion"];
