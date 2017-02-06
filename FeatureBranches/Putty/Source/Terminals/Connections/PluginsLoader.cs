@@ -94,8 +94,7 @@ namespace Terminals.Connections
         {
             try
             {
-                string applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                string pluginsDirectory = Path.Combine(applicationDirectory, "Plugins");
+                string pluginsDirectory = FindBasePluginDirectory();
                 return Directory.GetDirectories(pluginsDirectory);
             }
             catch (Exception exception)
@@ -103,6 +102,13 @@ namespace Terminals.Connections
                 Logging.Info("Unable to open plugins directory.", exception);
                 return new string[0];
             }
+        }
+
+        internal static string FindBasePluginDirectory()
+        {
+            string applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string pluginsDirectory = Path.Combine(applicationDirectory, "Plugins");
+            return pluginsDirectory;
         }
 
         private static IEnumerable<string> FindAllPluginAssemblies(string[] pluginDirectories)

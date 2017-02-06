@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -1324,6 +1325,8 @@ namespace Terminals
             }
         }
 
+
+
         private void PbShowTagsFavorites_MouseMove(object sender, MouseEventArgs e)
         {
             if (settings.AutoExapandTagsPanel)
@@ -1380,6 +1383,38 @@ namespace Terminals
             this.LoadWindowState();
         }
 
+        private void LaunchExternal(string fullPath)
+        {
+            try
+            {
+                Process.Start(fullPath);
+            }
+            catch (Exception)
+            {
+                string message = string.Format("Unable to start:\r\n{0}", FileLocations.LogDirectory);
+                MessageBox.Show(message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void OpenSshAgentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(this.OpenSshAgent);
+        }
+
+        private void OpenSshKeygenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(this.OpenSshKeygen);
+        }
+
+        private void OpenSshAgent()
+        {
+            LaunchExternal(Path.Combine(PluginsLoader.FindBasePluginDirectory(), "Putty", "Resources", "pageant.exe"));
+        }
+        private void OpenSshKeygen()
+        {
+            LaunchExternal(Path.Combine(PluginsLoader.FindBasePluginDirectory(), "Putty", "Resources", "puttygen.exe"));
+        }
+
         private void OpenLogFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Task.Factory.StartNew(this.OpenLogsFolder);
@@ -1387,15 +1422,7 @@ namespace Terminals
 
         private void OpenLogsFolder()
         {
-            try
-            {
-                Process.Start(FileLocations.LogDirectory);
-            }
-            catch (Exception)
-            {
-                string message = string.Format("Unable to open logs directory:\r\n{0}", FileLocations.LogDirectory);
-                MessageBox.Show(message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            LaunchExternal(FileLocations.LogDirectory);
         }
 
         private void SplitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
