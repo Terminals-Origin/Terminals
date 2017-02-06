@@ -66,7 +66,7 @@ namespace Tests.Connections
             var context = new SerializationContext(file, unknownFavorites);
             var limitedSerializer = new FavoritesFileSerializer(rdpOnlyManager);
 
-            limitedSerializer.SerializeContext(context, FILE_NAME);
+            limitedSerializer.Serialize(context, FILE_NAME);
             string saved = File.ReadAllText(FILE_NAME);
 
             bool savedVnc = saved.Contains("<Protocol>VNC</Protocol>");
@@ -89,10 +89,11 @@ namespace Tests.Connections
         {
             var fullSerializer = new FavoritesFileSerializer(TestConnectionManager.Instance);
             FavoritesFile file = CreateTestFile(VncConnectionPlugin.VNC, KnownConnectionConstants.RDP);
-            fullSerializer.SerializeToXml(file, FILE_NAME);
+            var context= new SerializationContext(file, new List<XElement>());
+            fullSerializer.Serialize(context, FILE_NAME);
             var rdpOnlyManager = TestConnectionManager.CreateRdpOnlyManager();
             var limitedSerializer = new FavoritesFileSerializer(rdpOnlyManager);
-            var loaded = limitedSerializer.DeserializeContext(FILE_NAME);
+            var loaded = limitedSerializer.Deserialize(FILE_NAME);
             AssertDeserialized(loaded, expectedProtocol, expectedUnknown, expectedKnown);
         }
 
@@ -119,9 +120,10 @@ namespace Tests.Connections
         {
             var serializer = new FavoritesFileSerializer(TestConnectionManager.Instance);
             FavoritesFile file = CreateTestFile(testCase.Item1);
-            serializer.SerializeToXml(file, FILE_NAME);
-            FavoritesFile loaded = serializer.Deserialize(FILE_NAME);
-            Favorite target = loaded.Favorites[0];
+            var context = new SerializationContext(file, new List<XElement>());
+            serializer.Serialize(context, FILE_NAME);
+            SerializationContext loaded = serializer.Deserialize(FILE_NAME);
+            Favorite target = loaded.File.Favorites[0];
             return target.ProtocolProperties.GetType().FullName == testCase.Item2.FullName;
         }
 
