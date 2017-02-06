@@ -141,6 +141,7 @@ namespace Tests.UserInterface
 
         //TODO(jrgcombr): Just left it here to remember to remove this setting since it won't be supported anymore
         [TestMethod]
+        [Ignore]
         public void Telnet_LoadSave_KeepsColumns()
         {
             //this.AssertExpectedPropertyValue<TelnetOptions, int>(TelnetConnectionPlugin.TELNET,

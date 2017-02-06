@@ -78,6 +78,8 @@
     </Compile>
     <Compile Include="SshOptionsConverter.cs" />
     <Compile Include="PuttyRegistry.cs" />
+    <Compile Include="TerminalsSshExport.cs" />
+    <Compile Include="TerminalsTelnetExport.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">

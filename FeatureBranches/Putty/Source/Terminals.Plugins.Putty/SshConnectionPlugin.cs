@@ -4,11 +4,12 @@ using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Data;
+using Terminals.Integration.Export;
 using Terminals.Plugins.Putty.Properties;
 
 namespace Terminals.Plugins.Putty
 {
-    internal class SshConnectionPlugin : IConnectionPlugin, IOptionsConverterFactory
+    internal class SshConnectionPlugin : IConnectionPlugin, IOptionsConverterFactory, IOptionsExporterFactory
     {
         internal const int SSHPort = 22;
         internal const string SSH = "SSH";
@@ -48,6 +49,11 @@ namespace Terminals.Plugins.Putty
         public Type GetOptionsType()
         {
             return typeof(SshOptions);
+        }
+
+        public ITerminalsOptionsExport CreateOptionsExporter()
+        {
+            return new TerminalsSshExport();
         }
     }
 }

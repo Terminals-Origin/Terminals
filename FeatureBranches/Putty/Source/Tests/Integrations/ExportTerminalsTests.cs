@@ -38,10 +38,15 @@ namespace Tests.Integrations
                 new Tuple<string, string>(KnownConnectionConstants.RDP, "executeBeforeConnect"), // applies to all protocols
                 new Tuple<string, string>(VncConnectionPlugin.VNC, "vncAutoScale"),
                 new Tuple<string, string>(VmrcConnectionPlugin.VMRC, "vmrcadministratormode"),
-                new Tuple<string, string>(TelnetConnectionPlugin.TELNET, "telnet"),
-                new Tuple<string, string>(TelnetConnectionPlugin.TELNET, "consolerows"),
-                new Tuple<string, string>(SshConnectionPlugin.SSH, "ssh1"),
-                new Tuple<string, string>(SshConnectionPlugin.SSH, "consolerows"),
+                new Tuple<string, string>(TelnetConnectionPlugin.TELNET, "telnetSessionName"),
+                new Tuple<string, string>(TelnetConnectionPlugin.TELNET, "telnetVerbose"),
+                new Tuple<string, string>(SshConnectionPlugin.SSH, "sshSessionName"),
+                new Tuple<string, string>(SshConnectionPlugin.SSH, "sshVerbose"),
+                new Tuple<string, string>(SshConnectionPlugin.SSH, "sshEnablePagentAuthentication"),
+                new Tuple<string, string>(SshConnectionPlugin.SSH, "sshEnablePagentForwarding"),
+                new Tuple<string, string>(SshConnectionPlugin.SSH, "sshX11Forwarding"),
+                new Tuple<string, string>(SshConnectionPlugin.SSH, "sshEnableCompression"),
+                new Tuple<string, string>(SshConnectionPlugin.SSH, "sshVersion"),
                 new Tuple<string, string>(ICAConnectionPlugin.ICA_CITRIX, "iCAApplicationName")
             };
 

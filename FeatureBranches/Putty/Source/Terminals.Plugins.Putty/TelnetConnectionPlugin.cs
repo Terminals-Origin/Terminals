@@ -4,11 +4,12 @@ using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Data;
+using Terminals.Integration.Export;
 using Terminals.Plugins.Putty.Properties;
 
 namespace Terminals.Plugins.Putty
 {
-    internal class TelnetConnectionPlugin : IConnectionPlugin, IOptionsConverterFactory
+    internal class TelnetConnectionPlugin : IConnectionPlugin, IOptionsConverterFactory, IOptionsExporterFactory
     {
         internal const int TelnetPort = 23;
         internal const string TELNET = "Telnet";
@@ -47,6 +48,11 @@ namespace Terminals.Plugins.Putty
         public Type GetOptionsType()
         {
             return typeof(TelnetOptions);
+        }
+
+        public ITerminalsOptionsExport CreateOptionsExporter()
+        {
+            return new TerminalsTelnetExport();
         }
     }
 }

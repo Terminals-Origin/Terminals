@@ -594,7 +594,7 @@ namespace Terminals
         }
 
 
-        [ConfigurationProperty("sshSessionName")]
+        [ConfigurationProperty("sshSessionName", IsRequired = false, DefaultValue = "")]
         public String SshSessionName {
             get {
                 return (String)this["sshSessionName"];
@@ -652,7 +652,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("sshVersion", IsRequired = true, DefaultValue = (byte)0)]
+        [ConfigurationProperty("sshVersion", IsRequired = false, DefaultValue = (byte)0)]
         public byte SshVersion {
             get {
                 return (byte)this["sshVersion"];
@@ -662,7 +662,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("telnetSessionName")]
+        [ConfigurationProperty("telnetSessionName", IsRequired = false, DefaultValue = "")]
         public String TelnetSessionName {
             get {
                 return (String)this["telnetSessionName"];
