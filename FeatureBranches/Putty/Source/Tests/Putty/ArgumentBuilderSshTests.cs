@@ -9,18 +9,14 @@ namespace Tests.Putty
     [TestClass]
     public class ArgumentBuilderTests
     {
-        [TestMethod]
-        public void ValidFavoriteAndCredentials_NoCustomParameters()
+        private static Mock<IFavorite> SetupFavorite()
         {
-            var credentials = new Mock<IGuardedSecurity>();
             var favorite = new Mock<IFavorite>();
-
-            credentials.Setup(a => a.UserName).Returns("user");
-            credentials.Setup(a => a.Password).Returns("password");
 
             favorite.Setup(p => p.Protocol).Returns(SshConnectionPlugin.SSH);
             favorite.Setup(p => p.ServerName).Returns("server");
-            favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions() {
+            favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions()
+            {
                 SessionName = "session",
                 EnableCompression = false,
                 X11Forwarding = false,
@@ -29,6 +25,23 @@ namespace Tests.Putty
                 SshVersion = SshVersion.SshNegotiate,
                 Verbose = false
             });
+            return favorite;
+        }
+
+
+        private static Mock<IGuardedSecurity> SetupCredentials()
+        {
+            var credentials = new Mock<IGuardedSecurity>();
+            credentials.Setup(a => a.UserName).Returns("user");
+            credentials.Setup(a => a.Password).Returns("password");
+            return credentials;
+        }
+
+        [TestMethod]
+        public void ValidFavoriteAndCredentials_NoCustomParameters()
+        {
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
@@ -39,14 +52,9 @@ namespace Tests.Putty
         [TestMethod]
         public void Check_X11Forwarding()
         {
-            var credentials = new Mock<IGuardedSecurity>();
-            var favorite = new Mock<IFavorite>();
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
-            credentials.Setup(a => a.UserName).Returns("user");
-            credentials.Setup(a => a.Password).Returns("password");
-
-            favorite.Setup(p => p.Protocol).Returns(SshConnectionPlugin.SSH);
-            favorite.Setup(p => p.ServerName).Returns("server");
             favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions() { X11Forwarding = true });
 
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
@@ -58,14 +66,9 @@ namespace Tests.Putty
         [TestMethod]
         public void Check_PagentAuthentication()
         {
-            var credentials = new Mock<IGuardedSecurity>();
-            var favorite = new Mock<IFavorite>();
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
-            credentials.Setup(a => a.UserName).Returns("user");
-            credentials.Setup(a => a.Password).Returns("password");
-
-            favorite.Setup(p => p.Protocol).Returns(SshConnectionPlugin.SSH);
-            favorite.Setup(p => p.ServerName).Returns("server");
             favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions() { EnablePagentAuthentication = true });
 
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
@@ -77,14 +80,9 @@ namespace Tests.Putty
         [TestMethod]
         public void Check_PagentForwarding()
         {
-            var credentials = new Mock<IGuardedSecurity>();
-            var favorite = new Mock<IFavorite>();
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
-            credentials.Setup(a => a.UserName).Returns("user");
-            credentials.Setup(a => a.Password).Returns("password");
-
-            favorite.Setup(p => p.Protocol).Returns(SshConnectionPlugin.SSH);
-            favorite.Setup(p => p.ServerName).Returns("server");
             favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions() { EnablePagentForwarding = true });
 
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
@@ -98,13 +96,9 @@ namespace Tests.Putty
         [TestMethod]
         public void ExceptionWhenNoServer()
         {
-            var credentials = new Mock<IGuardedSecurity>();
-            var favorite = new Mock<IFavorite>();
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
-            credentials.Setup(a => a.UserName).Returns("user");
-            credentials.Setup(a => a.Password).Returns("password");
-
-            favorite.Setup(p => p.Protocol).Returns(SshConnectionPlugin.SSH);
             favorite.Setup(p => p.ServerName).Returns(default(string));
             favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions() { SessionName = "session" });
 
@@ -115,14 +109,9 @@ namespace Tests.Putty
         [TestMethod]
         public void Check_Compression()
         {
-            var credentials = new Mock<IGuardedSecurity>();
-            var favorite = new Mock<IFavorite>();
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
-            credentials.Setup(a => a.UserName).Returns("user");
-            credentials.Setup(a => a.Password).Returns("password");
-
-            favorite.Setup(p => p.Protocol).Returns(SshConnectionPlugin.SSH);
-            favorite.Setup(p => p.ServerName).Returns("server");
             favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions() { SessionName = "session", EnableCompression = true });
 
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
@@ -134,14 +123,9 @@ namespace Tests.Putty
         [TestMethod]
         public void Check_SshVersion1()
         {
-            var credentials = new Mock<IGuardedSecurity>();
-            var favorite = new Mock<IFavorite>();
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
-            credentials.Setup(a => a.UserName).Returns("user");
-            credentials.Setup(a => a.Password).Returns("password");
-
-            favorite.Setup(p => p.Protocol).Returns(SshConnectionPlugin.SSH);
-            favorite.Setup(p => p.ServerName).Returns("server");
             favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions() { SessionName = "session", SshVersion = SshVersion.SshVersion1 });
 
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
@@ -153,14 +137,9 @@ namespace Tests.Putty
         [TestMethod]
         public void Check_SshVersion2()
         {
-            var credentials = new Mock<IGuardedSecurity>();
-            var favorite = new Mock<IFavorite>();
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
-            credentials.Setup(a => a.UserName).Returns("user");
-            credentials.Setup(a => a.Password).Returns("password");
-
-            favorite.Setup(p => p.Protocol).Returns(SshConnectionPlugin.SSH);
-            favorite.Setup(p => p.ServerName).Returns("server");
             favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions() { SessionName = "session", SshVersion = SshVersion.SshVersion2 });
 
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
@@ -172,14 +151,9 @@ namespace Tests.Putty
         [TestMethod]
         public void Check_SshVersionNegotiate()
         {
-            var credentials = new Mock<IGuardedSecurity>();
-            var favorite = new Mock<IFavorite>();
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
-            credentials.Setup(a => a.UserName).Returns("user");
-            credentials.Setup(a => a.Password).Returns("password");
-
-            favorite.Setup(p => p.Protocol).Returns(SshConnectionPlugin.SSH);
-            favorite.Setup(p => p.ServerName).Returns("server");
             favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions() { SessionName = "session", SshVersion = SshVersion.SshNegotiate });
 
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
@@ -192,14 +166,9 @@ namespace Tests.Putty
         [TestMethod]
         public void Check_Verbose()
         {
-            var credentials = new Mock<IGuardedSecurity>();
-            var favorite = new Mock<IFavorite>();
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
-            credentials.Setup(a => a.UserName).Returns("user");
-            credentials.Setup(a => a.Password).Returns("password");
-
-            favorite.Setup(p => p.Protocol).Returns(SshConnectionPlugin.SSH);
-            favorite.Setup(p => p.ServerName).Returns("server");
             favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions() { SessionName = "session", Verbose = true });
 
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
