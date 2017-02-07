@@ -1,0 +1,44 @@
+version: '3'
+
+# Terminals docker-compose test environment with servers to test protocols connections.
+
+services:
+
+# Linux containers
+# VNC server running at localhost:7001 with password:password
+    vnc:
+        image: kaixhin/vnc
+        ports: 
+            - "7001:5901"
+        container_name: terminals-vnc
+        hostname: terminals-vnc
+        networks:
+            terminals:
+                aliases:
+                    - terminals-vnc
+                ipv4_address: 172.16.200.10
+
+# SSH password authenticated at localhost:7002 password: password
+    sshpassword:
+        image: nuagebec/ubuntu
+        ports: 
+            - "7002:22"
+        container_name: terminals-sshpass
+        environment:
+            - ROOT_PASS=password
+        hostname: terminals-sshpass
+        networks:
+            terminals:
+                aliases:
+                    - terminals-sshpass
+                ipv4_address: 172.16.200.11
+
+networks:
+    terminals:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.16.200.0/24
+
+
