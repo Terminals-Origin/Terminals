@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using Terminals.Data.FilePersisted;
 
 namespace Terminals.Data
@@ -20,7 +19,7 @@ namespace Terminals.Data
             this.dispatcher = dispatcher;
         }
 
-        internal SerializationContext CreateDataFromCache(List<XElement> cachedUnknownFavorites)
+        internal SerializationContext CreateDataFromCache(UnknonwPluginElements cachedUnknown)
         {
             var file = new FavoritesFile
             {
@@ -28,7 +27,7 @@ namespace Terminals.Data
                 Groups = this.groups.Cast<Group>().ToArray(),
                 FavoritesInGroups = this.GetFavoriteInGroups()
             };
-            return new SerializationContext(file, cachedUnknownFavorites);
+            return new SerializationContext(file, cachedUnknown);
         }
 
         private FavoritesInGroup[] GetFavoriteInGroups()

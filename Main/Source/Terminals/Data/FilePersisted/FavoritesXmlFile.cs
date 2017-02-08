@@ -37,12 +37,14 @@ namespace Terminals.Data.FilePersisted
             return new FavoritesXmlFile(source);
         }
 
-        internal List<XElement> RemoveUnknownFavorites(string[] availableProtocols)
+        internal UnknonwPluginElements RemoveUnknownFavorites(string[] availableProtocols)
         {
             IEnumerable<XElement> favorites = this.SelectElements("//t:Favorite");
             List<XElement> toFilter = favorites.Where(f => this.IsUnknownProtocol(f, availableProtocols)).ToList();
             toFilter.ForEach(f => f.Remove());
-            return toFilter;
+            var unknow = new UnknonwPluginElements();
+            unknow.Favorites.AddRange(toFilter);
+            return unknow;
         }
 
         private bool IsUnknownProtocol(XElement favoriteElement, string[] availableProtocols)
