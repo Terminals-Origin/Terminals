@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Xml.Linq;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data.FilePersisted;
@@ -77,7 +76,7 @@ namespace Terminals.Data
 
         private readonly SerializationContextBuilder contextBuilder;
 
-        private List<XElement> cachedUnknownFavorites = new List<XElement>();
+        private UnknonwPluginElements cachedUnknown = new UnknonwPluginElements();
 
         /// <summary>
         /// Try to reuse current security in case of changing persistence, because user is already authenticated
@@ -183,7 +182,7 @@ namespace Terminals.Data
         private FavoritesFile LoadFile()
         {
             var loaded = this.TryLoadFile();
-            this.cachedUnknownFavorites = loaded.Unknown;
+            this.cachedUnknown = loaded.Unknown;
             this.contextBuilder.AssignServices(loaded.File);
             return loaded.File;
         }
@@ -243,7 +242,7 @@ namespace Terminals.Data
 
         private void Save()
         {
-            SerializationContext context = this.contextBuilder.CreateDataFromCache(this.cachedUnknownFavorites);
+            SerializationContext context = this.contextBuilder.CreateDataFromCache(this.cachedUnknown);
             this.TrySave(context);
         }
 
