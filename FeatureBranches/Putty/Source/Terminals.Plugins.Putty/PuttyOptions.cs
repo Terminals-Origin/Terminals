@@ -11,5 +11,6 @@ namespace Terminals.Plugins.Putty
 
         public bool Verbose { get; set; }
 
+        public override abstract ProtocolOptions Copy();
     }
 }

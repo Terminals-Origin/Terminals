@@ -59,7 +59,7 @@ namespace Tests.Putty
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
             string arguments = builder.Build();
-            Assert.IsTrue(arguments.IndexOf(" -v ") > -1, "-v should be present.");
+            Assert.IsTrue(arguments.Contains(" -v "), "-v should be present.");
         }
     }
 }

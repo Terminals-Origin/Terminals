@@ -60,7 +60,7 @@ namespace Tests.Putty
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
             string arguments = builder.Build();
-            Assert.IsTrue(arguments.IndexOf(" -X ") > -1, "-X for X11 should be present.");
+            Assert.IsTrue(arguments.Contains(" -X "), "-X for X11 should be present.");
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ namespace Tests.Putty
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
             string arguments = builder.Build();
-            Assert.IsTrue(arguments.IndexOf(" -agent") > -1, "-agent should be present.");
+            Assert.IsTrue(arguments.Contains(" -agent"), "-agent should be present.");
         }
 
         [TestMethod]
@@ -88,7 +88,7 @@ namespace Tests.Putty
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
             string arguments = builder.Build();
-            Assert.IsTrue(arguments.IndexOf(" -A ") > -1, "-A should be present.");
+            Assert.IsTrue(arguments.Contains(" -A "), "-A should be present.");
         }
 
 
@@ -117,7 +117,7 @@ namespace Tests.Putty
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
             string arguments = builder.Build();
-            Assert.IsTrue(arguments.IndexOf(" -C ") > -1, "-C for compression should be present.");
+            Assert.IsTrue(arguments.Contains(" -C "), "-C for compression should be present.");
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace Tests.Putty
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
             string arguments = builder.Build();
-            Assert.IsTrue(arguments.IndexOf(" -1 ") > -1, "-1 should be present.");
+            Assert.IsTrue(arguments.Contains(" -1 "), "-1 should be present.");
         }
 
         [TestMethod]
@@ -145,7 +145,7 @@ namespace Tests.Putty
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
             string arguments = builder.Build();
-            Assert.IsTrue(arguments.IndexOf(" -2 ") > -1, "-2 should be present.");
+            Assert.IsTrue(arguments.Contains(" -2 "), "-2 should be present.");
         }
 
         [TestMethod]
@@ -159,8 +159,8 @@ namespace Tests.Putty
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
             string arguments = builder.Build();
-            Assert.IsTrue(arguments.IndexOf(" -1 ") == -1, "-1 should NOT be present.");
-            Assert.IsTrue(arguments.IndexOf(" -2 ") == -1, "-2 should NOT be present.");
+            Assert.IsTrue(!arguments.Contains(" -1 "), "-1 should NOT be present.");
+            Assert.IsTrue(!arguments.Contains(" -2 "), "-2 should NOT be present.");
         }
 
         [TestMethod]
@@ -174,7 +174,7 @@ namespace Tests.Putty
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
             string arguments = builder.Build();
-            Assert.IsTrue(arguments.IndexOf(" -v ") > -1, "-v should be present.");
+            Assert.IsTrue(arguments.Contains(" -v "), "-v should be present.");
         }
     }
 }
