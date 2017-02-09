@@ -34,7 +34,7 @@ namespace Terminals.Data.FilePersisted
             var document = new XDocument();
             this.Serialize(context, document);
             FavoritesXmlFile file = FavoritesXmlFile.CreateDocument(document);
-            file.AppendUnknownFavorites(context.Unknown);
+            file.AppendUnknownFavorites(context.Unknown.Favorites);
             document.Save(fileName);
         }
 
@@ -66,12 +66,12 @@ namespace Terminals.Data.FilePersisted
         {
             var availableProtocols = this.connectinManager.GetAvailableProtocols();
             FavoritesXmlFile document = FavoritesXmlFile.LoadXmlDocument(fileLocation);
-            List<XElement> unknownFavorites = document.RemoveUnknownFavorites(availableProtocols);
+            UnknonwPluginElements unknown = document.RemoveUnknownFavorites(availableProtocols);
             XmlSerializer serializer = this.CreateSerializer();
             FavoritesFile loaded = DeSerialize(document, serializer);
 
             if (loaded != null)
-                return new SerializationContext(loaded, unknownFavorites);
+                return new SerializationContext(loaded, unknown);
 
             return new SerializationContext();
         }

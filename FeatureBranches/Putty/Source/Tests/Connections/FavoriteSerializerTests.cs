@@ -42,6 +42,34 @@ namespace Tests.Connections
       </VncOptions>
     </Favorite>";
 
+        private const string GROUP_NAME = "innerGroup";
+
+        private const string GROUP_ID = "3fde996d-bcf8-4f4a-b4ed-a7fab81f7967";
+
+        private static readonly Guid GROUP_GUID = new Guid(GROUP_ID);
+
+        private static readonly Guid VNC_GUID = new Guid("477025BD-A8DD-4D95-BC70-B25DC7DC6C87");
+
+        private static readonly Guid RDP_GUID = new Guid("AEA91F1F-C2D8-429D-A2AD-CC915B637881");
+
+        private static readonly Favorite VNC_FAVORITE = ToFavorite(VncConnectionPlugin.VNC, VNC_GUID);
+        private static readonly Favorite RDP_FAVORITE = ToFavorite(KnownConnectionConstants.RDP, RDP_GUID);
+
+        private static readonly string GROUP = string.Format(@"
+  <Groups>
+    <Group id=""{1}"">
+      <Parent>00000000-0000-0000-0000-000000000000</Parent>
+      <Name>{0}</Name>
+    </Group>
+  </Groups>", GROUP_NAME, GROUP_ID);
+
+        private static readonly string FAVORITE_IN_GROUP = String.Format(@"
+    <FavoritesInGroup groupId=""{0}"">
+      <Favorites>
+        <guid>d0a609d9-09a4-4f8d-8ed3-e58048a2369d</guid>
+      </Favorites>
+    </FavoritesInGroup>", GROUP_ID);
+
         private static readonly XElement vncCachedFavorite = XDocument.Parse(VNC_ELEMENT).Root;
 
 
@@ -62,7 +90,8 @@ namespace Tests.Connections
         {
             var rdpOnlyManager = TestConnectionManager.CreateRdpOnlyManager();
             FavoritesFile file = CreateTestFile(KnownConnectionConstants.RDP);
-            var unknownFavorites = new List<XElement>() { vncCachedFavorite };
+            var unknownFavorites = new UnknonwPluginElements();
+            unknownFavorites.Favorites.Add(vncCachedFavorite);
             var context = new SerializationContext(file, unknownFavorites);
             var limitedSerializer = new FavoritesFileSerializer(rdpOnlyManager);
 
@@ -70,7 +99,27 @@ namespace Tests.Connections
             string saved = File.ReadAllText(FILE_NAME);
 
             bool savedVnc = saved.Contains("<Protocol>VNC</Protocol>");
-            Assert.IsTrue(savedVnc, "The saved content has to contain both elemente");
+            Assert.IsTrue(savedVnc, "The saved content has to contain both known and unknown protocol elements.");
+        }
+
+        [TestMethod]
+        public void RdpOnlyPlugin_Deserialize_LoadsRdpGroupMembershipAsKnown()
+        {
+            SerializationContext loaded = SerializeRdpVncDeserializeRdpOnly();
+            FavoritesFile favoritesFile = loaded.File;
+            bool rdpInGroup = favoritesFile.FavoritesInGroups.Where(fg => fg.GroupId == GROUP_GUID)
+                .Any(gm => gm.Favorites.Contains(RDP_GUID));
+            Assert.IsTrue(rdpInGroup, "Known favorites membership should be identified.");
+        }
+
+        [Ignore] // TODO fix. FavoritesXmlFile to protect also Group membership
+        [TestMethod]
+        public void RdpOnlyPlugin_Deserialize_LoadsVncGroupMembershipAsUnKnown()
+        {
+            SerializationContext loaded = SerializeRdpVncDeserializeRdpOnly();
+            List<XElement> groupMembers = loaded.Unknown.GroupMembership[GROUP_ID];
+            bool rdpInGroup = groupMembers.Any(fg => fg.Value.Contains(GROUP_ID));
+            Assert.IsTrue(rdpInGroup, "Unknown favorites membership should be protected for next save.");
         }
 
         [TestMethod]
@@ -87,20 +136,25 @@ namespace Tests.Connections
 
         private static void AssertDeserializedWithRdpOnlyPlugin(string expectedProtocol, bool expectedUnknown, bool expectedKnown)
         {
+            SerializationContext loaded = SerializeRdpVncDeserializeRdpOnly();
+            AssertDeserializedFavorite(loaded, expectedProtocol, expectedUnknown, expectedKnown);
+        }
+
+        private static SerializationContext SerializeRdpVncDeserializeRdpOnly()
+        {
             var fullSerializer = new FavoritesFileSerializer(TestConnectionManager.Instance);
-            FavoritesFile file = CreateTestFile(VncConnectionPlugin.VNC, KnownConnectionConstants.RDP);
-            var context= new SerializationContext(file, new List<XElement>());
+            FavoritesFile file = CreateTestFile(RDP_FAVORITE, VNC_FAVORITE);
+            var context = new SerializationContext(file, new UnknonwPluginElements());
             fullSerializer.Serialize(context, FILE_NAME);
             var rdpOnlyManager = TestConnectionManager.CreateRdpOnlyManager();
             var limitedSerializer = new FavoritesFileSerializer(rdpOnlyManager);
-            var loaded = limitedSerializer.Deserialize(FILE_NAME);
-            AssertDeserialized(loaded, expectedProtocol, expectedUnknown, expectedKnown);
+            return limitedSerializer.Deserialize(FILE_NAME);
         }
 
-        private static void AssertDeserialized(SerializationContext loaded, string expectedProtocol,
+        private static void AssertDeserializedFavorite(SerializationContext loaded, string expectedProtocol,
             bool expectedUnknown, bool expectedKnown)
         {
-            bool hasUnknown = loaded.Unknown.Any(e => e.Value.Contains(expectedProtocol));
+            bool hasUnknown = loaded.Unknown.Favorites.Any(e => e.Value.Contains(expectedProtocol));
             bool hasKnown = loaded.File.Favorites.Any(f => f.Protocol == expectedProtocol);
             const string MESSAGE = "Deserialized '{0}' as Unknown = '{1}' (expected '{2}') and Known = '{3}' (expected '{4}').";
             Console.WriteLine(MESSAGE, expectedProtocol, hasUnknown, expectedUnknown, hasKnown, expectedKnown);
@@ -120,7 +174,7 @@ namespace Tests.Connections
         {
             var serializer = new FavoritesFileSerializer(TestConnectionManager.Instance);
             FavoritesFile file = CreateTestFile(testCase.Item1);
-            var context = new SerializationContext(file, new List<XElement>());
+            var context = new SerializationContext(file, new UnknonwPluginElements());
             serializer.Serialize(context, FILE_NAME);
             SerializationContext loaded = serializer.Deserialize(FILE_NAME);
             Favorite target = loaded.File.Favorites[0];
@@ -129,13 +183,48 @@ namespace Tests.Connections
 
         private static FavoritesFile CreateTestFile(params string[] protocols)
         {
-            Favorite[] favorites = protocols.Select(ToFavorites).ToArray();
+            Favorite[] favorites = protocols.Select(ToFavorite).ToArray();
+            return CreateTestFile(favorites);
+        }
+
+        private static FavoritesFile CreateTestFile(params Favorite[] favorites)
+        {
             var file = new FavoritesFile();
             file.Favorites = favorites;
+            file.Groups = CreateGroups();
+            file.FavoritesInGroups = SelectFavoriteIds(favorites);
             return file;
         }
 
-        private static Favorite ToFavorites(string protocol)
+        private static FavoritesInGroup[] SelectFavoriteIds(Favorite[] favorites)
+        {
+            var groupMembers = new FavoritesInGroup()
+            {
+                GroupId = GROUP_GUID,
+                Favorites = favorites.Select(f => f.Id).ToArray()
+            };
+
+            return new FavoritesInGroup[] { groupMembers };
+        }
+
+        private static Group[] CreateGroups()
+        {
+            var group = new Group(GROUP_NAME)
+            {
+                Id = GROUP_GUID
+            };
+
+            return new Group[] {group};
+        }
+
+        private static Favorite ToFavorite(string protocol, Guid id)
+        {
+            var favorite = ToFavorite(protocol);
+            favorite.Id = id;
+            return favorite;
+        }
+
+        private static Favorite ToFavorite(string protocol)
         {
             var favorite = new Favorite();
             TestConnectionManager.Instance.ChangeProtocol(favorite, protocol);
