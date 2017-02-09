@@ -46,11 +46,13 @@ namespace Tests.Connections
 
         private const string GROUP_ID = "3fde996d-bcf8-4f4a-b4ed-a7fab81f7967";
 
+        private const string VNC_ID = "477025bd-a8dd-4d95-bc70-b25dc7dc6c87";
+
         private static readonly Guid GROUP_GUID = new Guid(GROUP_ID);
 
-        private static readonly Guid VNC_GUID = new Guid("477025BD-A8DD-4D95-BC70-B25DC7DC6C87");
+        private static readonly Guid VNC_GUID = new Guid(VNC_ID);
 
-        private static readonly Guid RDP_GUID = new Guid("AEA91F1F-C2D8-429D-A2AD-CC915B637881");
+        private static readonly Guid RDP_GUID = new Guid("aea91f1f-c2d8-429d-a2ad-cc915b637881");
 
         private static readonly Favorite VNC_FAVORITE = ToFavorite(VncConnectionPlugin.VNC, VNC_GUID);
         private static readonly Favorite RDP_FAVORITE = ToFavorite(KnownConnectionConstants.RDP, RDP_GUID);
@@ -112,13 +114,14 @@ namespace Tests.Connections
             Assert.IsTrue(rdpInGroup, "Known favorites membership should be identified.");
         }
 
-        [Ignore] // TODO fix. FavoritesXmlFile to protect also Group membership
+        // TODO Add test about Saving of the file to check, if all groups memberships are protected.
+
         [TestMethod]
         public void RdpOnlyPlugin_Deserialize_LoadsVncGroupMembershipAsUnKnown()
         {
             SerializationContext loaded = SerializeRdpVncDeserializeRdpOnly();
             List<XElement> groupMembers = loaded.Unknown.GroupMembership[GROUP_ID];
-            bool rdpInGroup = groupMembers.Any(fg => fg.Value.Contains(GROUP_ID));
+            bool rdpInGroup = groupMembers.Any(fg => fg.Value.Contains(VNC_ID));
             Assert.IsTrue(rdpInGroup, "Unknown favorites membership should be protected for next save.");
         }
 
