@@ -9,15 +9,33 @@ namespace Tests.Putty
     [TestClass]
     public class ArgumentBuilderTelnetTests
     {
-        [TestMethod]
-        public void LoadSession()
+
+        private static Mock<IFavorite> SetupFavorite()
         {
-            var credentials = new Mock<IGuardedSecurity>();
             var favorite = new Mock<IFavorite>();
 
             favorite.Setup(p => p.Protocol).Returns(TelnetConnectionPlugin.TELNET);
             favorite.Setup(p => p.ServerName).Returns("server");
             favorite.Setup(p => p.ProtocolProperties).Returns(new TelnetOptions() { SessionName = "session" });
+
+            return favorite;
+        }
+
+
+        private static Mock<IGuardedSecurity> SetupCredentials()
+        {
+            var credentials = new Mock<IGuardedSecurity>();
+            credentials.Setup(a => a.UserName).Returns("user");
+            credentials.Setup(a => a.Password).Returns("password");
+            return credentials;
+        }
+
+
+        [TestMethod]
+        public void LoadSession()
+        {
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
@@ -31,12 +49,10 @@ namespace Tests.Putty
         [TestMethod]
         public void ExceptionWhenNoServer()
         {
-            var credentials = new Mock<IGuardedSecurity>();
-            var favorite = new Mock<IFavorite>();
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
-            favorite.Setup(p => p.Protocol).Returns(TelnetConnectionPlugin.TELNET);
             favorite.Setup(p => p.ServerName).Returns(default(string));
-            favorite.Setup(p => p.ProtocolProperties).Returns(new TelnetOptions() { SessionName = "session" });
 
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
@@ -46,15 +62,10 @@ namespace Tests.Putty
         [TestMethod]
         public void Check_Verbose()
         {
-            var credentials = new Mock<IGuardedSecurity>();
-            var favorite = new Mock<IFavorite>();
+            var credentials = SetupCredentials();
+            var favorite = SetupFavorite();
 
-            credentials.Setup(a => a.UserName).Returns("user");
-            credentials.Setup(a => a.Password).Returns("password");
-
-            favorite.Setup(p => p.Protocol).Returns(SshConnectionPlugin.SSH);
-            favorite.Setup(p => p.ServerName).Returns("server");
-            favorite.Setup(p => p.ProtocolProperties).Returns(new SshOptions() { SessionName = "session", Verbose = true });
+            favorite.Setup(p => p.ProtocolProperties).Returns(new TelnetOptions() { SessionName = "session", Verbose = true });
 
             var builder = new ArgumentsBuilder(credentials.Object, favorite.Object);
 
