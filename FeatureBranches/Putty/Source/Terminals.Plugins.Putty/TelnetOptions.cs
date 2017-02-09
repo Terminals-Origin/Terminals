@@ -7,11 +7,9 @@ namespace Terminals.Plugins.Putty
 
         public override ProtocolOptions Copy()
         {
-            return new TelnetOptions()
-            {
-                SessionName = this.SessionName,
-                Verbose = this.Verbose
-            };
+            var options = new TelnetOptions();
+            base.Copy(options);
+            return options;
         }
     }
 }

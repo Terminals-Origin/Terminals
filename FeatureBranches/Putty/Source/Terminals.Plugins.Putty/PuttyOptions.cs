@@ -11,6 +11,10 @@ namespace Terminals.Plugins.Putty
 
         public bool Verbose { get; set; }
 
-        public override abstract ProtocolOptions Copy();
+        public void Copy(PuttyOptions puttyOptions)
+        {
+            puttyOptions.SessionName = this.SessionName;
+            puttyOptions.Verbose = this.Verbose;
+        }
     }
 }

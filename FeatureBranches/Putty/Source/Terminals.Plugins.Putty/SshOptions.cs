@@ -31,16 +31,18 @@ namespace Terminals.Plugins.Putty
 
         public override ProtocolOptions Copy()
         {
-            return new SshOptions()
+            var options = new SshOptions()
             {
-                SessionName = this.SessionName,
-                Verbose = this.Verbose,
                 EnablePagentAuthentication = this.EnablePagentAuthentication,
                 EnablePagentForwarding = this.EnablePagentForwarding,
                 X11Forwarding = this.X11Forwarding,
                 EnableCompression = this.EnableCompression,
                 SshVersion = this.SshVersion
             };
+
+            base.Copy(options);
+
+            return options;
         }
 
     }
