@@ -8,6 +8,8 @@ namespace Terminals.Data.FilePersisted
 {
     internal class FavoritesXmlFile
     {
+        private const string FAVORITESINGROUP = "//t:FavoritesInGroup";
+
         private readonly XmlNamespaceManager namespaceManager;
         private readonly XDocument document;
 
@@ -42,7 +44,7 @@ namespace Terminals.Data.FilePersisted
             IEnumerable<XElement> favorites = this.SelectElements("//t:Favorite");
             List<XElement> unknownFavorites = favorites.Where(f => this.IsUnknownProtocol(f, availableProtocols)).ToList();
             unknownFavorites.ForEach(f => f.Remove());
-            IEnumerable<XElement> groupMembership = this.SelectElements("//t:FavoritesInGroup");
+            IEnumerable<XElement> groupMembership = this.SelectElements(FAVORITESINGROUP);
             Dictionary<string, List<XElement>> unknownMemberships = this.FilterGroupMembeship(groupMembership, unknownFavorites);
             return new UnknonwPluginElements(unknownFavorites, unknownMemberships);
         }
@@ -50,12 +52,7 @@ namespace Terminals.Data.FilePersisted
         private Dictionary<string, List<XElement>> FilterGroupMembeship(IEnumerable<XElement> favoritesInGroups, List<XElement> unknownFavorites)
         {
             string[] unknownFavoriteIds = unknownFavorites.Select(f => f.Attribute("id").Value).ToArray();
-            return favoritesInGroups.ToDictionary(FindGroupId, fg => FilterUnknownFavoritesForGroup(fg, unknownFavoriteIds));
-        }
-
-        private static string FindGroupId(XElement favoritesInGroup)
-        {
-            return favoritesInGroup.Attribute("groupId").Value;
+            return favoritesInGroups.ToDictionary(FindGroupId, fg => this.FilterUnknownFavoritesForGroup(fg, unknownFavoriteIds));
         }
 
         private List<XElement> FilterUnknownFavoritesForGroup(XElement favoritesInGroup, string[] unknownFavoriteIds)
@@ -82,7 +79,39 @@ namespace Terminals.Data.FilePersisted
             return this.document.CreateReader();
         }
 
-        internal void AppendUnknownFavorites(List<XElement> unknownFavorites)
+        internal void AppenUnknownContent(UnknonwPluginElements unknownElements)
+        {
+            this.AppendUnknownFavorites(unknownElements.Favorites);
+            this.AppenUnknownGroupMembership(unknownElements.GroupMembership);
+        }
+
+        private void AppenUnknownGroupMembership(Dictionary<string, List<XElement>> unknownFavoritesInGroup)
+        {
+            foreach (XElement favoritesInGroup in this.SelectElements(FAVORITESINGROUP))
+            {
+                this.AddUnknownFavoritesToGroup(unknownFavoritesInGroup, favoritesInGroup);
+            }
+        }
+
+        private void AddUnknownFavoritesToGroup(Dictionary<string, List<XElement>> unknownFavoritesInGroup, XElement favoritesInGroup)
+        {
+            string groupId = FindGroupId(favoritesInGroup);
+            List<XElement> toAdd = null;
+
+            if (unknownFavoritesInGroup.TryGetValue(groupId, out toAdd))
+            {
+                // missing backslash is not a mistake: search inside the element.
+                XElement favorites = this.SelectElements(favoritesInGroup, "t:Favorites").First();
+                favorites.Add(toAdd);
+            }
+        }
+
+        private static string FindGroupId(XElement favoritesInGroup)
+        {
+            return favoritesInGroup.Attribute("groupId").Value;
+        }
+
+        private void AppendUnknownFavorites(List<XElement> unknownFavorites)
         {
             XElement favorites = this.SelectElements("//t:Favorites").First();
             favorites.Add(unknownFavorites);
@@ -90,7 +119,12 @@ namespace Terminals.Data.FilePersisted
 
         private IEnumerable<XElement> SelectElements(string filter)
         {
-            return this.document.XPathSelectElements(filter, this.namespaceManager);
+            return this.SelectElements(this.document, filter);
+        }
+
+        private IEnumerable<XElement> SelectElements(XNode target, string filter)
+        {
+            return target.XPathSelectElements(filter, this.namespaceManager);
         }
     }
 }

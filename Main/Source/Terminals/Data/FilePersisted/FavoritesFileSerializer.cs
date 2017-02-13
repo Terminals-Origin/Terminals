@@ -34,7 +34,7 @@ namespace Terminals.Data.FilePersisted
             var document = new XDocument();
             this.Serialize(context, document);
             FavoritesXmlFile file = FavoritesXmlFile.CreateDocument(document);
-            file.AppendUnknownFavorites(context.Unknown.Favorites);
+            file.AppenUnknownContent(context.Unknown);
             document.Save(fileName);
         }
 

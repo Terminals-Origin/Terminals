@@ -84,12 +84,11 @@ namespace Tests.Connections
             Assert.IsTrue(savedVnc, "The saved content has to contain both known and unknown protocol elements.");
         }
 
-        [Ignore] // TODO Add unknown favorites group memberships back to file to preserve them.
         [TestMethod]
         public void RdpOnlyPluginAndCachedVncXml_Serialize_SavesUnknonwGroupMembership()
         {
             string saved = SerializeAndLoadSavedContent();
-            bool savedVncGroupMembership = saved.Contains(UNKNOWN_VNC_GUID);
+            bool savedVncGroupMembership = saved.Contains(VNC_ID + "</guid>");
             Assert.IsTrue(savedVncGroupMembership, "The saved content has to contain both known and unknown favorites group memberhips.");
         }
 
