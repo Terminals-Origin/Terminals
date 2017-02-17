@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Management;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +12,7 @@ using Terminals.Data.Validation;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Network;
+using Terminals.Services;
 using TreeView = Terminals.Forms.Controls.TreeView;
 
 namespace Terminals
@@ -303,24 +302,14 @@ namespace Terminals
 
         private void ComputerManagementMmcToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite fav = this.GetSelectedFavorite();
-            if (fav != null)
-                Process.Start("mmc.exe", "compmgmt.msc /a /computer=" + fav.ServerName);
+            IFavorite favorite = this.GetSelectedFavorite();
+            ExternalLinks.StartMsManagementConsole(favorite);
         }
 
         private void SystemInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite fav = this.GetSelectedFavorite();
-            if (fav != null)
-            {
-                String programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-                //if(programFiles.Contains("(x86)")) programFiles = programFiles.Replace(" (x86)","");
-                String path = String.Format(@"{0}\common files\Microsoft Shared\MSInfo\msinfo32.exe", programFiles);
-                if (File.Exists(path))
-                {
-                    Process.Start(String.Format("\"{0}\"", path), String.Format("/computer {0}", fav.ServerName));
-                }
-            }
+            IFavorite favorite = this.GetSelectedFavorite();
+            ExternalLinks.StartMsInfo32(favorite);
         }
 
         private void SetCredentialByTagToolStripMenuItem_Click(object sender, EventArgs e)
