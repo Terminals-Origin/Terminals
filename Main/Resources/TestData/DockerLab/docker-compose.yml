@@ -49,6 +49,21 @@ services:
                     - terminals-sshpass
                 ipv4_address: 172.16.200.12
 
+# SSH certificate authenticated, certificate private key is stored in container directory, its file passphrase: password
+    sshcert:
+        build: ./SshCertificate
+        image: terminals/sshcert
+        stdin_open: true
+        tty: true
+        ports: 
+            - "7004:22"
+        container_name: terminals-sshcert
+        hostname: terminals-sshcert
+        networks:
+            terminals:
+                aliases:
+                    - terminals-sshcert
+                ipv4_address: 172.16.200.13
 networks:
     terminals:
         driver: bridge
