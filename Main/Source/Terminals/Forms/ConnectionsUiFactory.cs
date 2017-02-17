@@ -165,11 +165,6 @@ namespace Terminals.Forms
             }
         }
 
-        internal void CreateReleaseTab()
-        {
-            this.CreateTerminalTab(FavoritesFactory.CreateReleaseFavorite(this.persistence.Factory, this.connectionManager));
-        }
-
         internal void CreateTerminalTab(IFavorite favorite)
         {
             CallExecuteBeforeConnectedFromSettings();

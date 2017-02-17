@@ -194,6 +194,7 @@
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\PluginDefinition.cs" />
     <Compile Include="Network\PortScanner\NetworkAdapters.cs" />
+    <Compile Include="Services\ExternalLinks.cs" />
     <Compile Include="Settings\IPluginSettings.cs" />
     <Compile Include="Connections\IPluginsLoader.cs" />
     <Compile Include="Forms\OptionPanels\PluginsOptionPanel.cs">

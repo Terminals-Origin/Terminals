@@ -1,8 +1,7 @@
 using System;
 using System.Windows.Forms;
-using System.Diagnostics;
 using Terminals.Configuration;
-using Terminals.Data;
+using Terminals.Services;
 
 namespace Terminals
 {
@@ -24,12 +23,12 @@ namespace Terminals
 
         private void LblTerminals_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://" + FavoritesFactory.TerminalsReleasesUrl);
+            ExternalLinks.ShowReleasePage();
         }
 
         private void LinkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://weblogs.asp.net/rchartier/");
+            ExternalLinks.OpenAuthorPage();
         }
 
         private void AboutForm_Load(object sender, EventArgs e)

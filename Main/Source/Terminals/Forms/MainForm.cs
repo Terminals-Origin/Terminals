@@ -12,10 +12,10 @@ using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Forms.Rendering;
 using Terminals.CommandLine;
-using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Native;
+using Terminals.Services;
 using Terminals.Updates;
 using Settings = Terminals.Configuration.Settings;
 
@@ -517,21 +517,9 @@ namespace Terminals
         {
             ReleaseInfo downloaded = downloadTask.Result;
             if (downloaded.NewAvailable && !settings.NeverShowTerminalsWindow)
-                this.AskIfShowReleasePage(downloaded);
+                ExternalLinks.AskIfShowReleasePage(this.settings, downloaded);
 
             this.UpdateReleaseToolStripItem(downloaded);
-        }
-
-        private void AskIfShowReleasePage(ReleaseInfo releaseInfo)
-        {
-            string message = string.Format("Version:{0}\r\nPublished:{1}\r\nDo you want to show the Terminals home page?",
-                                            releaseInfo.Version, releaseInfo.Published);
-            YesNoDisableResult answer = YesNoDisableForm.ShowDialog("New release is available", message);
-            if (answer.Result == DialogResult.Yes)
-                this.connectionsUiFactory.CreateReleaseTab();
-
-            if (answer.Disable)
-                settings.NeverShowTerminalsWindow = true;
         }
 
         #endregion
@@ -1382,20 +1370,7 @@ namespace Terminals
 
         private void OpenLogFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Task.Factory.StartNew(this.OpenLogsFolder);
-        }
-
-        private void OpenLogsFolder()
-        {
-            try
-            {
-                Process.Start(FileLocations.LogDirectory);
-            }
-            catch (Exception)
-            {
-                string message = string.Format("Unable to open logs directory:\r\n{0}", FileLocations.LogDirectory);
-                MessageBox.Show(message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            Task.Factory.StartNew(ExternalLinks.OpenLogsFolder);
         }
 
         private void SplitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
@@ -1476,7 +1451,7 @@ namespace Terminals
 
         private void UpdateToolStripItem_Click(object sender, EventArgs e)
         {
-            this.connectionsUiFactory.CreateReleaseTab();
+            ExternalLinks.ShowReleasePage();
         }
 
         private void ClearHistoryToolStripMenuItem_Click(object sender, EventArgs e)
