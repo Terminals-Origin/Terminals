@@ -8,6 +8,7 @@ using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms.Controls;
 using Terminals.Properties;
+using Terminals.Services;
 using Settings = Terminals.Configuration.Settings;
 
 namespace Terminals
@@ -408,9 +409,9 @@ namespace Terminals
 
             private static void SpecialItem_Click(object sender, EventArgs e)
             {
-                ToolStripItem specialItem = (ToolStripItem)sender;
-                var elm = (SpecialCommandConfigurationElement)specialItem.Tag;
-                elm.Launch();
+                var specialItem = (ToolStripItem)sender;
+                var command = (SpecialCommandConfigurationElement)specialItem.Tag;
+                ExternalLinks.Launch(command);
             }
 
             private ToolStripMenuItem CreateFavoriteMenuItem(IFavorite favorite)
