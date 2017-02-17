@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Updates;
 
@@ -60,6 +61,20 @@ namespace Terminals.Services
             {
                 string message = string.Format("Unable to open path:\r\n'{0}'", uri);
                 MessageBox.Show(message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        internal static void CallExecuteBeforeConnected(IBeforeConnectExecuteOptions executeOptions)
+        {
+            if (executeOptions.Execute && !string.IsNullOrEmpty(executeOptions.Command))
+            {
+                var processStartInfo = new ProcessStartInfo(executeOptions.Command, executeOptions.CommandArguments);
+                processStartInfo.WorkingDirectory = executeOptions.InitialDirectory;
+                Process process = Process.Start(processStartInfo);
+                if (executeOptions.WaitForExit)
+                {
+                    process.WaitForExit();
+                }
             }
         }
     }

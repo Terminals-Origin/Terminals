@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.CaptureManager;
@@ -9,6 +8,7 @@ using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Data.Credentials;
 using Terminals.Network;
+using Terminals.Services;
 
 namespace Terminals.Forms
 {
@@ -167,40 +167,10 @@ namespace Terminals.Forms
 
         internal void CreateTerminalTab(IFavorite favorite)
         {
-            CallExecuteBeforeConnectedFromSettings();
-            CallExecuteFeforeConnectedFromFavorite(favorite);
-
+            ExternalLinks.CallExecuteBeforeConnected(this.settings);
+            ExternalLinks.CallExecuteBeforeConnected(favorite.ExecuteBeforeConnect);
             TerminalTabControlItem terminalTabPage = CreateTerminalTabPageByFavoriteName(favorite);
             this.TryConnectTabPage(favorite, terminalTabPage);
-        }
-
-        private void CallExecuteBeforeConnectedFromSettings()
-        {
-            if (settings.ExecuteBeforeConnect && !string.IsNullOrEmpty(settings.ExecuteBeforeConnectCommand))
-            {
-                var processStartInfo = new ProcessStartInfo(settings.ExecuteBeforeConnectCommand, settings.ExecuteBeforeConnectArgs);
-                processStartInfo.WorkingDirectory = settings.ExecuteBeforeConnectInitialDirectory;
-                Process process = Process.Start(processStartInfo);
-                if (settings.ExecuteBeforeConnectWaitForExit)
-                {
-                    process.WaitForExit();
-                }
-            }
-        }
-
-        private static void CallExecuteFeforeConnectedFromFavorite(IFavorite favorite)
-        {
-            IBeforeConnectExecuteOptions executeOptions = favorite.ExecuteBeforeConnect;
-            if (executeOptions.Execute && !string.IsNullOrEmpty(executeOptions.Command))
-            {
-                var processStartInfo = new ProcessStartInfo(executeOptions.Command, executeOptions.CommandArguments);
-                processStartInfo.WorkingDirectory = executeOptions.InitialDirectory;
-                Process process = Process.Start(processStartInfo);
-                if (executeOptions.WaitForExit)
-                {
-                    process.WaitForExit();
-                }
-            }
         }
 
         private TerminalTabControlItem CreateTerminalTabPageByFavoriteName(IFavorite favorite)
