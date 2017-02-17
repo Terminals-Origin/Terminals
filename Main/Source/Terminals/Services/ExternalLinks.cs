@@ -123,5 +123,13 @@ namespace Terminals.Services
                 }
             }
         }
+
+        internal static void OpenFileInNotepad(string file)
+        {
+            if (MessageBox.Show("Open dump file in notepad?") == DialogResult.OK)
+            {
+                Process.Start("notepad.exe", file);
+            }
+        }
     }
 }
