@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
 using FlickrNet;
 using Terminals.Configuration;
+using Terminals.Services;
 
 namespace Terminals.Forms
 {
@@ -28,12 +28,9 @@ namespace Terminals.Forms
         private void AuthorizeFlickrButton_Click(object sender, EventArgs e)
         {
             Flickr flickr = CaptureManager.Capture.CreateFlickerInstance();
-            // Get Frob        
             this.tempFrob = flickr.AuthGetFrob();
-            // Calculate the URL at Flickr to redirect the user to    
             String flickrUrl = flickr.AuthCalcUrl(this.tempFrob, AuthLevel.Write);
-            // The following line will load the URL in the users default browser.    
-            Process.Start(flickrUrl);
+            ExternalLinks.OpenPath(flickrUrl);
             CompleteAuthButton.Enabled = true;
         }
 

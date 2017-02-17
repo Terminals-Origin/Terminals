@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
-using Terminals.Common.Connections;
 using Terminals.Connections;
 
 namespace Terminals.Data
@@ -10,16 +9,10 @@ namespace Terminals.Data
     {
         private const string DISCOVERED_CONNECTIONS = "Discovered Connections";
         private static readonly String terminalsReleasesFavoriteName = Program.Resources.GetString("TerminalsNews");
-        private static readonly String terminalsReleasesUrl = Program.Resources.GetString("TerminalsURL");
 
         internal static string TerminalsReleasesFavoriteName
         {
             get { return terminalsReleasesFavoriteName; }
-        }
-
-        internal static string TerminalsReleasesUrl
-        {
-            get { return terminalsReleasesUrl; }
         }
 
         internal static FavoriteConfigurationElement CreateNewFavorite(ConnectionManager connectionManager, 
@@ -99,21 +92,6 @@ namespace Terminals.Data
                 rdpProperties.ConnectToConsole = connectToConsole;
 
             return favorite;
-        }
-
-        /// <summary>
-        /// Gets newly created connection favorite, with name of Terminals release constant.
-        /// </summary>
-        /// <returns>Not null, configured instance of connection favorite,
-        /// which points to the terminals web site</returns>
-        internal static IFavorite CreateReleaseFavorite(IFactory factory, ConnectionManager connectionManager)
-        {
-            IFavorite release = factory.CreateFavorite();
-            release.Name = TerminalsReleasesFavoriteName;
-            release.ServerName = TerminalsReleasesUrl;
-            release.Port = KnownConnectionConstants.HTTPPort;
-            connectionManager.ChangeProtocol(release, KnownConnectionConstants.HTTP);
-            return release;
         }
 
         /// <summary>
