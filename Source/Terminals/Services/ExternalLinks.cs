@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Data;
@@ -101,6 +102,26 @@ namespace Terminals.Services
             var startInfo = new ProcessStartInfo(exe, command.Arguments);
             startInfo.WorkingDirectory = command.WorkingFolder;
             Process.Start(startInfo);
+        }
+
+        internal static void StartMsManagementConsole(IFavorite favorite)
+        {
+            if (favorite != null)
+                Process.Start("mmc.exe", "compmgmt.msc /a /computer=" + favorite.ServerName);
+        }
+
+        internal static void StartMsInfo32(IFavorite favorite)
+        {
+            if (favorite != null)
+            {
+                String programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                //if(programFiles.Contains("(x86)")) programFiles = programFiles.Replace(" (x86)","");
+                String path = String.Format(@"{0}\common files\Microsoft Shared\MSInfo\msinfo32.exe", programFiles);
+                if (File.Exists(path))
+                {
+                    Process.Start(String.Format("\"{0}\"", path), String.Format("/computer {0}", favorite.ServerName));
+                }
+            }
         }
     }
 }
