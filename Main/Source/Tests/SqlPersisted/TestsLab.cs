@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Data.DB;
 using Tests.Connections;
@@ -94,8 +95,13 @@ namespace Tests.SqlPersisted
 
         private static SqlPersistence CreateSqlPersistence()
         {
+            return CreateSqlPersistence(TestConnectionManager.Instance);
+        }
+
+        internal static SqlPersistence CreateSqlPersistence(ConnectionManager connectionManager)
+        {
             var icons = TestConnectionManager.CreateTestFavoriteIcons();
-            var persistence = new SqlPersistence(icons, TestConnectionManager.Instance);
+            var persistence = new SqlPersistence(icons, connectionManager);
             persistence.Initialize();
             return persistence;
         }
@@ -156,7 +162,7 @@ namespace Tests.SqlPersisted
         /// </summary>
         internal DbFavorite CreateTestFavorite()
         {
-            var favorite = this.PrimaryPersistence.Factory.CreateFavorite() as DbFavorite;
+            var favorite = this.PrimaryFactory.CreateFavorite() as DbFavorite;
             favorite.Name = FAVORITE_NAME;
             favorite.ServerName = FAVORITE_SERVERNAME;
             return favorite;
@@ -169,7 +175,7 @@ namespace Tests.SqlPersisted
         internal DbFavorite AddFavoriteToPrimaryPersistence()
         {
             DbFavorite favorite = this.CreateTestFavorite();
-            this.PrimaryPersistence.Favorites.Add(favorite);
+            this.PrimaryFavorites.Add(favorite);
             return favorite;
         }
 
