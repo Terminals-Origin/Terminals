@@ -210,7 +210,6 @@ namespace Tests.SqlPersisted
             FilePersisted.FavoritesTest.AssertRdpSecurity(this.PrimaryPersistence, favorite);
         }
 
-        [Ignore] // TODO fix the SQL persistence to filter Unknown favorites
         [TestMethod]
         public void RdpOnlyPlugin_LoadFavorites_DoesntLoadVnc()
         {
