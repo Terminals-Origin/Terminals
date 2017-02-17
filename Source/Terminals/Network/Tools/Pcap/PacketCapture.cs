@@ -177,10 +177,7 @@ namespace Terminals
             System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(StopCapture), dev);
             if (DumpToFileCheckbox.Checked)
             {
-                if (MessageBox.Show("Open dump file in notepad?") == DialogResult.OK)
-                {
-                    System.Diagnostics.Process.Start("notepad.exe", this.DumpFile);
-                }
+                ExternalLinks.OpenFileInNotepad(this.DumpFile);
             }
         }
 
