@@ -77,5 +77,30 @@ namespace Terminals.Services
                 }
             }
         }
+
+        internal static void Launch(SpecialCommandConfigurationElement command)
+        {
+            try
+            {
+                TryLaunch(command);
+            }
+            catch (Exception ex)
+            {
+                string message = String.Format("Could not Launch the shortcut application: '{0}'", command.Name);
+                MessageBox.Show(message);
+                Logging.Error(message, ex);
+            }
+        }
+
+        private static void TryLaunch(SpecialCommandConfigurationElement command)
+        {
+            string exe = command.Executable;
+            if (exe.Contains("%"))
+                exe = exe.Replace("%systemroot%", Environment.GetEnvironmentVariable("systemroot"));
+
+            var startInfo = new ProcessStartInfo(exe, command.Arguments);
+            startInfo.WorkingDirectory = command.WorkingFolder;
+            Process.Start(startInfo);
+        }
     }
 }

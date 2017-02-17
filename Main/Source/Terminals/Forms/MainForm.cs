@@ -1275,11 +1275,11 @@ namespace Terminals
                 this.ShortcutsContextMenu.Show(e.X, e.Y);
         }
 
-        private void SpecialCommandsToolStrip_ItemClicked_1(object sender, ToolStripItemClickedEventArgs e)
+        private void SpecialCommandsToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            var elm = e.ClickedItem.Tag as SpecialCommandConfigurationElement;
-            if (elm != null)
-                elm.Launch();
+            var command = e.ClickedItem.Tag as SpecialCommandConfigurationElement;
+            if (command != null)
+                ExternalLinks.Launch(command);
         }
 
         private void ToolStripButton2_Click(object sender, EventArgs e)

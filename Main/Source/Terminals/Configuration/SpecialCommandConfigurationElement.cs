@@ -100,30 +100,5 @@ namespace Terminals
             }
             return img;
         }
-
-        public void Launch()
-        {
-            try
-            {
-                this.TryLaunch();
-            }
-            catch (Exception ex)
-            {
-                string message = String.Format("Could not Launch the shortcut application: '{0}'", this.Name);
-                MessageBox.Show(message);
-                Logging.Error(message, ex);
-            }
-        }
-
-        private void TryLaunch()
-        {
-            string exe = this.Executable;
-            if (exe.Contains("%"))
-                exe = exe.Replace("%systemroot%", Environment.GetEnvironmentVariable("systemroot"));
-
-            var startInfo = new ProcessStartInfo(exe, this.Arguments);
-            startInfo.WorkingDirectory = this.WorkingFolder;
-            Process.Start(startInfo);
-        }
     }
 }
