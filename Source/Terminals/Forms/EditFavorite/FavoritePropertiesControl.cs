@@ -57,7 +57,9 @@ namespace Terminals.Forms.EditFavorite
             this.HideAllPanels();
 
             this.generalPanel1.ProtocolChanged += this.GenearalPanel1ProtocolChanged;
-            string[] availablePlugins = this.connectionManager.GetAvailableProtocols();
+            string[] availablePlugins = this.connectionManager.GetAvailableProtocols()
+                .OrderBy(p => p)
+                .ToArray();
             this.generalPanel1.AssingAvailablePlugins(availablePlugins);
             this.groupsPanel1.BindGroups();
             this.generalPanel1.ServerNameChanged += this.protocolOptionsPanel1.OnServerNameChanged;

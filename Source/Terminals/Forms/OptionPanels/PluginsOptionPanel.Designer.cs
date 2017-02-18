@@ -53,7 +53,6 @@
             this.pluginsListbox.Name = "pluginsListbox";
             this.pluginsListbox.Size = new System.Drawing.Size(332, 124);
             this.pluginsListbox.TabIndex = 2;
-            this.pluginsListbox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.PluginsListbox_ItemCheck);
             // 
             // errorProvider
             // 
