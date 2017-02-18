@@ -1,5 +1,4 @@
-﻿using Terminals.Common.Connections;
-using Terminals.Connections;
+﻿using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Data.Interfaces;
 using Terminals.Data.Validation;
@@ -26,10 +25,10 @@ namespace Terminals
 
         public IFavorite CreateFavorite()
         {
-            var newItem = new Favorite();
-            newItem.AssignStores(this.groups);
-            connectionManager.ChangeProtocol(newItem, KnownConnectionConstants.RDP);
-            return newItem;
+            var favorite = new Favorite();
+            favorite.AssignStores(this.groups);
+            this.connectionManager.SetDefaultProtocol(favorite);
+            return favorite;
         }
 
         public IGroup CreateGroup(string groupName)

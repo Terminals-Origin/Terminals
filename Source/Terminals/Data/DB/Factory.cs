@@ -1,5 +1,4 @@
-﻿using Terminals.Common.Connections;
-using Terminals.Connections;
+﻿using Terminals.Connections;
 using Terminals.Data.Interfaces;
 using Terminals.Data.Validation;
 
@@ -34,7 +33,7 @@ namespace Terminals.Data.DB
         public IFavorite CreateFavorite()
         {
             var favorite = CreateFavorite(this.groups, this.credentials, this.dispatcher);
-            this.connectionManager.ChangeProtocol(favorite, KnownConnectionConstants.RDP);
+            this.connectionManager.SetDefaultProtocol(favorite);
             return favorite;
         }
 
