@@ -1165,58 +1165,12 @@ namespace Terminals
 
         private void ToolStripButton1_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor;
-            try
-            {
-                String sessionId = String.Empty;
-                if (!this.CurrentTerminal.ConnectToConsole)
-                {
-                    sessionId = TSManager.GetCurrentSession(this.CurrentTerminal.Server,
-                        this.CurrentTerminal.UserName,
-                        this.CurrentTerminal.Domain,
-                        Environment.MachineName).Id.ToString();
-                }
-
-                var process = new Process();
-                String args = String.Format(" \\\\{0} -i {1} -d notepad", CurrentTerminal.Server, sessionId);
-                var startInfo = new ProcessStartInfo(settings.PsexecLocation, args);
-                startInfo.UseShellExecute = false;
-                startInfo.CreateNoWindow = true;
-                process.StartInfo = startInfo;
-                process.Start();
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
-            }
+            ExternalLinks.OpenTerminalServiceCommandPrompt(this.CurrentTerminal, this.settings.PsexecLocation);
         }
 
         private void TsbCmd_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor;
-            try
-            {
-                String sessionId = String.Empty;
-                if (!this.CurrentTerminal.ConnectToConsole)
-                {
-                    sessionId = TSManager.GetCurrentSession(this.CurrentTerminal.Server,
-                        this.CurrentTerminal.UserName,
-                        this.CurrentTerminal.Domain,
-                        Environment.MachineName).Id.ToString();
-                }
-
-                var process = new Process();
-                String args = String.Format(" \\\\{0} -i {1} -d cmd", CurrentTerminal.Server, sessionId);
-                var startInfo = new ProcessStartInfo(settings.PsexecLocation, args);
-                startInfo.UseShellExecute = false;
-                startInfo.CreateNoWindow = true;
-                process.StartInfo = startInfo;
-                process.Start();
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
-            }
+            ExternalLinks.OpenTerminalServiceCommandPrompt(this.CurrentTerminal, this.settings.PsexecLocation);
         }
 
         private void StandardToolbarToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1339,9 +1293,9 @@ namespace Terminals
             }
         }
 
-        private void ToolStripButton5_Click(object sender, EventArgs e)
+        private void OpenLocalComputeManagement_Click(object sender, EventArgs e)
         {
-            Process.Start("mmc.exe", "compmgmt.msc /a /computer=.");
+            ExternalLinks.OpenLocalComputerManagement();
         }
 
         private void RebuildTagsIndexToolStripMenuItem_Click(object sender, EventArgs e)

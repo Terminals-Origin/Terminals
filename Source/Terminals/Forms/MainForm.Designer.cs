@@ -1064,7 +1064,7 @@ namespace Terminals
             this.toolStripButton5.Name = "toolStripButton5";
             this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton5.Text = "Computer Management (MMC)";
-            this.toolStripButton5.Click += new System.EventHandler(this.ToolStripButton5_Click);
+            this.toolStripButton5.Click += new System.EventHandler(this.OpenLocalComputeManagement_Click);
             // 
             // MainForm
             // 

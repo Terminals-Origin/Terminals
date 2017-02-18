@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Updates;
@@ -110,6 +111,11 @@ namespace Terminals.Services
                 Process.Start("mmc.exe", "compmgmt.msc /a /computer=" + favorite.ServerName);
         }
 
+        internal static void OpenLocalComputerManagement()
+        {
+            Process.Start("mmc.exe", "compmgmt.msc /a /computer=.");
+        }
+
         internal static void StartMsInfo32(IFavorite favorite)
         {
             if (favorite != null)
@@ -130,6 +136,26 @@ namespace Terminals.Services
             {
                 Process.Start("notepad.exe", file);
             }
+        }
+
+        internal static void OpenTerminalServiceCommandPrompt(IConnectionExtra terminal, string psexecLocation)
+        {
+            String sessionId = String.Empty;
+            if (!terminal.ConnectToConsole)
+            {
+                sessionId = TSManager.GetCurrentSession(terminal.Server,
+                    terminal.UserName,
+                    terminal.Domain,
+                    Environment.MachineName).Id.ToString();
+            }
+
+            var process = new Process();
+            String args = String.Format(" \\\\{0} -i {1} -d cmd", terminal.Server, sessionId);
+            var startInfo = new ProcessStartInfo(psexecLocation, args);
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
+            process.StartInfo = startInfo;
+            process.Start();
         }
     }
 }
