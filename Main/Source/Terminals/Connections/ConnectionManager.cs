@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
-using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Integration.Export;
 
@@ -199,6 +198,17 @@ namespace Terminals.Connections
                 protocolPlugin = this.dummyPlugin as IOptionsConverterFactory;
 
             return protocolPlugin;
+        }
+
+        internal void SetDefaultProtocol(IFavorite favorite)
+        {
+            string defaultProtocol = KnownConnectionConstants.RDP;
+            var available = this.GetAvailableProtocols();
+
+            if (!available.Contains(defaultProtocol))
+                defaultProtocol = available.First();
+
+            this.ChangeProtocol(favorite, defaultProtocol);
         }
 
         public void ChangeProtocol(IFavorite favorite, string protocol)

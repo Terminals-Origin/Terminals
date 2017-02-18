@@ -25,6 +25,11 @@ namespace Tests.UserInterface
             return persistenceStub;
         }
 
+        internal static Favorite CreateFavorite()
+        {
+            return CreateFavorite(new List<IGroup>());
+        }
+
         internal static Favorite CreateFavorite(List<IGroup> groups)
         {
             var favoriteGroupsStub = new Mock<IFavoriteGroups>();
