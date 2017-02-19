@@ -19,6 +19,12 @@
 
     <Feature Id="ProductFeature" Title="Terminals" Level="1">
       <ComponentGroupRef Id="MainComponents" />
+      <ComponentGroupRef Id="IcaComponents" />
+      <ComponentGroupRef Id="RdpComponents" />
+      <ComponentGroupRef Id="TerminalComponents" />
+      <ComponentGroupRef Id="VmrcComponents" />
+      <ComponentGroupRef Id="VncComponents" />
+      <ComponentGroupRef Id="WebComponents" />
       <ComponentRef Id="ApplicationShortcut" />
     </Feature>
 
@@ -37,7 +43,16 @@
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
-        <Directory Id="INSTALLFOLDER" Name="Terminals" />
+        <Directory Id="INSTALLFOLDER" Name="Terminals" >
+          <Directory Id="PLUGINSFOLDER" Name="Plugins">
+            <Directory Id="ICAFOLDER" Name="Ica" />
+            <Directory Id="RDPFOLDER" Name="Rdp" />
+            <Directory Id="TERMINALFOLDER" Name="Terminal" />
+            <Directory Id="VMRCFOLDER" Name="Vmrc" />
+            <Directory Id="VNCFOLDER" Name="Vnc" />
+            <Directory Id="WEBFOLDER" Name="Web" />
+          </Directory>
+        </Directory>
       </Directory>
       <Directory Id="ProgramMenuFolder">
         <Directory Id="TerminalsProgramsFolder" Name="Terminals"/>
