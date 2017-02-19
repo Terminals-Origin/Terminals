@@ -57,13 +57,14 @@ namespace Terminals.Data.FilePersisted
 
         private List<XElement> FilterUnknownFavoritesForGroup(XElement favoritesInGroup, string[] unknownFavoriteIds)
         {
-            return unknownFavoriteIds.Select(f => this.ExtractFavoriteGuid(favoritesInGroup, f)).ToList();
+            return favoritesInGroup.XPathSelectElements("//t:guid", this.namespaceManager)
+                .Where(guid => unknownFavoriteIds.Contains(guid.Value))
+                .Select(this.ExtractFavoriteGuid)
+                .ToList();
         }
 
-        private XElement ExtractFavoriteGuid(XElement favoritesInGroup, string favoriteId)
+        private XElement ExtractFavoriteGuid(XElement unknownFavorite)
         {
-            var unknownFavorite = favoritesInGroup.XPathSelectElements("//t:guid", this.namespaceManager)
-                .First(e => e.Value == favoriteId);
             unknownFavorite.Remove();
             return unknownFavorite;
         }
