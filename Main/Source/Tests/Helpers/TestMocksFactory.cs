@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Moq;
 using Terminals.Data;
 
-namespace Tests.UserInterface
+namespace Tests.Helpers
 {
     internal static class TestMocksFactory
     {
