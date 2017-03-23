@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -15,6 +14,7 @@ using Terminals.Forms;
 using Terminals.Forms.EditFavorite;
 using Tests.Connections;
 using Tests.FilePersisted;
+using Tests.Helpers;
 
 namespace Tests.UserInterface
 {

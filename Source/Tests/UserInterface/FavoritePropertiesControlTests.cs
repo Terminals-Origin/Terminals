@@ -9,6 +9,7 @@ using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.EditFavorite;
 using Tests.Connections;
+using Tests.Helpers;
 
 namespace Tests.UserInterface
 {

@@ -53,7 +53,7 @@ namespace Terminals.Data
                     CredentialSource = this.CredentialSource,
                     SeparateLogin = this.SeparateLogin,
                     HostName = this.HostName,
-                    Security = this.Security.Copy()
+                    Security = (SecurityOptions)this.Security.Copy()
                 };
         }
     }

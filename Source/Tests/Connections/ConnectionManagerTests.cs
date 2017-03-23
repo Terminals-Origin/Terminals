@@ -13,7 +13,7 @@ using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
 using Terminals.Data;
 using Terminals.Integration.Export;
-using Tests.UserInterface;
+using Tests.Helpers;
 
 namespace Tests.Connections
 {

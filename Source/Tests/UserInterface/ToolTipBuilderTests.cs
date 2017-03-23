@@ -5,6 +5,7 @@ using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.Credentials;
 using Tests.FilePersisted;
+using Tests.Helpers;
 
 namespace Tests.UserInterface
 {

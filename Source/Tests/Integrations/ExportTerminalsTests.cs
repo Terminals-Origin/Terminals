@@ -12,7 +12,7 @@ using Terminals.Data;
 using Terminals.Integration.Export;
 using Terminals.Integration.Import;
 using Tests.Connections;
-using Tests.UserInterface;
+using Tests.Helpers;
 
 namespace Tests.Integrations
 {
