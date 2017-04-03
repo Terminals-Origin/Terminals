@@ -13,6 +13,7 @@ using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Forms.Rendering;
 using Terminals.CommandLine;
+using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Native;
@@ -1333,7 +1334,7 @@ namespace Terminals
             }
             catch (Exception)
             {
-                string message = string.Format("Unable to start:\r\n{0}", FileLocations.LogDirectory);
+                string message = string.Format("Unable to start:\r\n{0}", fullPath);
                 MessageBox.Show(message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
