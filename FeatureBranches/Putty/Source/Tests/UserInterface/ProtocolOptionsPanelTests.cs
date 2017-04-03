@@ -122,36 +122,6 @@ namespace Tests.UserInterface
                   EXPECTED_NUMBER);
         }
 
-        //TODO(jrgcombr): I didn't find a way to convert old keys format to PuTTY keys format
-        // I'm still unsure what to do with old keys when we migrate the config file
-        [Ignore] 
-        [TestMethod]
-        public void SSh_LoadSave_KeepsSSHKeyFile()
-        {
-            // because of statics used in Settings.SshKeys
-            //FilePersistedTestLab.SetDefaultFileLocations();
-            //this.AssertExpectedPropertyValue<SshOptions, string>(SshConnectionPlugin.SSH,
-            //      (options, newValue) => options.SSHKeyFile = newValue,
-            //      options => options.SSHKeyFile,
-            //      "ExpectedKeyFile");
-
-
-            throw new NotImplementedException();
-        }
-
-        //TODO(jrgcombr): Just left it here to remember to remove this setting since it won't be supported anymore
-        [TestMethod]
-        [Ignore]
-        public void Telnet_LoadSave_KeepsColumns()
-        {
-            //this.AssertExpectedPropertyValue<TelnetOptions, int>(TelnetConnectionPlugin.TELNET,
-            //      (options, newValue) => options.Columns = newValue,
-            //      options => options.Columns,
-            //      EXPECTED_NUMBER);
-
-            throw new NotImplementedException();
-        }
-
         [TestMethod]
         public void Vmrc_LoadSave_KeepsReducedColorsMode()
         {

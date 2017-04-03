@@ -300,8 +300,8 @@ namespace Tests.Connections
                 "Terminals.Integration.Export.TerminalsRdpExport",
                 "Terminals.Integration.Export.TerminalsVncExport",
                 "Terminals.Integration.Export.TerminalsIcaExport",
-                "Terminals.Integration.Export.TerminalsSshExport",
-                "Terminals.Integration.Export.TerminalsTelnetExport",
+                "Terminals.Plugins.Putty.TerminalsSshExport",
+                "Terminals.Plugins.Putty.TerminalsTelnetExport",
                 "Terminals.Integration.Export.TerminalsVmrcExport"
             };
 

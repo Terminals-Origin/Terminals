@@ -6,6 +6,7 @@ namespace Tests.Putty
     [TestClass]
     public class PuttyRegistryTests
     {
+        [Ignore] // TODO neeeds integraion test, where putty session exists in the registry
         [TestMethod]
         public void LoadSessions()
         {
