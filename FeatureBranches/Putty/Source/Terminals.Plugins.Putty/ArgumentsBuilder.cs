@@ -17,12 +17,8 @@ namespace Terminals.Plugins.Putty
         }
         private void ValidateGeneral()
         {
-            if (string.IsNullOrEmpty(favorite.ServerName)) 
-                throw new ArgumentException("ServerName mus't be provided.");
-
             if (!(favorite.Protocol == SshConnectionPlugin.SSH || favorite.Protocol == TelnetConnectionPlugin.TELNET))
                 throw new ArgumentException(string.Format("Protocol {0} is not supported", favorite.Protocol));
-
         }
 
         public string Build()

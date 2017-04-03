@@ -8,7 +8,7 @@ namespace Terminals.Plugins.Putty
         {
             if (context.Favorite.Protocol == SshConnectionPlugin.SSH)
             {
-                context.WriteElementString("sshSessionName", context.Favorite.SshSessionName.ToString());
+                context.WriteElementString("sshSessionName", context.Favorite.SshSessionName);
                 context.WriteElementString("sshVerbose", context.Favorite.SshVerbose.ToString());
                 context.WriteElementString("sshEnablePagentAuthentication", context.Favorite.SshEnablePagentAuthentication.ToString());
                 context.WriteElementString("sshEnablePagentForwarding", context.Favorite.SshEnablePagentForwarding.ToString());

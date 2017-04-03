@@ -9,7 +9,7 @@ namespace Terminals.Plugins.Putty
         {
             if (context.Favorite.Protocol == TelnetConnectionPlugin.TELNET)
             {
-                context.WriteElementString("telnetSessionName", context.Favorite.TelnetSessionName.ToString());
+                context.WriteElementString("telnetSessionName", context.Favorite.TelnetSessionName);
                 context.WriteElementString("telnetVerbose", context.Favorite.TelnetVerbose.ToString());
             }
         }
