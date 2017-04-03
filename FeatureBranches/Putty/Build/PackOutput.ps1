@@ -2,9 +2,9 @@
 [String[]]$packageFiles = .\PackageFiles.ps1
 
 $outputDir = ".\Output\";
-$binOutput = "..\Source\Terminals\bin\Distribution Release\";
+$binOutput = "$outputDir\Release\";
 $commonAssembly = "..\Source\Terminals\Properties\Common.AssemblyInfo.cs";
-$setupPath = "..\Source\TerminalsSetup\bin\Release\TerminalsSetup.msi";
+$setupPath = "$outputDir\Release\TerminalsSetup.msi";
 $msbuild = "c:\Windows\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe";
 
 # Extract the variable from the Common.AssemblyInfo.cs
@@ -33,4 +33,4 @@ for($index=0; $index -lt $packageFiles.Length;$index++)
    $packageFiles[$index] = Join-Path $binOutput $packageFiles[$index];
 }
 
-Write-Zip -Path $packageFiles $zipPath;
+Get-ChildItem $packageFiles -Recurse | Write-Zip -IncludeEmptyDirectories -EntryPathRoot $binOutput -OutputPath $zipPath;

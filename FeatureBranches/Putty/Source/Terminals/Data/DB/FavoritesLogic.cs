@@ -394,10 +394,14 @@ namespace Terminals.Data.DB
 
         private List<DbFavorite> TryLoadFromDatabase()
         {
+            string[] knownProtocols = this.connectionManager.GetAvailableProtocols();
             using (Database database = DatabaseConnections.CreateInstance())
             {
-                // to list because Linq to entities allows only cast to primitive types
-                List<DbFavorite> favorites = database.Favorites.ToList();
+                // to list because Linq to entities allows only cast to primitive types.
+                // cant use connectionManager.IsKnownProtocol because it cant be translated to serverside query.
+                List<DbFavorite> favorites = database.Favorites
+                    .Where(f => knownProtocols.Contains(f.Protocol))
+                    .ToList();
                 database.Cache.DetachAll(favorites);
                 favorites.ForEach(this.PrepareFavorite);
                 return favorites;

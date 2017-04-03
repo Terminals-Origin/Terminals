@@ -65,14 +65,5 @@ namespace Terminals.Forms.OptionPanels
                 .OfType<SelectedPlugin>()
                 .ToList();
         }
-
-        private void PluginsListbox_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            var item = this.pluginsListbox.Items[e.Index] as SelectedPlugin;
-            if (item != null && item.Description.Contains(KnownConnectionConstants.RDP))
-            {
-                e.NewValue = CheckState.Indeterminate;
-            }
-        }
     }
 }

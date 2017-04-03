@@ -150,6 +150,7 @@
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />
     <Compile Include="FilePersisted\SearchEngineTest.cs" />
     <Compile Include="Configuration\FavoriteConfigurationElementTests.cs" />
+    <Compile Include="Passwords\GuardedSecurityTests.cs" />
     <Compile Include="Putty\ArgumentBuilderSshTests.cs" />
     <Compile Include="Putty\PuttyRegistryTests.cs" />
     <Compile Include="Putty\PuttyTests.cs" />
@@ -176,7 +177,7 @@
     <Compile Include="UserInterface\MockChildProtocolControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UserInterface\TestMocksFactory.cs" />
+    <Compile Include="Helpers\TestMocksFactory.cs" />
     <Compile Include="UserInterface\ToolStripSettingsTest.cs" />
     <Compile Include="UserInterface\FavoritePropertiesControlTests.cs" />
     <Compile Include="UserInterface\ProtocolOptionsPanelTests.cs" />

@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Terminals.Connections;
 using Terminals.Connections.VNC;
 using Terminals.Data;
 using Terminals.Data.Credentials;
@@ -207,6 +208,21 @@ namespace Tests.SqlPersisted
             TestConnectionManager.Instance.ChangeProtocol(favorite, VncConnectionPlugin.VNC);
             this.PrimaryFavorites.Update(favorite);
             FilePersisted.FavoritesTest.AssertRdpSecurity(this.PrimaryPersistence, favorite);
+        }
+
+        [TestMethod]
+        public void RdpOnlyPlugin_LoadFavorites_DoesntLoadVnc()
+        {
+            this.AddFavoriteToPrimaryPersistence();
+            var vncFavorite = this.CreateTestFavorite();
+            vncFavorite.Name = "VncFavorite";
+            TestConnectionManager.Instance.ChangeProtocol(vncFavorite,VncConnectionPlugin.VNC);
+            this.PrimaryFavorites.Add(vncFavorite);
+
+            ConnectionManager rdpOnlyManager = TestConnectionManager.CreateRdpOnlyManager();
+            var rdpOnlyPersistence = CreateSqlPersistence(rdpOnlyManager);
+            bool containsVnc = rdpOnlyPersistence.Favorites.Any(f => f.Protocol == VncConnectionPlugin.VNC);
+            Assert.IsFalse(containsVnc, "Even the vnc favorites remain the database, we cant control them without plugin.");
         }
     }
 }

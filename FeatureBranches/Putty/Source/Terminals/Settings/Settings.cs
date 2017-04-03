@@ -6,7 +6,7 @@ using Terminals.Security;
 
 namespace Terminals.Configuration
 {
-    internal partial class Settings : IConnectionSettings, IMRUSettings, IPluginSettings
+    internal partial class Settings : IConnectionSettings, IMRUSettings, IPluginSettings, IBeforeConnectExecuteOptions
     {
         public Version ConfigVersion
         {
@@ -215,7 +215,7 @@ namespace Terminals.Configuration
 
         #region Execute Before Connect tab settings
 
-        public bool ExecuteBeforeConnect
+        public bool Execute
         {
             get
             {
@@ -229,7 +229,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public string ExecuteBeforeConnectCommand
+        public string Command
         {
             get
             {
@@ -243,7 +243,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public string ExecuteBeforeConnectArgs
+        public string CommandArguments
         {
             get
             {
@@ -257,7 +257,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public string ExecuteBeforeConnectInitialDirectory
+        public string InitialDirectory
         {
             get
             {
@@ -271,7 +271,7 @@ namespace Terminals.Configuration
             }
         }
 
-        public bool ExecuteBeforeConnectWaitForExit
+        public bool WaitForExit
         {
             get
             {

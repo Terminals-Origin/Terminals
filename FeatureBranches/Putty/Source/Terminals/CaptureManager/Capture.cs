@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using FlickrNet;
 using Terminals.Configuration;
+using Terminals.Services;
 
 namespace Terminals.CaptureManager
 {
@@ -96,7 +97,7 @@ namespace Terminals.CaptureManager
 
         public void Show()
         {
-            System.Diagnostics.Process.Start(this.FilePath);
+            ExternalLinks.OpenPath(this.FilePath);
         }
 
         public Capture(string FilePath)

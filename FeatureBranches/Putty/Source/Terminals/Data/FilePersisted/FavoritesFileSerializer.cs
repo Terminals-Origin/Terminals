@@ -19,22 +19,10 @@ namespace Terminals.Data.FilePersisted
 
         internal void Serialize(SerializationContext context, string fileName)
         {
-            try
-            {
-                this.TrySerialize(context, fileName);
-            }
-            catch (Exception exception)
-            {
-                Logging.Error("Unable to save favorites file." , exception);
-            }
-        }
-
-        private void TrySerialize(SerializationContext context, string fileName)
-        {
             var document = new XDocument();
             this.Serialize(context, document);
             FavoritesXmlFile file = FavoritesXmlFile.CreateDocument(document);
-            file.AppendUnknownFavorites(context.Unknown.Favorites);
+            file.AppenUnknownContent(context.Unknown);
             document.Save(fileName);
         }
 
@@ -49,17 +37,10 @@ namespace Terminals.Data.FilePersisted
 
         internal SerializationContext Deserialize(string fileLocation)
         {
-            try
-            {
-                if (!File.Exists(fileLocation))
-                    return new SerializationContext();
-
-                return this.TryDeserialize(fileLocation);
-            }
-            catch
-            {
+            if (!File.Exists(fileLocation))
                 return new SerializationContext();
-            }
+
+            return this.TryDeserialize(fileLocation);
         }
 
         private SerializationContext TryDeserialize(string fileLocation)

@@ -189,7 +189,7 @@ namespace Terminals.Data.DB
                 this.CredentialSet = null;
         }
 
-        internal DbSecurityOptions Copy()
+        public ISecurityOptions Copy()
         {
             var copy = new DbSecurityOptions();
             // newCachedCredentials doesn't have to be assigned here, because it depends on the values copied

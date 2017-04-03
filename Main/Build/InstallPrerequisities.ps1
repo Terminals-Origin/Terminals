@@ -3,8 +3,8 @@
 # Ensure the execution policy is set to unrestricted
 
 # Install chocolatey using Nuget, which is already part of the solution
-..\Source\.nuget\NuGet.exe install chocolatey -Version 0.9.9.8 -OutputDirectory ..\Source\packages
-..\Source\packages\chocolatey.0.9.9.8\tools\chocolateyInstall.ps1
+..\Source\.nuget\NuGet.exe install chocolatey -Version 0.10.5 -OutputDirectory ..\Source\packages
+..\Source\packages\chocolatey.0.10.5\tools\chocolateyInstall.ps1
 choco upgrade chocolatey -y;
 
 # powershell community extensions to get the write-zip command let

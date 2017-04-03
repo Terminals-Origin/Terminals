@@ -15,11 +15,11 @@ namespace Terminals.Forms
 
         public void LoadSettings()
         {
-            this.chkExecuteBeforeConnect.Checked = settings.ExecuteBeforeConnect;
-            this.txtCommand.Text = settings.ExecuteBeforeConnectCommand;
-            this.txtArguments.Text = settings.ExecuteBeforeConnectArgs;
-            this.txtInitialDirectory.Text = settings.ExecuteBeforeConnectInitialDirectory;
-            this.chkWaitForExit.Checked = settings.ExecuteBeforeConnectWaitForExit;
+            this.chkExecuteBeforeConnect.Checked = settings.Execute;
+            this.txtCommand.Text = settings.Command;
+            this.txtArguments.Text = settings.CommandArguments;
+            this.txtInitialDirectory.Text = settings.InitialDirectory;
+            this.chkWaitForExit.Checked = settings.WaitForExit;
 
             this.txtCommand.Enabled = this.chkExecuteBeforeConnect.Checked;
             this.txtArguments.Enabled = this.chkExecuteBeforeConnect.Checked;
@@ -29,11 +29,11 @@ namespace Terminals.Forms
 
         public void SaveSettings()
         {
-            settings.ExecuteBeforeConnect = this.chkExecuteBeforeConnect.Checked;
-            settings.ExecuteBeforeConnectCommand = this.txtCommand.Text;
-            settings.ExecuteBeforeConnectArgs = this.txtArguments.Text;
-            settings.ExecuteBeforeConnectInitialDirectory = this.txtInitialDirectory.Text;
-            settings.ExecuteBeforeConnectWaitForExit = this.chkWaitForExit.Checked;
+            settings.Execute = this.chkExecuteBeforeConnect.Checked;
+            settings.Command = this.txtCommand.Text;
+            settings.CommandArguments = this.txtArguments.Text;
+            settings.InitialDirectory = this.txtInitialDirectory.Text;
+            settings.WaitForExit = this.chkWaitForExit.Checked;
         }
 
         private void chkExecuteBeforeConnect_CheckedChanged(object sender, EventArgs e)

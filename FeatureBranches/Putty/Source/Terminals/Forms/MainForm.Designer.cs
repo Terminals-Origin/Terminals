@@ -844,7 +844,7 @@ namespace Terminals
             this.SpecialCommandsToolStrip.Name = "SpecialCommandsToolStrip";
             this.SpecialCommandsToolStrip.Size = new System.Drawing.Size(111, 25);
             this.SpecialCommandsToolStrip.TabIndex = 6;
-            this.SpecialCommandsToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.SpecialCommandsToolStrip_ItemClicked_1);
+            this.SpecialCommandsToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.SpecialCommandsToolStrip_ItemClicked);
             // 
             // toolbarStd
             // 
@@ -1091,7 +1091,7 @@ namespace Terminals
             this.toolStripButton5.Name = "toolStripButton5";
             this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton5.Text = "Computer Management (MMC)";
-            this.toolStripButton5.Click += new System.EventHandler(this.ToolStripButton5_Click);
+            this.toolStripButton5.Click += new System.EventHandler(this.OpenLocalComputeManagement_Click);
             // 
             // MainForm
             // 

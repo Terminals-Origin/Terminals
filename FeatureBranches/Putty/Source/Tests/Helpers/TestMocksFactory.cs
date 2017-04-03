@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Moq;
 using Terminals.Data;
 
-namespace Tests.UserInterface
+namespace Tests.Helpers
 {
     internal static class TestMocksFactory
     {
@@ -23,6 +23,11 @@ namespace Tests.UserInterface
             persistenceStub.SetupGet(p => p.Factory).Returns(factoryStub.Object);
 
             return persistenceStub;
+        }
+
+        internal static Favorite CreateFavorite()
+        {
+            return CreateFavorite(new List<IGroup>());
         }
 
         internal static Favorite CreateFavorite(List<IGroup> groups)

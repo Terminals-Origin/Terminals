@@ -4,6 +4,7 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Security;
+using Terminals.Services;
 
 namespace Terminals.Updates
 {
@@ -150,7 +151,7 @@ namespace Terminals.Updates
             IFavorite newsFavorite = persistence.Favorites[FavoritesFactory.TerminalsReleasesFavoriteName];
             if (newsFavorite != null)
             {
-                newsFavorite.ServerName = FavoritesFactory.TerminalsReleasesUrl;
+                newsFavorite.ServerName = ExternalLinks.TerminalsReleasesUrl;
                 persistence.Favorites.Update(newsFavorite);
             }
         }

@@ -12,6 +12,7 @@ using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
 using Terminals.Data;
 using Terminals.Integration.Export;
+using Tests.Helpers;
 using Terminals.Plugins.Putty;
 
 namespace Tests.Connections
@@ -390,6 +391,30 @@ namespace Tests.Connections
             {
                 Console.WriteLine("Converter for '{0}':{1}.", resolved.Item1, resolved.Item2.GetType());
             }
+        }
+
+        // For SetDefaultProtocol method tests, the connectionmanager instance is not relevant, we deal with plugins list.
+        [TestMethod]
+        public void AllKnownPlugins_SetDefaultProtocol_SetsRdp()
+        {
+            AssertSetDefaultProtocol(TestConnectionManager.Instance, KnownConnectionConstants.RDP, typeof(RdpOptions));
+        }
+
+        [TestMethod]
+        public void VncOnlyPlugin_SetDefaultProtocol_SetsVnc()
+        {
+            var vncOnlyPlugin = new List<IConnectionPlugin>() { new VncConnectionPlugin() };
+            ConnectionManager connectionManager = TestConnectionManager.CreateConnectionManager(vncOnlyPlugin);
+            AssertSetDefaultProtocol(connectionManager, VncConnectionPlugin.VNC, typeof(VncOptions));
+        }
+
+        private static void AssertSetDefaultProtocol(ConnectionManager connectionManager,
+            string expectedProtocol, Type expectedOptionsType)
+        {
+            IFavorite favorite = TestMocksFactory.CreateFavorite();
+            connectionManager.SetDefaultProtocol(favorite);
+            Assert.AreEqual(expectedProtocol, favorite.Protocol, "Without Protocol propoerty favorite isnt configured.");
+            Assert.IsInstanceOfType(favorite.ProtocolProperties, expectedOptionsType, "Properties need to reflect Protocol it self.");
         }
     }
 }

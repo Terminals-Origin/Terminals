@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -14,6 +13,7 @@ using Terminals.Forms;
 using Terminals.Forms.EditFavorite;
 using Tests.Connections;
 using Tests.FilePersisted;
+using Tests.Helpers;
 using Terminals.Plugins.Putty;
 
 namespace Tests.UserInterface
@@ -199,7 +199,7 @@ namespace Tests.UserInterface
         public void ProtocolChilds_LoadFrom_CallsChildLoadFrom()
         {
             protocolPanel.Controls.Add(childProtocolControlMock);
-            IFavorite irelevant = TestMocksFactory.CreateFavorite(new List<IGroup>());
+            IFavorite irelevant = TestMocksFactory.CreateFavorite();
             protocolPanel.LoadFrom(irelevant);
             Assert.IsTrue(childProtocolControlMock.Loaded, "LoadFrom has to call LoadFrom on all his childs");
         }
@@ -208,7 +208,7 @@ namespace Tests.UserInterface
         public void ProtocolChilds_SaveTo_CallsChildSaveTo()
         {
             protocolPanel.Controls.Add(childProtocolControlMock);
-            IFavorite irelevant = TestMocksFactory.CreateFavorite(new List<IGroup>());
+            IFavorite irelevant = TestMocksFactory.CreateFavorite();
             protocolPanel.SaveTo(irelevant);
             Assert.IsTrue(childProtocolControlMock.Saved, "SveTo has to call SveTo on all his childs");
         }
@@ -267,7 +267,7 @@ namespace Tests.UserInterface
 
         private Favorite CreateFavorite(string protocol)
         {
-            Favorite source = TestMocksFactory.CreateFavorite(new List<IGroup>());
+            Favorite source = TestMocksFactory.CreateFavorite();
             this.connectionManager.ChangeProtocol(source, protocol);
             return source;
         }

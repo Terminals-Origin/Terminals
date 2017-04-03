@@ -46,29 +46,20 @@ namespace Tests.Connections
 
         private const string GROUP_ID = "3fde996d-bcf8-4f4a-b4ed-a7fab81f7967";
 
+        private const string VNC_ID = "477025bd-a8dd-4d95-bc70-b25dc7dc6c87";
+
         private static readonly Guid GROUP_GUID = new Guid(GROUP_ID);
 
-        private static readonly Guid VNC_GUID = new Guid("477025BD-A8DD-4D95-BC70-B25DC7DC6C87");
+        private static readonly Guid VNC_GUID = new Guid(VNC_ID);
 
-        private static readonly Guid RDP_GUID = new Guid("AEA91F1F-C2D8-429D-A2AD-CC915B637881");
+        private static readonly Guid RDP_GUID = new Guid("aea91f1f-c2d8-429d-a2ad-cc915b637881");
 
         private static readonly Favorite VNC_FAVORITE = ToFavorite(VncConnectionPlugin.VNC, VNC_GUID);
         private static readonly Favorite RDP_FAVORITE = ToFavorite(KnownConnectionConstants.RDP, RDP_GUID);
 
-        private static readonly string GROUP = string.Format(@"
-  <Groups>
-    <Group id=""{1}"">
-      <Parent>00000000-0000-0000-0000-000000000000</Parent>
-      <Name>{0}</Name>
-    </Group>
-  </Groups>", GROUP_NAME, GROUP_ID);
+        private static readonly string UNKNOWN_VNC_GUID = String.Format("<guid>{0}</guid>", VNC_ID);
 
-        private static readonly string FAVORITE_IN_GROUP = String.Format(@"
-    <FavoritesInGroup groupId=""{0}"">
-      <Favorites>
-        <guid>d0a609d9-09a4-4f8d-8ed3-e58048a2369d</guid>
-      </Favorites>
-    </FavoritesInGroup>", GROUP_ID);
+        private static readonly XElement UNKNOWN_VNC = XDocument.Parse(UNKNOWN_VNC_GUID).Root;
 
         private static readonly XElement vncCachedFavorite = XDocument.Parse(VNC_ELEMENT).Root;
 
@@ -88,18 +79,32 @@ namespace Tests.Connections
         [TestMethod]
         public void RdpOnlyPluginAndCachedVncXml_Serialize_SavesUnknonwCachedFavorite()
         {
+            string saved = SerializeAndLoadSavedContent();
+            bool savedVnc = saved.Contains("<Protocol>VNC</Protocol>");
+            Assert.IsTrue(savedVnc, "The saved content has to contain both known and unknown protocol elements.");
+        }
+
+        [TestMethod]
+        public void RdpOnlyPluginAndCachedVncXml_Serialize_SavesUnknonwGroupMembership()
+        {
+            string saved = SerializeAndLoadSavedContent();
+            bool savedVncGroupMembership = saved.Contains(VNC_ID + "</guid>");
+            Assert.IsTrue(savedVncGroupMembership, "The saved content has to contain both known and unknown favorites group memberhips.");
+        }
+
+        private static string SerializeAndLoadSavedContent()
+        {
             var rdpOnlyManager = TestConnectionManager.CreateRdpOnlyManager();
             FavoritesFile file = CreateTestFile(KnownConnectionConstants.RDP);
-            var unknownFavorites = new UnknonwPluginElements();
-            unknownFavorites.Favorites.Add(vncCachedFavorite);
-            var context = new SerializationContext(file, unknownFavorites);
+            var unknownElements = new UnknonwPluginElements();
+            unknownElements.Favorites.Add(vncCachedFavorite);
+            unknownElements.GroupMembership[GROUP_ID] = new List<XElement>() {UNKNOWN_VNC};
+            var context = new SerializationContext(file, unknownElements);
             var limitedSerializer = new FavoritesFileSerializer(rdpOnlyManager);
 
             limitedSerializer.Serialize(context, FILE_NAME);
             string saved = File.ReadAllText(FILE_NAME);
-
-            bool savedVnc = saved.Contains("<Protocol>VNC</Protocol>");
-            Assert.IsTrue(savedVnc, "The saved content has to contain both known and unknown protocol elements.");
+            return saved;
         }
 
         [TestMethod]
@@ -112,13 +117,12 @@ namespace Tests.Connections
             Assert.IsTrue(rdpInGroup, "Known favorites membership should be identified.");
         }
 
-        [Ignore] // TODO fix. FavoritesXmlFile to protect also Group membership
         [TestMethod]
         public void RdpOnlyPlugin_Deserialize_LoadsVncGroupMembershipAsUnKnown()
         {
             SerializationContext loaded = SerializeRdpVncDeserializeRdpOnly();
             List<XElement> groupMembers = loaded.Unknown.GroupMembership[GROUP_ID];
-            bool rdpInGroup = groupMembers.Any(fg => fg.Value.Contains(GROUP_ID));
+            bool rdpInGroup = groupMembers.Any(fg => fg.Value.Contains(VNC_ID));
             Assert.IsTrue(rdpInGroup, "Unknown favorites membership should be protected for next save.");
         }
 

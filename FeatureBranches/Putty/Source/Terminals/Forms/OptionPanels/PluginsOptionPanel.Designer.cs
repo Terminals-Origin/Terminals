@@ -40,20 +40,20 @@
             this.descriptionLabel.AutoSize = true;
             this.descriptionLabel.Location = new System.Drawing.Point(15, 14);
             this.descriptionLabel.Name = "descriptionLabel";
-            this.descriptionLabel.Size = new System.Drawing.Size(262, 39);
+            this.descriptionLabel.Size = new System.Drawing.Size(291, 52);
             this.descriptionLabel.TabIndex = 1;
-            this.descriptionLabel.Text = "Select plugins you want to use.\r\nTo apply you need restart the application.\r\nFor " +
-    "disabled plugins, related protocol favorites are lost.";
+            this.descriptionLabel.Text = "Select plugins you want to use.\r\nYou need to select atleast one of them.\r\nTo appl" +
+    "y you need restart the application.\r\nAfter disable and enable some plugin some d" +
+    "ata may be lost.";
             // 
             // pluginsListbox
             // 
             this.pluginsListbox.FormattingEnabled = true;
             this.errorProvider.SetIconAlignment(this.pluginsListbox, System.Windows.Forms.ErrorIconAlignment.TopRight);
-            this.pluginsListbox.Location = new System.Drawing.Point(18, 65);
+            this.pluginsListbox.Location = new System.Drawing.Point(18, 76);
             this.pluginsListbox.Name = "pluginsListbox";
             this.pluginsListbox.Size = new System.Drawing.Size(332, 124);
             this.pluginsListbox.TabIndex = 2;
-            this.pluginsListbox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.PluginsListbox_ItemCheck);
             // 
             // errorProvider
             // 

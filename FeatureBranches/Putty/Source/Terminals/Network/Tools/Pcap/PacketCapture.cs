@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using Tamir.IPLib;
 using Tamir.IPLib.Packets;
+using Terminals.Services;
 
 namespace Terminals
 {
@@ -50,10 +51,7 @@ namespace Terminals
                 else if (exc is DllNotFoundException)
                 {
                     Logging.Info("WinpPcap was not installed", exc);
-                    if (MessageBox.Show("It appears that WinPcap is not installed.  In order to use this feature within Terminals you must first install that product.  Do you wish to visit the download location right now?", "Download WinPcap?", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                    {
-                        System.Diagnostics.Process.Start("http://www.winpcap.org/install/default.htm");
-                    }
+                    ExternalLinks.ShowWinPCapPage();
                 }
                 else
                 {
@@ -62,6 +60,7 @@ namespace Terminals
             }
             this.PacketCapture_Resize(null, null);
         }
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             int index = comboBox1.SelectedIndex;
@@ -178,10 +177,7 @@ namespace Terminals
             System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(StopCapture), dev);
             if (DumpToFileCheckbox.Checked)
             {
-                if (MessageBox.Show("Open dump file in notepad?") == DialogResult.OK)
-                {
-                    System.Diagnostics.Process.Start("notepad.exe", this.DumpFile);
-                }
+                ExternalLinks.OpenFileInNotepad(this.DumpFile);
             }
         }
 

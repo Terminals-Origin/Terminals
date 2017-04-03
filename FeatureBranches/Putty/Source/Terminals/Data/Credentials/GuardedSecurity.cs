@@ -21,7 +21,7 @@ namespace Terminals.Data.Credentials
 
         public IGuardedSecurity GetResolvedCredentials()
         {
-            var resolved = new SecurityOptions();
+            var resolved = this.securityOptions.Copy();
             IGuardedSecurity result = new GuardedSecurity(this.persistence, resolved);
             this.ResolveCredentials(resolved, this.securityOptions.Credential);
             return result;

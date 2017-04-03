@@ -238,7 +238,7 @@ namespace Terminals.Data
             this.Notes = source.Notes;
             this.Port = source.Port;
             this.Protocol = source.Protocol;
-            this.security = source.security.Copy();
+            this.security = (SecurityOptions)source.security.Copy();
             this.ServerName = source.ServerName;
             this.ToolBarIconFile = source.ToolBarIconFile;
 
