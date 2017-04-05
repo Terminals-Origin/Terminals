@@ -1,4 +1,0 @@
-﻿VncSharp Version 0.9.0
-http://cdot.senecac.on.ca/projects/vncsharp/download.html
-Source: vncsharp-0.9.0-src.zip 
-http://cdot.senecac.on.ca/projects/vncsharp/vncsharp-0.9.0-src.zip
