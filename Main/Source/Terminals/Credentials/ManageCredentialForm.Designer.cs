@@ -90,7 +90,7 @@ namespace Terminals.Credentials
             this.credentialsPanel1.Name = "credentialsPanel1";
             this.credentialsPanel1.Settings = null;
             this.credentialsPanel1.Size = new System.Drawing.Size(342, 85);
-            this.credentialsPanel1.TabIndex = 6;
+            this.credentialsPanel1.TabIndex = 2;
             this.credentialsPanel1.TextEditsLeft = 3;
             // 
             // ManageCredentialForm

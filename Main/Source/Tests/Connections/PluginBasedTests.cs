@@ -13,7 +13,7 @@ namespace Tests.Connections
     /// </summary>
     [DeploymentItem(VNC_PLUGIN, VNC_TARGET)]
     [DeploymentItem(ICA_PLUGIN, ICA_TARGET)]
-    [DeploymentItem(TERMINAL_PLUGIN, TERMINAL_TARGET)]
+    [DeploymentItem(PUTTY_PLUGIN, PUTTY_TARGET)]
     [DeploymentItem(VMRC_PLUGIN, VMRC_TARGET)]
     [DeploymentItem(WEB_PLUGIN, WEB_TARGET)]
     [DeploymentItem(RDP_PLUGIN, RDP_TARGET)]
@@ -28,9 +28,9 @@ namespace Tests.Connections
         
         private const string ICA_TARGET = @"Plugins\Ica";
         
-        private const string TERMINAL_PLUGIN = "Terminals.Plugins.Terminal.dll";
+        private const string PUTTY_PLUGIN = "Terminals.Plugins.Putty.dll";
         
-        private const string TERMINAL_TARGET = @"Plugins\Terminal";
+        private const string PUTTY_TARGET = @"Plugins\Putty";
         
         private const string VMRC_PLUGIN = "Terminals.Plugins.Vmrc.dll";
         
@@ -53,7 +53,7 @@ namespace Tests.Connections
             {
                 Path.Combine(deploymentDirectory, VNC_TARGET, VNC_PLUGIN),
                 Path.Combine(deploymentDirectory, ICA_TARGET, ICA_PLUGIN),
-                Path.Combine(deploymentDirectory, TERMINAL_TARGET, TERMINAL_PLUGIN),
+                Path.Combine(deploymentDirectory, PUTTY_TARGET, PUTTY_PLUGIN),
                 Path.Combine(deploymentDirectory, VMRC_TARGET, VMRC_PLUGIN),
                 Path.Combine(deploymentDirectory, WEB_TARGET, WEB_PLUGIN),
                 Path.Combine(deploymentDirectory, RDP_TARGET, RDP_PLUGIN),

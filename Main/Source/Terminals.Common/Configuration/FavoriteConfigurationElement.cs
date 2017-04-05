@@ -118,6 +118,13 @@ namespace Terminals
                                                        NewWindow = this.NewWindow,
                                                        Notes = this.Notes,
                                                        OverallTimeout = this.OverallTimeout,
+                                                       SshSessionName = this.SshSessionName,
+                                                       SshVerbose = this.SshVerbose,
+                                                       SshEnablePagentAuthentication = this.SshEnablePagentAuthentication,
+                                                       SshEnablePagentForwarding = this.SshEnablePagentForwarding,
+                                                       SshX11Forwarding = this.SshX11Forwarding,
+                                                       SshEnableCompression = this.SshEnableCompression,
+                                                       SshVersion = this.SshVersion,
                                                        Port = this.Port,
                                                        Protocol = this.Protocol,
                                                        RedirectClipboard = this.RedirectClipboard,
@@ -156,7 +163,9 @@ namespace Terminals
                                                        VncAutoScale = this.VncAutoScale,
                                                        VncDisplayNumber = this.VncDisplayNumber,
                                                        VncViewOnly = this.VncViewOnly,
-                                                       SSHKeyFile = this.SSHKeyFile
+                                                       SSHKeyFile = this.SSHKeyFile,
+                                                       TelnetSessionName = this.TelnetSessionName,
+                                                       TelnetVerbose = this.TelnetVerbose
                                                    };
             return fav;
 
@@ -584,6 +593,95 @@ namespace Terminals
             }
         }
 
+
+        [ConfigurationProperty("sshSessionName", IsRequired = false, DefaultValue = "")]
+        public String SshSessionName {
+            get {
+                return (String)this["sshSessionName"];
+            }
+            set {
+                this["sshSessionName"] = value;
+            }
+        }
+        [ConfigurationProperty("sshVerbose", IsRequired = false, DefaultValue = false)]
+        public bool SshVerbose {
+            get {
+                return (Boolean)this["sshVerbose"];
+            }
+            set {
+                this["sshVerbose"] = value;
+            }
+        }
+
+        [ConfigurationProperty("sshEnablePagentAuthentication", IsRequired = false, DefaultValue = false)]
+        public bool SshEnablePagentAuthentication {
+            get {
+                return (Boolean)this["sshEnablePagentAuthentication"];
+            }
+            set {
+                this["sshEnablePagentAuthentication"] = value;
+            }
+        }
+
+        [ConfigurationProperty("sshEnablePagentForwarding", IsRequired = false, DefaultValue = false)]
+        public bool SshEnablePagentForwarding {
+            get {
+                return (Boolean)this["sshEnablePagentForwarding"];
+            }
+            set {
+                this["sshEnablePagentForwarding"] = value;
+            }
+        }
+
+        [ConfigurationProperty("sshX11Forwarding", IsRequired = false, DefaultValue = false)]
+        public Boolean SshX11Forwarding {
+            get {
+                return (Boolean)this["sshX11Forwarding"];
+            }
+            set {
+                this["sshX11Forwarding"] = value;
+            }
+        }
+        [ConfigurationProperty("sshEnableCompression", IsRequired = false, DefaultValue = false)]
+        public Boolean SshEnableCompression {
+            get {
+                return (Boolean)this["sshEnableCompression"];
+            }
+            set {
+                this["sshEnableCompression"] = value;
+            }
+        }
+
+        [ConfigurationProperty("sshVersion", IsRequired = false, DefaultValue = (byte)0)]
+        public byte SshVersion {
+            get {
+                return (byte)this["sshVersion"];
+            }
+            set {
+                this["sshVersion"] = value;
+            }
+        }
+
+        [ConfigurationProperty("telnetSessionName", IsRequired = false, DefaultValue = "")]
+        public String TelnetSessionName {
+            get {
+                return (String)this["telnetSessionName"];
+            }
+            set {
+                this["telnetSessionName"] = value;
+            }
+        }
+        [ConfigurationProperty("telnetVerbose", IsRequired = false, DefaultValue = false)]
+        public bool TelnetVerbose {
+            get {
+                return (Boolean)this["telnetVerbose"];
+            }
+            set {
+                this["telnetVerbose"] = value;
+            }
+        }
+
+
         [ConfigurationProperty("vmrcreducedcolorsmode", IsRequired = false, DefaultValue = false)]
         public Boolean VMRCReducedColorsMode
         {
@@ -1002,7 +1100,7 @@ namespace Terminals
                     }
                     */
 
-                    String[] driveArray = redirectedDrives.Split(";".ToCharArray());
+        String[] driveArray = redirectedDrives.Split(";".ToCharArray());
                     foreach (String drive in driveArray)
                     {
                         outputList.Add(drive);
