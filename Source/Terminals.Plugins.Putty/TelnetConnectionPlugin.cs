@@ -32,7 +32,7 @@ namespace Terminals.Plugins.Putty
 
         public Control[] CreateOptionsControls()
         {
-            return new Control[] { new TelnetOptionsControl() { Name = "Telnet" } };
+            return new Control[] { new PuttyOptionsControl() { Name = "Telnet" } };
         }
 
         public IOptionsConverter CreatOptionsConverter()

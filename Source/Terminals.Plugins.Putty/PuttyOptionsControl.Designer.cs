@@ -2,7 +2,7 @@
 
 namespace Terminals.Plugins.Putty
 {
-    partial class TelnetOptionsControl
+    partial class PuttyOptionsControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -42,38 +42,38 @@ namespace Terminals.Plugins.Putty
             // cmbSessionName
             // 
             this.cmbSessionName.FormattingEnabled = true;
-            this.cmbSessionName.Location = new System.Drawing.Point(53, 41);
+            this.cmbSessionName.Location = new System.Drawing.Point(107, 27);
             this.cmbSessionName.Name = "cmbSessionName";
-            this.cmbSessionName.Size = new System.Drawing.Size(165, 21);
+            this.cmbSessionName.Size = new System.Drawing.Size(229, 21);
             this.cmbSessionName.TabIndex = 0;
             // 
             // labelSession
             // 
             this.labelSession.AutoSize = true;
-            this.labelSession.Location = new System.Drawing.Point(3, 44);
+            this.labelSession.Location = new System.Drawing.Point(13, 30);
             this.labelSession.Name = "labelSession";
-            this.labelSession.Size = new System.Drawing.Size(44, 13);
+            this.labelSession.Size = new System.Drawing.Size(72, 13);
             this.labelSession.TabIndex = 1;
-            this.labelSession.Text = "Session";
+            this.labelSession.Text = "Putty session:";
             // 
             // checkBoxVerbose
             // 
             this.checkBoxVerbose.AutoSize = true;
-            this.checkBoxVerbose.Location = new System.Drawing.Point(6, 89);
+            this.checkBoxVerbose.Location = new System.Drawing.Point(107, 57);
             this.checkBoxVerbose.Name = "checkBoxVerbose";
             this.checkBoxVerbose.Size = new System.Drawing.Size(65, 17);
             this.checkBoxVerbose.TabIndex = 5;
             this.checkBoxVerbose.Text = "Verbose";
             this.checkBoxVerbose.UseVisualStyleBackColor = true;
             // 
-            // TelnetOptionsControl
+            // PuttyOptionsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.checkBoxVerbose);
             this.Controls.Add(this.labelSession);
             this.Controls.Add(this.cmbSessionName);
-            this.Name = "TelnetOptionsControl";
+            this.Name = "PuttyOptionsControl";
             this.Size = new System.Drawing.Size(650, 443);
             this.ResumeLayout(false);
             this.PerformLayout();

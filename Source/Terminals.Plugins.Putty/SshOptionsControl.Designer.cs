@@ -9,11 +9,8 @@ namespace Terminals.Plugins.Putty
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-
-        private Label labelSession;
         private CheckBox checkBoxX11Forwarding;
         private CheckBox checkBoxCompression;
-        private ComboBox cmbSessionName;
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -36,38 +33,18 @@ namespace Terminals.Plugins.Putty
         /// </summary>
         private void InitializeComponent()
         {
-            this.cmbSessionName = new System.Windows.Forms.ComboBox();
-            this.labelSession = new System.Windows.Forms.Label();
             this.checkBoxX11Forwarding = new System.Windows.Forms.CheckBox();
             this.checkBoxCompression = new System.Windows.Forms.CheckBox();
-            this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
             this.cmbSshVersion = new System.Windows.Forms.ComboBox();
             this.labelSshVersion = new System.Windows.Forms.Label();
             this.checkBoxEnablePagentAuthentication = new System.Windows.Forms.CheckBox();
             this.checkBoxEnablePagentForwarding = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
-            // cmbSessionName
-            // 
-            this.cmbSessionName.FormattingEnabled = true;
-            this.cmbSessionName.Location = new System.Drawing.Point(76, 41);
-            this.cmbSessionName.Name = "cmbSessionName";
-            this.cmbSessionName.Size = new System.Drawing.Size(165, 21);
-            this.cmbSessionName.TabIndex = 0;
-            // 
-            // labelSession
-            // 
-            this.labelSession.AutoSize = true;
-            this.labelSession.Location = new System.Drawing.Point(3, 44);
-            this.labelSession.Name = "labelSession";
-            this.labelSession.Size = new System.Drawing.Size(44, 13);
-            this.labelSession.TabIndex = 1;
-            this.labelSession.Text = "Session";
-            // 
             // checkBoxX11Forwarding
             // 
             this.checkBoxX11Forwarding.AutoSize = true;
-            this.checkBoxX11Forwarding.Location = new System.Drawing.Point(6, 114);
+            this.checkBoxX11Forwarding.Location = new System.Drawing.Point(107, 80);
             this.checkBoxX11Forwarding.Name = "checkBoxX11Forwarding";
             this.checkBoxX11Forwarding.Size = new System.Drawing.Size(97, 17);
             this.checkBoxX11Forwarding.TabIndex = 2;
@@ -77,28 +54,18 @@ namespace Terminals.Plugins.Putty
             // checkBoxCompression
             // 
             this.checkBoxCompression.AutoSize = true;
-            this.checkBoxCompression.Location = new System.Drawing.Point(6, 137);
+            this.checkBoxCompression.Location = new System.Drawing.Point(107, 103);
             this.checkBoxCompression.Name = "checkBoxCompression";
             this.checkBoxCompression.Size = new System.Drawing.Size(121, 17);
             this.checkBoxCompression.TabIndex = 3;
             this.checkBoxCompression.Text = "Enable compression";
             this.checkBoxCompression.UseVisualStyleBackColor = true;
             // 
-            // checkBoxVerbose
-            // 
-            this.checkBoxVerbose.AutoSize = true;
-            this.checkBoxVerbose.Location = new System.Drawing.Point(6, 160);
-            this.checkBoxVerbose.Name = "checkBoxVerbose";
-            this.checkBoxVerbose.Size = new System.Drawing.Size(65, 17);
-            this.checkBoxVerbose.TabIndex = 4;
-            this.checkBoxVerbose.Text = "Verbose";
-            this.checkBoxVerbose.UseVisualStyleBackColor = true;
-            // 
             // cmbSshVersion
             // 
             this.cmbSshVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSshVersion.FormattingEnabled = true;
-            this.cmbSshVersion.Location = new System.Drawing.Point(76, 70);
+            this.cmbSshVersion.Location = new System.Drawing.Point(107, 172);
             this.cmbSshVersion.Name = "cmbSshVersion";
             this.cmbSshVersion.Size = new System.Drawing.Size(165, 21);
             this.cmbSshVersion.TabIndex = 1;
@@ -106,7 +73,7 @@ namespace Terminals.Plugins.Putty
             // labelSshVersion
             // 
             this.labelSshVersion.AutoSize = true;
-            this.labelSshVersion.Location = new System.Drawing.Point(3, 73);
+            this.labelSshVersion.Location = new System.Drawing.Point(18, 175);
             this.labelSshVersion.Name = "labelSshVersion";
             this.labelSshVersion.Size = new System.Drawing.Size(67, 13);
             this.labelSshVersion.TabIndex = 6;
@@ -115,7 +82,7 @@ namespace Terminals.Plugins.Putty
             // checkBoxEnablePagentAuthentication
             // 
             this.checkBoxEnablePagentAuthentication.AutoSize = true;
-            this.checkBoxEnablePagentAuthentication.Location = new System.Drawing.Point(6, 183);
+            this.checkBoxEnablePagentAuthentication.Location = new System.Drawing.Point(107, 126);
             this.checkBoxEnablePagentAuthentication.Name = "checkBoxEnablePagentAuthentication";
             this.checkBoxEnablePagentAuthentication.Size = new System.Drawing.Size(167, 17);
             this.checkBoxEnablePagentAuthentication.TabIndex = 5;
@@ -125,7 +92,7 @@ namespace Terminals.Plugins.Putty
             // checkBoxEnablePagentForwarding
             // 
             this.checkBoxEnablePagentForwarding.AutoSize = true;
-            this.checkBoxEnablePagentForwarding.Location = new System.Drawing.Point(6, 206);
+            this.checkBoxEnablePagentForwarding.Location = new System.Drawing.Point(107, 149);
             this.checkBoxEnablePagentForwarding.Name = "checkBoxEnablePagentForwarding";
             this.checkBoxEnablePagentForwarding.Size = new System.Drawing.Size(151, 17);
             this.checkBoxEnablePagentForwarding.TabIndex = 6;
@@ -140,13 +107,15 @@ namespace Terminals.Plugins.Putty
             this.Controls.Add(this.checkBoxEnablePagentAuthentication);
             this.Controls.Add(this.labelSshVersion);
             this.Controls.Add(this.cmbSshVersion);
-            this.Controls.Add(this.checkBoxVerbose);
             this.Controls.Add(this.checkBoxCompression);
             this.Controls.Add(this.checkBoxX11Forwarding);
-            this.Controls.Add(this.labelSession);
-            this.Controls.Add(this.cmbSessionName);
             this.Name = "SshOptionsControl";
-            this.Size = new System.Drawing.Size(650, 443);
+            this.Controls.SetChildIndex(this.checkBoxX11Forwarding, 0);
+            this.Controls.SetChildIndex(this.checkBoxCompression, 0);
+            this.Controls.SetChildIndex(this.cmbSshVersion, 0);
+            this.Controls.SetChildIndex(this.labelSshVersion, 0);
+            this.Controls.SetChildIndex(this.checkBoxEnablePagentAuthentication, 0);
+            this.Controls.SetChildIndex(this.checkBoxEnablePagentForwarding, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -155,8 +124,6 @@ namespace Terminals.Plugins.Putty
 
 
         #endregion
-
-        private CheckBox checkBoxVerbose;
         private ComboBox cmbSshVersion;
         private Label labelSshVersion;
         private CheckBox checkBoxEnablePagentAuthentication;
