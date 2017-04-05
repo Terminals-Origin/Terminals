@@ -62,11 +62,11 @@
     <Compile Include="SshVersion.cs" />
     <Compile Include="TelnetOptionsConverter.cs" />
     <Compile Include="TelnetOptions.cs" />
-    <Compile Include="TelnetOptionsControl.cs">
+    <Compile Include="PuttyOptionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TelnetOptionsControl.Designer.cs">
-      <DependentUpon>TelnetOptionsControl.cs</DependentUpon>
+    <Compile Include="PuttyOptionsControl.Designer.cs">
+      <DependentUpon>PuttyOptionsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="TelnetConnectionPlugin.cs" />
     <Compile Include="SshConnectionPlugin.cs" />
@@ -93,8 +93,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="TelnetOptionsControl.resx">
-      <DependentUpon>TelnetOptionsControl.cs</DependentUpon>
+    <EmbeddedResource Include="PuttyOptionsControl.resx">
+      <DependentUpon>PuttyOptionsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SshOptionsControl.resx">
       <DependentUpon>SshOptionsControl.cs</DependentUpon>
