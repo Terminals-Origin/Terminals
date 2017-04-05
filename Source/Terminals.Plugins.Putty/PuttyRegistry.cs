@@ -1,38 +1,26 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
+using Microsoft.Win32;
 
 namespace Terminals.Plugins.Putty
 {
-    // HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions
     internal class PuttyRegistry
     {
-        public string Hive { get; set; }
-
-        public PuttyRegistry()
-        {
-            this.Hive = @"Software\SimonTatham\PuTTY\Sessions";
-        }
-
-        internal PuttyRegistry(string hive)
-        {
-            this.Hive = hive;
-        }
+        private const string HIVE = @"Software\SimonTatham\PuTTY\Sessions";
 
         public string[] GetSessions()
         {
-            var sessionList = default(string[]);
-            using (var sessionsHive = Registry.CurrentUser.OpenSubKey(this.Hive))
+            using (var sessionsHive = Registry.CurrentUser.OpenSubKey(HIVE))
             {
                 if (null != sessionsHive)
                 {
-                    sessionList = sessionsHive.GetSubKeyNames();
+                    return sessionsHive.GetSubKeyNames().OrderBy(s => s)
+                        .ToArray();
                 }
             }
 
-            return sessionList;
+            return new string[0];
         }
+
+
     }
 }
