@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Terminals.Connections.Terminal;
 using Terminals.Data;
 using Terminals.Forms.Controls;
 using Tests.Connections;
+using Terminals.Plugins.Putty;
 
 namespace Tests.FilePersisted
 {

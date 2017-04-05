@@ -7,12 +7,12 @@ using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Connections.ICA;
 using Terminals.Connections.Rdp;
-using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
 using Terminals.Connections.Web;
 using Terminals.Data;
 using Tests.Connections;
+using Terminals.Plugins.Putty;
 
 namespace Tests.UserInterface
 {

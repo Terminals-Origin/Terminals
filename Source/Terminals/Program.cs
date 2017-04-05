@@ -10,6 +10,8 @@ using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Security;
 using Terminals.Updates;
+using System.Runtime.ExceptionServices;
+using System.Security;
 
 namespace Terminals
 {
@@ -81,11 +83,15 @@ namespace Terminals
             Application.ThreadException += new ThreadExceptionEventHandler(ApplicationThreadException);
         }
 
+        [HandleProcessCorruptedStateExceptions]
+        [SecurityCritical]
         private static void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             ShowApplicationExit(e.ExceptionObject);
         }
 
+        [HandleProcessCorruptedStateExceptions]
+        [SecurityCritical]
         private static void ApplicationThreadException(object sender, ThreadExceptionEventArgs e)
         {
             ShowApplicationExit(e.Exception);

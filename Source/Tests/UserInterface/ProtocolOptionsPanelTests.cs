@@ -5,7 +5,6 @@ using Moq;
 using Terminals.Common.Connections;
 using Terminals.Connections;
 using Terminals.Connections.ICA;
-using Terminals.Connections.Terminal;
 using Terminals.Connections.VMRC;
 using Terminals.Connections.VNC;
 using Terminals.Data;
@@ -15,6 +14,7 @@ using Terminals.Forms.EditFavorite;
 using Tests.Connections;
 using Tests.FilePersisted;
 using Tests.Helpers;
+using Terminals.Plugins.Putty;
 
 namespace Tests.UserInterface
 {
@@ -119,26 +119,6 @@ namespace Tests.UserInterface
             this.AssertExpectedPropertyValue<VncOptions, int>(VncConnectionPlugin.VNC,
                   (options, newValue) => options.DisplayNumber = newValue,
                   options => options.DisplayNumber,
-                  EXPECTED_NUMBER);
-        }
-
-        [TestMethod]
-        public void SSh_LoadSave_KeepsSSHKeyFile()
-        {
-            // because of statics used in Settings.SshKeys
-            FilePersistedTestLab.SetDefaultFileLocations();
-            this.AssertExpectedPropertyValue<SshOptions, string>(SshConnectionPlugin.SSH,
-                  (options, newValue) => options.SSHKeyFile = newValue,
-                  options => options.SSHKeyFile,
-                  "ExpectedKeyFile");
-        }
-
-        [TestMethod]
-        public void Telnet_LoadSave_KeepsColumns()
-        {
-            this.AssertExpectedPropertyValue<ConsoleOptions, int>(TelnetConnectionPlugin.TELNET,
-                  (options, newValue) => options.Columns = newValue,
-                  options => options.Columns,
                   EXPECTED_NUMBER);
         }
 
