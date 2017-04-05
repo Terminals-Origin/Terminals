@@ -28,7 +28,6 @@ namespace Terminals.Plugins.Putty
         /// </summary>
         public SshVersion SshVersion { get; set; }
 
-
         public override ProtocolOptions Copy()
         {
             var options = new SshOptions()
@@ -44,6 +43,5 @@ namespace Terminals.Plugins.Putty
 
             return options;
         }
-
     }
 }

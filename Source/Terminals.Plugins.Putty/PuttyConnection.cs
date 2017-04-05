@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Terminals.Connections;
@@ -12,19 +11,20 @@ using Terminals.Native;
 
 namespace Terminals.Plugins.Putty
 {
+    // TODO IConnectionExtra Shouldnt be implemented here.
     internal class PuttyConnection : Connection, IConnectionExtra
     {
-        public const string PUTTY_BINARY = "putty.exe";
+        internal const string PUTTY_BINARY = "putty.exe";
 
-        private bool windowCaptured = false;
-        private bool fullScreen = false;
+        private bool windowCaptured;
+        private bool fullScreen;
         private Process puttyProcess;
 
         private bool IsPuttyReady
         {
             get
             {
-                return windowCaptured && null != puttyProcess && !puttyProcess.HasExited;
+                return this.windowCaptured && null != this.puttyProcess && !this.puttyProcess.HasExited;
             }
         }
 
@@ -32,7 +32,7 @@ namespace Terminals.Plugins.Putty
         {
             get
             {
-                return (IsPuttyReady && puttyProcess != null && !puttyProcess.HasExited);
+                return this.IsPuttyReady && this.puttyProcess != null && !this.puttyProcess.HasExited;
             }
         }
 
@@ -40,14 +40,14 @@ namespace Terminals.Plugins.Putty
         {
             get
             {
-                return fullScreen;
+                return this.fullScreen;
             }
 
             set
             {
-                fullScreen = value;
-                if (fullScreen)
-                    SendFocusToPutty();
+                this.fullScreen = value;
+                if (this.fullScreen)
+                    this.SendFocusToPutty();
             }
         }
 
@@ -83,12 +83,21 @@ namespace Terminals.Plugins.Putty
             }
         }
 
-
         public PuttyConnection()
         {
-            this.Resize += PuttyConnection_Resize;
-            this.ParentChanged += PuttyConnection_ParentChanged;
-            this.GotFocus += PuttyConnection_GotFocus;
+            this.Resize += this.PuttyConnection_Resize;
+            this.ParentChanged += this.PuttyConnection_ParentChanged;
+            this.GotFocus += this.PuttyConnection_GotFocus;
+        }
+
+        private void PuttyConnection_GotFocus(object sender, EventArgs e)
+        {
+            this.SendFocusToPutty();
+        }
+
+        private void PuttyConnection_ParentChanged(object sender, EventArgs e)
+        {
+            this.RegisterResizeEndEventHandler();
         }
 
         private void PuttyConnection_Resize(object sender, EventArgs e)
@@ -96,57 +105,37 @@ namespace Terminals.Plugins.Putty
             this.Invoke(new ThreadStart(this.ClipPutty));
         }
 
-        private void SendFocusToPutty()
+        private void PuttyConnection_ResizeEnd(object sender, EventArgs e)
         {
-            if (IsPuttyReady)
-            {
-                this.Invoke(new ThreadStart(() =>
-                {
-                    Methods.SetForegroundWindow(puttyProcess.MainWindowHandle);
-                    Methods.SetFocus(puttyProcess.MainWindowHandle);
-                }));
-
-            }
-        }
-
-        private void PuttyConnection_GotFocus(object sender, EventArgs e)
-        {
-            SendFocusToPutty();
-        }
-
-        private void PuttyConnection_ParentChanged(object sender, EventArgs e)
-        {
-            if (null != this.ParentForm)
-                ((Form)this.ParentForm).ResizeEnd += PuttyConnection_ResizeEnd;
+            this.Invoke(new ThreadStart(this.ClipPutty));
         }
 
         private void ClipPutty()
         {
-            if (IsPuttyReady)
+            if (this.IsPuttyReady)
             {
-                Rectangle windowRect = Methods.GetWindowRect(puttyProcess.MainWindowHandle);
+                Rectangle windowRect = Methods.GetWindowRect(this.puttyProcess.MainWindowHandle);
 
-                Rectangle clientRect = Methods.GetClientRect(puttyProcess.MainWindowHandle);
+                Rectangle clientRect = Methods.GetClientRect(this.puttyProcess.MainWindowHandle);
 
                 Point referencePoint0 = new Point(0, 0);
-                Methods.ClientToScreen(puttyProcess.MainWindowHandle, ref referencePoint0);
+                Methods.ClientToScreen(this.puttyProcess.MainWindowHandle, ref referencePoint0);
 
                 Point referencePoint1 = new Point(clientRect.Width, clientRect.Height);
-                Methods.ClientToScreen(puttyProcess.MainWindowHandle, ref referencePoint1);
+                Methods.ClientToScreen(this.puttyProcess.MainWindowHandle, ref referencePoint1);
 
-                int top = (referencePoint0.Y - windowRect.Top);
-                int left = (referencePoint0.X - windowRect.Left);
+                int top = referencePoint0.Y - windowRect.Top;
+                int left = referencePoint0.X - windowRect.Left;
 
-                int right = windowRect.Right - referencePoint1.X; // right contains the width of the scrool that should be shown
+                int right = windowRect.Right - referencePoint1.X; // TODO VERIFY: right contains the width of the scrool that should be shown
                 int bottom = windowRect.Bottom - referencePoint1.Y;
 
                 int width = this.Width + left + left; // + right ( using doubled left )
                 int height = this.Height + top + bottom;
 
-                Methods.SetWindowPos(puttyProcess.MainWindowHandle, IntPtr.Zero, -left, -top, width, height, SetWindowPosFlags.FrameChanged | SetWindowPosFlags.DoNotActivate);
+                Methods.SetWindowPos(this.puttyProcess.MainWindowHandle, IntPtr.Zero, -left, -top, width, height, SetWindowPosFlags.FrameChanged | SetWindowPosFlags.DoNotActivate);
             }
         }
-
 
         private void AdjustWindowStyle(IntPtr handle)
         {
@@ -161,28 +150,28 @@ namespace Terminals.Plugins.Putty
             Methods.SetWindowLong(handle, (int)WindowLongParam.GWL_EXSTYLE, lExStyle);
         }
 
-
-
-
         public override bool Connect()
         {
-            ((Form)this.ParentForm).ResizeEnd += PuttyConnection_ResizeEnd;
+            this.RegisterResizeEndEventHandler();
             this.Dock = DockStyle.Fill;
+            this.LaunchPutty();
 
-            LaunchPutty();
-
-            return true;
+            return true; // TODO Return correct connection state
         }
 
-        private void PuttyConnection_ResizeEnd(object sender, EventArgs e)
+        private void RegisterResizeEndEventHandler()
         {
-            this.Invoke(new ThreadStart(this.ClipPutty));
+            // TODO Verify, if the registration isnt executed twise to prevent memory leak and add unregister.
+            var parentForm = this.ParentForm as Form;
+            if (parentForm != null)
+                parentForm.ResizeEnd += this.PuttyConnection_ResizeEnd;
         }
 
         internal string GetPuttyBinaryPath()
         {
-            return GetPuttyBinaryPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            return this.GetPuttyBinaryPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
         }
+
         internal string GetPuttyBinaryPath(string baseLocation)
         {
             return Path.Combine(baseLocation, "Resources", PUTTY_BINARY);
@@ -190,36 +179,47 @@ namespace Terminals.Plugins.Putty
 
         private void LaunchPutty()
         {
-            puttyProcess = new Process();
-            puttyProcess.StartInfo.FileName = GetPuttyBinaryPath();
+            this.puttyProcess = new Process();
+            this.puttyProcess.StartInfo.FileName = this.GetPuttyBinaryPath();
 
             IGuardedSecurity credentials = this.ResolveFavoriteCredentials();
-            puttyProcess.StartInfo.Arguments = new ArgumentsBuilder(credentials, this.Favorite).Build();
-            puttyProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
+            this.puttyProcess.StartInfo.Arguments = new ArgumentsBuilder(credentials, this.Favorite).Build();
+            this.puttyProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
 
-            puttyProcess.Start();
-            puttyProcess.WaitForInputIdle();
+            this.puttyProcess.Start();
+            this.puttyProcess.WaitForInputIdle();
 
-            AdjustWindowStyle(puttyProcess.MainWindowHandle);
-            Methods.SetParent(puttyProcess.MainWindowHandle, this.Handle);
+            this.AdjustWindowStyle(this.puttyProcess.MainWindowHandle);
+            Methods.SetParent(this.puttyProcess.MainWindowHandle, this.Handle);
 
-            windowCaptured = true;
+            this.windowCaptured = true;
 
-            ClipPutty();
+            this.ClipPutty();
         }
 
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
 
-            if (null != puttyProcess && !puttyProcess.HasExited)
-                puttyProcess.Kill();
+            if (null != this.puttyProcess && !this.puttyProcess.HasExited)
+                this.puttyProcess.Kill();
         }
 
         void IConnectionExtra.Focus()
         {
-            SendFocusToPutty();
+            this.SendFocusToPutty();
         }
 
+        private void SendFocusToPutty()
+        {
+            if (this.IsPuttyReady)
+            {
+                this.Invoke(new ThreadStart(() =>
+                {
+                    Methods.SetForegroundWindow(this.puttyProcess.MainWindowHandle);
+                    Methods.SetFocus(this.puttyProcess.MainWindowHandle);
+                }));
+            }
+        }
     }
 }

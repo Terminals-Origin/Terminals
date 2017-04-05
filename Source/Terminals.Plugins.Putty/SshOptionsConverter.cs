@@ -5,7 +5,6 @@ namespace Terminals.Plugins.Putty
     internal class SshOptionsConverter : OptionsConverterTemplate<SshOptions>, IOptionsConverter
     {
 
-
         protected override void FromConfigFavorite(FavoriteConfigurationElement source, SshOptions options)
         {
             options.SessionName = source.SshSessionName;
