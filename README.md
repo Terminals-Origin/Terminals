@@ -20,7 +20,7 @@ We are happy to announce that Chocolatey terminals package is now maintained by 
 	* [System requirements](/Docs/System-requirements.md)
 	* [Upgrade to version 3.0](/Docs/Upgrade-to-version-3.0.md)
 * [Features and Screen shots](/Docs/Features-and-Screen-shots.md)
-* [Developer guide](/Docs/Developer-guide.md) (How to contribute)
+* [Developer guide](/Docs/Developer-guide.html) (How to contribute)
 * [Road map](/Docs/Road-map.md)
 * [Powershell script to create import file](/Docs/Powershell-script-to-create-import-file.md)
 
