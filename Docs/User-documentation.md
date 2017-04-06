@@ -16,23 +16,23 @@ But anyway, don't search here for SSH specification, or how to enable remote des
 Note: New version 3.0 CTP doesn't distinguish between Tag and group
 
 ## How to ... 
-* [Manage connections](Manage-connections)
+* [Manage connections](Manage-connections.md)
 	* Create connection
 	* Check why i can't connect
 	* Move connection to the other monitor
-	* [Configure connection share](Configure-connection-share)
-* [Manipulate with connection credentials](Manipulate-with-connection-credentials)
+	* [Configure connection share](Configure-connection-share.md)
+* [Manipulate with connection credentials](Manipulate-with-connection-credentials.md)
 	* Define custom connection credentials
 	* Reuse stored credentials for more connections
 	* Protect my connections with master password
-* [Organize favorites](Organize-favorites)
+* [Organize favorites](Organize-favorites.md)
 	* Manage Tags and Groups
 	* Import favorites
 	* Search for computers servicing remote control protocol
-* [Capture connection screen](Capture-connection-screen)
+* [Capture connection screen](Capture-connection-screen.md)
 * Configure application data
-	* [Backup and restore settings files](Backup-and-restore-settings-files)
-	* [Store data in SQL database](Store-data-in-SQL-database)
-* Start Terminals using [Command line arguments](Command-line-arguments)
-* Select proper [Application Options](Application-Options)
-* [Advanced usage](Advanced-usage)
+	* [Backup and restore settings files](Backup-and-restore-settings-files.md)
+	* [Store data in SQL database](Store-data-in-SQL-database.md)
+* Start Terminals using [Command line arguments](Command-line-arguments.md)
+* Select proper [Application Options](Application-Options.md)
+* [Advanced usage](Advanced-usage.md)
