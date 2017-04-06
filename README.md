@@ -14,14 +14,14 @@ New Options to disable protocol plugins
 * **December 16,2016** - New Official [Chocolatey package](https://chocolatey.org/packages/terminals)  
 We are happy to announce that Chocolatey terminals package is now maintained by our team. 
 
-# [Documentation]
+# Documentation
 * **[User documentation](/Docs/User-documentation.md)**
 * Installation
 	* [System requirements](/Docs/System-requirements.md)
 	* [Upgrade to version 3.0](/Docs/Upgrade-to-version-3.0.md)
 * [Features and Screen shots](/Docs/Features-and-Screen-shots.md)
 * [Developer guide](/Docs/Developer-guide.md) (How to contribute)
-* [Road map](/Docs/Road-map)
+* [Road map](/Docs/Road-map.md)
 * [Powershell script to create import file](/Docs/Powershell-script-to-create-import-file.md)
 
 # [License](LICENSE.md)
