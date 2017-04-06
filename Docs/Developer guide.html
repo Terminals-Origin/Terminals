@@ -1,0 +1,110 @@
+<div class="wikidoc">
+<h1>Developer guide</h1>
+<h2>Continuous integration</h2>
+<ul>
+<li><span style="font-size:10pt">There are a private Team City and SonarQube servers configured for our project</span>
+</li><li>As a project developer ask for developer access </li><li>These builds shouldn't be used as public available development builds (beta or RC)
+</li></ul>
+<h2>How to configure environment</h2>
+<ul>
+<li>Install Visual Studio, With Database tools, Install Wix, Resharper. </li><li>Configure the database server to accept the database connection string in test project app.config file.
+</li><li>Run chocolatey script Build\installprerequisities.ps1 to configure development tools.
+</li></ul>
+<h2>Application life cycle</h2>
+<ul>
+<li>To publish release version:
+<ul>
+<li>the application version should be updated in Setup project and in Common.AsssemblyInfo.cs
+</li><li>Use build.ps1 script in build directory and publish both generated files </li><li>Update related build version in Team City nightly builds </li><li>Keep in mind, that there is new version detected by published release on CodePlex and compared with the build date of the application =&gt; Pulish date has to older or equals to the build date.
+</li><li>Mark release with label. If you want to rollback to previous version load selected version release label
+</li></ul>
+</li><li>TFS Tasks have iteration path &quot;Terminals&quot; until there is at least one related checkin. Then change the iteration path to the current development version
+</li><li>When fixing an issue, mark it as Fixed (not as Closed). Task is closed as a part of release, if there are no comments otherwise it is shifted to next version.
+</li></ul>
+<h2>Cooperation rules</h2>
+<ul>
+<li>Miguel de Icaza has a good post on <a href="http://tirania.org/blog/archive/2010/Dec-31.html">
+Open Source Contribution Etiquette</a> that is worth reading, as the guidance he gives applies well to Terminals (inspired by Nuget project).
+</li><li><span style="font-size:10pt">Pickup from task stack by Votings<br>
+</span></li><li><span style="font-size:10pt">Select only task, which you are able to solve in no more than two months</span>
+</li><li><span style="font-size:10pt">Don't keep your checkouts long time, use Shelve sets instead</span>
+</li><li><span style="font-size:10pt">Always associate check-in change set with task, if your check in is related to it</span>
+</li><li><span style="font-size:10pt">In case of formatting make two separate checkins: one which holds only code formatting changes, second with fix/feature changes</span>
+</li></ul>
+<h2>Project structure</h2>
+<ul>
+<li>Current development tool is Visual Studio 2015 with .NET C#. </li><li>The main solution project is configured to target .NET framework 4. But there are other external projects, which are still targeting .NET 2.0. Don't change the target framework for them.
+</li><li>Download both Resources and Source folders from the Main branch to the same location. Terminals solution references libraries and images from Resources directory.
+</li><li>For Logging the Log4Net is configured. Log files are stored under application Logs subdirectory.
+</li><li>To build the release setup use the &quot;Distribution release&quot; solution configuration. For general development use standard debug and release.
+</li><li>Output directory is default directory under the Terminals project. </li><li>Put all localize able resources under the Localization directory in resource file stored there.
+</li><li>The latest development branch is stored under &quot;Main\Sources&quot; </li><li>To create user branch create your own under &quot;FeatureBranches&quot; directory and branch always whole main subtree
+</li><li>All external components and other resources like images should be stored under &quot;Resources&quot; directory in its branch
+</li></ul>
+<h2>External components</h2>
+<ul>
+<li>SSH protocol from Granados project (actually developed as <a href="http://sourceforge.net/projects/poderosa/">
+Poderosa</a>) </li><li>Terminal emulator control for ssh and telnet ( <a href="http://www.codeproject.com/KB/IP/Terminal_Control_Project.aspx">
+Terminal control</a>) </li><li>Amazon S3 component (from Amazon SDK <a href="http://aws.amazon.com/sdkfornet//">
+Amazon SDK for .NET</a>) </li><li>zLib compression library (<a href="http://www.componentace.com/">zLib</a>) </li><li>VNC client library (<a href="http://cdot.senecac.on.ca/projects/vncsharp/">VncSharp</a>)
+</li><li>Log4Net (<a href="http://logging.apache.org/log4net/">Log4Net</a>) </li><li>Packet manipulation library (<a href="http://www.tamirgal.com/blog/page/SharpPcap.aspx">SharpPcap</a>)
+</li><li>ICA Citrix component </li><li>RDP imported as activeX component </li><li>Setup WIX toolkit (<a href="http://WixToolSet.org">WIX Toolkit</a>) </li><li>PowerShell comunity extensions </li><li>Chocolatey to download external dependecies in build </li></ul>
+<h2>Coding rules</h2>
+<ul>
+<li>Use Visual Studio 2015 default settings or similar settings in another editor.
+</li><li>For developer who are using Resharper, there is a Team shared configuration file for coding rules. Don't change this file, if you want to apply some rules. Discuss it first within the team.
+</li><li>Indents are 4 spaces. You can use Productivity Power Tools for VS to convert tab characters into spaces.
+</li><li>Fields should be declared private and above all methods. </li><li>Put curly brackets on a new line and close it in the same indentation. </li><li>Keep classes small up to maximum 500 lines </li><li>Keep methods small up to maximum 35 lines </li><li>Use usings as much as possible and remove not used usings </li><li>members order: constantsand statics, fields, properties, events, constructors, methods.
+</li><li>When using an if condition with one statement, put the statement on the next line.
+</li></ul>
+<div style="color:black; background-color:white">
+<pre>   <span style="color:blue">if</span> (<span style="color:blue">true</span>)
+       DoSomething();
+</pre>
+</div>
+<ul>
+<li>When using an if condition with one statement after if condition and else condition, curly brackets are optional.
+</li></ul>
+<div style="color:black; background-color:white">
+<pre>  <span style="color:blue">if</span>(<span style="color:blue">true</span>)
+       DoSomething();
+   <span style="color:blue">else</span>
+       DoSomethingElse();
+</pre>
+</div>
+<ul>
+<li>When using an if condition with curly brackets, use curly brackets for all attached conditions
+</li></ul>
+<div style="color:black; background-color:white">
+<pre>   <span style="color:blue">if</span> (<span style="color:blue">true</span>)
+   {
+       x&#43;&#43;;
+       DoSomething();
+   }
+   <span style="color:blue">else</span>
+   {
+       DoSomethingElse();
+   }
+</pre>
+</div>
+<ul>
+<li>After an if, while, for each or other conditions that can use curly brackets, leave an empty line.
+</li></ul>
+<div style="color:black; background-color:white">
+<pre>   <span style="color:blue">if</span> (<span style="color:blue">true</span>)
+      DoSomething();
+
+   x&#43;&#43;;
+   <span style="color:blue">foreach</span>(String s <span style="color:blue">in</span> stringArray)
+   {
+      Debug.Print(s);
+   }
+   
+   DoTheNextThing();
+
+</pre>
+</div>
+<ul>
+<li>Use String.Format when possible. </li><li>Use String.Empty instead of &quot;&quot;, use String.IsNullOrEmpty() instead of (x == null | x = &quot;&quot;).
+</li></ul>
+</div><div class="ClearBoth"></div>
