@@ -31,13 +31,13 @@ NOTE: This page is under construction!
 * Show confirm dialog on Close or warn or disconnect: If connection is lost or you are closing the connection, you are prompted, if you want to close the connection. This allows you to be informed, that the connection is lost. If not enabled and connection is lost opened connection is closed without warning (except RDP, see next option)
 * Ask to reconnect when connection is lost due Shutdown or reboot: This option applies to RDP only and replaces previous option if enabled. If connection is lost a reconnecting dialog is shown and you are able to manually ask to be reconnected (when machine is available again) or close the connection. This options is helpful in a case you or someone else is restarting the server and you want to be reconnected later. Terminals tries to reconnect one hour, if server is not available, the connection is closed.
 * Automatically restore the main window when the last connection is closed: Helpful, if you are using Terminals minimized to system tray and you want to continue in the app with another connection or favorite
-* [Default Desktop Share](Configure-connection-share)
+* [Default Desktop Share](Configure-connection-share.md)
 * Port scanner timeout: Number in seconds, the maximum time the networking tool "Port scanner" will try to check opened port on target machine. Range 0 - 60, default value is 5.
 * Execute before connect: This options allow you to execute some application (or script) each time you open new connection. Applies to all connections and the configured command starts on your computer locally.
 * Proxy: Applies only to Download manger to inform you about latest releases. If not defined, the application will use the system proxy defined for your browsers. Currently doesn't apply to the HTTP or HTTPS favorites.
 
 ## Screen capture
-See also: ([How to use screen capture](Capture-connection-screen))
+See also: ([How to use screen capture](Capture-connection-screen.md))
 * Enable screen capture to clipboard: When you press button to capture screen the screen shot is stored into the Windows clipboard.
 * Enable screen capture to folder: Like the previous option, but the picture is saved to the directory, configured as Screen capture root folder.
 * Auto switch to Capture manager on capture: After taking a screen capture, Capture manager tool is automatically opened.
@@ -46,5 +46,5 @@ See also: ([How to use screen capture](Capture-connection-screen))
 
 ## Data Store
 NOTE: **Requires application restart**.
-* Files in local profile (Default): All application and configuration files are stored in your user profile or application directory in case of portable version. Read more about files configuration and usage in  [Backup and restore settings files](Backup-and-restore-settings-files). Read more about portable version in  [Upgrade to version 3.0](Upgrade-to-version-3.0).
-* [Microsoft SQL database server](Store-data-in-SQL-database)
+* Files in local profile (Default): All application and configuration files are stored in your user profile or application directory in case of portable version. Read more about files configuration and usage in  [Backup and restore settings files](Backup-and-restore-settings-files.md). Read more about portable version in  [Upgrade to version 3.0](Upgrade-to-version-3.0.md).
+* [Microsoft SQL database server](Store-data-in-SQL-database.md)

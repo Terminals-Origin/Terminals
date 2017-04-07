@@ -2,7 +2,7 @@
 
 Note: This feature is under active development and isn't present in any of published versions.
 
-Terminals supports two possibilities how to store user data. If you don't change any application options the data are saved into local xml based files (for more details see [Backup and restore settings files](Backup-and-restore-settings-files)). Because the  possibilities of sharing files are limited, we implemented the same functionality using SQL database. Currently **only Microsoft SQL server** is supported, tested on version 2008 Express.
+Terminals supports two possibilities how to store user data. If you don't change any application options the data are saved into local xml based files (for more details see [Backup and restore settings files](Backup-and-restore-settings-files.md)). Because the  possibilities of sharing files are limited, we implemented the same functionality using SQL database. Currently **only Microsoft SQL server** is supported, tested on version 2008 Express.
 
 ## How to create database
 To create a terminals database use sql script stored under "Main\Resources\Database" or you can copy empty database stored also there. The database is used only as a simple store. Currently (version 3.0) it contains only a few tables, stored procedures and relations. There is no extra logic like triggers, indexes or in database stored CLR code etc.
@@ -20,7 +20,7 @@ Both values are stored as a part of application configuration and is stored like
 
 Following image describes the configuration in more detail:
 
-![Sql Persistence](Store data in SQL database_Terminals_SqlPersistence.PNG)
+![Sql Persistence](Store-data-in-SQL-database_Terminals_SqlPersistence.PNG)
 * **Server Name** "..." button: Use Sql browser service to locate SQL instances in your network
 * **Database** "..." button: Locate all available databases attached to the selected database server instance
 * **Database password**: Provide current Terminals database master password set up by your application administrator. This is used to validate, when connecting to the database.

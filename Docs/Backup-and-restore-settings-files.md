@@ -26,7 +26,7 @@ Layout files hold only positions of main window and tool bars. When you encounte
 * **LastUpdateCheck.txt** - holds only date of last update. This file isn't used yet.
 
 ## Version 3.0:
-* Has different files structure depending on installation type, which is described in [Upgrade to version 3.0](Upgrade-to-version-3.0)*
+* Has different files structure depending on installation type, which is described in [Upgrade to version 3.0](Upgrade-to-version-3.0.md)*
 * All user files of the application are stored in one "**Data**" directory. This make the application 100% portable.
 * All other rules are still valid except:
 	* Content of the files is not backward compatible with version 2.0 and older

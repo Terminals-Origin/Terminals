@@ -18,7 +18,7 @@ If there already is connection with the same name you typed into the "Connection
 For HTTP, the computer name left blank and type the connection address into the "URL" text box on HTTP tab page.
 To close opened connection close its window or from "Terminal" menu select "Disconnect" command
 
-To use advanced favorites management continue to [Organize favorites](Organize-favorites)
+To use advanced favorites management continue to [Organize favorites](Organize-favorites.md)
 Tip: Note, that changed connection properties immediately save the changes into the configuration file and there is no possibility to do an Undo. 
 
 ## Check why i can't connect 
