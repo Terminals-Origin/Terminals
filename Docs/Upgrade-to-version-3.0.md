@@ -22,9 +22,11 @@ To switch already installed version to portable or vice versa you have to:
 * Move "Data" directory in expected location
 
 Here are valid values for each configuration:
-||Property name||Portable version value||Local installation||
-|Portable xml node in Terminals.exe.config|True|False|
-|Log File in Log4.Net.exe.config|"\Data\logs\CurrentLog.txt""|"${USERPROFILE}\Local Settings\Application Data\Robert_Chartier\Terminals\Data\logs\CurrentLog.txt""|
+
+| Property name | Portable version value | Local installation |
+|---|---|---|
+| Portable xml node in Terminals.exe.config | True | False |
+| Log File in Log4.Net.exe.config | "\Data\logs\CurrentLog.txt"" | "${USERPROFILE}\Local Settings\Application Data\Robert_Chartier\Terminals\Data\logs\CurrentLog.txt"" |
 
 ## Upgrade behavior
 * If your data are protected by Master password and you are not able to provide it, application will exit without upgrading your files
