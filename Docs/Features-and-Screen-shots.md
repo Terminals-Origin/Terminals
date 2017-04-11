@@ -9,7 +9,6 @@
 * Open custom application from Terminals window
 * Toolbar for computer control panel applets
 * Search in ServerName, protocol notes etc.
-* 
 
 ![Favorites](Features-and-Screen-shots_Terminals_favorites.PNG)
 
@@ -34,7 +33,7 @@
 * Search computers in your network by IP addresses
 * Automatic import RDP connection from registry 
 
-![](Features and Screen shots_Terminals_organize_favorites.PNG)
+![Organize favorites](Features-and-Screen-shots_Terminals_organize_favorites.PNG)
 
 ## Networking tools
 * Ping 
