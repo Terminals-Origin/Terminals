@@ -17,10 +17,10 @@ Since Terminals 1.9, RDP connections require RDP Client 6 or higher to work corr
 No other remote control tool has to be installed. This version doesn't support RDP 8 protocol.
 
 The RDP6 client comes with native installations of Windows Vista and above and can be downloaded for other operating Systems from the following links:
-[Terminal Services Client 6.0 update for Windows Server 2003 (KB925876)](http://www.microsoft.com/downloads/details.aspx?FamilyId=CC148041-577F-4201-B62C-D71ADC98ADB1)
-[Terminal Services Client 6.0 update for Windows Server 2003, x64-based versions (KB925876)](http://www.microsoft.com/downloads/details.aspx?FamilyId=43C0EAE9-6B64-428F-A9DC-F97F5A1B4493)
-[Terminal Services Client 6.0 update for Windows XP (KB925876)](http://www.microsoft.com/downloads/details.aspx?FamilyId=26F11F0C-0D18-4306-ABCF-D4F18C8F5DF9)
-[Terminal Services Client 6.0 update for Windows XP, x64-based versions (KB925876)](http://www.microsoft.com/downloads/details.aspx?FamilyId=160CE316-BF2B-48D0-A035-E2ABBC55D8E8)
+* [Terminal Services Client 6.0 update for Windows Server 2003 (KB925876)](http://www.microsoft.com/downloads/details.aspx?FamilyId=CC148041-577F-4201-B62C-D71ADC98ADB1)
+* [Terminal Services Client 6.0 update for Windows Server 2003, x64-based versions (KB925876)](http://www.microsoft.com/downloads/details.aspx?FamilyId=43C0EAE9-6B64-428F-A9DC-F97F5A1B4493)
+* [Terminal Services Client 6.0 update for Windows XP (KB925876)](http://www.microsoft.com/downloads/details.aspx?FamilyId=26F11F0C-0D18-4306-ABCF-D4F18C8F5DF9)
+* [Terminal Services Client 6.0 update for Windows XP, x64-based versions (KB925876)](http://www.microsoft.com/downloads/details.aspx?FamilyId=160CE316-BF2B-48D0-A035-E2ABBC55D8E8)
 
 ## Version 3.0 (under development):
 
