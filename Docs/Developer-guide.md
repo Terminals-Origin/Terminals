@@ -42,72 +42,71 @@
 
 ## External components
 * SSH protocol from Granados project (actually developed as [Poderosa](http://sourceforge.net/projects/poderosa/))
-* Terminal emulator control for ssh and telnet (http://www.codeproject.com/KB/IP/Terminal_Control_Project.aspx"
-Terminal control)
-* Amazon S3 component (from Amazon SDK http://aws.amazon.com/sdkfornet// Amazon SDK for .NET)
-* zLib compression library (http://www.componentace.com/ zLib)
-* VNC client library (http://cdot.senecac.on.ca/projects/vncsharp/ VncSharp)
-* Log4Net (http://logging.apache.org/log4net/ Log4Net)
-* Packet manipulation library (http://www.tamirgal.com/blog/page/SharpPcap.aspx">SharpPcap)
+* Terminal emulator control for ssh and telnet [Terminal control](http://www.codeproject.com/KB/IP/Terminal_Control_Project.aspx)
+* Amazon S3 component from Amazon SDK [Amazon SDK for .NET](http://aws.amazon.com/sdkfornet/)
+* zLib compression library [zLib](http://www.componentace.com/)
+* VNC client library [VncSharp](http://cdot.senecac.on.ca/projects/vncsharp/)
+* [Log4Net](http://logging.apache.org/log4net/)
+* Packet manipulation library [SharpPcap](http://www.tamirgal.com/blog/page/SharpPcap.aspx)
 * ICA Citrix component
 * RDP imported as activeX component
-* Setup WIX toolkit (http://WixToolSet.org">WIX Toolkit)
+* Setup WIX toolkit [WIX Toolkit](http://WixToolSet.org)
 * PowerShell comunity extensions
 * Chocolatey to download external dependecies in build
 
 ## Coding rules
-<ul>
-<li>Use Visual Studio 2015 default settings or similar settings in another editor.
-</li><li>For developer who are using Resharper, there is a Team shared configuration file for coding rules. Don't change this file, if you want to apply some rules. Discuss it first within the team.
-</li><li>Indents are 4 spaces. You can use Productivity Power Tools for VS to convert tab characters into spaces.
-</li><li>Fields should be declared private and above all methods. </li><li>Put curly brackets on a new line and close it in the same indentation. </li><li>Keep classes small up to maximum 500 lines </li><li>Keep methods small up to maximum 35 lines </li><li>Use usings as much as possible and remove not used usings </li><li>members order: constantsand statics, fields, properties, events, constructors, methods.
-</li><li>When using an if condition with one statement, put the statement on the next line.
-</li></ul>
-<div style="color:black; background-color:white">
-<pre>   <span style="color:blue">if</span> (<span style="color:blue">true</span>)
+* Use Visual Studio 2015 default settings or similar settings in another editor.
+* For developer who are using Resharper, there is a Team shared configuration file for coding rules. Don't change this file, if you want to apply some rules. Discuss it first within the team.
+* Indents are 4 spaces. You can use Productivity Power Tools for VS to convert tab characters into spaces.
+* Fields should be declared private and above all methods.
+* Put curly brackets on a new line and close it in the same indentation.
+* Keep classes small up to maximum 500 lines
+* Keep methods small up to maximum 35 lines
+* Use usings as much as possible and remove not used usings ** members order: constantsand statics, fields, properties, events, constructors, methods.
+* When using an if condition with one statement, put the statement on the next line.
+
+```cs
+ if (true)
        DoSomething();
-</pre>
-</div>
-<ul>
-<li>When using an if condition with one statement after if condition and else condition, curly brackets are optional.
-</li></ul>
-<div style="color:black; background-color:white">
-<pre>  <span style="color:blue">if</span>(<span style="color:blue">true</span>)
+```
+
+* When using an if condition with one statement after if condition and else condition, curly brackets are optional.
+
+```cs
+if(true)
        DoSomething();
-   <span style="color:blue">else</span>
+   else
        DoSomethingElse();
-</pre>
-</div>
-<ul>
-<li>When using an if condition with curly brackets, use curly brackets for all attached conditions
-</li></ul>
-<div style="color:black; background-color:white">
-<pre>   <span style="color:blue">if</span> (<span style="color:blue">true</span>)
+```
+
+* When using an if condition with curly brackets, use curly brackets for all attached conditions
+
+```cs
+   if (true)
    {
-       x&#43;&#43;;
+       x++;
        DoSomething();
    }
-   <span style="color:blue">else</span>
+   else
    {
        DoSomethingElse();
    }
-</pre>
-</div>
-<ul>
-<li>After an if, while, for each or other conditions that can use curly brackets, leave an empty line.
-</li></ul>
-<div style="color:black; background-color:white">
-<pre>   <span style="color:blue">if</span> (<span style="color:blue">true</span>)
+```
+
+* After an if, while, for each or other conditions that can use curly brackets, leave an empty line.
+
+```cs
+if (true)
       DoSomething();
 
-   x&#43;&#43;;
-   <span style="color:blue">foreach</span>(String s <span style="color:blue">in</span> stringArray)
-   {
-      Debug.Print(s);
-   }
+x++;
+foreach(String s in stringArray)
+{
+    Debug.Print(s);
+}
    
    DoTheNextThing();
 ```
 
 * Use String.Format when possible.
-* Use String.Empty instead of &quot;&quot;, use String.IsNullOrEmpty() instead of (x == null | x = &quot;&quot;).
+* Use String.Empty instead of "", use String.IsNullOrEmpty() instead of (x == null | x = "").
