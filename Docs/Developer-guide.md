@@ -11,11 +11,11 @@
 
 # Application life cycle
 * To publish release version:
-** the application version should be updated in Setup project and in Common.AsssemblyInfo.cs
-** Use build.ps1 script in build directory and publish both generated files
-** Update related build version in Team City nightly builds
-** Keep in mind, that there is new version detected by published release on CodePlex and compared with the build date of the application =&gt; Pulish date has to older or equals to the build date.
-** Mark release with label. If you want to rollback to previous version load selected version release label
+  * the application version should be updated in Setup project and in Common.AsssemblyInfo.cs
+  * Use build.ps1 script in build directory and publish both generated files
+  * Update related build version in Team City nightly builds
+  * Keep in mind, that there is new version detected by published release on CodePlex and compared with the build date of the application =&gt; Pulish date has to older or equals to the build date.
+  * Mark release with label. If you want to rollback to previous version load selected version release label
 * TFS Tasks have iteration path &quot;Terminals&quot; until there is at least one related checkin. Then change the iteration path to the current development version
 * When fixing an issue, mark it as Fixed (not as Closed). Task is closed as a part of release, if there are no comments otherwise it is shifted to next version.
 
@@ -62,7 +62,8 @@
 * Put curly brackets on a new line and close it in the same indentation.
 * Keep classes small up to maximum 500 lines
 * Keep methods small up to maximum 35 lines
-* Use usings as much as possible and remove not used usings ** members order: constantsand statics, fields, properties, events, constructors, methods.
+* Use usings as much as possible and remove not used usings 
+* members order: constantsand statics, fields, properties, events, constructors, methods.
 * When using an if condition with one statement, put the statement on the next line.
 
 ```cs
