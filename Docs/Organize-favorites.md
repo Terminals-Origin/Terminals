@@ -11,12 +11,13 @@ When managing discussions on the internet we are used to organize our topics usi
 When reinstalling or moving from one computer to another or moving from another tool (;-)) you will probably need to backup, restore, import and export favorites. You can do this from main window "File" menu or from "Organize favorites".
 Supported file formats are:
 
-||Application||File extension||Import||Export||
-|Terminals|XML|X|X|
-|Microsoft remote desktop|RDP|X|X|
-|Multiple remote desktops manager|MRC|X|-|
-|Visionapp remote desktop|VRB|X|-|
-|Microsoft remote desktop connection manager|RDG|X|-|
+| Application | File extension | Import | Export |
+|---|---|---|---|
+| Terminals | XML | X | X |
+| Microsoft remote desktop | RDP | X | X |
+| Multiple remote desktops manager | MRC | X | - |
+| Visionapp remote desktop | VRB | X | - |
+| Microsoft remote desktop connection manager | RDG | X | - |
 
 Immediately after first time Terminals starts, you will be prompted, if you want to import RDP connections from Windows registry.
 There are stored recently used Microsoft remote desktop connections, so don't have to import them manually.
@@ -40,7 +41,7 @@ In large networks or if you don't know server name, it is comfortable to search 
 
 Active directory scan:
 
-![](Organize favorites_Terminals._ADSearch.png)
+![Organize favorites](Organize-favorites_Terminals._ADSearch.png)
 
 **Domain**: Domain name to search in. Doesn't have to be fully qualified domain name. Default domain defined Terminals Options is used as default value.
 **Max. results**: Maximum results to obtain. Number in range 0-5000, default 1000. Used to reduce number of obtained results.
