@@ -47,13 +47,16 @@ larger work. You must also provide recipients the source code to the
 larger work along with a copy of this license.
 
 (B) No Trademark License- This license does not grant you any rights to use the Licensor’s name, logo, or trademarks.
+
 (C) If you distribute the software in source code form you may do so only under
 this license (i.e., you must include a complete copy of this license with your
 distribution), and if you distribute the software solely in compiled or object
 code form you may only do so under a license that complies with this license.
+
 (D) If you begin patent litigation against the Licensor over patents that you
 think may apply to the software (including a cross-claim or counterclaim in a
 lawsuit), your license to the software ends automatically.
+
 (E) The software is licensed "as-is." You bear the risk of using it. The Licensor
 gives no express warranties, guarantees or conditions. You may have additional
 consumer rights under your local laws which this license cannot change. To the
