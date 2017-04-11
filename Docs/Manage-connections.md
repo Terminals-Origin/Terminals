@@ -7,11 +7,11 @@ The main feature of this application is to provide easy access to different remo
 
 To open existing connection type the connection name into the "Connect to" text box.
 If the "New connection configuration" window appears,
-# Select the required service from Protocol drop down list. Changing the service protocol, the window can switch to different tab page depending on the configuration associate with the selected service.
-# Write IP address or computer name into the "Computer" text box
-# If your service uses not standard port, fill the "Port" text box also, otherwise default port will be used
-# And now is time to name your configuration in connection name text box.
-# Click on the OK button to connect
+1. Select the required service from Protocol drop down list. Changing the service protocol, the window can switch to different tab page depending on the configuration associate with the selected service.
+2. Write IP address or computer name into the "Computer" text box
+3. If your service uses not standard port, fill the "Port" text box also, otherwise default port will be used
+4. And now is time to name your configuration in connection name text box.
+5. Click on the OK button to connect
 
 You can later change to configuration by right click on the connection and select Properties.
 If there already is connection with the same name you typed into the "Connection name" text box, you will overwrite that connection settings.
@@ -31,14 +31,16 @@ Here are some tips, what to check, if you aren't able to connect:
 * ICA Citrix: the client is version 2.4, which is actually an old version. We plan to upgrade it in next version. It means, that you will be able to connect only to old severs.
 
 For troubles with Firewall , here are default service ports:
-||Service name||Default port number||
-|Remote desktop | 3389|
-|VNC,VMRC| 5900|
-|Telnet | 23|
-|SSH|22|
-|ICA | 1494|
-|HTTP| 80|
-|HTTPS| 443|
+
+| Service name | Default port number |
+|---|---|
+| Remote desktop | 3389 |
+| VNC,VMRC | 5900 |
+| Telnet | 23 |
+| SSH | 22 |
+| ICA | 1494 |
+| HTTP | 80 |
+| HTTPS | 443 |
 
 NOTE: In a case of "**a website is trying to start a remote connection**" warning message, install the KB2592687 Windows update for RDP 8.0 to remove the warning.
 
