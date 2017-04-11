@@ -1,6 +1,6 @@
 With this Powershell script you can create an XML import file for Terminals. You need to add your own code to create a favorite object and add it to the favorites array object.
 
-{{
+```powershell
 #######################################
 #
 # Powershell script to create an import file for Terminals
@@ -105,4 +105,4 @@ function New-Favorite
 	
 	return $fav;
 }
-}}
+```
