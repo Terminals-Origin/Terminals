@@ -4,7 +4,7 @@ Like other applications Terminals stores its data in data files on your disk. Al
 Any changes are immediately confirmed into the files. Passwords saved in all files are always written in encrypted form.
 To reset configuration or restore to previous state simply close Terminals and replace or remove required file. 
 
-**It is strongly recommended, that you backup these files before you upgrade to new version. **
+**It is strongly recommended, that you backup these files before you upgrade to new version.**
 
 ## Data files
 
