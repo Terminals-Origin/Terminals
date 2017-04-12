@@ -399,11 +399,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SQLPersistence.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\DB\SQLPersistence.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SQLPersistence.tt</DependentUpon>
-    </Compile>
     <Compile Include="Data\DB\SQLPersistence.Designer.cs">
       <DependentUpon>SQLPersistence.edmx</DependentUpon>
       <AutoGen>True</AutoGen>
