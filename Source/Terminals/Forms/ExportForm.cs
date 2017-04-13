@@ -25,10 +25,10 @@ namespace Terminals.Forms
             this.persistence = persistence;
             this.InitializeComponent();
 
+            this.favoriteIcons = favoriteIcons;
             this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence, this.favoriteIcons);
             this.treeLoader.LoadRootNodes();
             this.connectionManager = connectionManager;
-            this.favoriteIcons = favoriteIcons;
             this.exporters = new Exporters(this.persistence, this.connectionManager);
             this.saveFileDialog.Filter = this.exporters.GetProvidersDialogFilter();
         }
