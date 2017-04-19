@@ -20,7 +20,7 @@ namespace Tests.SqlPersisted
     {
         private const string DBF_FILE_NAME = "Terminals.mdf";
 
-        private const string CONNECTION_STRING = @"Data Source=(localdb)\v11.0;AttachDbFilename={0}\Terminals.mdf;Integrated Security=True;";
+        private const string CONNECTION_STRING = @"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename={0}\Terminals.mdf;Integrated Security=True;";
 
         protected const string FAVORITE_NAME = "test";
 
