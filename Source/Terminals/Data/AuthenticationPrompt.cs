@@ -3,7 +3,7 @@ namespace Terminals.Data
     /// <summary>
     /// Container for user input when asking him for master password
     /// </summary>
-    internal class AuthenticationPrompt
+    public class AuthenticationPrompt
     {
         /// <summary>
         /// Gets or sets the password entered by user

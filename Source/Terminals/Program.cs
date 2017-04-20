@@ -8,7 +8,6 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms;
-using Terminals.Security;
 using Terminals.Updates;
 
 namespace Terminals
@@ -61,7 +60,10 @@ namespace Terminals
             Logging.Info("Start state 8 Complete: Configuration upgrade");
 
             ShowFirstRunWizard(persistence, connectionManager);
-            persistence = AuthenticateByMasterPassword(persistenceFactory, persistence);
+            var startupUi = new StartupUi();
+            persistence = persistenceFactory.AuthenticateByMasterPassword(persistence, startupUi);
+            PersistenceErrorForm.RegisterDataEventHandler(persistence.Dispatcher);
+
             RunMainForm(persistence, connectionManager, favoriteIcons, commandLine);
 
             Logging.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
@@ -123,22 +125,6 @@ namespace Terminals
             }
         }
 
-        private static IPersistence AuthenticateByMasterPassword(PersistenceFactory persistenceFactory, IPersistence persistence)
-        {
-            IPersistence newPersistence = persistence;
-            PersistenceErrorForm.RegisterDataEventHandler(persistence.Dispatcher);
-
-            if (!persistence.Security.Authenticate(RequestPassword.KnowsUserPassword))
-            {
-                if (PersistenceFallback())
-                    newPersistence = persistenceFactory.FallBackToPrimaryPersistence(persistence.Security);
-                else
-                    Environment.Exit(-1);
-            }
-
-            return newPersistence;
-        }
-
         private static void RunMainForm(IPersistence persistence, ConnectionManager connectionManager,
             FavoriteIcons favoriteIcons, CommandLineArgs commandLine)
         {
@@ -180,16 +166,6 @@ namespace Terminals
             Settings.Instance.FileLocations.AssignCustomFileLocations(commandline.configFile,
                 commandline.favoritesFile, commandline.credentialsFile);
             return commandline;
-        }
-
-        private static bool PersistenceFallback()
-        {
-            const string MESSAGE = "Do you wan't to start with local files store?\r\n" +
-                                   "Yes - start with files store (You will be able to fix the configuration.)\r\n" +
-                                   "No - Exit application";
-            DialogResult fallback = MessageBox.Show(MESSAGE, "Terminals database connection failed",
-                                                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-            return fallback == DialogResult.Yes;
         }
     }
 }

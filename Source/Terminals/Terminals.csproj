@@ -185,6 +185,7 @@
     <Compile Include="Connections\IConnectionManager.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\PluginDefinition.cs" />
+    <Compile Include="IStartupUi.cs" />
     <Compile Include="Network\PortScanner\NetworkAdapters.cs" />
     <Compile Include="Services\ExternalLinks.cs" />
     <Compile Include="Settings\IPluginSettings.cs" />
@@ -797,6 +798,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\Controls\TerminalTabsSelectionControler.cs" />
+    <Compile Include="StartupUi.cs" />
     <Compile Include="Updates\FilesV2ContentUpgrade.cs" />
     <Compile Include="Updates\PasswordsV2Update.cs" />
     <Compile Include="Updates\ReleaseInfo.cs" />
