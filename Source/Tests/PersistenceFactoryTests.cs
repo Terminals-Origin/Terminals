@@ -11,35 +11,67 @@ namespace Tests
     [TestClass]
     public class PersistenceFactoryTests
     {
-        // *passowrd prompt ->     password valid ->  Persistence initialize -> START 
+        // *password prompt ->     password valid ->  Persistence initialize -> START 
         //        (cancel) -> EXIT      (invalid) ->  *         (SQL failed) -> User wants fallbact from ->       Initialize -> START
         //                                                    (Files failed) -> EXIT                (NO) -> EXIT    (FAILED) -> EXIT
+
+        private const string EXPECTED_PASSWORD = "ExpectedPassword";
         private bool passwordRequested;
         private bool exitCalled;
         private bool fallbackRequested;
-
+        private PersistenceFactory factory;
         private AuthenticationPrompt authenticationPrompt;
 
         [TestInitialize]
         public void TestInitialize()
         {
+            FilePersistedTestLab.SetDefaultFileLocations();
             this.passwordRequested = false;
             this.exitCalled = false;
             this.fallbackRequested = false;
             this.authenticationPrompt = new AuthenticationPrompt();
+            this.factory = new PersistenceFactory(Settings.Instance, TestConnectionManager.Instance, TestConnectionManager.CreateTestFavoriteIcons());
         }
 
         [TestMethod]
-        public void FilePersistenceNoMasterPassword_Authenticate_CallNoCallback()
+        public void FilePersistenceNoMasterPassword_Authenticate_CallsNoCallback()
         {
-            FilePersistedTestLab.SetDefaultFileLocations();
+            this.SetupMasterPassword(string.Empty);
             Mock<IStartupUi> startupUiMock = this.SetupStartupUi();
-            var factory = new PersistenceFactory(Settings.Instance, TestConnectionManager.Instance, TestConnectionManager.CreateTestFavoriteIcons());
-            IPersistence persistence = factory.CreatePersistence();
-
-            factory.AuthenticateByMasterPassword(persistence, startupUiMock.Object);
-
+            this.Authenticate(startupUiMock);
             Assert.IsFalse(this.exitCalled || this.passwordRequested || this.fallbackRequested);
+        }
+
+        [TestMethod]
+        public void CancelPasswordPrompt_Authenticate_CallsExit()
+        {
+            this.SetupMasterPassword();
+            this.authenticationPrompt.Canceled = true;
+            Mock<IStartupUi> startupUiMock = this.SetupStartupUi();
+            this.Authenticate(startupUiMock);
+            Assert.IsFalse(!this.exitCalled || !this.passwordRequested || this.fallbackRequested);
+        }
+
+        [TestMethod]
+        public void FilePersistenceMasterPassword_Authenticate_AsksForMasterPassword()
+        {
+            this.SetupMasterPassword();
+            this.authenticationPrompt = new AuthenticationPrompt() { Password = EXPECTED_PASSWORD };
+            Mock<IStartupUi> startupUiMock = this.SetupStartupUi();
+            this.Authenticate(startupUiMock);
+            Assert.IsFalse(this.exitCalled || !this.passwordRequested || this.fallbackRequested);
+        }
+
+        private void SetupMasterPassword(string newMasterPassword = EXPECTED_PASSWORD)
+        {
+            IPersistence persistence = this.factory.CreatePersistence();
+            persistence.Security.UpdateMasterPassword(newMasterPassword);
+        }
+
+        private void Authenticate(Mock<IStartupUi> startupUiMock)
+        {
+            IPersistence persistence = this.factory.CreatePersistence();
+            this.factory.AuthenticateByMasterPassword(persistence, startupUiMock.Object);
         }
 
         private Mock<IStartupUi> SetupStartupUi()
