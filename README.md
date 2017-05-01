@@ -14,6 +14,10 @@ New Options to disable protocol plugins
 * **December 16,2016** - New Official [Chocolatey package](https://chocolatey.org/packages/terminals)  
 We are happy to announce that Chocolatey terminals package is now maintained by our team. 
 
+# Donate
+* Keep the project Alive!
+* [![$25](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?business=rob.chartier@gmail.com&cmd=_xclick&currency_code=USD&amount=25&item_name=Terminals%20Open%20Source%20Project%20-%20%2425)
+
 # Documentation
 * **[User documentation](/Docs/User-documentation.md)**
 * Installation
