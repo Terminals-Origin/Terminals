@@ -3,6 +3,7 @@ using Moq;
 using Terminals;
 using Terminals.Configuration;
 using Terminals.Data;
+using Terminals.Data.DB;
 using Tests.Connections;
 using Tests.FilePersisted;
 
@@ -22,11 +23,15 @@ namespace Tests
         private bool fallbackRequested;
         private PersistenceFactory factory;
         private AuthenticationPrompt authenticationPrompt;
+        private Settings settings;
+        public TestContext TestContext { get; set; }
 
         [TestInitialize]
         public void TestInitialize()
         {
             FilePersistedTestLab.SetDefaultFileLocations();
+            this.settings = Settings.Instance;
+            this.settings.PersistenceType = FilePersistence.TYPE_ID;
             this.passwordRequested = false;
             this.exitCalled = false;
             this.fallbackRequested = false;
@@ -37,6 +42,16 @@ namespace Tests
         [TestMethod]
         public void FilePersistenceNoMasterPassword_Authenticate_CallsNoCallback()
         {
+            this.Authenticate(string.Empty);
+            Assert.IsTrue(!this.exitCalled && !this.passwordRequested && !this.fallbackRequested);
+        }
+
+        [TestMethod]
+        public void SqlPersistenceNoMasterPassword_Authenticate_CallsNoCallback()
+        {
+            this.settings.PersistenceType = SqlPersistence.TYPE_ID;
+            SqlPersisted.TestsLab.AssignDeploymentDirConnectionString(this.settings, this.TestContext.DeploymentDirectory);
+            // TODO authentication fails, because test connection fails, because masterpassword has isnt saved in the DB.
             this.Authenticate(string.Empty);
             Assert.IsTrue(!this.exitCalled && !this.passwordRequested && !this.fallbackRequested);
         }

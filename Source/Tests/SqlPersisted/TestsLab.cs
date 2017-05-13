@@ -80,7 +80,6 @@ namespace Tests.SqlPersisted
         {
             this.RemoveDatabaseFileReadOnly();
             FilePersistedTestLab.SetDefaultFileLocations();
-            settings.PersistenceSecurity = new SqlPersistenceSecurity();
             this.SetDeploymentDirConnectionString();
 
             // first reset the database password, then continue with other initializations
@@ -108,7 +107,14 @@ namespace Tests.SqlPersisted
 
         protected void SetDeploymentDirConnectionString()
         {
-            settings.ConnectionString = String.Format(CONNECTION_STRING, this.TestContext.DeploymentDirectory);
+            AssignDeploymentDirConnectionString(this.settings, this.TestContext.DeploymentDirectory);
+        }
+
+        internal static void AssignDeploymentDirConnectionString(Settings settings, string deploymentDir)
+        {
+            // Atleast to be able assign new connection string. Becasue of this we need application restart after persistence is changed.
+            settings.PersistenceSecurity = new SqlPersistenceSecurity(); 
+            settings.ConnectionString = String.Format(CONNECTION_STRING, deploymentDir);
         }
 
         private void RemoveDatabaseFileReadOnly()
