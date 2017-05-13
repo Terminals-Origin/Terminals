@@ -40,7 +40,8 @@
   <ItemGroup>
     <Reference Include="AWSSDK, Version=1.3.10.0, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL" />
     <Reference Include="AxInterop.MSTSCLib">
-      <HintPath>..\Terminals\bin\Debug\AxInterop.MSTSCLib.dll</HintPath>
+      <HintPath>..\..\Resources\Libraries\mstsc\AxInterop.MSTSCLib.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="AxInterop.VMRCClientControlLib">
       <HintPath>..\..\Resources\Libraries\VMRC\AxInterop.VMRCClientControlLib.dll</HintPath>
@@ -54,8 +55,9 @@
     <Reference Include="FlickrNet">
       <HintPath>..\..\Resources\Libraries\Flicker\FlickrNet.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\Resources\Libraries\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Interop.VMRCClientControlLib">
       <HintPath>..\..\Resources\Libraries\VMRC\Interop.VMRCClientControlLib.dll</HintPath>
@@ -72,7 +74,7 @@
       <HintPath>..\packages\Moq.4.2.1408.0717\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="MSTSCLib">
-      <HintPath>..\Terminals\bin\Debug\MSTSCLib.dll</HintPath>
+      <HintPath>..\..\Resources\Libraries\mstsc\MSTSCLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <Private>True</Private>
     </Reference>
@@ -273,6 +275,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Resources\Libraries\mstsc\AxInterop.MSTSCLib.dll">
+      <Link>AxInterop.MSTSCLib.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\Resources\Libraries\mstsc\MSTSCLib.dll">
       <Link>MSTSCLib.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
