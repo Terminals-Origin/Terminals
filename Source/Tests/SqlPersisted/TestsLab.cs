@@ -14,8 +14,8 @@ namespace Tests.SqlPersisted
     /// <summary>
     /// Shared configured store used by all SQL persistence tests
     /// </summary>
-    [DeploymentItem(@"..\Resources\Database\Terminals_log.LDF")]
-    [DeploymentItem(@"..\Resources\Database\Terminals.mdf")]
+    [DeploymentItem(DATABASE_LOG)]
+    [DeploymentItem(DATABASE_MDF)]
     public class TestsLab
     {
         private const string DBF_FILE_NAME = "Terminals.mdf";
@@ -35,6 +35,10 @@ namespace Tests.SqlPersisted
         /// Gets second sample text value to be checked in tests when used as password, user name or another tested value
         /// </summary>
         protected const string VALIDATION_VALUE_B = "BBB";
+
+        internal const string DATABASE_LOG = @"..\Resources\Database\Terminals_log.LDF";
+
+        internal const string DATABASE_MDF = @"..\Resources\Database\Terminals.mdf";
 
         private readonly Settings settings = Settings.Instance;
         /// <summary>

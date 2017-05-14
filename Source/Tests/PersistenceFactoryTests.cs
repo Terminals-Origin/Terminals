@@ -9,6 +9,8 @@ using Tests.FilePersisted;
 
 namespace Tests
 {
+    [DeploymentItem(SqlPersisted.TestsLab.DATABASE_LOG)]
+    [DeploymentItem(SqlPersisted.TestsLab.DATABASE_MDF)]
     [TestClass]
     public class PersistenceFactoryTests
     {
@@ -49,11 +51,24 @@ namespace Tests
         [TestMethod]
         public void SqlPersistenceNoMasterPassword_Authenticate_CallsNoCallback()
         {
-            this.settings.PersistenceType = SqlPersistence.TYPE_ID;
-            SqlPersisted.TestsLab.AssignDeploymentDirConnectionString(this.settings, this.TestContext.DeploymentDirectory);
-            // TODO authentication fails, because test connection fails, because masterpassword has isnt saved in the DB.
+            this.SetupDatabasePersistence();
             this.Authenticate(string.Empty);
             Assert.IsTrue(!this.exitCalled && !this.passwordRequested && !this.fallbackRequested);
+        }
+
+        [TestMethod]
+        public void SqlPersistenceMasterPassword_Authenticate_AsksForMasterPassword()
+        {
+            this.SetupDatabasePersistence();
+            this.authenticationPrompt.Password = EXPECTED_PASSWORD;
+            this.Authenticate();
+            Assert.IsTrue(!this.exitCalled && this.passwordRequested && !this.fallbackRequested);
+        }
+
+        private void SetupDatabasePersistence()
+        {
+            this.settings.PersistenceType = SqlPersistence.TYPE_ID;
+            SqlPersisted.TestsLab.AssignDeploymentDirConnectionString(this.settings, this.TestContext.DeploymentDirectory);
         }
 
         [TestMethod]
