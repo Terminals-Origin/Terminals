@@ -51,7 +51,7 @@ namespace Tests
         [TestMethod]
         public void SqlPersistenceNoMasterPassword_Authenticate_CallsNoCallback()
         {
-            this.SetupDatabasePersistence();
+            this.SetupDatabasePersistence(this.TestContext.DeploymentDirectory);
             this.Authenticate(string.Empty);
             Assert.IsTrue(!this.exitCalled && !this.passwordRequested && !this.fallbackRequested);
         }
@@ -59,16 +59,36 @@ namespace Tests
         [TestMethod]
         public void SqlPersistenceMasterPassword_Authenticate_AsksForMasterPassword()
         {
-            this.SetupDatabasePersistence();
+            this.SetupDatabasePersistence(this.TestContext.DeploymentDirectory);
             this.authenticationPrompt.Password = EXPECTED_PASSWORD;
             this.Authenticate();
             Assert.IsTrue(!this.exitCalled && this.passwordRequested && !this.fallbackRequested);
         }
 
-        private void SetupDatabasePersistence()
+        [TestMethod]
+        public void SqlPersistenceMasterPasswordWrongConnectionStringNoFallBack_Authenticate_Exits()
+        {
+            this.SetupDatabasePersistence(string.Empty);
+            this.authenticationPrompt.Password = EXPECTED_PASSWORD;
+            this.Authenticate();
+            Assert.IsTrue(this.exitCalled && this.passwordRequested && this.fallbackRequested);
+        }
+
+        [TestMethod]
+        public void SqlPersistenceMasterPasswordWrongConnectionStringFallBack_Authenticate_CreatesFilePersistence()
+        {
+            this.fallbackRequested = true;
+            this.SetupDatabasePersistence(string.Empty);
+            this.authenticationPrompt.Password = EXPECTED_PASSWORD;
+            this.Authenticate();
+            // TODO fix the assert and code - should fail.
+            Assert.IsTrue(this.exitCalled && this.passwordRequested && this.fallbackRequested);
+        }
+
+        private void SetupDatabasePersistence(string databaseDirecotry)
         {
             this.settings.PersistenceType = SqlPersistence.TYPE_ID;
-            SqlPersisted.TestsLab.AssignDeploymentDirConnectionString(this.settings, this.TestContext.DeploymentDirectory);
+            SqlPersisted.TestsLab.AssignDeploymentDirConnectionString(this.settings, databaseDirecotry);
         }
 
         [TestMethod]
