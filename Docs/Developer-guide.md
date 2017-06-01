@@ -63,7 +63,7 @@
 * Keep classes small up to maximum 500 lines
 * Keep methods small up to maximum 35 lines
 * Use usings as much as possible and remove not used usings 
-* members order: constantsand statics, fields, properties, events, constructors, methods.
+* Members order: constants and statics, fields, properties, events, constructors, methods.
 * When using an if condition with one statement, put the statement on the next line.
 
 ```cs
