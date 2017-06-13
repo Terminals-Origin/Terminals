@@ -123,7 +123,7 @@ namespace Terminals.Data.DB
             return false;
         }
 
-        public void UpdatePasswordsByNewMasterPassword(string newMasterKey)
+        private void UpdatePasswordsByNewMasterPassword(string newMasterKey)
         {
             // nothing to do in database, the application master password doesn't affect the database
             // but, the file persisted passwords may be lost, so we have to update them.

@@ -159,7 +159,7 @@ namespace Terminals.Data
             return true;
         }
 
-        public void UpdatePasswordsByNewMasterPassword(string newMasterKey)
+        internal void UpdatePasswordsByNewMasterPassword(string newMasterKey)
         {
             this.storedCredentials.UpdatePasswordsByNewKeyMaterial(newMasterKey);
             this.favorites.UpdatePasswordsByNewMasterPassword(newMasterKey);
