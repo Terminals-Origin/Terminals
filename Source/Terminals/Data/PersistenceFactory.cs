@@ -45,7 +45,6 @@ namespace Terminals.Data
 
         internal IPersistence AuthenticateByMasterPassword(IPersistence persistence, IStartupUi startupUi)
         {
-            IPersistence newPersistence = persistence;
             bool authenticated = persistence.Security.Authenticate(startupUi.KnowsUserPassword);
 
             if (!authenticated)
@@ -55,11 +54,25 @@ namespace Terminals.Data
 
             if (!initialized)
             {
-                if (authenticated && persistence.TypeId != FilePersistence.TYPE_ID && startupUi.UserWantsFallback())
-                    newPersistence = this.FallBackToPrimaryPersistence(persistence.Security);
-                else
-                    startupUi.Exit();
+               return this.TryFallbackToPrimaryPersistence(persistence, startupUi);
             }
+
+            return persistence;
+        }
+
+        private IPersistence TryFallbackToPrimaryPersistence(IPersistence persistence, IStartupUi startupUi)
+        {
+            bool fallbackInitialized = false;
+            IPersistence newPersistence = null;
+
+            if (persistence.TypeId != FilePersistence.TYPE_ID && startupUi.UserWantsFallback())
+            {
+                newPersistence = this.FallBackToPrimaryPersistence(persistence.Security);
+                fallbackInitialized = newPersistence.Initialize();
+            }
+
+            if (!fallbackInitialized)
+                startupUi.Exit();
 
             return newPersistence;
         }
@@ -73,7 +86,6 @@ namespace Terminals.Data
             var newSecurity = new PersistenceSecurity(security);
             var persistence = new FilePersistence(newSecurity, this.favoriteIcons, this.connectionManager);
             this.settings.PersistenceSecurity = newSecurity;
-            persistence.Initialize();
             return persistence;
         }
     }
