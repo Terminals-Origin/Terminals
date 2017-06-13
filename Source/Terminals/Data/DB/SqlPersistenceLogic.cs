@@ -10,7 +10,7 @@ namespace Terminals.Data.DB
     /// <summary>
     /// SQL Database store using Entity framework. All parts use Disconnected entities.
     /// </summary>
-    internal class SqlPersistence : IPersistence, IPersistedSecurity
+    internal class SqlPersistence : IPersistence
     {
         /// <summary>
         /// periodical download of latest changes
@@ -75,7 +75,7 @@ namespace Terminals.Data.DB
             this.connectionManager = connectionManager;
             this.reLoadClock = new Timer(DEFAULT_REFRESH_INTERVAL);
             this.security = new SqlPersistenceSecurity();
-            this.security.AssignPersistence(this);
+            this.security.OnUpdatePasswordsByNewMasterPassword += this.UpdatePasswordsByNewMasterPassword;
             this.Dispatcher = new DataDispatcher();
         }
 

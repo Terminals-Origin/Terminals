@@ -116,6 +116,7 @@ namespace Tests
         private void SetupMasterPassword(string expectedMasterPassword)
         {
             IPersistence persistence = this.factory.CreatePersistence();
+            persistence.Initialize();
             persistence.Security.UpdateMasterPassword(expectedMasterPassword);
         }
 

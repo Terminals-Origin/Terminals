@@ -54,5 +54,11 @@ namespace Terminals.Data
         /// Usually the changes are saved immediately.
         /// </summary>
         void SaveAndFinishDelayedUpdate();
+
+        /// <summary>
+        /// Does initial steps after access to persistence was validated
+        /// </summary>
+        /// <returns>True, if initialization was successful, otherwise false.</returns>
+        bool Initialize();
     }
 }

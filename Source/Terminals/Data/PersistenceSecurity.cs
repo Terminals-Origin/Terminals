@@ -13,8 +13,6 @@ namespace Terminals.Data
         private readonly Settings settings = Settings.Instance;
         private bool isAuthenticated;
 
-        private IPersistedSecurity persistence;
-
         protected string KeyMaterial { get; private set; }
 
         protected virtual string PersistenceKeyMaterial { get { return this.KeyMaterial; }  }
@@ -26,6 +24,8 @@ namespace Terminals.Data
                 return AuthenticationSequence.IsMasterPasswordDefined();
             }
         }
+
+        internal event Action<string> OnUpdatePasswordsByNewMasterPassword;
 
         internal PersistenceSecurity()
         {
@@ -41,11 +41,6 @@ namespace Terminals.Data
             this.KeyMaterial = sourceSecurity.KeyMaterial;
         }
 
-        internal void AssignPersistence(IPersistedSecurity persistence)
-        {
-            this.persistence = persistence;
-        }
-
         internal bool Authenticate(Func<bool, AuthenticationPrompt> knowsUserPassword)
         {
             // don't prompt user third time for password when upgrading passwords from v2
@@ -54,15 +49,12 @@ namespace Terminals.Data
             
             var authentication = new AuthenticationSequence(this.IsMasterPasswordValid, knowsUserPassword);
             this.isAuthenticated = authentication.AuthenticateIfRequired();
-            if (this.isAuthenticated)
-              this.isAuthenticated = this.persistence.Initialize();
-
             return this.isAuthenticated;
         }
 
         private Boolean IsMasterPasswordValid(string passwordToCheck)
         {
-            string storedMasterPassword = settings.MasterPasswordHash;
+            string storedMasterPassword = this.settings.MasterPasswordHash;
             bool isValid = PasswordFunctions2.MasterPasswordIsValid(passwordToCheck, storedMasterPassword);
             if (isValid)
             {
@@ -80,8 +72,10 @@ namespace Terminals.Data
 
             // start of not secured transaction. Old key is still present,
             // but passwords are already encrypted by new Key
-            this.persistence.UpdatePasswordsByNewMasterPassword(newMasterKey);
-            settings.UpdateConfigurationPasswords(newMasterKey, storedMasterPassword);
+            if (this.OnUpdatePasswordsByNewMasterPassword != null)
+                this.OnUpdatePasswordsByNewMasterPassword(newMasterKey);
+
+            this.settings.UpdateConfigurationPasswords(newMasterKey, storedMasterPassword);
             // finish transaction, the passwords now reflect the new key
             this.KeyMaterial = newMasterKey;
         }

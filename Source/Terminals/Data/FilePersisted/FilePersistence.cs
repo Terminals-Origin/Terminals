@@ -11,7 +11,7 @@ using Terminals.History;
 
 namespace Terminals.Data
 {
-    internal class FilePersistence : IPersistence, IPersistedSecurity
+    internal class FilePersistence : IPersistence
     {
         /// <summary>
         /// Gets unique id of the persistence to be stored in settings (0)
@@ -94,7 +94,7 @@ namespace Terminals.Data
         {
             this.fileLocations = Settings.Instance.FileLocations;
             this.serializer = new FavoritesFileSerializer(connectionManager);
-            this.InitializeSecurity(security);
+            this.Security = security;
             this.Dispatcher = new DataDispatcher();
             this.storedCredentials = new StoredCredentials(security);
             this.groups = new Groups(this);
@@ -103,12 +103,6 @@ namespace Terminals.Data
             this.factory = new Factory(this.groups, this.Dispatcher,  connectionManager);
             this.contextBuilder = new SerializationContextBuilder(this.groups, this.favorites, this.Dispatcher);
             this.InitializeFileWatch(fileWatcher);
-        }
-
-        private void InitializeSecurity(PersistenceSecurity security)
-        {
-            this.Security = security;
-            this.Security.AssignPersistence(this);
         }
 
         private void InitializeFileWatch(IDataFileWatcher fileWatcher)
@@ -161,6 +155,7 @@ namespace Terminals.Data
             this.groups.AddAllToCache(file.Groups.Cast<IGroup>().ToList());
             this.favorites.AddAllToCache(file.Favorites.Cast<IFavorite>().ToList());
             this.UpdateFavoritesInGroups(file.FavoritesInGroups);
+            this.Security.OnUpdatePasswordsByNewMasterPassword += this.UpdatePasswordsByNewMasterPassword;
             return true;
         }
 

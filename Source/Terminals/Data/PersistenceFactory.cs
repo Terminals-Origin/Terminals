@@ -46,10 +46,16 @@ namespace Terminals.Data
         internal IPersistence AuthenticateByMasterPassword(IPersistence persistence, IStartupUi startupUi)
         {
             IPersistence newPersistence = persistence;
+            bool authenticated = persistence.Security.Authenticate(startupUi.KnowsUserPassword);
 
-            if (!persistence.Security.Authenticate(startupUi.KnowsUserPassword))
+            if (!authenticated)
+                startupUi.Exit();
+
+            bool initialized = persistence.Initialize();
+
+            if (!initialized)
             {
-                if (persistence.TypeId != FilePersistence.TYPE_ID && startupUi.UserWantsFallback())
+                if (authenticated && persistence.TypeId != FilePersistence.TYPE_ID && startupUi.UserWantsFallback())
                     newPersistence = this.FallBackToPrimaryPersistence(persistence.Security);
                 else
                     startupUi.Exit();

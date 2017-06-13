@@ -409,7 +409,6 @@
     <Compile Include="Data\Favorites\FavoriteIcons.cs" />
     <Compile Include="Data\History\Moment.cs" />
     <Compile Include="Data\History\IDateService.cs" />
-    <Compile Include="Data\Interfaces\IPersistedSecurity.cs" />
     <Compile Include="Data\PersistenceSecurity.cs" />
     <Compile Include="Data\DB\SqlPersistenceSecurity.cs" />
     <Compile Include="Forms\AboutForm.cs">
