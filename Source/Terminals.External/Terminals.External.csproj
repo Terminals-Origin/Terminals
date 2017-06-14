@@ -79,7 +79,6 @@
     <Compile Include="Unified\Encryption\Encryptor.cs" />
     <Compile Include="Unified\Encryption\EncryptTransformer.cs" />
     <Compile Include="Unified\Encryption\Hash.cs" />
-    <Compile Include="Unified\Network\HTTP.cs" />
     <Compile Include="Unified\Network\NTPClient.cs" />
     <Compile Include="Unified\RSS\Collections\ExceptionCollection.cs" />
     <Compile Include="Unified\RSS\Collections\RssCategoryCollection.cs" />
