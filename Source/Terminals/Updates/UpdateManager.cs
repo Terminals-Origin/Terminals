@@ -43,7 +43,7 @@ namespace Terminals.Updates
             return downLoaded;
         }
 
-        private static ReleaseInfo CheckForCodeplexRelease(DateTime buildDate)
+        internal static ReleaseInfo CheckForCodeplexRelease(DateTime buildDate)
         {
             try
             {

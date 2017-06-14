@@ -26,7 +26,7 @@ namespace Terminals.Updates
             }
         }
 
-        private DateTime ReadLastUpdate()
+        internal DateTime ReadLastUpdate()
         {
             String text = File.ReadAllText(this.releaseFile).Trim();
             DateTime lastUpdate = DateTime.MinValue;

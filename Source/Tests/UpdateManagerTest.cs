@@ -68,9 +68,7 @@ namespace Tests
 
         private ReleaseInfo RunUpdateCheck()
         {
-            var updateManager = new PrivateType(typeof (UpdateManager));
-            object releaseInfo = updateManager.InvokeStatic("CheckForCodeplexRelease", new object[] {this.buildDate });
-            return releaseInfo as ReleaseInfo;
+            return UpdateManager.CheckForCodeplexRelease(this.buildDate);
         }
 
         private void AssertLastUpdateCheck()
@@ -81,8 +79,8 @@ namespace Tests
 
         private DateTime ParseLastUpdateDate()
         {
-            var checkFileAccessor = new PrivateObject(new UpdateChecksFile());
-            return (DateTime)checkFileAccessor.Invoke("ReadLastUpdate");
+            var updateChecksFile = new UpdateChecksFile();
+            return updateChecksFile.ReadLastUpdate();
         }
     }
 }
