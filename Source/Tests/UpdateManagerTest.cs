@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
@@ -35,46 +36,46 @@ namespace Tests
         /// in debug there is never a newer version, because it is checked by build date
         /// </summary>
         [TestMethod]
-        public void CheckReleaseNotAvailableTest()
+        public void CurrentBuild_CheckForCodeplexRelease_ReturnsNotAvailable()
         {
-            ReleaseInfo checkResult = RunUpdateCheck();
+            ReleaseInfo checkResult = this.RunUpdateCheck();
 
             Assert.AreEqual(ReleaseInfo.NotAvailable, checkResult, "New release noticed");
-            AssertLastUpdateCheck();
+            this.AssertLastUpdateCheck();
         }
 
         [TestMethod]
-        public void CheckAvailableReleaseTest()
+        public void OldestBuildDate_CheckForCodeplexRelease_ReturnsValidRelease()
         {
-            buildDate = DateTime.MinValue;
-            ReleaseInfo checkResult = RunUpdateCheck();
+            this.buildDate = DateTime.MinValue;
+            ReleaseInfo checkResult = this.RunUpdateCheck();
 
             Assert.AreNotEqual(ReleaseInfo.NotAvailable, checkResult, "Didn't notice new release");
-            AssertLastUpdateCheck();
+            this.AssertLastUpdateCheck();
         }
 
         [TestMethod]
-        public void AlreadyReportedReleaseTest()
+        public void TodayCheckedDate_CheckForCodeplexRelease_DoesnotUpdateCheckDate()
         {
             var previousCheck = DateTime.Today;
-            File.WriteAllText(FileLocations.LastUpdateCheck, previousCheck.ToString());
-            ReleaseInfo checkResult = RunUpdateCheck();
+            File.WriteAllText(FileLocations.LastUpdateCheck, previousCheck.ToString(CultureInfo.InvariantCulture));
+            ReleaseInfo checkResult = this.RunUpdateCheck();
 
             Assert.AreEqual(ReleaseInfo.NotAvailable, checkResult, "New release noticed");
-            DateTime lastNoticed = ParseLastUpdateDate();
+            DateTime lastNoticed = this.ParseLastUpdateDate();
             Assert.AreEqual(lastNoticed.Date, previousCheck.Date, "Last update check date wasn't saved");
         }
 
         private ReleaseInfo RunUpdateCheck()
         {
             var updateManager = new PrivateType(typeof (UpdateManager));
-            object releaseInfo = updateManager.InvokeStatic("CheckForCodeplexRelease", new object[] { buildDate });
+            object releaseInfo = updateManager.InvokeStatic("CheckForCodeplexRelease", new object[] {this.buildDate });
             return releaseInfo as ReleaseInfo;
         }
 
         private void AssertLastUpdateCheck()
         {
-            DateTime lastNoticed = ParseLastUpdateDate();
+            DateTime lastNoticed = this.ParseLastUpdateDate();
             Assert.IsTrue(lastNoticed.Date > this.yesterDay, "Last update check date wasn't saved");
         }
 
