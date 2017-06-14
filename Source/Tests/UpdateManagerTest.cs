@@ -68,7 +68,8 @@ namespace Tests
 
         private ReleaseInfo RunUpdateCheck()
         {
-            return UpdateManager.CheckForCodeplexRelease(this.buildDate);
+            var updateManager = new UpdateManager();
+            return updateManager.CheckForCodeplexRelease(this.buildDate);
         }
 
         private void AssertLastUpdateCheck()

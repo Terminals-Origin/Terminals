@@ -13,17 +13,33 @@ namespace Terminals.Updates
         /// </summary>
         private const string RSS_URL = "http://terminals.codeplex.com/project/feeds/rss?ProjectRSSFeed=codeplex%3A%2F%2Frelease%2FTerminals&ProjectName=terminals";
 
+        private readonly Func<RssFeed> readReleases;
+
+        public UpdateManager() : this(ReadReleases)
+        {
+        }
+
+        internal UpdateManager(Func<RssFeed> readReleases)
+        {
+            this.readReleases = readReleases;
+        }
+
+        private static RssFeed ReadReleases()
+        {
+           return  RssFeed.Read(RSS_URL);
+        }
+
         /// <summary>
         /// Check for available application updates.
         /// </summary>
-        internal static Task<ReleaseInfo> CheckForUpdates(bool automaticallyUpdate)
+        internal Task<ReleaseInfo> CheckForUpdates(bool automaticallyUpdate)
         {
-            return Task<ReleaseInfo>.Factory.StartNew((autoUpdate) => PerformCheck((bool)autoUpdate), automaticallyUpdate);
+            return Task<ReleaseInfo>.Factory.StartNew((autoUpdate) => this.PerformCheck((bool)autoUpdate), automaticallyUpdate);
         }
 
-        private static ReleaseInfo PerformCheck(bool automaticallyUpdate)
+        private ReleaseInfo PerformCheck(bool automaticallyUpdate)
         {
-            ReleaseInfo downLoaded = CheckForCodeplexRelease(Program.Info.BuildDate);
+            ReleaseInfo downLoaded = this.CheckForCodeplexRelease(Program.Info.BuildDate);
 
             // todo the automatic updates point to wrong URL this feature is not working
             bool autoUpdate = automaticallyUpdate; // obtain from command line arguments
@@ -35,11 +51,11 @@ namespace Terminals.Updates
             return downLoaded;
         }
 
-        internal static ReleaseInfo CheckForCodeplexRelease(DateTime buildDate)
+        internal ReleaseInfo CheckForCodeplexRelease(DateTime buildDate)
         {
             try
             {
-                return TryCheckForCodeplexRelease(buildDate);
+                return this.TryCheckForCodeplexRelease(buildDate);
             }
             catch (Exception exception)
             {
@@ -53,20 +69,20 @@ namespace Terminals.Updates
         /// Returns not null info about obtained current release.
         /// ReleaseInfo.NotAvailable in a case, new version was not checked or current version is the latest.
         /// </summary>
-        private static ReleaseInfo TryCheckForCodeplexRelease(DateTime buildDate)
+        private ReleaseInfo TryCheckForCodeplexRelease(DateTime buildDate)
         {
             var checksFile = new UpdateChecksFile();
             if (!checksFile.ShouldCheckForUpdate)
                 return ReleaseInfo.NotAvailable;
 
-            ReleaseInfo downLoaded = DownLoadLatestReleaseInfo(buildDate);
+            ReleaseInfo downLoaded = this.DownLoadLatestReleaseInfo(buildDate);
             checksFile.WriteLastCheck();
             return downLoaded;
         }
 
-        private static ReleaseInfo DownLoadLatestReleaseInfo(DateTime buildDate)
+        private ReleaseInfo DownLoadLatestReleaseInfo(DateTime buildDate)
         {
-            RssFeed feed = RssFeed.Read(RSS_URL);
+            RssFeed feed = this.readReleases();
             if (feed != null)
             {
                 RssItem newvestRssItem = SelectNewvestRssRssItem(feed, buildDate);

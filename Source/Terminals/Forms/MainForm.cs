@@ -509,7 +509,8 @@ namespace Terminals
 
         private void CheckForNewRelease()
         {
-            Task<ReleaseInfo> downloadTask = UpdateManager.CheckForUpdates(false);
+            var updateManager = new UpdateManager();
+            Task<ReleaseInfo> downloadTask = updateManager.CheckForUpdates(false);
             downloadTask.ContinueWith(this.CheckForNewRelease, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
