@@ -6,6 +6,7 @@ using Terminals;
 using Terminals.Configuration;
 using Terminals.Updates;
 using Tests.FilePersisted;
+using Unified.Rss;
 
 namespace Tests
 {
@@ -68,8 +69,25 @@ namespace Tests
 
         private ReleaseInfo RunUpdateCheck()
         {
-            var updateManager = new UpdateManager();
+            var updateManager = new UpdateManager(this.CreateRss);
             return updateManager.CheckForCodeplexRelease(this.buildDate);
+        }
+
+        private RssFeed CreateRss()
+        {
+            DateTime currentRelease = new DateTime(2010, 1, 3, 1, 0, 0, DateTimeKind.Utc);
+
+            var feed = new RssFeed();
+            var chanel = new RssChannel();
+            var release = new RssItem()
+            {
+                PubDate = currentRelease,
+                Title = string.Format("Title ({0})", currentRelease)
+            };
+            chanel.Items.Add(release);
+            feed.Channels.Add(chanel);
+
+            return feed;
         }
 
         private void AssertLastUpdateCheck()
