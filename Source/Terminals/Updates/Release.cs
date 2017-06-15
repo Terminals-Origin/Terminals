@@ -6,7 +6,7 @@ namespace Terminals.Updates
     public class Release
     {
         [JsonProperty("tag_name")]
-        public string TagName { get; set; }
+        public Version Version { get; set; }
 
         [JsonProperty("name")]
 

@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Terminals;
 using Terminals.Configuration;
 using Terminals.Updates;
 using Tests.FilePersisted;
@@ -13,13 +12,13 @@ namespace Tests
     /// Check for new release to be able parse release rss feeds, to be able to download and unpack the update package.
     /// Expected implementation of UpdateManager:
     /// - the update check file is written after all checks
-    /// - release shouldn't be reported only, if there is a release with newer build date, than current
+    /// - release shouldn't be reported only, if there is a release with newer version, than current
     /// - new release should be reported once per day only
     /// </summary>
     [TestClass]
     public class UpdateManagerTest
     {
-        private DateTime buildDate = Program.Info.BuildDate;
+        private Version currentVersion = new Version(2, 0, 0);
 
         private readonly DateTime yesterDay = DateTime.Today.AddDays(-1);
 
@@ -38,6 +37,7 @@ namespace Tests
         [TestMethod]
         public void CurrentBuild_CheckForCodeplexRelease_ReturnsNotAvailable()
         {
+            this.currentVersion = new Version(4, 0, 0);
             ReleaseInfo checkResult = this.RunUpdateCheck();
 
             Assert.AreEqual(ReleaseInfo.NotAvailable, checkResult, "New release noticed");
@@ -47,7 +47,7 @@ namespace Tests
         [TestMethod]
         public void OldestBuildDate_CheckForCodeplexRelease_ReturnsValidRelease()
         {
-            this.buildDate = DateTime.MinValue;
+            this.currentVersion = new Version(1, 0, 0);
             ReleaseInfo checkResult = this.RunUpdateCheck();
 
             Assert.AreNotEqual(ReleaseInfo.NotAvailable, checkResult, "Didn't notice new release");
@@ -68,23 +68,17 @@ namespace Tests
 
         private ReleaseInfo RunUpdateCheck()
         {
-            var updateManager = new UpdateManager(this.CreateRss);
-            return updateManager.CheckForCodeplexRelease(this.buildDate);
-        }
-
-        private string CreateRss()
-        {
-            const string downloaded = @"
+            const string CreateRss = @"
 [
-{{
-    ""name"": ""Title({0})"",
-    ""tag_name"": ""1.0.0"",
-    ""published_at"": ""{0}""
-}}
+{
+    ""name"": ""Title"",
+    ""tag_name"": ""3.0.0"",
+    ""published_at"": ""2017-06-14T20:25:15Z""
+}
 ]";
-            DateTime currentRelease = new DateTime(2010, 1, 3, 1, 0, 0, DateTimeKind.Utc);
 
-            return string.Format(downloaded, currentRelease);
+            var updateManager = new UpdateManager(() => CreateRss);
+            return updateManager.CheckForCodeplexRelease(this.currentVersion);
         }
 
         private void AssertLastUpdateCheck()
