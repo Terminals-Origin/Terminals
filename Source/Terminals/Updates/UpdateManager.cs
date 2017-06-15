@@ -5,24 +5,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Terminals.Properties;
-using Unified.Rss;
 
 namespace Terminals.Updates
 {
-    public class Release
-    {
-        [JsonProperty("tag_name")]
-        public string TagName { get; set; }
-
-        [JsonProperty("name")]
-
-        public string Name { get; set; }
-
-        [JsonProperty("published_at")]
-
-        public DateTime Published { get; set; }
-    }
-
     internal class UpdateManager
     {
         private readonly Func<string> readReleases;
@@ -105,7 +90,7 @@ namespace Terminals.Updates
 
             if (feed != null)
             {
-                Release newvestRssItem = SelectNewvestRssRssItem(feed, buildDate);
+                Release newvestRssItem = SelectNewvestRssItem(feed, buildDate);
                 if (newvestRssItem != null)
                     return new ReleaseInfo(newvestRssItem.Published, newvestRssItem.TagName);
             }
@@ -113,7 +98,7 @@ namespace Terminals.Updates
             return ReleaseInfo.NotAvailable;
         }
 
-        private static Release SelectNewvestRssRssItem(Release[] feed, DateTime buildDate)
+        private static Release SelectNewvestRssItem(Release[] feed, DateTime buildDate)
         {
             return feed.Where(item => IsNewerThanCurrent(item, buildDate))
                        .OrderByDescending(selected => selected.Published)
