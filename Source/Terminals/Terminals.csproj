@@ -122,6 +122,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Resources\Libraries\mstsc\AxInterop.MSTSCLib.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -1288,7 +1291,9 @@
       <Link>Thumbs\wmimgmt.msc.jpg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Resources\amber.png" />
     <Content Include="Resources\application_user.png" />
     <Content Include="Resources\back.png" />
