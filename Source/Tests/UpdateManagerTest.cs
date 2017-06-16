@@ -78,7 +78,7 @@ namespace Tests
 ]";
 
             var updateManager = new UpdateManager(() => CreateRss);
-            return updateManager.CheckForCodeplexRelease(this.currentVersion);
+            return updateManager.CheckForPublishedRelease(this.currentVersion);
         }
 
         private void AssertLastUpdateCheck()

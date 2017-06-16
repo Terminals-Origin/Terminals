@@ -41,7 +41,7 @@ namespace Terminals.Updates
 
         private ReleaseInfo PerformCheck(bool automaticallyUpdate)
         {
-            ReleaseInfo downLoaded = this.CheckForCodeplexRelease(Program.Info.Version);
+            ReleaseInfo downLoaded = this.CheckForPublishedRelease(Program.Info.Version);
 
             // todo the automatic updates point to wrong URL this feature is not working
             bool autoUpdate = automaticallyUpdate; // obtain from command line arguments
@@ -53,7 +53,7 @@ namespace Terminals.Updates
             return downLoaded;
         }
 
-        internal ReleaseInfo CheckForCodeplexRelease(Version currentVersion)
+        internal ReleaseInfo CheckForPublishedRelease(Version currentVersion)
         {
             try
             {

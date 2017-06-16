@@ -755,7 +755,7 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to terminals.codeplex.com.
+        ///   Looks up a localized string similar to https://github.com/terminals-Origin/Terminals.
         /// </summary>
         internal static string TerminalsURL {
             get {
