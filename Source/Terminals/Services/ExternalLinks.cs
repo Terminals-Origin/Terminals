@@ -40,7 +40,7 @@ namespace Terminals.Services
 
         internal static void ShowReleasePage()
         {
-            OpenPath("http://" + TerminalsReleasesUrl);
+            OpenPath(TerminalsReleasesUrl);
         }
 
         internal static void OpenAuthorPage()
