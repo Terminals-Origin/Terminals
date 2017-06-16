@@ -20,7 +20,7 @@ namespace Tests
     {
         private Version currentVersion = new Version(2, 0, 0);
 
-        private readonly DateTime yesterDay = DateTime.Today.AddDays(-1);
+        private readonly DateTime yesterDay = DateTime.UtcNow.Date.AddDays(-1);
 
         [TestInitialize]
         public void ConfigureTestLab()
@@ -57,7 +57,7 @@ namespace Tests
         [TestMethod]
         public void TodayCheckedDate_CheckForCodeplexRelease_DoesnotUpdateCheckDate()
         {
-            var previousCheck = DateTime.Today;
+            var previousCheck = DateTime.UtcNow.Date;
             File.WriteAllText(FileLocations.LastUpdateCheck, previousCheck.ToString(CultureInfo.InvariantCulture));
             ReleaseInfo checkResult = this.RunUpdateCheck();
 

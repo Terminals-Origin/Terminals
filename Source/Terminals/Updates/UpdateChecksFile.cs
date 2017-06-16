@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using Terminals.Configuration;
 
@@ -19,7 +20,7 @@ namespace Terminals.Updates
                 if (File.Exists(releaseFile))
                 {
                     DateTime lastUpdate = this.ReadLastUpdate();
-                    if (lastUpdate.Date >= DateTime.Now.Date)
+                    if (lastUpdate.Date >= DateTime.UtcNow.Date)
                         return false;
                 }
                 return true;
@@ -30,13 +31,14 @@ namespace Terminals.Updates
         {
             String text = File.ReadAllText(this.releaseFile).Trim();
             DateTime lastUpdate = DateTime.MinValue;
-            DateTime.TryParse(text, out lastUpdate);
+            DateTime.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal,  out lastUpdate);
             return lastUpdate;
         }
 
         internal void WriteLastCheck()
         {
-            File.WriteAllText(this.releaseFile, DateTime.Now.ToString());
+            string contents = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
+            File.WriteAllText(this.releaseFile, contents);
         }
     }
 }
