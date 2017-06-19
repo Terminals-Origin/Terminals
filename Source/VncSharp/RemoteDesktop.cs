@@ -721,12 +721,11 @@ namespace VncSharp
 				if (Control.MouseButtons == MouseButtons.Middle) mask += 2;
 				if (Control.MouseButtons == MouseButtons.Right)  mask += 4;
 
-                Point adjusted = desktopPolicy.UpdateRemotePointer(current);
-                if (adjusted.X < 0 || adjusted.Y < 0)
-                    throw new Exception();
-
-				vnc.WritePointerEvent(mask, desktopPolicy.UpdateRemotePointer(current));
-			}
+                // If click not client area -black screen area-, it should ignore current
+                Rectangle adjusted = desktopPolicy.GetMouseMoveRectangle();
+                if (adjusted.Contains(current))
+                    vnc.WritePointerEvent(mask, desktopPolicy.UpdateRemotePointer(current));
+            }
 		}
 
 		// Handle Keyboard Events:		 -------------------------------------------
