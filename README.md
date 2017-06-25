@@ -3,8 +3,7 @@ Windows remote desktop (RDP), VNC, VMRC, SSH, Telnet, RAS, ICA Citrix, HTTP and 
 See [features list](/Docs/Features-and-Screen-shots.md)
 
 # Downloads
-* [Terminals Version 4.0.0 - Installer (msi deploy)](https://terminals.codeplex.com/downloads/get/1653230)
-* [Terminals Version 4.0.0 - Deployable Bits (xcopy deploy)](https://terminals.codeplex.com/downloads/get/1653231)
+* [Terminals Version 4.0.1](https://github.com/Terminals-Origin/Terminals/releases/tag/4.0.1)
 * [Chocolatey package](https://chocolatey.org/packages/terminals) 
 
 # News
