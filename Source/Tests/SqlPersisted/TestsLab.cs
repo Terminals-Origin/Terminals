@@ -14,13 +14,13 @@ namespace Tests.SqlPersisted
     /// <summary>
     /// Shared configured store used by all SQL persistence tests
     /// </summary>
-    [DeploymentItem(@"..\Resources\Database\Terminals_log.LDF")]
-    [DeploymentItem(@"..\Resources\Database\Terminals.mdf")]
+    [DeploymentItem(DATABASE_LOG)]
+    [DeploymentItem(DATABASE_MDF)]
     public class TestsLab
     {
         private const string DBF_FILE_NAME = "Terminals.mdf";
 
-        private const string CONNECTION_STRING = @"Data Source=(localdb)\v11.0;AttachDbFilename={0}\Terminals.mdf;Integrated Security=True;";
+        private const string CONNECTION_STRING = @"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename={0}\Terminals.mdf;Integrated Security=True;";
 
         protected const string FAVORITE_NAME = "test";
 
@@ -35,6 +35,10 @@ namespace Tests.SqlPersisted
         /// Gets second sample text value to be checked in tests when used as password, user name or another tested value
         /// </summary>
         protected const string VALIDATION_VALUE_B = "BBB";
+
+        internal const string DATABASE_LOG = @"..\Resources\Database\Terminals_log.LDF";
+
+        internal const string DATABASE_MDF = @"..\Resources\Database\Terminals.mdf";
 
         private readonly Settings settings = Settings.Instance;
         /// <summary>
@@ -80,7 +84,6 @@ namespace Tests.SqlPersisted
         {
             this.RemoveDatabaseFileReadOnly();
             FilePersistedTestLab.SetDefaultFileLocations();
-            settings.PersistenceSecurity = new SqlPersistenceSecurity();
             this.SetDeploymentDirConnectionString();
 
             // first reset the database password, then continue with other initializations
@@ -108,7 +111,14 @@ namespace Tests.SqlPersisted
 
         protected void SetDeploymentDirConnectionString()
         {
-            settings.ConnectionString = String.Format(CONNECTION_STRING, this.TestContext.DeploymentDirectory);
+            AssignDeploymentDirConnectionString(this.settings, this.TestContext.DeploymentDirectory);
+        }
+
+        internal static void AssignDeploymentDirConnectionString(Settings settings, string deploymentDir)
+        {
+            // Atleast to be able assign new connection string. Becasue of this we need application restart after persistence is changed.
+            settings.PersistenceSecurity = new SqlPersistenceSecurity(); 
+            settings.ConnectionString = String.Format(CONNECTION_STRING, deploymentDir);
         }
 
         private void RemoveDatabaseFileReadOnly()

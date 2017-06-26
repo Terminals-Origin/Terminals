@@ -60,7 +60,7 @@ namespace Terminals
             this.lblTerminals.Size = new System.Drawing.Size(486, 24);
             this.lblTerminals.TabIndex = 1;
             this.lblTerminals.TabStop = true;
-            this.lblTerminals.Text = "Terminals Home Page at CodePlex";
+            this.lblTerminals.Text = "Terminals Home Page";
             this.lblTerminals.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTerminals.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LblTerminals_LinkClicked);
             // 

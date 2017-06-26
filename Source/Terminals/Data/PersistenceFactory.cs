@@ -25,7 +25,7 @@ namespace Terminals.Data
             try
             {
                 var persistence = this.CreateNewInstance();
-                settings.PersistenceSecurity = persistence.Security;
+                this.settings.PersistenceSecurity = persistence.Security;
                 return persistence;
             }
             catch (Exception exception)
@@ -37,22 +37,55 @@ namespace Terminals.Data
 
         private IPersistence CreateNewInstance()
         {
-            if (settings.PersistenceType == FilePersistence.TYPE_ID)
-                return new FilePersistence(new PersistenceSecurity(), favoriteIcons, connectionManager);
+            if (this.settings.PersistenceType == FilePersistence.TYPE_ID)
+                return new FilePersistence(new PersistenceSecurity(), this.favoriteIcons, this.connectionManager);
 
-            return new SqlPersistence(favoriteIcons, connectionManager);
+            return new SqlPersistence(this.favoriteIcons, this.connectionManager);
+        }
+
+        internal IPersistence AuthenticateByMasterPassword(IPersistence persistence, IStartupUi startupUi)
+        {
+            bool authenticated = persistence.Security.Authenticate(startupUi.KnowsUserPassword);
+
+            if (!authenticated)
+                startupUi.Exit();
+
+            bool initialized = persistence.Initialize();
+
+            if (!initialized)
+            {
+               return this.TryFallbackToPrimaryPersistence(persistence, startupUi);
+            }
+
+            return persistence;
+        }
+
+        private IPersistence TryFallbackToPrimaryPersistence(IPersistence persistence, IStartupUi startupUi)
+        {
+            bool fallbackInitialized = false;
+            IPersistence newPersistence = null;
+
+            if (persistence.TypeId != FilePersistence.TYPE_ID && startupUi.UserWantsFallback())
+            {
+                newPersistence = this.FallBackToPrimaryPersistence(persistence.Security);
+                fallbackInitialized = newPersistence.Initialize();
+            }
+
+            if (!fallbackInitialized)
+                startupUi.Exit();
+
+            return newPersistence;
         }
 
         /// <summary>
         /// Fall back to file persistence, in case of not available database
         /// </summary>
-        internal FilePersistence FallBackToPrimaryPersistence(PersistenceSecurity security)
+        private FilePersistence FallBackToPrimaryPersistence(PersistenceSecurity security)
         {
             Logging.Fatal("SQL Persistence layer failed to load. Fall back to File persistence");
             var newSecurity = new PersistenceSecurity(security);
-            var persistence = new FilePersistence(newSecurity, favoriteIcons, connectionManager);
-            settings.PersistenceSecurity = newSecurity;
-            persistence.Initialize();
+            var persistence = new FilePersistence(newSecurity, this.favoriteIcons, this.connectionManager);
+            this.settings.PersistenceSecurity = newSecurity;
             return persistence;
         }
     }

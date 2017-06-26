@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Terminals;
 using Terminals.Configuration;
 using Terminals.Updates;
 using Tests.FilePersisted;
@@ -12,15 +12,15 @@ namespace Tests
     /// Check for new release to be able parse release rss feeds, to be able to download and unpack the update package.
     /// Expected implementation of UpdateManager:
     /// - the update check file is written after all checks
-    /// - release shouldn't be reported only, if there is a release with newer build date, than current
+    /// - release shouldn't be reported only, if there is a release with newer version, than current
     /// - new release should be reported once per day only
     /// </summary>
     [TestClass]
     public class UpdateManagerTest
     {
-        private DateTime buildDate = Program.Info.BuildDate;
+        private Version currentVersion = new Version(2, 0, 0);
 
-        private readonly DateTime yesterDay = DateTime.Today.AddDays(-1);
+        private readonly DateTime yesterDay = DateTime.UtcNow.Date.AddDays(-1);
 
         [TestInitialize]
         public void ConfigureTestLab()
@@ -35,53 +35,62 @@ namespace Tests
         /// in debug there is never a newer version, because it is checked by build date
         /// </summary>
         [TestMethod]
-        public void CheckReleaseNotAvailableTest()
+        public void CurrentBuild_CheckForCodeplexRelease_ReturnsNotAvailable()
         {
-            ReleaseInfo checkResult = RunUpdateCheck();
+            this.currentVersion = new Version(4, 0, 0);
+            ReleaseInfo checkResult = this.RunUpdateCheck();
 
             Assert.AreEqual(ReleaseInfo.NotAvailable, checkResult, "New release noticed");
-            AssertLastUpdateCheck();
+            this.AssertLastUpdateCheck();
         }
 
         [TestMethod]
-        public void CheckAvailableReleaseTest()
+        public void OldestBuildDate_CheckForCodeplexRelease_ReturnsValidRelease()
         {
-            buildDate = DateTime.MinValue;
-            ReleaseInfo checkResult = RunUpdateCheck();
+            this.currentVersion = new Version(1, 0, 0);
+            ReleaseInfo checkResult = this.RunUpdateCheck();
 
             Assert.AreNotEqual(ReleaseInfo.NotAvailable, checkResult, "Didn't notice new release");
-            AssertLastUpdateCheck();
+            this.AssertLastUpdateCheck();
         }
 
         [TestMethod]
-        public void AlreadyReportedReleaseTest()
+        public void TodayCheckedDate_CheckForCodeplexRelease_DoesnotUpdateCheckDate()
         {
-            var previousCheck = DateTime.Today;
-            File.WriteAllText(FileLocations.LastUpdateCheck, previousCheck.ToString());
-            ReleaseInfo checkResult = RunUpdateCheck();
+            var previousCheck = DateTime.UtcNow.Date;
+            File.WriteAllText(FileLocations.LastUpdateCheck, previousCheck.ToString(CultureInfo.InvariantCulture));
+            ReleaseInfo checkResult = this.RunUpdateCheck();
 
             Assert.AreEqual(ReleaseInfo.NotAvailable, checkResult, "New release noticed");
-            DateTime lastNoticed = ParseLastUpdateDate();
+            DateTime lastNoticed = this.ParseLastUpdateDate();
             Assert.AreEqual(lastNoticed.Date, previousCheck.Date, "Last update check date wasn't saved");
         }
 
         private ReleaseInfo RunUpdateCheck()
         {
-            var updateManager = new PrivateType(typeof (UpdateManager));
-            object releaseInfo = updateManager.InvokeStatic("CheckForCodeplexRelease", new object[] { buildDate });
-            return releaseInfo as ReleaseInfo;
+            const string CreateRss = @"
+[
+{
+    ""name"": ""Title"",
+    ""tag_name"": ""3.0.0"",
+    ""published_at"": ""2017-06-14T20:25:15Z""
+}
+]";
+
+            var updateManager = new UpdateManager(() => CreateRss);
+            return updateManager.CheckForPublishedRelease(this.currentVersion);
         }
 
         private void AssertLastUpdateCheck()
         {
-            DateTime lastNoticed = ParseLastUpdateDate();
+            DateTime lastNoticed = this.ParseLastUpdateDate();
             Assert.IsTrue(lastNoticed.Date > this.yesterDay, "Last update check date wasn't saved");
         }
 
         private DateTime ParseLastUpdateDate()
         {
-            var checkFileAccessor = new PrivateObject(new UpdateChecksFile());
-            return (DateTime)checkFileAccessor.Invoke("ReadLastUpdate");
+            var updateChecksFile = new UpdateChecksFile();
+            return updateChecksFile.ReadLastUpdate();
         }
     }
 }

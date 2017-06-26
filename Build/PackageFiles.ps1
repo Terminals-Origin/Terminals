@@ -42,5 +42,7 @@ return ("AWSSDK.dll",
 "TransPort2006.dll",
 "wpcap.dll",
 "ZedGraph.dll",
-"ZedGraph.xml"
+"ZedGraph.xml",
+"Newtonsoft.Json.dll",
+"Newtonsoft.Json.xml"
 );

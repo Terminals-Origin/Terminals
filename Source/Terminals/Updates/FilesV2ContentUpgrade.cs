@@ -80,7 +80,9 @@ namespace Terminals.Updates
             // we don't have to reload now, because the file watcher is already listening
             settings.ForceReload(); // not identified why, but otherwise master password is lost
             // now already need to have persistence authenticated, otherwise we are working with wrong masterKey
-            this.persistence.Security.Authenticate(retry => this.prompt);
+            bool athenticated = this.persistence.Security.Authenticate(retry => this.prompt);
+            if (athenticated)
+                this.persistence.Initialize();
             this.ImportTagsFromConfigFile();
             this.MoveFavoritesFromConfigFile();
             this.MoveGroupsFromConfigFile();

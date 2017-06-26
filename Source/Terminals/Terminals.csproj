@@ -122,6 +122,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Resources\Libraries\mstsc\AxInterop.MSTSCLib.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -185,6 +188,7 @@
     <Compile Include="Connections\IConnectionManager.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\PluginDefinition.cs" />
+    <Compile Include="IStartupUi.cs" />
     <Compile Include="Network\PortScanner\NetworkAdapters.cs" />
     <Compile Include="Services\ExternalLinks.cs" />
     <Compile Include="Settings\IPluginSettings.cs" />
@@ -408,7 +412,6 @@
     <Compile Include="Data\Favorites\FavoriteIcons.cs" />
     <Compile Include="Data\History\Moment.cs" />
     <Compile Include="Data\History\IDateService.cs" />
-    <Compile Include="Data\Interfaces\IPersistedSecurity.cs" />
     <Compile Include="Data\PersistenceSecurity.cs" />
     <Compile Include="Data\DB\SqlPersistenceSecurity.cs" />
     <Compile Include="Forms\AboutForm.cs">
@@ -797,8 +800,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\Controls\TerminalTabsSelectionControler.cs" />
+    <Compile Include="StartupUi.cs" />
     <Compile Include="Updates\FilesV2ContentUpgrade.cs" />
     <Compile Include="Updates\PasswordsV2Update.cs" />
+    <Compile Include="Updates\Release.cs" />
     <Compile Include="Updates\ReleaseInfo.cs" />
     <Compile Include="Updates\TerminalsUpdates.cs">
       <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
@@ -1287,7 +1292,9 @@
       <Link>Thumbs\wmimgmt.msc.jpg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Resources\amber.png" />
     <Content Include="Resources\application_user.png" />
     <Content Include="Resources\back.png" />
