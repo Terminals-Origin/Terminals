@@ -1,4 +1,4 @@
-﻿$url = 'https://terminals.codeplex.com/downloads/get/';
+﻿$url = 'https://github.com/Terminals-Origin/Terminals/releases/download/$Version/TerminalsSetup_$Version.msi';
 $checksum = '';
 
 $ErrorActionPreference = 'Stop';
