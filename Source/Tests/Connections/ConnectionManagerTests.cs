@@ -245,7 +245,7 @@ namespace Tests.Connections
                 new Tuple<string, int, string>(KnownConnectionConstants.RDP, 5, "Terminals.Forms.EditFavorite.RdpDisplayControl"),
                 new Tuple<string, int, string>(VncConnectionPlugin.VNC, 1, "Terminals.Forms.EditFavorite.VncControl"),
                 new Tuple<string, int, string>(VmrcConnectionPlugin.VMRC, 1, "Terminals.Forms.EditFavorite.VmrcControl"),
-                new Tuple<string, int, string>(TelnetConnectionPlugin.TELNET, 1, "Terminals.Plugins.Putty.TelnetOptionsControl"),
+                new Tuple<string, int, string>(TelnetConnectionPlugin.TELNET, 1, "Terminals.Plugins.Putty.PuttyOptionsControl"),
                 new Tuple<string, int, string>(SshConnectionPlugin.SSH, 1, "Terminals.Plugins.Putty.SshOptionsControl"),
                 new Tuple<string, int, string>(ICAConnectionPlugin.ICA_CITRIX, 1, "Terminals.Forms.EditFavorite.CitrixControl")
             };
