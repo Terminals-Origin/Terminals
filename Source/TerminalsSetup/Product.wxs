@@ -21,7 +21,6 @@
       <ComponentGroupRef Id="MainComponents" />
       <ComponentGroupRef Id="IcaComponents" />
       <ComponentGroupRef Id="RdpComponents" />
-      <ComponentGroupRef Id="TerminalComponents" />
       <ComponentGroupRef Id="VmrcComponents" />
       <ComponentGroupRef Id="VncComponents" />
       <ComponentGroupRef Id="WebComponents" />

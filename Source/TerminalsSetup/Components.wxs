@@ -110,20 +110,6 @@
         <File Source="$(var.Terminals.Plugins.Rdp.TargetPath)" KeyPath="yes" Checksum="yes"/>
       </Component>
     </ComponentGroup>
-    <ComponentGroup Id="TerminalComponents" Directory="TERMINALFOLDER">
-      <Component Id="GranadosDll" Guid="9748FD50-3853-4FF5-AC40-4F737F4A261A">
-        <File Source="$(var.Granados.TargetPath)" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="SSHClientDll" Guid="DF5AEE72-4C84-49EF-A59E-2664AA51685D">
-        <File Source="$(var.SSHClient.TargetPath)" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="TerminalEmulatorDll" Guid="61B42519-1D0B-4012-8095-F0D7D04A6566">
-        <File Source="$(var.TerminalEmulator.TargetPath)" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="PluginTerminal" Guid="7DDA8745-FDCC-4A03-9860-0858ED3A759A">
-        <File Source="$(var.Terminals.Plugins.Terminal.TargetPath)" KeyPath="yes" Checksum="yes"/>
-      </Component>
-    </ComponentGroup>
     <ComponentGroup Id="VmrcComponents" Directory="VMRCFOLDER">
       <Component Id="VMRCLibDll" Guid="F9944517-DA84-4846-BF81-606494EA96FA">
         <File Source="..\..\Resources\Libraries\VMRC\AxInterop.VMRCClientControlLib.dll" KeyPath="yes" Checksum="yes"/>
