@@ -13,11 +13,10 @@
 * To publish release version:
   * the application version should be updated in Setup project and in Common.AsssemblyInfo.cs
   * Use build.ps1 script in build directory and publish both generated files
-  * Update related build version in Team City nightly builds
-  * Keep in mind, that there is new version detected by published release on CodePlex and compared with the build date of the application =&gt; Pulish date has to older or equals to the build date.
-  * Mark release with label. If you want to rollback to previous version load selected version release label
-* TFS Tasks have iteration path &quot;Terminals&quot; until there is at least one related checkin. Then change the iteration path to the current development version
-* When fixing an issue, mark it as Fixed (not as Closed). Task is closed as a part of release, if there are no comments otherwise it is shifted to next version.
+  * Update related build version in Team City builds
+  * Mark release with tag. If you want to rollback to previous version load selected version release tag
+  * Create and publish the Chocolatey package at Chocolatey.org using Build\createChocolateyPackage.ps1 script
+* When fixing an issue, mark it as Closed, after the changes are released (not when it is fixed in code base).
 
 ## Cooperation rules
 * Miguel de Icaza has a good post on [Open Source Contribution Etiquette](http://tirania.org/blog/archive/2010/Dec-31.html)
@@ -29,16 +28,14 @@
 * In case of formatting make two separate checkins: one which holds only code formatting changes, second with fix/feature changes
 
 ## Project structure
-* Current development tool is Visual Studio 2015 with .NET C#.
+* Current development tool is Visual Studio 2017 with .NET C#.
 * The main solution project is configured to target .NET framework 4. But there are other external projects, which are still targeting .NET 2.0. Don't change the target framework for them.
-* Download both Resources and Source folders from the Main branch to the same location. Terminals solution references libraries and images from Resources directory.
+* Terminals solution references libraries and images from Resources directory.
 * For Logging the Log4Net is configured. Log files are stored under application Logs subdirectory.
-* To build the release setup use the &quot;Distribution release&quot; solution configuration. For general development use standard debug and release.
-* Output directory is default directory under the Terminals project.
+* To build the release setup use the "Distribution release" solution configuration. For general development use standard debug and release.
+* Output directory is "Build\Output" directory.
 * Put all localize able resources under the Localization directory in resource file stored there.
-* The latest development branch is stored under &quot;Main\Sources&quot;
-* To create user branch create your own under &quot;FeatureBranches&quot; directory and branch always whole main subtree
-* All external components and other resources like images should be stored under &quot;Resources&quot; directory in its branch
+* All external components and other resources like images should be stored under "Resources" directory in its branch
 
 ## External components
 * SSH protocol from Granados project (actually developed as [Poderosa](http://sourceforge.net/projects/poderosa/))
@@ -55,7 +52,7 @@
 * Chocolatey to download external dependecies in build
 
 ## Coding rules
-* Use Visual Studio 2015 default settings or similar settings in another editor.
+* Use Visual Studio 2017 default settings or similar settings in another editor.
 * For developer who are using Resharper, there is a Team shared configuration file for coding rules. Don't change this file, if you want to apply some rules. Discuss it first within the team.
 * Indents are 4 spaces. You can use Productivity Power Tools for VS to convert tab characters into spaces.
 * Fields should be declared private and above all methods.
