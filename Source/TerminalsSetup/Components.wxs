@@ -137,5 +137,19 @@
         <File Source="$(var.Terminals.Plugins.Web.TargetPath)" KeyPath="yes" Checksum="yes"/>
       </Component>
     </ComponentGroup>
+    <ComponentGroup Id="PuttyComponents">
+      <Component Id="puttyexe" Guid="3944DCB6-AF12-47DC-B929-90BAFAF87518" Directory="PUTTYRESOURCESFOLDER">
+        <File Source="..\..\Resources\Libraries\Putty\putty.exe" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="puttygenexe" Guid="1902333C-37A1-454E-A01D-3785C7F6DFBA" Directory="PUTTYRESOURCESFOLDER">
+        <File Source="..\..\Resources\Libraries\Putty\puttygen.exe" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="pageantexe" Guid="0C4ACBB2-9BAD-4752-9DBE-9345F89843BE" Directory="PUTTYRESOURCESFOLDER">
+        <File Source="..\..\Resources\Libraries\Putty\pageant.exe" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="PluginTerminal" Guid="EBACB294-80C3-4EA5-804E-62AB738BFAA9" Directory="PUTTYFOLDER">
+        <File Source="$(var.Terminals.Plugins.Putty.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>
+    </ComponentGroup>
   </Fragment>
 </Wix>

@@ -86,6 +86,7 @@
     <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">
       <Project>{1F720FD0-21A5-4BED-90F6-02CDABB8854D}</Project>
       <Name>Terminals.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

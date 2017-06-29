@@ -24,6 +24,7 @@
       <ComponentGroupRef Id="VmrcComponents" />
       <ComponentGroupRef Id="VncComponents" />
       <ComponentGroupRef Id="WebComponents" />
+      <ComponentGroupRef Id="PuttyComponents" />
       <ComponentRef Id="ApplicationShortcut" />
     </Feature>
 
@@ -46,7 +47,9 @@
           <Directory Id="PLUGINSFOLDER" Name="Plugins">
             <Directory Id="ICAFOLDER" Name="Ica" />
             <Directory Id="RDPFOLDER" Name="Rdp" />
-            <Directory Id="TERMINALFOLDER" Name="Terminal" />
+            <Directory Id="PUTTYFOLDER" Name="Putty" >
+              <Directory Id="PUTTYRESOURCESFOLDER" Name="Resources" />
+            </Directory>    
             <Directory Id="VMRCFOLDER" Name="Vmrc" />
             <Directory Id="VNCFOLDER" Name="Vnc" />
             <Directory Id="WEBFOLDER" Name="Web" />
