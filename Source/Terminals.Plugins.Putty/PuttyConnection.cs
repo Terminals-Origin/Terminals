@@ -201,8 +201,24 @@ namespace Terminals.Plugins.Putty
         {
             base.Dispose(disposing);
 
-            if (null != this.puttyProcess && !this.puttyProcess.HasExited)
+            if (disposing && this.puttyProcess != null && !this.puttyProcess.HasExited)
+                this.ClosePutty();
+        }
+
+        private void ClosePutty()
+        {
+            try
+            {
                 this.puttyProcess.Kill();
+            }
+            catch
+            {
+                Logging.Warn("Unable to close putty process.");
+            }
+            finally
+            {
+                this.puttyProcess.Dispose();
+            }
         }
 
         void IConnectionExtra.Focus()
