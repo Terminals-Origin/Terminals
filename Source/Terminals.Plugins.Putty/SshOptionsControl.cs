@@ -8,6 +8,7 @@ namespace Terminals.Plugins.Putty
         public SshOptionsControl()
         {
             this.InitializeComponent();
+            this.cmbSshVersion.SelectedIndex = 0;
         }
 
         protected override void LoadFrom(ProtocolOptions protocolOptions)
