@@ -11,67 +11,26 @@ using Terminals.Native;
 
 namespace Terminals.Plugins.Putty
 {
-    // TODO IConnectionExtra Shouldnt be implemented here.
-    internal class PuttyConnection : Connection, IConnectionExtra
+    internal class PuttyConnection : Connection
     {
         internal const string PUTTY_BINARY = "putty.exe";
 
         private bool windowCaptured;
-        private bool fullScreen;
         private Process puttyProcess;
 
         public override bool Connected
         {
             get
             {
-                return this.windowCaptured && this.puttyProcess != null && !this.puttyProcess.HasExited;
+                return this.windowCaptured && this.ProcessRunning;
             }
         }
 
-        public bool FullScreen
+        private bool ProcessRunning
         {
             get
             {
-                return this.fullScreen;
-            }
-
-            set
-            {
-                this.fullScreen = value;
-                if (this.fullScreen)
-                    this.SendFocusToPutty();
-            }
-        }
-
-        public string Server
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string UserName
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string Domain
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public bool ConnectToConsole
-        {
-            get
-            {
-                throw new NotImplementedException();
+                return this.puttyProcess != null && !this.puttyProcess.HasExited;
             }
         }
 
@@ -173,7 +132,7 @@ namespace Terminals.Plugins.Putty
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && this.puttyProcess != null && !this.puttyProcess.HasExited)
+            if (disposing && this.ProcessRunning)
                 this.ClosePutty();
 
             base.Dispose(disposing);
@@ -193,11 +152,6 @@ namespace Terminals.Plugins.Putty
             {
                 this.puttyProcess.Dispose();
             }
-        }
-
-        void IConnectionExtra.Focus()
-        {
-            this.SendFocusToPutty();
         }
 
         private void SendFocusToPutty()
