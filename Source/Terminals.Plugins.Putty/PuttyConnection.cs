@@ -20,19 +20,11 @@ namespace Terminals.Plugins.Putty
         private bool fullScreen;
         private Process puttyProcess;
 
-        private bool IsPuttyReady
-        {
-            get
-            {
-                return this.windowCaptured && null != this.puttyProcess && !this.puttyProcess.HasExited;
-            }
-        }
-
         public override bool Connected
         {
             get
             {
-                return this.IsPuttyReady && this.puttyProcess != null && !this.puttyProcess.HasExited;
+                return this.windowCaptured && this.puttyProcess != null && !this.puttyProcess.HasExited;
             }
         }
 
@@ -101,29 +93,29 @@ namespace Terminals.Plugins.Putty
 
         private void ClipPutty()
         {
-            if (this.IsPuttyReady)
-            {
-                Rectangle windowRect = Methods.GetWindowRect(this.puttyProcess.MainWindowHandle);
+            if (!this.Connected)
+                return;
 
-                Rectangle clientRect = Methods.GetClientRect(this.puttyProcess.MainWindowHandle);
+            Rectangle windowRect = Methods.GetWindowRect(this.puttyProcess.MainWindowHandle);
 
-                Point referencePoint0 = new Point(0, 0);
-                Methods.ClientToScreen(this.puttyProcess.MainWindowHandle, ref referencePoint0);
+            Rectangle clientRect = Methods.GetClientRect(this.puttyProcess.MainWindowHandle);
 
-                Point referencePoint1 = new Point(clientRect.Width, clientRect.Height);
-                Methods.ClientToScreen(this.puttyProcess.MainWindowHandle, ref referencePoint1);
+            Point referencePoint0 = new Point(0, 0);
+            Methods.ClientToScreen(this.puttyProcess.MainWindowHandle, ref referencePoint0);
 
-                int top = referencePoint0.Y - windowRect.Top;
-                int left = referencePoint0.X - windowRect.Left;
+            Point referencePoint1 = new Point(clientRect.Width, clientRect.Height);
+            Methods.ClientToScreen(this.puttyProcess.MainWindowHandle, ref referencePoint1);
 
-                int right = windowRect.Right - referencePoint1.X; // TODO VERIFY: right contains the width of the scrool that should be shown
-                int bottom = windowRect.Bottom - referencePoint1.Y;
+            int top = referencePoint0.Y - windowRect.Top;
+            int left = referencePoint0.X - windowRect.Left;
 
-                int width = this.Width + left + left; // + right ( using doubled left )
-                int height = this.Height + top + bottom;
+            int right = windowRect.Right - referencePoint1.X; // TODO VERIFY: right contains the width of the scrool that should be shown
+            int bottom = windowRect.Bottom - referencePoint1.Y;
 
-                Methods.SetWindowPos(this.puttyProcess.MainWindowHandle, IntPtr.Zero, -left, -top, width, height, SetWindowPosFlags.FrameChanged | SetWindowPosFlags.DoNotActivate);
-            }
+            int width = this.Width + left + left; // + right ( using doubled left )
+            int height = this.Height + top + bottom;
+
+            Methods.SetWindowPos(this.puttyProcess.MainWindowHandle, IntPtr.Zero, -left, -top, width, height, SetWindowPosFlags.FrameChanged | SetWindowPosFlags.DoNotActivate);
         }
 
         private void AdjustWindowStyle(IntPtr handle)
@@ -162,6 +154,7 @@ namespace Terminals.Plugins.Putty
             this.puttyProcess = new Process();
             this.puttyProcess.StartInfo.FileName = this.GetPuttyBinaryPath();
 
+            // security issue: password visible in taskbar
             IGuardedSecurity credentials = this.ResolveFavoriteCredentials();
             this.puttyProcess.StartInfo.Arguments = new ArgumentsBuilder(credentials, this.Favorite).Build();
             this.puttyProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
@@ -169,11 +162,12 @@ namespace Terminals.Plugins.Putty
             this.puttyProcess.Start();
             this.puttyProcess.WaitForInputIdle();
 
-            this.AdjustWindowStyle(this.puttyProcess.MainWindowHandle);
-            Methods.SetParent(this.puttyProcess.MainWindowHandle, this.Handle);
-
+            IntPtr puttyWindow = this.puttyProcess.MainWindowHandle;
+            this.AdjustWindowStyle(puttyWindow);
+            Methods.SetParent(puttyWindow, this.Handle);
             this.windowCaptured = true;
 
+            // todo register exited event handler
             this.ClipPutty();
         }
 
@@ -208,15 +202,15 @@ namespace Terminals.Plugins.Putty
 
         private void SendFocusToPutty()
         {
-            if (this.IsPuttyReady)
+            if (!this.Connected)
+                return;
+
+            this.Invoke(new ThreadStart(() =>
             {
-                this.Invoke(new ThreadStart(() =>
-                {
-                    IntPtr puttyWindow = this.puttyProcess.MainWindowHandle;
-                    Methods.SetForegroundWindow(puttyWindow);
-                    Methods.SetFocus(puttyWindow);
-                }));
-            }
+                IntPtr puttyWindow = this.puttyProcess.MainWindowHandle;
+                Methods.SetForegroundWindow(puttyWindow);
+                Methods.SetFocus(puttyWindow);
+            }));
         }
     }
 }
