@@ -41,6 +41,7 @@ namespace Terminals.Plugins.Putty
             // 
             // cmbSessionName
             // 
+            this.cmbSessionName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSessionName.FormattingEnabled = true;
             this.cmbSessionName.Location = new System.Drawing.Point(107, 27);
             this.cmbSessionName.Name = "cmbSessionName";

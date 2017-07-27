@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-using Terminals.Data;
+﻿using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 
 namespace Terminals.Plugins.Putty
@@ -10,8 +8,6 @@ namespace Terminals.Plugins.Putty
         public SshOptionsControl()
         {
             this.InitializeComponent();
-
-            this.cmbSshVersion.DataSource = Enum.GetValues(typeof(SshVersion));
         }
 
         protected override void LoadFrom(ProtocolOptions protocolOptions)
@@ -25,7 +21,7 @@ namespace Terminals.Plugins.Putty
                 this.checkBoxCompression.Checked = sshOptions.EnableCompression;
                 this.checkBoxEnablePagentForwarding.Checked = sshOptions.EnablePagentForwarding;
                 this.checkBoxEnablePagentAuthentication.Checked = sshOptions.EnablePagentAuthentication;
-                this.cmbSshVersion.Text = sshOptions.SshVersion.ToString();
+                this.cmbSshVersion.SelectedIndex = (int)sshOptions.SshVersion;
             }
         }
 
@@ -40,7 +36,7 @@ namespace Terminals.Plugins.Putty
                 sshOptions.EnableCompression = this.checkBoxCompression.Checked;
                 sshOptions.EnablePagentForwarding = this.checkBoxEnablePagentForwarding.Checked;
                 sshOptions.EnablePagentAuthentication = this.checkBoxEnablePagentAuthentication.Checked;
-                sshOptions.SshVersion = (SshVersion) Enum.Parse(typeof(SshVersion), cmbSshVersion.SelectedValue.ToString());
+                sshOptions.SshVersion = (SshVersion)this.cmbSshVersion.SelectedIndex;
             }
         }
     }

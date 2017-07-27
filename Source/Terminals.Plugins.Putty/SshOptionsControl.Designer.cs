@@ -65,6 +65,10 @@ namespace Terminals.Plugins.Putty
             // 
             this.cmbSshVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSshVersion.FormattingEnabled = true;
+            this.cmbSshVersion.Items.AddRange(new object[] {
+            "Negotiate",
+            "Version 1",
+            "Version 2"});
             this.cmbSshVersion.Location = new System.Drawing.Point(107, 172);
             this.cmbSshVersion.Name = "cmbSshVersion";
             this.cmbSshVersion.Size = new System.Drawing.Size(165, 21);
