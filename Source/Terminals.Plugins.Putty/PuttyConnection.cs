@@ -67,8 +67,6 @@ namespace Terminals.Plugins.Putty
 
             int top = referencePoint0.Y - windowRect.Top;
             int left = referencePoint0.X - windowRect.Left;
-
-            int right = windowRect.Right - referencePoint1.X; // TODO VERIFY: right contains the width of the scrool that should be shown
             int bottom = windowRect.Bottom - referencePoint1.Y;
 
             int width = this.Width + left + left; // + right ( using doubled left )
