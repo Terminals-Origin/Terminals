@@ -114,6 +114,7 @@
       <Link>Resources\puttygen.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Refresh.gif" />
     <None Include="Resources\treeIcon_ssh.png" />
     <None Include="Resources\treeIcon_telnet.png" />
   </ItemGroup>

@@ -11,11 +11,8 @@ namespace Terminals.Plugins.Putty
         public PuttyOptionsControl()
         {
             this.InitializeComponent();
-
-            var puttyRegistry = new PuttyRegistry();
-            var bindingSource = new BindingSource();
-            bindingSource.DataSource = puttyRegistry.GetSessions();
-            this.cmbSessionName.DataSource = bindingSource;
+            this.RefreshSessions();
+            this.cmbSessionName.DataSource = this.sessionsBindingSource;
             this.cmbSessionName.SelectedItem = null;
         }
 
@@ -55,6 +52,17 @@ namespace Terminals.Plugins.Putty
         {
             var puttyBinaryPath = PuttyConnection.GetPuttyBinaryPath();
             ExternalLinks.OpenPath(puttyBinaryPath);
+        }
+
+        private void RefreshButton_Click(object sender, EventArgs e)
+        {
+            this.RefreshSessions();
+        }
+
+        private void RefreshSessions()
+        {
+            var puttyRegistry = new PuttyRegistry();
+            this.sessionsBindingSource.DataSource = puttyRegistry.GetSessions();
         }
     }
 }
