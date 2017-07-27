@@ -117,7 +117,8 @@ namespace Terminals.Plugins.Putty
             IGuardedSecurity credentials = this.ResolveFavoriteCredentials();
             this.puttyProcess.StartInfo.Arguments = new ArgumentsBuilder(credentials, this.Favorite).Build();
             this.puttyProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
-
+            this.puttyProcess.EnableRaisingEvents = true;
+            this.puttyProcess.Exited += this.PuttyProcessOnExited;
             this.puttyProcess.Start();
             this.puttyProcess.WaitForInputIdle();
 
@@ -126,8 +127,12 @@ namespace Terminals.Plugins.Putty
             Methods.SetParent(puttyWindow, this.Handle);
             this.windowCaptured = true;
 
-            // todo register exited event handler
             this.ClipPutty();
+        }
+
+        private void PuttyProcessOnExited(object sender, EventArgs eventArgs)
+        {
+            this.FireDisconnected();
         }
 
         protected override void Dispose(bool disposing)
