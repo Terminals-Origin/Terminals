@@ -86,7 +86,6 @@ namespace Terminals.Plugins.Putty
         public PuttyConnection()
         {
             this.Resize += this.PuttyConnection_Resize;
-            this.ParentChanged += this.PuttyConnection_ParentChanged;
             this.GotFocus += this.PuttyConnection_GotFocus;
         }
 
@@ -95,17 +94,7 @@ namespace Terminals.Plugins.Putty
             this.SendFocusToPutty();
         }
 
-        private void PuttyConnection_ParentChanged(object sender, EventArgs e)
-        {
-            this.RegisterResizeEndEventHandler();
-        }
-
         private void PuttyConnection_Resize(object sender, EventArgs e)
-        {
-            this.Invoke(new ThreadStart(this.ClipPutty));
-        }
-
-        private void PuttyConnection_ResizeEnd(object sender, EventArgs e)
         {
             this.Invoke(new ThreadStart(this.ClipPutty));
         }
@@ -152,19 +141,10 @@ namespace Terminals.Plugins.Putty
 
         public override bool Connect()
         {
-            this.RegisterResizeEndEventHandler();
             this.Dock = DockStyle.Fill;
             this.LaunchPutty();
 
             return true; // TODO Return correct connection state
-        }
-
-        private void RegisterResizeEndEventHandler()
-        {
-            // TODO Verify, if the registration isnt executed twise to prevent memory leak and add unregister.
-            var parentForm = this.ParentForm as Form;
-            if (parentForm != null)
-                parentForm.ResizeEnd += this.PuttyConnection_ResizeEnd;
         }
 
         internal string GetPuttyBinaryPath()
@@ -199,10 +179,10 @@ namespace Terminals.Plugins.Putty
 
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
-
             if (disposing && this.puttyProcess != null && !this.puttyProcess.HasExited)
                 this.ClosePutty();
+
+            base.Dispose(disposing);
         }
 
         private void ClosePutty()
@@ -232,8 +212,9 @@ namespace Terminals.Plugins.Putty
             {
                 this.Invoke(new ThreadStart(() =>
                 {
-                    Methods.SetForegroundWindow(this.puttyProcess.MainWindowHandle);
-                    Methods.SetFocus(this.puttyProcess.MainWindowHandle);
+                    IntPtr puttyWindow = this.puttyProcess.MainWindowHandle;
+                    Methods.SetForegroundWindow(puttyWindow);
+                    Methods.SetFocus(puttyWindow);
                 }));
             }
         }
