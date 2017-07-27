@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
+using Terminals.Common.Forms;
 using Terminals.Data;
 using Terminals.Forms.EditFavorite;
 
@@ -47,6 +49,12 @@ namespace Terminals.Plugins.Putty
                 puttyOptions.SessionName = this.cmbSessionName.Text;
                 puttyOptions.Verbose = this.checkBoxVerbose.Checked;
             }
+        }
+
+        private void EditSessinsButton_Click(object sender, EventArgs e)
+        {
+            var puttyBinaryPath = PuttyConnection.GetPuttyBinaryPath();
+            ExternalLinks.OpenPath(puttyBinaryPath);
         }
     }
 }

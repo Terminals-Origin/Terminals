@@ -34,9 +34,12 @@ namespace Terminals.Plugins.Putty
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.cmbSessionName = new System.Windows.Forms.ComboBox();
             this.labelSession = new System.Windows.Forms.Label();
             this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
+            this.editSessinsButton = new System.Windows.Forms.Button();
+            this.editToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // cmbSessionName
@@ -67,10 +70,22 @@ namespace Terminals.Plugins.Putty
             this.checkBoxVerbose.Text = "Verbose";
             this.checkBoxVerbose.UseVisualStyleBackColor = true;
             // 
+            // editSessinsButton
+            // 
+            this.editSessinsButton.Location = new System.Drawing.Point(342, 26);
+            this.editSessinsButton.Name = "editSessinsButton";
+            this.editSessinsButton.Size = new System.Drawing.Size(50, 23);
+            this.editSessinsButton.TabIndex = 6;
+            this.editSessinsButton.Text = "Edit";
+            this.editToolTip.SetToolTip(this.editSessinsButton, "Open putty to edit sessions");
+            this.editSessinsButton.UseVisualStyleBackColor = true;
+            this.editSessinsButton.Click += new System.EventHandler(this.EditSessinsButton_Click);
+            // 
             // PuttyOptionsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.editSessinsButton);
             this.Controls.Add(this.checkBoxVerbose);
             this.Controls.Add(this.labelSession);
             this.Controls.Add(this.cmbSessionName);
@@ -86,5 +101,7 @@ namespace Terminals.Plugins.Putty
         #endregion
 
         private CheckBox checkBoxVerbose;
+        private Button editSessinsButton;
+        private ToolTip editToolTip;
     }
 }

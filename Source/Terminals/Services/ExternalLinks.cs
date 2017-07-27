@@ -10,7 +10,7 @@ using Terminals.Updates;
 
 namespace Terminals.Services
 {
-    internal class ExternalLinks
+    internal class ExternalLinks : Common.Forms.ExternalLinks
     {
         internal static string TerminalsReleasesUrl
         {
@@ -51,19 +51,6 @@ namespace Terminals.Services
         internal static void OpenLogsFolder()
         {
             OpenPath(FileLocations.LogDirectory);
-        }
-
-        internal static void OpenPath(string uri)
-        {
-            try
-            {
-                Process.Start(uri);
-            }
-            catch (Exception)
-            {
-                string message = string.Format("Unable to open path:\r\n'{0}'", uri);
-                MessageBox.Show(message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         internal static void CallExecuteBeforeConnected(IBeforeConnectExecuteOptions executeOptions)

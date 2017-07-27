@@ -96,24 +96,27 @@ namespace Terminals.Plugins.Putty
             return true; // Not connected putty fires later proces exited.
         }
 
-        internal string GetPuttyBinaryPath()
+        internal static string GetPuttyBinaryPath()
         {
-            return this.GetPuttyBinaryPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            return GetPuttyBinaryPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
         }
 
-        internal string GetPuttyBinaryPath(string baseLocation)
+        private static string GetPuttyBinaryPath(string baseLocation)
         {
             return Path.Combine(baseLocation, "Resources", PUTTY_BINARY);
         }
 
         private void LaunchPutty()
         {
+
             this.puttyProcess = new Process();
-            this.puttyProcess.StartInfo.FileName = this.GetPuttyBinaryPath();
+            this.puttyProcess.StartInfo.FileName = GetPuttyBinaryPath();
+            
+            IGuardedSecurity credentials = this.ResolveFavoriteCredentials();
+            string arguments = new ArgumentsBuilder(credentials, this.Favorite).Build();
 
             // security issue: password visible in taskbar
-            IGuardedSecurity credentials = this.ResolveFavoriteCredentials();
-            this.puttyProcess.StartInfo.Arguments = new ArgumentsBuilder(credentials, this.Favorite).Build();
+            this.puttyProcess.StartInfo.Arguments = arguments;
             this.puttyProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
             this.puttyProcess.EnableRaisingEvents = true;
             this.puttyProcess.Exited += this.PuttyProcessOnExited;
