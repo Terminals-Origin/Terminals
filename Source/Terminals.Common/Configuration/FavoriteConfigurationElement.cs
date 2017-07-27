@@ -1308,7 +1308,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("url", DefaultValue = "http://terminals.codeplex.com")]
+        [ConfigurationProperty("url", DefaultValue = "https://github.com/Terminals-Origin/Terminals/issues")]
         public String Url
         {
             get

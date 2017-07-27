@@ -142,7 +142,7 @@ namespace Terminals.Forms
             this.linkLabel1.Size = new System.Drawing.Size(470, 20);
             this.linkLabel1.TabIndex = 4;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://www.codeplex.com/Terminals";
+            this.linkLabel1.Text = "https://github.com/Terminals-Origin/Terminals/issues";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // OptionsTreeView

@@ -75,7 +75,7 @@ namespace Terminals.Forms.EditFavorite
             this.httpUrlTextBox.Name = "httpUrlTextBox";
             this.httpUrlTextBox.Size = new System.Drawing.Size(259, 20);
             this.httpUrlTextBox.TabIndex = 38;
-            this.httpUrlTextBox.Text = "http://terminals.codeplex.com";
+            this.httpUrlTextBox.Text = "https://github.com/Terminals-Origin/Terminals/issues";
             this.httpUrlTextBox.Visible = false;
             this.httpUrlTextBox.TextChanged += new System.EventHandler(this.HttpUrlTextBox_TextChanged);
             // 
