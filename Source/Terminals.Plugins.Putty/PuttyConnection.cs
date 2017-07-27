@@ -93,7 +93,7 @@ namespace Terminals.Plugins.Putty
             this.Dock = DockStyle.Fill;
             this.LaunchPutty();
 
-            return true; // TODO Return correct connection state
+            return true; // Not connected putty fires later proces exited.
         }
 
         internal string GetPuttyBinaryPath()
