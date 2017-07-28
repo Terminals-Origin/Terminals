@@ -99,7 +99,7 @@ namespace Terminals.Connections
             }
         }
 
-        bool IConnectionExtra.ContainsFocus
+        bool IFocusable.ContainsFocus
         {
             get
             {
@@ -110,7 +110,7 @@ namespace Terminals.Connections
             }
         }
 
-        void IConnectionExtra.Focus()
+        void IFocusable.Focus()
         {
             if (this.client != null)
                 this.client.Focus();

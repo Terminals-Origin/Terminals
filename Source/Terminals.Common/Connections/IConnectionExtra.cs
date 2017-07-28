@@ -3,7 +3,7 @@
     /// <summary>
     /// In reality this is Rdp client facade to isolate the reference to direct usage of the COM class.
     /// </summary>
-    public interface IConnectionExtra
+    public interface IConnectionExtra : IFocusable
     {
         bool FullScreen { get; set; }
 
@@ -14,9 +14,5 @@
         string Domain { get; }
 
         bool ConnectToConsole { get; }
-
-        bool ContainsFocus { get; }
-
-        void Focus();
     }
 }

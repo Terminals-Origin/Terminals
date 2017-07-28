@@ -11,11 +11,12 @@ using Terminals.Native;
 
 namespace Terminals.Plugins.Putty
 {
-    internal class PuttyConnection : Connection
+    internal class PuttyConnection : Connection, IFocusable
     {
         internal const string PUTTY_BINARY = "putty.exe";
 
         private bool windowCaptured;
+        
         private Process puttyProcess;
 
         public override bool Connected
@@ -108,7 +109,6 @@ namespace Terminals.Plugins.Putty
 
         private void LaunchPutty()
         {
-
             this.puttyProcess = new Process();
             this.puttyProcess.StartInfo.FileName = GetPuttyBinaryPath();
             
@@ -158,6 +158,11 @@ namespace Terminals.Plugins.Putty
             {
                 this.puttyProcess.Dispose();
             }
+        }
+
+        void IFocusable.Focus()
+        {
+            this.SendFocusToPutty();
         }
 
         private void SendFocusToPutty()

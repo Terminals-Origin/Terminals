@@ -581,6 +581,10 @@ namespace Terminals
 
             if (this.FullScreen)
                 this.tcTerminals.ShowTabs = false;
+
+            var focusable = this.terminalsControler.CurrentConnection as IFocusable;
+            if (focusable != null)
+                focusable.Focus();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
