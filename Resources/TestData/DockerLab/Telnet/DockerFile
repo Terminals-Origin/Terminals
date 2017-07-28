@@ -12,6 +12,7 @@ RUN apt-get update && \
     apt-get install -y xinetd  && \
     apt-get install -y net-tools && \
     echo "pts/0" >> /etc/securetty && \
+    echo "pts/1" >> /etc/securetty && \
     echo "root:password" | chpasswd
     
 
