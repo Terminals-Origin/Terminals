@@ -636,7 +636,8 @@ namespace VncSharp
 		/// <exception cref="System.InvalidOperationException">Thrown if the RemoteDesktop control is in the Connected state.</exception>
 		protected void OnConnectionLost()
 		{
-			if (ConnectionLost != null) {
+            // If Terminal is terminated when vnc tab remains, Parent is null and ConnectionLost event block thread
+			if (ConnectionLost != null && this.Parent != null) {
 				ConnectionLost(this, EventArgs.Empty);
 			}
 		}
