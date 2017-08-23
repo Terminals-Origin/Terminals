@@ -10,8 +10,8 @@ namespace Tests.Putty
         [TestMethod]
         public void EnsurePuttyBinaryInResources()
         {
-            const string RESOURCES_PUTTY_EXE = @"Resources\" + PuttyConnection.PUTTY_BINARY;
-            string resolvedPath = PuttyConnection.GetPuttyBinaryPath();
+            const string RESOURCES_PUTTY_EXE = @"Resources\" + Executables.PUTTY_BINARY;
+            string resolvedPath = Executables.GetPuttyBinaryPath();
             Assert.IsTrue(resolvedPath.EndsWith(RESOURCES_PUTTY_EXE));
         }
     }

@@ -40,5 +40,10 @@ namespace Terminals.Plugins.Putty
                 sshOptions.SshVersion = (SshVersion)this.cmbSshVersion.SelectedIndex;
             }
         }
+
+        private void KeysButton_Click(object sender, System.EventArgs e)
+        {
+            Executables.LaunchPageant();
+        }
     }
 }

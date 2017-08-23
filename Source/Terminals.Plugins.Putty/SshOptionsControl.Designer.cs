@@ -39,6 +39,7 @@ namespace Terminals.Plugins.Putty
             this.labelSshVersion = new System.Windows.Forms.Label();
             this.checkBoxEnablePagentAuthentication = new System.Windows.Forms.CheckBox();
             this.checkBoxEnablePagentForwarding = new System.Windows.Forms.CheckBox();
+            this.keysButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // checkBoxX11Forwarding
@@ -103,10 +104,21 @@ namespace Terminals.Plugins.Putty
             this.checkBoxEnablePagentForwarding.Text = "Enable Pagent Forwarding";
             this.checkBoxEnablePagentForwarding.UseVisualStyleBackColor = true;
             // 
+            // keysButton
+            // 
+            this.keysButton.Location = new System.Drawing.Point(107, 209);
+            this.keysButton.Name = "keysButton";
+            this.keysButton.Size = new System.Drawing.Size(113, 23);
+            this.keysButton.TabIndex = 8;
+            this.keysButton.Text = "Manage Keys";
+            this.keysButton.UseVisualStyleBackColor = true;
+            this.keysButton.Click += new System.EventHandler(this.KeysButton_Click);
+            // 
             // SshOptionsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.keysButton);
             this.Controls.Add(this.checkBoxEnablePagentForwarding);
             this.Controls.Add(this.checkBoxEnablePagentAuthentication);
             this.Controls.Add(this.labelSshVersion);
@@ -120,6 +132,7 @@ namespace Terminals.Plugins.Putty
             this.Controls.SetChildIndex(this.labelSshVersion, 0);
             this.Controls.SetChildIndex(this.checkBoxEnablePagentAuthentication, 0);
             this.Controls.SetChildIndex(this.checkBoxEnablePagentForwarding, 0);
+            this.Controls.SetChildIndex(this.keysButton, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,5 +145,6 @@ namespace Terminals.Plugins.Putty
         private Label labelSshVersion;
         private CheckBox checkBoxEnablePagentAuthentication;
         private CheckBox checkBoxEnablePagentForwarding;
+        private Button keysButton;
     }
 }

@@ -6,11 +6,11 @@ namespace Terminals.Common.Forms
 {
     public class ExternalLinks
     {
-        public static void OpenPath(string uri)
+        public static void OpenPath(string uri, string arguments = "")
         {
             try
             {
-                Process.Start(uri);
+                Process.Start(uri, arguments);
             }
             catch (Exception)
             {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Terminals.Connections;
@@ -13,8 +11,6 @@ namespace Terminals.Plugins.Putty
 {
     internal class PuttyConnection : Connection, IFocusable
     {
-        internal const string PUTTY_BINARY = "putty.exe";
-
         private bool windowCaptured;
         
         private Process puttyProcess;
@@ -92,25 +88,15 @@ namespace Terminals.Plugins.Putty
         public override bool Connect()
         {
             this.Dock = DockStyle.Fill;
-            this.LaunchPutty();
+            this.LaunchPuttyProcess();
 
             return true; // Not connected putty fires later proces exited.
         }
 
-        internal static string GetPuttyBinaryPath()
-        {
-            return GetPuttyBinaryPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-        }
-
-        private static string GetPuttyBinaryPath(string baseLocation)
-        {
-            return Path.Combine(baseLocation, "Resources", PUTTY_BINARY);
-        }
-
-        private void LaunchPutty()
+        private void LaunchPuttyProcess()
         {
             this.puttyProcess = new Process();
-            this.puttyProcess.StartInfo.FileName = GetPuttyBinaryPath();
+            this.puttyProcess.StartInfo.FileName = Executables.GetPuttyBinaryPath();
             
             IGuardedSecurity credentials = this.ResolveFavoriteCredentials();
             string arguments = new ArgumentsBuilder(credentials, this.Favorite).Build();

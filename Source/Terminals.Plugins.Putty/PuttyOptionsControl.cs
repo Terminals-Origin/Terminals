@@ -50,8 +50,7 @@ namespace Terminals.Plugins.Putty
 
         private void EditSessinsButton_Click(object sender, EventArgs e)
         {
-            var puttyBinaryPath = PuttyConnection.GetPuttyBinaryPath();
-            ExternalLinks.OpenPath(puttyBinaryPath);
+            Executables.LaunchPutty();
         }
 
         private void RefreshButton_Click(object sender, EventArgs e)
