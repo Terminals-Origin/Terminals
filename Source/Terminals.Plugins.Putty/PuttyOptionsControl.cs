@@ -62,7 +62,9 @@ namespace Terminals.Plugins.Putty
         private void RefreshSessions()
         {
             var puttyRegistry = new PuttyRegistry();
+            object lastKnown = this.cmbSessionName.SelectedItem;
             this.sessionsBindingSource.DataSource = puttyRegistry.GetSessions();
+            this.cmbSessionName.SelectedItem = lastKnown;
         }
     }
 }
