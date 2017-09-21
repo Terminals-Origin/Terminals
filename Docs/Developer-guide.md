@@ -37,6 +37,9 @@
 * Put all localize able resources under the Localization directory in resource file stored there.
 * All external components and other resources like images should be stored under "Resources" directory in its branch
 
+## Develop new plugins
+It is also possible to provide new protocol specific connection extension see [Write new plugin](/Docs/WriteNewPlugin.md)
+
 ## External components
 * SSH protocol from Granados project (actually developed as [Poderosa](http://sourceforge.net/projects/poderosa/))
 * Terminal emulator control for ssh and telnet [Terminal control](http://www.codeproject.com/KB/IP/Terminal_Control_Project.aspx)
