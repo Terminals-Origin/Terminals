@@ -295,6 +295,27 @@ namespace Terminals.Integration.Import
                         case "tags":
                             context.Current.Tags = context.Reader.ReadString();
                             break;
+                        case "UsernameID":
+                            context.Current.UsernameID = context.Reader.ReadString();
+                            break;
+                        case "PasswordID":
+                            context.Current.PasswordID = context.Reader.ReadString();
+                            break;
+                        case "OptionalID":
+                            context.Current.OptionalID = context.Reader.ReadString();
+                            break;
+                        case "OptionalValue":
+                            context.Current.OptionalValue = context.Reader.ReadString();
+                            break;
+                        case "SubmitID":
+                            context.Current.SubmitID = context.Reader.ReadString();
+                            break;
+                        case "EnableHTMLAuth":
+                            context.Current.EnableHTMLAuth = context.Reader.ReadBool();
+                            break;
+                        case "EnableFormsAuth":
+                            context.Current.EnableFormsAuth = context.Reader.ReadBool();
+                            break;
                         case "telnet":
                             context.Current.Telnet = context.Reader.ReadBool();
                             break;

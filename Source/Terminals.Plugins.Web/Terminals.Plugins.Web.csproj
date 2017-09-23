@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -43,6 +46,13 @@
   <ItemGroup>
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Properties\Common.AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="TerminalsWebExport.cs" />
+    <Compile Include="WebControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WebControl.Designer.cs">
+      <DependentUpon>WebControl.cs</DependentUpon>
     </Compile>
     <Compile Include="HTTPConnection.cs">
       <SubType>Component</SubType>
@@ -65,6 +75,9 @@
     <Compile Include="WebOptionsConverter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="WebControl.resx">
+      <DependentUpon>WebControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HTTPConnection.resx">
       <DependentUpon>HTTPConnection.cs</DependentUpon>
     </EmbeddedResource>
@@ -84,6 +97,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\treeIcon_http.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

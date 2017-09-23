@@ -3,6 +3,7 @@ using System.Text;
 using System.Windows.Forms;
 using Terminals.Common.Converters;
 using Terminals.Data;
+using Terminals.Plugins.Web;
 
 namespace Terminals.Connections
 {
@@ -36,7 +37,10 @@ namespace Terminals.Connections
                 string url = UrlConverter.ExtractAbsoluteUrl(this.Favorite);
                 IGuardedSecurity security = this.ResolveFavoriteCredentials();
 
-                if (!String.IsNullOrEmpty(security.UserName) && !String.IsNullOrEmpty(security.Password))
+                WebOptions webOptions = this.Favorite.ProtocolProperties as WebOptions;
+                browser.SetOptions(webOptions, security.UserName, security.Password, webOptions.EnableFormsAuth);
+
+                if (!String.IsNullOrEmpty(security.UserName) && !String.IsNullOrEmpty(security.Password) && webOptions.EnableHTMLAuth)
                 {
                     string securityValues = string.Format("{0}: {1}", security.UserName, security.Password);
                     string securityHeader = Convert.ToBase64String(Encoding.ASCII.GetBytes(securityValues));

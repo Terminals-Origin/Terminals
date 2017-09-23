@@ -3,11 +3,13 @@ using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Data;
+using Terminals.Forms.EditFavorite;
+using Terminals.Integration.Export;
 using Terminals.Plugins.Web;
 
 namespace Terminals.Connections.Web
 {
-    internal class HttpsConnectionPlugin: IConnectionPlugin, IOptionsConverterFactory
+    internal class HttpsConnectionPlugin: IConnectionPlugin, IOptionsExporterFactory, IOptionsConverterFactory
     {
         internal const int HTTPSPort = 443;
 
@@ -22,7 +24,7 @@ namespace Terminals.Connections.Web
 
         public Control[] CreateOptionsControls()
         {
-            return new Control[0];
+            return new Control[] { new WebControl() { Name = "HTTPS" } };
         }
 
         public Type GetOptionsType()
@@ -43,6 +45,11 @@ namespace Terminals.Connections.Web
         public IOptionsConverter CreatOptionsConverter()
         {
             return new WebOptionsConverter();
+        }
+
+        public ITerminalsOptionsExport CreateOptionsExporter()
+        {
+            return new TerminalsHTTPSExport();
         }
     }
 }
