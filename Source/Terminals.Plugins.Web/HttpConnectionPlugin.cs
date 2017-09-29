@@ -13,6 +13,7 @@ namespace Terminals.Connections.Web
     internal class HttpConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory, IOptionsConverterFactory
     {
         internal static readonly Image TreeIconHttp = Resources.treeIcon_http;
+        internal const string WEB_HTTP = "HTTP";
 
         public int Port { get { return KnownConnectionConstants.HTTPPort; } }
 
@@ -25,7 +26,7 @@ namespace Terminals.Connections.Web
 
         public Control[] CreateOptionsControls()
         {
-            return new Control[] { new WebControl() { Name = "HTTP" } };
+            return new Control[] { new WebControl() { Name = WEB_HTTP } };
         }
 
         public Type GetOptionsType()
