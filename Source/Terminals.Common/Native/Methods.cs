@@ -16,6 +16,9 @@ namespace Terminals.Native
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr GetParent(IntPtr hWndChild);
+
         [DllImport("user32.dll")]
         public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
 
@@ -77,6 +80,10 @@ namespace Terminals.Native
             GetWindowRect(hWnd, out rect);
             return rect.Rect;
         }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
 
         #endregion
 
