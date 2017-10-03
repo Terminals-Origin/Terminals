@@ -56,10 +56,8 @@ namespace Terminals.Plugins.Putty
                 return;
             }
 
-            const int SW_SHOW = 5;
-            const int SW_SHOWDEFAULT = 10;
-            Methods.ShowWindowAsync(pageantMainWindowHandle, SW_SHOWDEFAULT);
-            Methods.ShowWindowAsync(pageantMainWindowHandle, SW_SHOW);
+            Methods.ShowWindowAsync(pageantMainWindowHandle, (int)ShowWindowCommands.ShowDefault);
+            Methods.ShowWindowAsync(pageantMainWindowHandle, (int)ShowWindowCommands.Show);
             Methods.SetForegroundWindow(pageantMainWindowHandle);
         }
 
