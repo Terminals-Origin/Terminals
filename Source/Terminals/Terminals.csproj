@@ -816,6 +816,7 @@
     <Compile Include="Updates\UpdateChecksFile.cs" />
     <Compile Include="Updates\UpdateManager.cs" />
     <Compile Include="Updates\UpdateConfig.cs" />
+    <Compile Include="Updates\V401ContentUpgrade.cs" />
     <Compile Include="Wizard\CommonOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
