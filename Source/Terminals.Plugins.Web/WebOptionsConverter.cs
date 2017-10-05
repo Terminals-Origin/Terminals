@@ -4,9 +4,29 @@ using Terminals.Data;
 
 namespace Terminals.Plugins.Web
 {
-    internal class WebOptionsConverter : OptionsConverterTemplate<WebOptions>, IOptionsConverter
+    internal class WebOptionsConverter : IOptionsConverter
     {
-        protected override void FromConfigFavorite(FavoriteConfigurationElement source, WebOptions options)
+        public void FromConfigFavorite(OptionsConversionContext context)
+        {
+            UrlConverter.UpdateFavoriteUrl(context.Favorite, context.ConfigFavorite.Url);
+
+            if (context.Favorite.ProtocolProperties is WebOptions options)
+            {
+                this.FromConfigFavorite(context.ConfigFavorite, options);
+            }
+        }
+
+        public void ToConfigFavorite(OptionsConversionContext context)
+        {
+            context.ConfigFavorite.Url = UrlConverter.ExtractAbsoluteUrl(context.Favorite);
+
+            if (context.Favorite.ProtocolProperties is WebOptions options)
+            {
+                this.ToConfigFavorite(context.ConfigFavorite, options);
+            }
+        }
+
+        protected void FromConfigFavorite(FavoriteConfigurationElement source, WebOptions options)
         {
             options.UsernameID = source.UsernameID;
             options.PasswordID = source.PasswordID;
@@ -17,7 +37,7 @@ namespace Terminals.Plugins.Web
             options.EnableFormsAuth = source.EnableFormsAuth;
         }
 
-        protected override void ToConfigFavorite(FavoriteConfigurationElement destination, WebOptions options)
+        protected void ToConfigFavorite(FavoriteConfigurationElement destination, WebOptions options)
         {
             destination.UsernameID = options.UsernameID;
             destination.PasswordID = options.PasswordID;

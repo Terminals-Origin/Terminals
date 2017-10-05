@@ -51,7 +51,7 @@ namespace Terminals.Connections.Web
 
         public ITerminalsOptionsExport CreateOptionsExporter()
         {
-            return new TerminalsHTTPExport();
+            return new TerminalsWebExport();
         }
     }
 }
