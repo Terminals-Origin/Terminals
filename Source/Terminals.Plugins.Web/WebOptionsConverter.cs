@@ -11,9 +11,7 @@ namespace Terminals.Plugins.Web
             UrlConverter.UpdateFavoriteUrl(context.Favorite, context.ConfigFavorite.Url);
 
             if (context.Favorite.ProtocolProperties is WebOptions options)
-            {
                 this.FromConfigFavorite(context.ConfigFavorite, options);
-            }
         }
 
         public void ToConfigFavorite(OptionsConversionContext context)
@@ -21,9 +19,7 @@ namespace Terminals.Plugins.Web
             context.ConfigFavorite.Url = UrlConverter.ExtractAbsoluteUrl(context.Favorite);
 
             if (context.Favorite.ProtocolProperties is WebOptions options)
-            {
                 this.ToConfigFavorite(context.ConfigFavorite, options);
-            }
         }
 
         protected void FromConfigFavorite(FavoriteConfigurationElement source, WebOptions options)
