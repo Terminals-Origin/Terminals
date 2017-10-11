@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FavoritesFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" FileVerion="2.0" xmlns="http://Terminals.codeplex.com">
+  <Favorites>
+    <Favorite id="c57a29ff-c460-4208-a701-7d4124f26cf9">
+      <Name>ssh</Name>
+      <Protocol>SSH</Protocol>
+      <Port>3389</Port>
+      <ServerName>ssh</ServerName>
+      <Security>
+        <EncryptedUserName />
+        <EncryptedDomain />
+        <EncryptedPassword />
+      </Security>
+      <NewWindow>false</NewWindow>
+      <ExecuteBeforeConnect>
+        <Execute>false</Execute>
+        <Command />
+        <CommandArguments />
+        <InitialDirectory />
+        <WaitForExit>false</WaitForExit>
+      </ExecuteBeforeConnect>
+      <Display>
+        <Height>0</Height>
+        <Width>0</Width>
+        <DesktopSize>FitToWindow</DesktopSize>
+        <Colors>Bits32</Colors>
+      </Display>
+      <SshOptions>
+        <SSH1>false</SSH1>
+        <AuthMethod>PublicKey</AuthMethod>
+        <SSHKeyFile />
+        <CertificateKey />
+        <Console>
+          <Rows>38</Rows>
+          <Columns>110</Columns>
+          <Font>[Font: Name=Courier New, Size=10, Units=3, GdiCharSet=0, GdiVerticalFont=False, Style=0]</Font>
+          <BackColor>Black</BackColor>
+          <TextColor>White</TextColor>
+          <CursorColor>Red</CursorColor>
+        </Console>
+      </SshOptions>
+    </Favorite>
+    <Favorite id="744ddaab-c64d-40c0-8292-1faf3db5b7a3">
+      <Name>telnet</Name>
+      <Protocol>Telnet</Protocol>
+      <Port>23</Port>
+      <ServerName>telnet</ServerName>
+      <Security>
+        <EncryptedUserName />
+        <EncryptedDomain />
+        <EncryptedPassword />
+      </Security>
+      <NewWindow>false</NewWindow>
+      <ExecuteBeforeConnect>
+        <Execute>false</Execute>
+        <Command />
+        <CommandArguments />
+        <InitialDirectory />
+        <WaitForExit>false</WaitForExit>
+      </ExecuteBeforeConnect>
+      <Display>
+        <Height>0</Height>
+        <Width>0</Width>
+        <DesktopSize>FitToWindow</DesktopSize>
+        <Colors>Bits32</Colors>
+      </Display>
+      <ConsoleOptions>
+        <Rows>38</Rows>
+        <Columns>110</Columns>
+        <Font>[Font: Name=Courier New, Size=10, Units=3, GdiCharSet=0, GdiVerticalFont=False, Style=0]</Font>
+        <BackColor>Black</BackColor>
+        <TextColor>White</TextColor>
+        <CursorColor>Red</CursorColor>
+      </ConsoleOptions>
+    </Favorite>
+  </Favorites>
+  <Groups />
+  <FavoritesInGroups />
+</FavoritesFile>

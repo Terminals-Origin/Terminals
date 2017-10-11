@@ -13,11 +13,12 @@ using Terminals.Integration.Export;
 using Terminals.Integration.Import;
 using Tests.Connections;
 using Tests.FilePersisted;
+using Tests.Helpers;
 
 namespace Tests.Integrations
 {
     [TestClass]
-    [DeploymentItem(@"..\Resources\TestData\" + DUPLICIT_ITEMS_FILE)]
+    [DeploymentItem(TestDataFiles.TESTDATA_DIRECTORY + DUPLICIT_ITEMS_FILE)]
     public class ImportsTest : FilePersistedTestLab
     {
         private const string DUPLICIT_ITEMS_FILE = @"Issue_21279_import_800_items.xml";

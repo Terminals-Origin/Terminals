@@ -148,6 +148,7 @@
     <Compile Include="Helpers\ImageAssert.cs" />
     <Compile Include="FilePersisted\TestFileWatch.cs" />
     <Compile Include="FilePersisted\TestImportUi.cs" />
+    <Compile Include="Helpers\TestDataFiles.cs" />
     <Compile Include="Integrations\RdcManImporterTests.cs" />
     <Compile Include="Integrations\ExportRdpTest.cs" />
     <Compile Include="Integrations\ImportRdpTest.cs" />
@@ -306,6 +307,10 @@
       <Link>SecuredCredentials.xml</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="..\..\Resources\TestData\SshTelnet_Favorites_401.xml">
+      <Link>SshTelnet_Favorites_401.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="..\Terminals\Resources\ControlPanel.png">
       <Link>ControlPanel.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
