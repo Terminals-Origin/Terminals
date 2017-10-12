@@ -16,7 +16,6 @@ namespace Tests.Upgrade
         public TestContext TestContext { get; set; }
 
         [DeploymentItem(SSHTELNET_FAVORITES)]
-        //[Ignore()] //"Not implemented yet."
         [TestMethod]
         public void TelnetAndSsh_Upgrade_SetsFavoritePropertiesToNewType()
         {
