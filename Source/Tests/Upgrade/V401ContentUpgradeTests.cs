@@ -27,10 +27,11 @@ namespace Tests.Upgrade
             upgrade.Run(filePath);
 
             string updatedContent = File.ReadAllText(filePath);
-            bool allpass = !updatedContent.Contains("SshOptions") &&
+            bool allpass = !updatedContent.Contains("SSHKeyFile") &&
                            !updatedContent.Contains("ConsoleOptions") &&
-                           Regex.Matches(updatedContent, "PuttyOptions").Count == 4;
-            Assert.IsTrue(allpass, "Both ssh and telnet options were replaced by PuttyOptions");
+                           Regex.Matches(updatedContent, "SshOptions").Count == 2 &&
+                           Regex.Matches(updatedContent, "TelnetOptions").Count == 2;
+            Assert.IsTrue(allpass, "Both ssh and telnet options types were replaced by PuttyOptions");
         }
     }
 }
