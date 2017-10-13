@@ -39,8 +39,8 @@ namespace Terminals.Plugins.Putty
             if (pageantProcesses.Any())
                 return pageantProcesses;
 
-            var puttyBinaryPath = GetBinaryPath(PAGEANT_BINARY);
-            ExternalLinks.OpenPath(puttyBinaryPath);
+            var pagenatBinary = GetBinaryPath(PAGEANT_BINARY);
+            ExternalLinks.OpenPath(pagenatBinary);
             return Process.GetProcessesByName(PAGEANT);
         }
 

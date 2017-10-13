@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Terminals.Common.Forms
@@ -10,7 +11,7 @@ namespace Terminals.Common.Forms
         {
             try
             {
-                Process.Start(uri, arguments);
+                Task.Factory.StartNew(() => Process.Start(uri, arguments));
             }
             catch (Exception)
             {
