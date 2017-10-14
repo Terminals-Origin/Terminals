@@ -295,8 +295,7 @@ namespace Tests.Connections
                 "Terminals.Plugins.Putty.TerminalsSshExport",
                 "Terminals.Plugins.Putty.TerminalsTelnetExport",
                 "Terminals.Integration.Export.TerminalsVmrcExport",
-                "Terminals.Integration.Export.TerminalsHTTPExport",
-                "Terminals.Integration.Export.TerminalsHTTPSExport",
+                "Terminals.Integration.Export.TerminalsWebExport",
             };
 
             ITerminalsOptionsExport[] exporters = this.connectionManager.GetTerminalsOptionsExporters();
