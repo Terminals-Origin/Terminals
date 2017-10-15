@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals", "Terminals\Terminals.csproj", "{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -67,6 +67,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vnc", "Vnc", "{04783F0B-4961-4550-8561-FB1734CCE3FC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Putty", "Terminals.Plugins.Putty\Terminals.Plugins.Putty.csproj", "{449DC14A-7C3F-4BE5-BA39-4AFD1C5404E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.TeamViewer", "Terminals.Plugins.TeamViewer\Terminals.Plugins.TeamViewer.csproj", "{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -322,6 +324,18 @@ Global
 		{449DC14A-7C3F-4BE5-BA39-4AFD1C5404E6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{449DC14A-7C3F-4BE5-BA39-4AFD1C5404E6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{449DC14A-7C3F-4BE5-BA39-4AFD1C5404E6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}.DistributionRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}.DistributionRelease|Any CPU.Build.0 = Release|Any CPU
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}.DistributionRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}.DistributionRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -341,6 +355,10 @@ Global
 		{F0C60ED2-9A47-4364-AF57-505BC3E953D5} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
 		{04783F0B-4961-4550-8561-FB1734CCE3FC} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
 		{449DC14A-7C3F-4BE5-BA39-4AFD1C5404E6} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
+		{449DC14A-7C3F-4BE5-BA39-4AFF2C6304E6} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {979854D2-10D6-404C-B51C-62489716C278}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Terminals.vsmdi
