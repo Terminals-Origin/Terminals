@@ -37,6 +37,7 @@ namespace Terminals
             private EventHandler groupToolStripMenuItemClick;
             private EventHandler groupAddToolStripMenuItemClick;
 
+            internal const String COMMAND_DISCONNECT = "Disconnect";
             internal const String COMMAND_EXIT = "Exit";
             internal const String QUICK_CONNECT = "QuickConnect";
             internal const String COMMAND_SPECIAL = "SpecialCommands";
@@ -456,6 +457,7 @@ namespace Terminals
 
             private void AddGeneralTrayContextMenu()
             {
+                CreateGeneralTrayContextMenuItem(COMMAND_DISCONNECT, Resources.disconnect);
                 restoreScreenMenuItem = this.CreateGeneralTrayContextMenuItem(COMMAND_RESTORESCREEN, Resources.arrow_in);
                 fullScreenMenuItem = this.CreateGeneralTrayContextMenuItem(COMMAND_FULLSCREEN, Resources.arrow_out);
 
