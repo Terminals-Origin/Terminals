@@ -732,6 +732,9 @@ namespace Terminals
                         break;
                     case FavoritesMenuLoader.COMMAND_SPECIAL:
                         return;
+                    case FavoritesMenuLoader.COMMAND_DISCONNECT:
+                        this.tabControlRemover.Disconnect();
+                        return;
                     default:
                         this.OnFavoriteTrayToolsStripClick(e);
                         break;
