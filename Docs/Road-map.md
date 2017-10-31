@@ -7,4 +7,4 @@ These features are "big rocks" and they explain long period between some previou
 
 * Database optimizations - Database was implemented with low performance and to allow larger environments we will need to enhance its implementation.
 
-* External credentials providers integrations - Keypass and Windows credentials store are logical extension of credentials providers.
+* External credentials providers integrations - Keepass and Windows credentials store are logical extension of credentials providers.
