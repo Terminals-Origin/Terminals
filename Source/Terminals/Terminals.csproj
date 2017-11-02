@@ -801,6 +801,7 @@
     <Compile Include="Forms\Controls\TerminalTabsSelectionControler.cs" />
     <Compile Include="StartupUi.cs" />
     <Compile Include="Updates\FilesV2ContentUpgrade.cs" />
+    <Compile Include="Updates\IVersionUpgrade.cs" />
     <Compile Include="Updates\PasswordsV2Update.cs" />
     <Compile Include="Updates\Release.cs" />
     <Compile Include="Updates\ReleaseInfo.cs" />

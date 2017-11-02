@@ -8,12 +8,12 @@ using Terminals.Services;
 
 namespace Terminals.Updates
 {
-    internal class V20Upgrade
+    internal class V20Upgrade : IVersionUpgrade
     {
         private readonly Settings settings;
-                
+
         private readonly IPersistence persistence;
-                
+
         private readonly ConnectionManager connectionManager;
 
         internal V20Upgrade(Settings settings, IPersistence persistence, ConnectionManager connectionManager)
@@ -23,24 +23,26 @@ namespace Terminals.Updates
             this.settings = settings;
         }
 
-        internal void Upgrade()
+        public bool NeedExecute()
         {
             // problem: Settings file is already loaded from new location,
             // but we need to check, if there is one in old location
-            if (IsVersion2UpTo21(settings) || IsConfigFileOnV2Location())
-            {
-                MoveFilesToVersion2Location(settings, persistence, connectionManager);
-                UpdateDefaultFavoriteUrl(persistence);
-            }
+            return this.IsVersion2UpTo21() || IsConfigFileOnV2Location();
         }
 
-        private static bool IsVersion2UpTo21(Settings settings)
+        public void Upgrade()
+        {
+            this.MoveFilesToVersion2Location();
+            this.UpdateDefaultFavoriteUrl();
+        }
+
+        private bool IsVersion2UpTo21()
         {
             return Program.Info.Version >= new Version(2, 0, 0, 0) &&
-                   (settings.ConfigVersion != null && settings.ConfigVersion < new Version(2, 1, 0, 0));
+                   (this.settings.ConfigVersion != null && this.settings.ConfigVersion < new Version(2, 1, 0, 0));
         }
 
-        private static void MoveFilesToVersion2Location(Settings settings, IPersistence persistence, ConnectionManager connectionManager)
+        private void MoveFilesToVersion2Location()
         {
             // we upgrade only files, there was no SqlPersistence before
             // don't need to refresh the file location, because if the files were changed
@@ -52,8 +54,8 @@ namespace Terminals.Updates
             MoveDataFile(FileLocations.CREDENTIALS_FILENAME);
             // only this is already in use if started with default location
             MoveDataFile(FileLocations.CONFIG_FILENAME);
-            settings.ForceReload();
-            var contentUpgrade = new FilesV2ContentUpgrade(persistence, connectionManager, RequestPassword.KnowsUserPassword);
+            this.settings.ForceReload();
+            var contentUpgrade = new FilesV2ContentUpgrade(this.persistence, this.connectionManager, RequestPassword.KnowsUserPassword);
             contentUpgrade.Run();
         }
 
@@ -76,7 +78,7 @@ namespace Terminals.Updates
 
             if (Directory.Exists(oldPath))
             {
-                if(Directory.Exists(newPath))
+                if (Directory.Exists(newPath))
                     Directory.Delete(newPath, true);
 
                 Directory.Move(oldPath, newPath);
@@ -127,13 +129,13 @@ namespace Terminals.Updates
         /// <summary>
         /// Change the Terminals URL to the correct URL used for Terminals News as of version 2.0 RC1
         /// </summary>
-        private static void UpdateDefaultFavoriteUrl(IPersistence persistence)
+        private void UpdateDefaultFavoriteUrl()
         {
-            IFavorite newsFavorite = persistence.Favorites[FavoritesFactory.TerminalsReleasesFavoriteName];
+            IFavorite newsFavorite = this.persistence.Favorites[FavoritesFactory.TerminalsReleasesFavoriteName];
             if (newsFavorite != null)
             {
                 newsFavorite.ServerName = ExternalLinks.TerminalsReleasesUrl;
-                persistence.Favorites.Update(newsFavorite);
+                this.persistence.Favorites.Update(newsFavorite);
             }
         }
     }

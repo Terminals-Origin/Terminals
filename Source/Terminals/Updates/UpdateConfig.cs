@@ -36,8 +36,16 @@ namespace Terminals.Updates
             if (settings.ConfigVersion == null || settings.ConfigVersion < Program.Info.Version)
             {
                 // keep update sequence ordered!
-                var v2 = new V20Upgrade(this.settings, this.persistence, this.connectionManager);
-                v2.Upgrade();
+                IVersionUpgrade[] upgradades = new IVersionUpgrade[]
+                {
+                    new V20Upgrade(this.settings, this.persistence, this.connectionManager)
+                };
+
+                foreach (IVersionUpgrade upgrade in upgradades)
+                {
+                    if (upgrade.NeedExecute())
+                        upgrade.Upgrade();
+                }
 
                 // After all updates change the config version to the current assembly version
                 settings.ConfigVersion = Program.Info.Version;
