@@ -63,14 +63,6 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\SqlScriptRunner\SqlScriptRunner.csproj">
-      <Name>SqlScriptRunner</Name>
-      <Project>{54106f05-1c42-43eb-b4ee-f4b7f6ca302f}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
     <ProjectReference Include="..\TabControl\TabControl.csproj">
       <Name>TabControl</Name>
       <Project>{3d54db4b-dc8a-44aa-8ee0-4edf58ce1331}</Project>

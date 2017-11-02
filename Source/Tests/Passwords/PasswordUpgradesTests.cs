@@ -9,6 +9,7 @@ using Terminals.Security;
 using Terminals.Updates;
 using Tests.Connections;
 using Tests.FilePersisted;
+using Tests.Helpers;
 
 namespace Tests.Passwords
 {
@@ -19,7 +20,6 @@ namespace Tests.Passwords
     [TestClass]
     public class PasswordUpgradesTests
     {
-        private const string TESTDATA_DIRECTORY = @"..\Resources\TestData\";
         private const string EMPTY_CONFIG_FILE = "EmptyTerminals.config";
         private const string EMPTY_CREDENTIALS_FILE = "EmptyCredentials.xml";
         private const string NOMASTER_CONFIG_FILE = "NoMasterTerminals.config";
@@ -32,13 +32,13 @@ namespace Tests.Passwords
         /// User name and password encrypted in test credential file
         /// </summary>
         private const string TEST_PASSWORD = "TestUser";
-        
+
         public TestContext TestContext { get; set; }
 
         private bool askedForPassword;
 
-        [DeploymentItem(TESTDATA_DIRECTORY + EMPTY_CONFIG_FILE)]
-        [DeploymentItem(TESTDATA_DIRECTORY + EMPTY_CREDENTIALS_FILE)]
+        [DeploymentItem(TestDataFiles.TESTDATA_DIRECTORY + EMPTY_CONFIG_FILE)]
+        [DeploymentItem(TestDataFiles.TESTDATA_DIRECTORY + EMPTY_CREDENTIALS_FILE)]
         [TestMethod]
         public void V2UpgradeEmptyConfigTest()
         {
@@ -48,8 +48,8 @@ namespace Tests.Passwords
             Assert.IsFalse(askedForPassword, "Empty config file shouldn't ask for password");
         }
 
-        [DeploymentItem(TESTDATA_DIRECTORY + NOMASTER_CONFIG_FILE)]
-        [DeploymentItem(TESTDATA_DIRECTORY + NOMASTER_CREDENTIALS_FILE)]
+        [DeploymentItem(TestDataFiles.TESTDATA_DIRECTORY + NOMASTER_CONFIG_FILE)]
+        [DeploymentItem(TestDataFiles.TESTDATA_DIRECTORY + NOMASTER_CREDENTIALS_FILE)]
         [TestMethod]
         public void V2UpgradeNoMasterPasswordConfigTest()
         {
@@ -62,8 +62,8 @@ namespace Tests.Passwords
             AssertUserAndCredential(persistence);
         }
 
-        [DeploymentItem(TESTDATA_DIRECTORY + SECURED_CONFIG_FILE)]
-        [DeploymentItem(TESTDATA_DIRECTORY + SECURED_CREDENTIALS_FILE)]
+        [DeploymentItem(TestDataFiles.TESTDATA_DIRECTORY + SECURED_CONFIG_FILE)]
+        [DeploymentItem(TestDataFiles.TESTDATA_DIRECTORY + SECURED_CREDENTIALS_FILE)]
         [TestMethod]
         public void V2UpgradePasswordsTest()
         {

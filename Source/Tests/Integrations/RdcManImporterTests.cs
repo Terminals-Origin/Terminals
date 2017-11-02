@@ -5,6 +5,7 @@ using Terminals;
 using Terminals.Configuration;
 using Terminals.Integration.Import.RdcMan;
 using Tests.FilePersisted;
+using Tests.Helpers;
 
 namespace Tests.Integrations
 {
@@ -13,15 +14,14 @@ namespace Tests.Integrations
     [TestClass]
     public class RdcManImporterTests : FilePersistedTestLab
     {
-        private const string RELATIVE_PATH = @"..\Resources\TestData\";
         private const string EMPTY_FILE_NAME = "RdcManGroupsEmpty.rdg";
-        private const string EMPTY_FILE = RELATIVE_PATH + EMPTY_FILE_NAME;
+        private const string EMPTY_FILE = TestDataFiles.TESTDATA_DIRECTORY + EMPTY_FILE_NAME;
         private const string FULL_FILE_NAME = "RdcManGroupsAndFavorites.rdg";
-        private const string FULL_FILE = RELATIVE_PATH + FULL_FILE_NAME;
+        private const string FULL_FILE = TestDataFiles.TESTDATA_DIRECTORY + FULL_FILE_NAME;
         private const string SERVERSONLY_FILE_NAME = "RdcManRootServers.rdg";
-        private const string SERVERSONLY_FILE = RELATIVE_PATH + SERVERSONLY_FILE_NAME;
+        private const string SERVERSONLY_FILE = TestDataFiles.TESTDATA_DIRECTORY + SERVERSONLY_FILE_NAME;
         private const string INHERITED_FILE_NAME = "RdcManInheritedProperties.rdg";
-        private const string INHERITED_FILE = RELATIVE_PATH + INHERITED_FILE_NAME;
+        private const string INHERITED_FILE = TestDataFiles.TESTDATA_DIRECTORY + INHERITED_FILE_NAME;
 
         private const string SERVER_NAME2 = "ServerName2";
 

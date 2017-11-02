@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals", "Terminals\Terminals.csproj", "{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -28,14 +28,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zlib.net", "zlib.net\zlib.net.csproj", "{0C89B7A2-A218-49E4-B545-5B044A45F977}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{81B4C28B-5B10-4A53-B0AC-9E8F72733139}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlMigrations", "SqlMigrations", "{92B0C240-075E-4B86-820E-BBEC58B331DE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlScriptRunner", "SqlScriptRunner\SqlScriptRunner.csproj", "{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlScriptRunner.Tests", "SqlScriptRunner.Tests\SqlScriptRunner.Tests.csproj", "{C451F6AA-0F56-4051-968B-90EBB90C8864}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildTasks", "BuildTasks\BuildTasks.csproj", "{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}"
 EndProject
@@ -176,42 +168,6 @@ Global
 		{81B4C28B-5B10-4A53-B0AC-9E8F72733139}.Release|Any CPU.Build.0 = Release|Any CPU
 		{81B4C28B-5B10-4A53-B0AC-9E8F72733139}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{81B4C28B-5B10-4A53-B0AC-9E8F72733139}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.DistributionRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.DistributionRelease|Any CPU.Build.0 = Release|Any CPU
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.DistributionRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.DistributionRelease|Mixed Platforms.Build.0 = Release|Any CPU
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C451F6AA-0F56-4051-968B-90EBB90C8864}.DistributionRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{C451F6AA-0F56-4051-968B-90EBB90C8864}.DistributionRelease|Any CPU.Build.0 = Release|Any CPU
-		{C451F6AA-0F56-4051-968B-90EBB90C8864}.DistributionRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C451F6AA-0F56-4051-968B-90EBB90C8864}.DistributionRelease|Mixed Platforms.Build.0 = Release|Any CPU
-		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.DistributionRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.DistributionRelease|Any CPU.Build.0 = Release|Any CPU
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.DistributionRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.DistributionRelease|Mixed Platforms.Build.0 = Release|Any CPU
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.DistributionRelease|Any CPU.ActiveCfg = Release|x86
@@ -343,9 +299,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E0695F0F-0FAF-44BC-AE55-A1FCBFE70271} = {04783F0B-4961-4550-8561-FB1734CCE3FC}
 		{0C89B7A2-A218-49E4-B545-5B044A45F977} = {04783F0B-4961-4550-8561-FB1734CCE3FC}
-		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
-		{C451F6AA-0F56-4051-968B-90EBB90C8864} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
-		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
 		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8} = {BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}
 		{D775E5FD-DDD7-46AA-8BEF-CC18BA0BB702} = {BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}
 		{123562C5-8D66-4E30-9676-D47B4C03EE7F} = {04783F0B-4961-4550-8561-FB1734CCE3FC}
@@ -358,7 +311,7 @@ Global
 		{449DC14A-7C3F-4BE5-BA39-4AFD1C6304E6} = {EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {AB14DA44-DB6E-46B9-BBC3-D03DDFE8B6A6}
+		SolutionGuid = {6478E460-2F32-4FEE-92F6-DE2E4262A993}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Terminals.vsmdi

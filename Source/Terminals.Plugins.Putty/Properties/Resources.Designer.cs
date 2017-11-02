@@ -61,6 +61,24 @@ namespace Terminals.Plugins.Putty.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The pageant tool is already running, open its window from system tray..
+        /// </summary>
+        internal static string PageantMessage {
+            get {
+                return ResourceManager.GetString("PageantMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terminals was unable to start pageant tool..
+        /// </summary>
+        internal static string PageantUnableToStart {
+            get {
+                return ResourceManager.GetString("PageantUnableToStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Refresh {

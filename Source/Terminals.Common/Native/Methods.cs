@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Terminals.Native
 {
@@ -52,6 +51,9 @@ namespace Terminals.Native
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern bool ShowWindow(HandleRef hWnd, int nCmdShow);
+
+        [DllImport("user32.dll")]
+        public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern bool SetForegroundWindow(HandleRef hWnd);
