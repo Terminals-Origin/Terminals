@@ -168,9 +168,9 @@ namespace Terminals.Plugins.WinBox
 
             this.Invoke(new ThreadStart(() =>
             {
-                IntPtr puttyWindow = this.WinBoxHandle;
-                Methods.SetForegroundWindow(puttyWindow);
-                Methods.SetFocus(puttyWindow);
+                IntPtr WinBoxWindow = this.WinBoxHandle;
+                Methods.SetForegroundWindow(WinBoxWindow);
+                Methods.SetFocus(WinBoxWindow);
             }));
         }
     }
