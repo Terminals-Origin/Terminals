@@ -148,6 +148,7 @@
     <Compile Include="Helpers\ImageAssert.cs" />
     <Compile Include="FilePersisted\TestFileWatch.cs" />
     <Compile Include="FilePersisted\TestImportUi.cs" />
+    <Compile Include="Helpers\TestDataFiles.cs" />
     <Compile Include="Integrations\RdcManImporterTests.cs" />
     <Compile Include="Integrations\ExportRdpTest.cs" />
     <Compile Include="Integrations\ImportRdpTest.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="SqlPersisted\CredentialsTest.cs" />
     <Compile Include="CustomSetupActionTest.cs" />
     <Compile Include="PersistenceFactoryTests.cs" />
+    <Compile Include="Upgrade\V401ContentUpgradeTests.cs" />
     <Compile Include="UserInterface\MenuVisitorSut.cs" />
     <Compile Include="UserInterface\MockChildProtocolControl.cs">
       <SubType>Component</SubType>
@@ -225,10 +227,6 @@
     <ProjectReference Include="..\SharpPcap\SharpPcap.csproj">
       <Project>{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}</Project>
       <Name>SharpPcap</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SqlScriptRunner\SqlScriptRunner.csproj">
-      <Project>{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}</Project>
-      <Name>SqlScriptRunner</Name>
     </ProjectReference>
     <ProjectReference Include="..\TabControl\TabControl.csproj">
       <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>
@@ -309,6 +307,10 @@
       <Link>SecuredCredentials.xml</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="..\..\Resources\TestData\SshTelnet_Favorites_401.xml">
+      <Link>SshTelnet_Favorites_401.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="..\Terminals\Resources\ControlPanel.png">
       <Link>ControlPanel.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

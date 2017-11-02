@@ -113,7 +113,7 @@ namespace Terminals.Forms
             this.testLabel.Visible = true;
             string databasePassword = this.GetFilledDatabasePassword();
             var connectionProperties = new Tuple<string, string>(this.ConnectionString, databasePassword);
-            var t = Task<DatabaseValidationResult>.Factory.StartNew(TryTestDatabaseConnection, connectionProperties);
+            var t = Task<TestConnectionResult>.Factory.StartNew(TryTestDatabaseConnection, connectionProperties);
             t.ContinueWith(this.ShowConnectionTestResult, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
@@ -125,17 +125,17 @@ namespace Terminals.Forms
             return settings.DatabaseMasterPassword;
         }
 
-        private static DatabaseValidationResult TryTestDatabaseConnection(object objectState)
+        private static TestConnectionResult TryTestDatabaseConnection(object objectState)
         {
             var connectionParams = objectState as Tuple<string, string>;
             return DatabaseConnections.ValidateDatabaseConnection(connectionParams.Item1, connectionParams.Item2);
         }
 
-        private void ShowConnectionTestResult(Task<DatabaseValidationResult> antecedent)
+        private void ShowConnectionTestResult(Task<TestConnectionResult> antecedent)
         {
-            DatabaseValidationResult connectionResult = antecedent.Result;
+            TestConnectionResult connectionResult = antecedent.Result;
 
-            if (connectionResult.SuccessfulWithVersion)
+            if (connectionResult.Successful)
             {
                 string message = string.Format("Test connection succeeded.");
                 // todo enable database versioning, see also commented code in ShowFailedConnectionTestMessage and ButtonCreateNewDatabaseClick.
@@ -150,7 +150,7 @@ namespace Terminals.Forms
             this.testLabel.Visible = false;
         }
 
-        private static void ShowFailedConnectionTestMessage(DatabaseValidationResult connectionResult)
+        private static void ShowFailedConnectionTestMessage(TestConnectionResult connectionResult)
         {
             string message = string.Format("Test database failed.\r\nReason:{0}", connectionResult.ErroMessage);
 

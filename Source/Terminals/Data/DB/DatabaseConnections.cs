@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.EntityClient;
-using System.IO;
 using System.Linq;
 using Terminals.Configuration;
 using Terminals.Security;
-using Versioning = SqlScriptRunner.Versioning;
 
 namespace Terminals.Data.DB
 {
@@ -121,76 +119,11 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal static void UpgradeDatabaseVersion()
-        {
-            string connectionString = settings.ConnectionString;
-            string databaseMasterPassword = settings.DatabaseMasterPassword;
-            DatabaseValidationResult dbResult = ValidateDatabaseConnection(connectionString, databaseMasterPassword);
-
-            string migrationsRoot = FileLocations.SqlMigrations;
-            if (Directory.Exists(migrationsRoot))
-            {
-                var parser = new Versioning.JustVersionParser();
-                var list = SqlScriptRunner.ScriptRunner.ResolveScriptsFromPathAndVersion(migrationsRoot, "*.sql", true,
-                                                                                         migrationsRoot, dbResult.CurrentVersion,
-                                                                                         Versioning.Version.Max, parser);
-
-                // commit the database upgrade in next version
-            }
-        }
-
-        internal static DatabaseValidationResult ValidateDatabaseConnection(string connectionString, string databasePassword)
+        internal static TestConnectionResult ValidateDatabaseConnection(string connectionString, string databasePassword)
         {
             TestConnectionResult connectionResult = TestConnection(connectionString, databasePassword);
             // todo enable database versioning
-            // if (!connectionResult.Successful)
-                return new DatabaseValidationResult(connectionResult, Versioning.Version.Max);
-            
-            return IdentifyDatabaseVersion(connectionString);
-        }
-
-        /// <summary>
-        /// Tries to obtain the version number from database Versions table.
-        /// If, database doesn't contain such table or contains no versions, Version.Min is returned.
-        /// </summary>
-        private static DatabaseValidationResult IdentifyDatabaseVersion(string connectionString)
-        {
-            try
-            {
-                Versioning.Version version = TryIdentifyDatabaseVersion(connectionString);
-                return new DatabaseValidationResult(version);
-            }
-            catch (Exception exception)
-            {
-                return new DatabaseValidationResult(exception.Message);
-            }
-        }
-
-        private static Versioning.Version TryIdentifyDatabaseVersion(string connectionString)
-        {
-            using (Database database = CreateInstance(connectionString))
-            {
-                int versionTable = ContainsDatabaseVersionTable(database);
-                if (versionTable == 0)
-                    return Versioning.Version.Min;
-
-                return GetFirstVersionInVersionsTable(database);
-            }
-        }
-
-        private static int ContainsDatabaseVersionTable(Database database)
-        {
-            const string VERSIONTABLE_COMMAND = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Version'";
-            return database.Database.SqlQuery<int>(VERSIONTABLE_COMMAND)
-                           .FirstOrDefault();
-        }
-
-        private static Versioning.Version GetFirstVersionInVersionsTable(Database database)
-        {
-            const string LAST_VERSION_COMMAND = "Select top 1 VersionNumber from Version order by Date desc";
-            string lastVersion = database.Database.SqlQuery<string>(LAST_VERSION_COMMAND).FirstOrDefault();
-            var parser = new Versioning.JustVersionParser();
-            return parser.Parse(lastVersion);
+            return connectionResult;
         }
     }
 }

@@ -20,9 +20,6 @@
       <Component Id="SharpPcapDll" Guid="29188BD1-307E-4CD0-9750-BF294FD0E902">
         <File Source="$(var.SharpPcap.TargetPath)" KeyPath="yes" Checksum="yes"/>
       </Component>
-      <Component Id="SqlScriptRunnerDll" Guid="88E4FB8E-9517-4BEE-9974-B7A1316F78B4">
-        <File Source="$(var.SqlScriptRunner.TargetPath)" KeyPath="yes" Checksum="yes"/>
-      </Component>
       <Component Id="TabControlDll" Guid="97B4B57A-C0D8-49D2-B75F-9B2B8F253A65">
         <File Source="$(var.TabControl.TargetPath)" KeyPath="yes" Checksum="yes"/>
       </Component>

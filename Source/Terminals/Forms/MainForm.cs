@@ -1327,46 +1327,26 @@ namespace Terminals
             this.LoadWindowState();
         }
 
-        private void LaunchExternal(string fullPath)
-        {
-            try
-            {
-                Process.Start(fullPath);
-            }
-            catch (Exception)
-            {
-                string message = string.Format("Unable to start:\r\n{0}", fullPath);
-                MessageBox.Show(message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
+        // todo Move openig putty tools to putty plugin as menu extender
         private void OpenSshAgentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Task.Factory.StartNew(this.OpenSshAgent);
+            this.OpenPuttyTool("pageant.exe");
         }
 
         private void OpenSshKeygenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Task.Factory.StartNew(this.OpenSshKeygen);
+            this.OpenPuttyTool("puttygen.exe");
         }
 
-        private void OpenSshAgent()
+        private void OpenPuttyTool(string name)
         {
-            LaunchExternal(Path.Combine(PluginsLoader.FindBasePluginDirectory(), "Putty", "Resources", "pageant.exe"));
-        }
-        private void OpenSshKeygen()
-        {
-            LaunchExternal(Path.Combine(PluginsLoader.FindBasePluginDirectory(), "Putty", "Resources", "puttygen.exe"));
+            string path = Path.Combine(PluginsLoader.FindBasePluginDirectory(), "Putty", "Resources", name);
+            ExternalLinks.OpenPath(path);
         }
 
         private void OpenLogFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Task.Factory.StartNew(this.OpenLogsFolder);
-        }
-
-        private void OpenLogsFolder()
-        {
-            LaunchExternal(FileLocations.LogDirectory);
+            ExternalLinks.OpenPath(FileLocations.LogDirectory);
         }
 
         private void SplitContainer1_SplitterMoved(object sender, SplitterEventArgs e)

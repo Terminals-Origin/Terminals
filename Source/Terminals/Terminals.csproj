@@ -373,7 +373,6 @@
     <Compile Include="Data\AuthenticationSequence.cs" />
     <Compile Include="Data\DB\DatabaseConnections.cs" />
     <Compile Include="Data\DB\DatabasePasswordUpdate.cs" />
-    <Compile Include="Data\DB\DatabaseValidationResult.cs" />
     <Compile Include="Data\DB\DbBeforeConnectExecute.cs">
       <DependentUpon>SQLPersistence.tt</DependentUpon>
     </Compile>
@@ -816,6 +815,8 @@
     <Compile Include="Updates\UpdateChecksFile.cs" />
     <Compile Include="Updates\UpdateManager.cs" />
     <Compile Include="Updates\UpdateConfig.cs" />
+    <Compile Include="Updates\V401ContentUpgrade.cs" />
+    <Compile Include="Updates\V40XElementExtensions.cs" />
     <Compile Include="Wizard\CommonOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1558,10 +1559,6 @@
     <ProjectReference Include="..\SharpPcap\SharpPcap.csproj">
       <Project>{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}</Project>
       <Name>SharpPcap</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SqlScriptRunner\SqlScriptRunner.csproj">
-      <Project>{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}</Project>
-      <Name>SqlScriptRunner</Name>
     </ProjectReference>
     <ProjectReference Include="..\TabControl\TabControl.csproj">
       <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>
