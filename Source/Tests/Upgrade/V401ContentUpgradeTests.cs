@@ -49,9 +49,7 @@ namespace Tests.Upgrade
         [TestMethod]
         public void TelnetAndSshInFilePersitence_Upgrade_SetsFavoritePropertiesToNewType()
         {
-            string filePath = Path.Combine(this.TestContext.DeploymentDirectory, FILE_NAME);
-            var upgrade = new V401ContentUpgrade();
-            upgrade.Run(filePath);
+            var filePath = this.RunUpgrade();
 
             string updatedContent = File.ReadAllText(filePath);
             bool allpass = AllUpgraded(updatedContent);
@@ -59,6 +57,7 @@ namespace Tests.Upgrade
         }
 
         [Ignore] // TODO Implement Upgrade also in the database
+        [DeploymentItem(SSHTELNET_FAVORITES)]
         [TestMethod]
         public void TelnetAndSshInDatabase_Upgrade_SetsFavoritePropertiesToNewType()
         {
@@ -66,13 +65,20 @@ namespace Tests.Upgrade
             this.InsertIntoFavoritesTable("SshFavorite", SSH_PROPERTIES);
             this.InsertIntoFavoritesTable("TelnetFavorite", TELNET_PROPERTIES);
 
-            var upgrade = new V401ContentUpgrade();
-            //upgrade.Run(filePath);
+            this.RunUpgrade();
 
             var allProperties = this.CheckDatabase.Database.SqlQuery<string>(ASSERT_QUERY);
             string joinedProperties = string.Join(string.Empty, allProperties);
             bool allPass = AllUpgraded(joinedProperties);
             Assert.IsTrue(allPass, MESSAGE);
+        }
+
+        private string RunUpgrade()
+        {
+            string filePath = Path.Combine(this.TestContext.DeploymentDirectory, FILE_NAME);
+            var upgrade = new V401ContentUpgrade();
+            upgrade.Run(filePath);
+            return filePath;
         }
 
         private void InsertIntoFavoritesTable(string sshfavorite, string properties)

@@ -815,6 +815,7 @@
     <Compile Include="Updates\UpdateChecksFile.cs" />
     <Compile Include="Updates\UpdateManager.cs" />
     <Compile Include="Updates\UpdateConfig.cs" />
+    <Compile Include="Updates\V20Upgrade.cs" />
     <Compile Include="Updates\V401ContentUpgrade.cs" />
     <Compile Include="Updates\V40XElementExtensions.cs" />
     <Compile Include="Wizard\CommonOptions.cs">
