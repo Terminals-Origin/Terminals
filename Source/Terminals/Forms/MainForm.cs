@@ -303,15 +303,20 @@ namespace Terminals
             }
 
             grabInputToolStripMenuItem.Checked = tsbGrabInput.Checked;
-            tsbConnect.Enabled = (tscConnectTo.Text != String.Empty);
-            tsbConnectToConsole.Enabled = (tscConnectTo.Text != String.Empty);
-            tsbConnectAs.Enabled = (tscConnectTo.Text != String.Empty);
-            
+            this.UpdateQuickConnectCommands();
 
             foreach (IToolbarExtender extender in this.toolbarExtenders)
             {
                 extender.Visit(this.toolbarStd);
             }
+        }
+
+        private void UpdateQuickConnectCommands()
+        {
+            bool quickConnectEnabled = !string.IsNullOrEmpty(this.tscConnectTo.Text);
+            this.tsbConnect.Enabled = quickConnectEnabled;
+            this.tsbConnectToConsole.Enabled = quickConnectEnabled;
+            this.tsbConnectAs.Enabled = quickConnectEnabled;
         }
 
         public String GetDesktopShare()
