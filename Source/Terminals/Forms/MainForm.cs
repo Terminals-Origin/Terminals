@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -292,10 +291,7 @@ namespace Terminals
         internal void UpdateControls()
         {
             tcTerminals.ShowToolTipOnTitle = settings.ShowInformationToolTips;
-            bool hasSelectedTerminal = this.terminalsControler.HasSelected;
-            addTerminalToGroupToolStripMenuItem.Enabled = hasSelectedTerminal;
-            tsbGrabInput.Enabled = hasSelectedTerminal;
-            grabInputToolStripMenuItem.Enabled = hasSelectedTerminal;
+            this.UpdateCommandsByActiveConnection();
 
             try
             {
@@ -310,7 +306,7 @@ namespace Terminals
             tsbConnect.Enabled = (tscConnectTo.Text != String.Empty);
             tsbConnectToConsole.Enabled = (tscConnectTo.Text != String.Empty);
             tsbConnectAs.Enabled = (tscConnectTo.Text != String.Empty);
-            saveTerminalsAsGroupToolStripMenuItem.Enabled = (tcTerminals.Items.Count > 0);
+            
 
             foreach (IToolbarExtender extender in this.toolbarExtenders)
             {
@@ -600,7 +596,7 @@ namespace Terminals
 
         private void CloseOpenedConnections(FormClosingEventArgs args)
         {
-            if (this.tcTerminals.Items.Count > 0)
+            if (this.terminalsControler.HasSelected)
             {
                 if (settings.ShowConfirmDialog)
                     SaveConnectonsIfRequested(args);
@@ -884,12 +880,6 @@ namespace Terminals
             this.tabControlRemover.Disconnect();
         }
 
-        // TODO Assing missing event handler
-        private void tcTerminals_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.UpdateControls();
-        }
-
         private void NewTerminalToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             this.connectionsUiFactory.CreateNewTerminal();
@@ -915,14 +905,19 @@ namespace Terminals
         {
             this.UpdateControls();
             this.AssingTitle();
+        }
 
-            if (this.tcTerminals.Items.Count > 0)
-            {
-                this.tsbDisconnect.Enabled = e.Item != null;
-                this.disconnectToolStripMenuItem.Enabled = e.Item != null;
-                this.toolStripButtonReconnect.Enabled = this.disconnectToolStripMenuItem.Enabled;
-                this.SetGrabInput(true);
-            }
+        private void UpdateCommandsByActiveConnection()
+        {
+            bool hasSelectedConnection = this.terminalsControler.HasSelected;
+            this.tsbDisconnect.Enabled = hasSelectedConnection;
+            this.disconnectToolStripMenuItem.Enabled = hasSelectedConnection;
+            this.toolStripButtonReconnect.Enabled = hasSelectedConnection;
+            this.addTerminalToGroupToolStripMenuItem.Enabled = hasSelectedConnection;
+            this.saveTerminalsAsGroupToolStripMenuItem.Enabled = hasSelectedConnection;
+            this.grabInputToolStripMenuItem.Enabled = hasSelectedConnection;
+            this.tsbGrabInput.Enabled = hasSelectedConnection;
+            this.SetGrabInput(hasSelectedConnection);
         }
 
         private void AssingTitle()
@@ -1442,9 +1437,10 @@ namespace Terminals
 
         private void ToolStripButtonReconnect_Click(object sender, EventArgs e)
         {
-            if (CurrentTerminal != null)
+            IConnection currentConnection = this.terminalsControler.CurrentConnection;
+            if (currentConnection != null)
             {
-                var favorite = ((Terminals.Connections.Connection)CurrentTerminal).Favorite;
+                IFavorite favorite = currentConnection.Favorite;
                 this.tabControlRemover.Disconnect();
                 this.connectionsUiFactory.CreateTerminalTab(favorite);
             }
