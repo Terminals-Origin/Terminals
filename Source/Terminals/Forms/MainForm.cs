@@ -920,6 +920,7 @@ namespace Terminals
             {
                 this.tsbDisconnect.Enabled = e.Item != null;
                 this.disconnectToolStripMenuItem.Enabled = e.Item != null;
+                this.toolStripButtonReconnect.Enabled = this.disconnectToolStripMenuItem.Enabled;
                 this.SetGrabInput(true);
             }
         }
@@ -1438,5 +1439,15 @@ namespace Terminals
         }
 
         #endregion
+
+        private void ToolStripButtonReconnect_Click(object sender, EventArgs e)
+        {
+            if (CurrentTerminal != null)
+            {
+                var favorite = ((Terminals.Connections.Connection)CurrentTerminal).Favorite;
+                this.tabControlRemover.Disconnect();
+                this.connectionsUiFactory.CreateTerminalTab(favorite);
+            }
+        }
     }
 }

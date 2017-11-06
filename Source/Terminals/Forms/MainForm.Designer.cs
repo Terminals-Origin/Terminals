@@ -13,9 +13,9 @@ namespace Terminals
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing) 
+        protected override void Dispose(bool disposing)
         {
-            if(disposing && (components != null))
+            if (disposing && (components != null))
             {
                 components.Dispose();
             }
@@ -29,7 +29,8 @@ namespace Terminals
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.ShortcutsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -128,6 +129,7 @@ namespace Terminals
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonReconnect = new System.Windows.Forms.ToolStripButton();
             this.ShortcutsContextMenu.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
@@ -636,7 +638,7 @@ namespace Terminals
             // 
             this.toolStripMenuItemCaptureManager.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemCaptureManager.Image")));
             this.toolStripMenuItemCaptureManager.Name = "toolStripMenuItemCaptureManager";
-            this.toolStripMenuItemCaptureManager.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            this.toolStripMenuItemCaptureManager.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
             | System.Windows.Forms.Keys.S)));
             this.toolStripMenuItemCaptureManager.Size = new System.Drawing.Size(276, 22);
             this.toolStripMenuItemCaptureManager.Text = "&Screen Capture Manager";
@@ -647,7 +649,7 @@ namespace Terminals
             // 
             this.networkingToolsToolStripMenuItem.Image = global::Terminals.Properties.Resources.computer_link;
             this.networkingToolsToolStripMenuItem.Name = "networkingToolsToolStripMenuItem";
-            this.networkingToolsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            this.networkingToolsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
             | System.Windows.Forms.Keys.N)));
             this.networkingToolsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.networkingToolsToolStripMenuItem.Text = "&Networking Tools";
@@ -663,7 +665,7 @@ namespace Terminals
             // 
             this.toolStripOrganizeShortucts.Image = global::Terminals.Properties.Resources.application_edit;
             this.toolStripOrganizeShortucts.Name = "toolStripOrganizeShortucts";
-            this.toolStripOrganizeShortucts.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            this.toolStripOrganizeShortucts.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
             | System.Windows.Forms.Keys.O)));
             this.toolStripOrganizeShortucts.Size = new System.Drawing.Size(276, 22);
             this.toolStripOrganizeShortucts.Text = "Or&ganize Shortcuts";
@@ -674,7 +676,7 @@ namespace Terminals
             // 
             this.credentialManagementToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("credentialManagementToolStripMenuItem.Image")));
             this.credentialManagementToolStripMenuItem.Name = "credentialManagementToolStripMenuItem";
-            this.credentialManagementToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            this.credentialManagementToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
             | System.Windows.Forms.Keys.C)));
             this.credentialManagementToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.credentialManagementToolStripMenuItem.Text = "C&redential Management";
@@ -762,7 +764,7 @@ namespace Terminals
             // 
             this.optionsToolStripMenuItem.Image = global::Terminals.Properties.Resources.options;
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            this.optionsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
             | System.Windows.Forms.Keys.P)));
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.optionsToolStripMenuItem.Text = "&Options";
@@ -859,6 +861,7 @@ namespace Terminals
             this.tsbConnectToConsole,
             this.tsbConnectAs,
             this.tsbDisconnect,
+            this.toolStripButtonReconnect,
             this.toolStripSeparator3,
             this.tsbManageConnections,
             this.CredentialManagementToolStripButton,
@@ -1093,6 +1096,17 @@ namespace Terminals
             this.toolStripButton5.Text = "Computer Management (MMC)";
             this.toolStripButton5.Click += new System.EventHandler(this.OpenLocalComputeManagement_Click);
             // 
+            // toolStripButtonReconnect
+            // 
+            this.toolStripButtonReconnect.Enabled = false;
+            this.toolStripButtonReconnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonReconnect.Image = global::Terminals.Properties.Resources.Refresh;
+            this.toolStripButtonReconnect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonReconnect.Name = "toolStripButtonReconnect";
+            this.toolStripButtonReconnect.Size = new System.Drawing.Size(36, 37);
+            this.toolStripButtonReconnect.Text = "Reconnect";
+            this.toolStripButtonReconnect.Click += new System.EventHandler(this.ToolStripButtonReconnect_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1138,7 +1152,7 @@ namespace Terminals
             this.ResumeLayout(false);
 
         }
-        
+
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip;
@@ -1237,5 +1251,6 @@ namespace Terminals
         private System.Windows.Forms.ToolStripMenuItem openSshAgentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openSshKeygenToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripButton toolStripButtonReconnect;
     }
 }
