@@ -24,7 +24,7 @@ using IMsTscAxEvents_OnWarningEventHandler = AxMSTSCLib.IMsTscAxEvents_OnWarning
 
 namespace Terminals.Connections
 {
-    internal class RDPConnection : Connection, IConnectionExtra, ISettingsConsumer
+    internal class RDPConnection : Connection, IConnectionExtra, ISettingsConsumer, IHandleKeyboardInput
     {
         private readonly ReconnectingControl reconecting = new ReconnectingControl();
         private readonly ConnectionStateDetector connectionStateDetector = new ConnectionStateDetector();
@@ -39,6 +39,8 @@ namespace Terminals.Connections
         public bool IsTerminalServer { get { return this.service.IsTerminalServer; } }
 
         public IConnectionSettings Settings { get; set; }
+
+        public bool GrabInput { get; set; }
 
         #region IConnectionExtra
 
@@ -425,8 +427,8 @@ namespace Terminals.Connections
 
         private void ConfigureStartBehaviour(RdpOptions rdpOptions)
         {
-            if (rdpOptions.GrabFocusOnConnect)
-                this.client.AdvancedSettings2.GrabFocusOnConnect = true;
+            this.client.AdvancedSettings2.GrabFocusOnConnect = rdpOptions.GrabFocusOnConnect;
+            this.GrabInput = rdpOptions.GrabFocusOnConnect;
 
             if (rdpOptions.Security.Enabled)
             {
@@ -553,7 +555,6 @@ namespace Terminals.Connections
 
         private void AssignEventHandlers()
         {
-            this.client.OnRequestGoFullScreen += new EventHandler(this.client_OnRequestGoFullScreen);
             this.client.OnRequestLeaveFullScreen += new EventHandler(this.client_OnRequestLeaveFullScreen);
             this.client.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(this.client_OnDisconnected);
             this.client.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(this.client_OnWarning);
@@ -631,13 +632,7 @@ namespace Terminals.Connections
 
         private void client_OnRequestLeaveFullScreen(object sender, EventArgs e)
         {
-            this.ParentForm.SetGrabInputCheck(false);
             this.ParentForm.OnLeavingFullScreen();
-        }
-
-        private void client_OnRequestGoFullScreen(object sender, EventArgs e)
-        {
-            this.ParentForm.SetGrabInputCheck(true);
         }
 
         private void client_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)

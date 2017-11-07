@@ -104,28 +104,14 @@ namespace Terminals
         {
             try
             {
-                if (msg.Msg == 0x21)  // mouse click
+                if (msg.Msg == 0x0100) // keydown
                 {
-                    TerminalTabControlItem selectedTab = this.terminalsControler.Selected;
-                    if (selectedTab != null)
+                    if (this.tsbGrabInput.Checked || this.FullScreen)
                     {
-                        Rectangle r = selectedTab.RectangleToScreen(selectedTab.ClientRectangle);
-                        if (r.Contains(MousePosition))
+                        if (this.CurrentTerminal != null)
                         {
-                            SetGrabInput(true);
+                            this.CurrentTerminal.Focus();
                         }
-                        else
-                        {
-                            TabControlItem item = tcTerminals.GetTabItemByPoint(tcTerminals.PointToClient(MousePosition));
-                            if (item == null)
-                                SetGrabInput(false);
-                            else if (item == selectedTab)
-                                SetGrabInput(true); //Grab input if clicking on currently selected tab
-                        }
-                    }
-                    else
-                    {
-                        SetGrabInput(false);
                     }
                 }
 
@@ -290,24 +276,31 @@ namespace Terminals
 
         internal void UpdateControls()
         {
-            tcTerminals.ShowToolTipOnTitle = settings.ShowInformationToolTips;
+            this.tcTerminals.ShowToolTipOnTitle = settings.ShowInformationToolTips;
             this.UpdateCommandsByActiveConnection();
-
-            try
-            {
-                tsbGrabInput.Checked = tsbGrabInput.Enabled && (CurrentTerminal != null) && CurrentTerminal.FullScreen;
-            }
-            catch (Exception exc)
-            {
-                Logging.Error(FULLSCREEN_ERROR_MSG, exc);
-            }
-
-            grabInputToolStripMenuItem.Checked = tsbGrabInput.Checked;
+            this.UpgadeGrabInput();
             this.UpdateQuickConnectCommands();
 
             foreach (IToolbarExtender extender in this.toolbarExtenders)
             {
                 extender.Visit(this.toolbarStd);
+            }
+        }
+
+        private void UpgadeGrabInput()
+        {
+            try
+            {
+                var currentConnection = this.terminalsControler.CurrentConnection as IHandleKeyboardInput;
+                bool canGrab = currentConnection != null;
+                this.tsbGrabInput.Checked = canGrab && currentConnection.GrabInput;
+                this.tsbGrabInput.Enabled = canGrab;
+                this.grabInputToolStripMenuItem.Checked = this.tsbGrabInput.Checked;
+                this.grabInputToolStripMenuItem.Enabled = canGrab;
+            }
+            catch (Exception exc)
+            {
+                Logging.Error(FULLSCREEN_ERROR_MSG, exc);
             }
         }
 
@@ -341,9 +334,11 @@ namespace Terminals
 
         private void ToggleGrabInput()
         {
-            if (CurrentTerminal != null)
+            var currentConnection = this.terminalsControler.CurrentConnection as IHandleKeyboardInput;
+            if (currentConnection != null)
             {
-                CurrentTerminal.FullScreen = !CurrentTerminal.FullScreen;
+                currentConnection.GrabInput = !currentConnection.GrabInput;
+                this.UpgadeGrabInput();
             }
         }
 
@@ -449,24 +444,6 @@ namespace Terminals
             }
         }
 
-        private void SetGrabInput(Boolean grab)
-        {
-            if (CurrentTerminal != null)
-            {
-                if (grab && !CurrentTerminal.ContainsFocus)
-                    CurrentTerminal.Focus();
-
-                try
-                {
-                    CurrentTerminal.FullScreen = grab;
-                }
-                catch (Exception exc)
-                {
-                    Logging.Error(FULLSCREEN_ERROR_MSG, exc);
-                }
-            }
-        }
-
         internal void FocusFavoriteInQuickConnectCombobox(string favoriteName)
         {
             this.tscConnectTo.SelectedIndex = this.tscConnectTo.Items.IndexOf(favoriteName);
@@ -551,7 +528,12 @@ namespace Terminals
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
-            //handle global keyup events
+            if (this.tsbGrabInput.Checked || this.FullScreen)
+            {
+                e.SuppressKeyPress = true;
+                return;
+            }
+
             if (e.Control && e.KeyCode == Keys.F12)
             {
                 this.terminalsControler.CaptureScreen();
@@ -900,12 +882,6 @@ namespace Terminals
             this.tabControlRemover.OnDisconnected(connection);
         }
 
-        public void SetGrabInputCheck(bool newGrabInput)
-        {
-            tsbGrabInput.Checked = newGrabInput;
-            this.UpdateControls();
-        }
-
         private void TcTerminals_TabControlItemSelectionChanged(TabControlItemChangedEventArgs e)
         {
             this.UpdateControls();
@@ -920,9 +896,6 @@ namespace Terminals
             this.toolStripButtonReconnect.Enabled = hasSelectedConnection;
             this.addTerminalToGroupToolStripMenuItem.Enabled = hasSelectedConnection;
             this.saveTerminalsAsGroupToolStripMenuItem.Enabled = hasSelectedConnection;
-            this.grabInputToolStripMenuItem.Enabled = hasSelectedConnection;
-            this.tsbGrabInput.Enabled = hasSelectedConnection;
-            this.SetGrabInput(hasSelectedConnection);
         }
 
         private void AssingTitle()
