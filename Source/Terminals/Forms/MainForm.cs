@@ -100,29 +100,6 @@ namespace Terminals
             base.SetVisibleCore(value);
         }
 
-        protected override void WndProc(ref Message msg)
-        {
-            try
-            {
-                if (msg.Msg == 0x0100) // keydown
-                {
-                    if (this.tsbGrabInput.Checked || this.FullScreen)
-                    {
-                        if (this.CurrentTerminal != null)
-                        {
-                            this.CurrentTerminal.Focus();
-                        }
-                    }
-                }
-
-                base.WndProc(ref msg);
-            }
-            catch (Exception e)
-            {
-                Logging.Info("WnProc Failure", e);
-            }
-        }
-
         public void OnLeavingFullScreen()
         {
             if (this.CurrentTerminal != null)
@@ -520,21 +497,22 @@ namespace Terminals
             this.SetWindowState();
         }
 
-        private void MainForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Cancel)
-                this.ToggleGrabInput();
-        }
-
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
-            if (this.tsbGrabInput.Checked || this.FullScreen)
+            if ((this.tsbGrabInput.Checked || this.FullScreen) && e.KeyCode != Keys.Cancel)
             {
-                e.SuppressKeyPress = true;
-                return;
+                if (this.CurrentTerminal != null)
+                {
+                    this.CurrentTerminal.Focus();
+                    return;
+                }
             }
 
-            if (e.Control && e.KeyCode == Keys.F12)
+            if (e.KeyCode == Keys.Cancel)
+            {
+                this.ToggleGrabInput();
+            }
+            else if (e.Control && e.KeyCode == Keys.F12)
             {
                 this.terminalsControler.CaptureScreen();
             }
