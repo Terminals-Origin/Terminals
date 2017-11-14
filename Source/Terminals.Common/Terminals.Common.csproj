@@ -72,6 +72,13 @@
     <Compile Include="Data\Interfaces\IGuardedCredential.cs" />
     <Compile Include="Data\Interfaces\IGuardedCredentialFactory.cs" />
     <Compile Include="Data\Interfaces\IGuardedSecurity.cs" />
+    <Compile Include="Data\Interfaces\ISecurityService.cs" />
+    <Compile Include="Forms\Controls\SecurityPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\SecurityPanel.Designer.cs">
+      <DependentUpon>SecurityPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CredentialsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -152,6 +159,9 @@
     <EmbeddedResource Include="Connections\Connection.resx">
       <DependentUpon>Connection.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Controls\SecurityPanel.resx">
+      <DependentUpon>SecurityPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\CredentialsPanel.resx">
       <DependentUpon>CredentialsPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -166,6 +176,9 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\terminalsicon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\computer_security.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

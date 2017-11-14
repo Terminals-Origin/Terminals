@@ -173,6 +173,7 @@
     <Compile Include="Data\FilePersisted\UnknonwPluginElements.cs" />
     <Compile Include="Data\Interfaces\IDataValidator.cs" />
     <Compile Include="Data\ModelConvertersTemplate.cs" />
+    <Compile Include="Data\SecurityService.cs" />
     <Compile Include="Data\Validation\CredentialSetValidator.cs" />
     <Compile Include="Data\Validation\DbBeforeConnectExecuteValidator.cs" />
     <Compile Include="Data\Validation\DbCredentialSetValidator.cs" />
@@ -258,12 +259,6 @@
     </Compile>
     <Compile Include="Forms\Controls\SearchTextBox.Designer.cs">
       <DependentUpon>SearchTextBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\SecurityPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\SecurityPanel.Designer.cs">
-      <DependentUpon>SecurityPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Controls\TreeListNodes.cs" />
     <Compile Include="Forms\Controls\TreeNodesLevelUpdate.cs" />
@@ -1017,9 +1012,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Controls\SearchTextBox.resx">
       <DependentUpon>SearchTextBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\SecurityPanel.resx">
-      <DependentUpon>SecurityPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditFavorite\ExecuteControl.resx">
       <DependentUpon>ExecuteControl.cs</DependentUpon>
