@@ -7,6 +7,7 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Data.Credentials;
+using Terminals.Forms.Controls;
 using Terminals.Network;
 using Terminals.Services;
 
@@ -111,7 +112,7 @@ namespace Terminals.Forms
             if (string.IsNullOrEmpty(definition.NewFavorite)) // only one in this case
                 this.ConnectToAll(definition);
             else
-                this.CreateNewTerminal(definition.NewFavorite);
+                this.CreateFavorite(definition.NewFavorite);
         }
 
         private void ConnectToAll(ConnectionDefinition connectionDefinition)
@@ -153,23 +154,6 @@ namespace Terminals.Forms
             var rdpOptions = favorite.ProtocolProperties as IForceConsoleOptions;
             if (rdpOptions != null)
                 rdpOptions.ConnectToConsole = definition.ForceConsole.Value;
-        }
-
-        internal void CreateNewTerminal(String name = null)
-        {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, name))
-            {
-                TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
-                if (result != TerminalFormDialogResult.Cancel)
-                {
-                    string favoriteName = frmNewTerminal.Favorite.Name;
-                    this.mainForm.FocusFavoriteInQuickConnectCombobox(favoriteName);
-
-                    // TODO add adhoc connection option in case the dialog result is connect only
-                    if (result == TerminalFormDialogResult.SaveAndConnect)
-                        this.Connect(frmNewTerminal.Favorite);
-                }
-            }
         }
 
         private void CreateTerminalTab(IFavorite favorite)
@@ -273,6 +257,66 @@ namespace Terminals.Forms
             tabContentControl.BringToFront();
             tabContentControl.Update();
             this.mainForm.UpdateControls();
+        }
+
+        internal void CreateFavorite(string favoriteName = null, GroupTreeNode groupNode = null)
+        {
+            this.CreateFavorite(dr => { }, favoriteName, groupNode);
+        }
+
+        internal void CreateFavorite(Action<TerminalFormDialogResult> callback,
+            string favoriteName = null, GroupTreeNode groupNode = null)
+        {
+            using (NewTerminalForm createForm = this.CreateFavoriteForm(favoriteName))
+            {
+                if (groupNode != null)
+                    createForm.AssingSelectedGroup(groupNode.Group);
+
+                // TODO add adhoc connection option in case the dialog result is connect only
+                this.ShowFavoriteForm(createForm, dr => this.FinishCreateFavorie(dr, createForm, callback));
+            }
+        }
+
+        private void FinishCreateFavorie(TerminalFormDialogResult dialogResult, NewTerminalForm createForm,
+            Action<TerminalFormDialogResult> callback)
+        {
+            if (dialogResult != TerminalFormDialogResult.Cancel)
+            {
+                string newFavoriteName = createForm.Favorite.Name;
+                this.mainForm.FocusFavoriteInQuickConnectCombobox(newFavoriteName);
+            }
+
+            callback(dialogResult);
+        }
+
+        internal void EditFavorite(IFavorite favorite, Action<TerminalFormDialogResult> callback)
+        {
+            using (NewTerminalForm editForm = this.CreateFavoriteForm(favorite))
+            {
+                this.ShowFavoriteForm(editForm, callback);
+            }
+        }
+
+        private void ShowFavoriteForm(NewTerminalForm editForm, Action<TerminalFormDialogResult> callback)
+        {
+            TerminalFormDialogResult dialogResult = editForm.ShowDialog();
+
+            if (dialogResult == TerminalFormDialogResult.SaveAndConnect)
+                this.Connect(editForm.Favorite);
+
+            callback(dialogResult);
+        }
+
+        private NewTerminalForm CreateFavoriteForm(string favoriteName)
+        {
+            return new NewTerminalForm(this.persistence, this.connectionManager,
+                this.favoriteIcons, favoriteName);
+        }
+
+        private NewTerminalForm CreateFavoriteForm(IFavorite favorite)
+        {
+            return new NewTerminalForm(this.persistence, this.connectionManager,
+                this.favoriteIcons, favorite);
         }
     }
 }

@@ -129,33 +129,15 @@ namespace Terminals
 
         private void CreateFavoriteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, string.Empty))
-            {
-                var groupNode = this.favsTree.SelectedGroupNode;
-                if (groupNode != null)
-                    frmNewTerminal.AssingSelectedGroup(groupNode.Group);
-
-                // TODO Fix not connecting based on dialog result
-                frmNewTerminal.ShowDialog();
-            }
+            GroupTreeNode groupNode = this.favsTree.SelectedGroupNode;
+            this.ConnectionsUiFactory.CreateFavorite(string.Empty, groupNode);
         }
 
         private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite fav = this.GetSelectedFavorite();
             if (fav != null)
-                this.ShowManageTerminalForm(fav);
-        }
-
-        private void ShowManageTerminalForm(IFavorite favorite)
-        {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, favorite))
-            {
-                TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
-
-                if (result == TerminalFormDialogResult.SaveAndConnect)
-                    this.ConnectionsUiFactory.Connect(frmNewTerminal.Favorite);
-            }
+                this.ConnectionsUiFactory.EditFavorite(fav, dr => { });
         }
 
         private void RebootToolStripMenuItem_Click(object sender, EventArgs e)

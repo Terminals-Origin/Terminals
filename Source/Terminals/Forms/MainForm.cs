@@ -781,7 +781,7 @@ namespace Terminals
 
         private void NewTerminalToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.connectionsUiFactory.CreateNewTerminal();
+            this.connectionsUiFactory.CreateFavorite();
         }
 
         private void TsbConnect_Click(object sender, EventArgs e)
@@ -844,7 +844,7 @@ namespace Terminals
 
         private void NewTerminalToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            this.connectionsUiFactory.CreateNewTerminal();
+            this.connectionsUiFactory.CreateFavorite();
         }
 
         private void TsbGrabInput_Click(object sender, EventArgs e)
