@@ -135,6 +135,7 @@ namespace Terminals
                 if (groupNode != null)
                     frmNewTerminal.AssingSelectedGroup(groupNode.Group);
 
+                // TODO Fix not connecting based on dialog result
                 frmNewTerminal.ShowDialog();
             }
         }
@@ -152,11 +153,8 @@ namespace Terminals
             {
                 TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
 
-                if (result != TerminalFormDialogResult.Cancel)
-                {
-                    if (result == TerminalFormDialogResult.SaveAndConnect)
-                        this.ConnectionsUiFactory.CreateTerminalTab(frmNewTerminal.Favorite);
-                }
+                if (result == TerminalFormDialogResult.SaveAndConnect)
+                    this.ConnectionsUiFactory.Connect(frmNewTerminal.Favorite);
             }
         }
 
@@ -269,27 +267,27 @@ namespace Terminals
 
         private void ConnectFromContextMenu(List<IFavorite> favorites)
         {
+            this.CloseMenuStrips();
             var definition = new ConnectionDefinition(favorites);
             this.ConnectionsUiFactory.Connect(definition);
-            this.CloseMenuStrips();
         }
 
         private void ExtraConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.CloseMenuStrips();
             IFavorite favorite = this.GetSelectedFavorite();
             if (favorite == null)
                 return;
 
             var favorites = new List<IFavorite>() { favorite };
             this.ConnectToFavoritesExtra(favorites);
-            this.CloseMenuStrips();
         }
 
         private void ConnectToAllExtraToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.CloseMenuStrips();
             List<IFavorite> selectedFavorites = this.favsTree.SelectedGroupFavorites;
             this.ConnectToFavoritesExtra(selectedFavorites);
-            this.CloseMenuStrips();
         }
 
         private void ConnectToFavoritesExtra(List<IFavorite> selectedFavorites)

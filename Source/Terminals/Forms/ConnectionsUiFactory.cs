@@ -96,6 +96,12 @@ namespace Terminals.Forms
             this.Connect(definition);
         }
 
+        internal void Connect(IFavorite favorite)
+        {
+            var definition = new ConnectionDefinition(favorite);
+            this.Connect(definition);
+        }
+
         /// <summary>
         /// Connects to all favorites required by definition.
         /// </summary>
@@ -126,8 +132,8 @@ namespace Terminals.Forms
 
         private IFavorite GetFavoriteUpdatedCopy(IFavorite favorite, ConnectionDefinition definition)
         {
-            // TODO ensure the ID was copied, otherwise the tabControl can never communicate 
-            // with rest of the app, because it will never find it by ID.
+            // TODO ID is never copied, we need to transfer original ID 
+            // to be able find current connection by favorite.
             IFavorite favoriteCopy = favorite.Copy();
             UpdateForceConsole(favoriteCopy, definition);
             
@@ -159,13 +165,14 @@ namespace Terminals.Forms
                     string favoriteName = frmNewTerminal.Favorite.Name;
                     this.mainForm.FocusFavoriteInQuickConnectCombobox(favoriteName);
 
+                    // TODO add adhoc connection option in case the dialog result is connect only
                     if (result == TerminalFormDialogResult.SaveAndConnect)
-                        this.CreateTerminalTab(frmNewTerminal.Favorite);
+                        this.Connect(frmNewTerminal.Favorite);
                 }
             }
         }
 
-        internal void CreateTerminalTab(IFavorite favorite)
+        private void CreateTerminalTab(IFavorite favorite)
         {
             ExternalLinks.CallExecuteBeforeConnected(this.settings);
             ExternalLinks.CallExecuteBeforeConnected(favorite.ExecuteBeforeConnect);
