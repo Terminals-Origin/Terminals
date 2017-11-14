@@ -446,8 +446,10 @@ namespace Terminals
 
         private void ShowFavoritesContextMenu(Point clickedPoint)
         {
-            //TODO: update commands by selected connection
-
+            IFavorite selected = this.GetSelectedFavorite();
+            bool canExecute = this.connectionCommands.CanExecute(selected);
+            this.reconnectToolStripMenuItem.Visible = canExecute;
+            this.disconnectToolStripMenuItem.Visible = canExecute;
             this.favoritesContextMenu.Show(this.favsTree, clickedPoint);
         }
 

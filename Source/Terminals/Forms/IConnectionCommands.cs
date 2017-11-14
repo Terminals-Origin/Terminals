@@ -1,3 +1,5 @@
+using Terminals.Data;
+
 namespace Terminals.Forms
 {
     internal interface IConnectionCommands
@@ -5,5 +7,7 @@ namespace Terminals.Forms
         void Disconnect();
 
         void Reconnect();
+
+        bool CanExecute(IFavorite selected);
     }
 }

@@ -1404,6 +1404,13 @@ namespace Terminals
             }
         }
 
+        public bool CanExecute(IFavorite selected)
+        {
+            // TODO doesnt work, see ConnectionUIFactory Favorite copy handling and its TODO
+            IFavorite selectedInTab = this.terminalsControler.SelectedFavorite;
+            return selected != null && selected.StoreIdEquals(selectedInTab);
+        }
+
         public void Disconnect()
         {
             this.tabControlRemover.Disconnect();
