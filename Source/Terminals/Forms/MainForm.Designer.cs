@@ -73,11 +73,6 @@ namespace Terminals
             this.grabInputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.organizeGroupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveTerminalsAsGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addTerminalToGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupsSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.captureTerminalScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCaptureManager = new System.Windows.Forms.ToolStripMenuItem();
@@ -97,6 +92,11 @@ namespace Terminals
             this.openLogFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.organizeGroupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveTerminalsAsGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addTerminalToGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupsSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -114,6 +114,7 @@ namespace Terminals
             this.tsbConnectToConsole = new System.Windows.Forms.ToolStripButton();
             this.tsbConnectAs = new System.Windows.Forms.ToolStripButton();
             this.tsbDisconnect = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonReconnect = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbManageConnections = new System.Windows.Forms.ToolStripButton();
             this.CredentialManagementToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -129,7 +130,7 @@ namespace Terminals
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonReconnect = new System.Windows.Forms.ToolStripButton();
+            this.reconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ShortcutsContextMenu.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
@@ -528,7 +529,8 @@ namespace Terminals
             this.terminalToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.grabInputToolStripMenuItem,
             this.toolStripSeparator5,
-            this.disconnectToolStripMenuItem});
+            this.disconnectToolStripMenuItem,
+            this.reconnectToolStripMenuItem});
             this.terminalToolStripMenuItem.Name = "terminalToolStripMenuItem";
             this.terminalToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.terminalToolStripMenuItem.Text = "&Terminal";
@@ -557,46 +559,6 @@ namespace Terminals
             this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.disconnectToolStripMenuItem.Text = "&Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.TsbDisconnect_Click);
-            // 
-            // groupsToolStripMenuItem
-            // 
-            this.groupsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.organizeGroupsToolStripMenuItem,
-            this.saveTerminalsAsGroupToolStripMenuItem,
-            this.addTerminalToGroupToolStripMenuItem,
-            this.groupsSeparator});
-            this.groupsToolStripMenuItem.Name = "groupsToolStripMenuItem";
-            this.groupsToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
-            this.groupsToolStripMenuItem.Text = "&Groups";
-            this.groupsToolStripMenuItem.Visible = false;
-            // 
-            // organizeGroupsToolStripMenuItem
-            // 
-            this.organizeGroupsToolStripMenuItem.Name = "organizeGroupsToolStripMenuItem";
-            this.organizeGroupsToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
-            this.organizeGroupsToolStripMenuItem.Text = "&Organize Groups";
-            this.organizeGroupsToolStripMenuItem.ToolTipText = "Organize Groups";
-            this.organizeGroupsToolStripMenuItem.Click += new System.EventHandler(this.OrganizeGroupsToolStripMenuItem_Click);
-            // 
-            // saveTerminalsAsGroupToolStripMenuItem
-            // 
-            this.saveTerminalsAsGroupToolStripMenuItem.Name = "saveTerminalsAsGroupToolStripMenuItem";
-            this.saveTerminalsAsGroupToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
-            this.saveTerminalsAsGroupToolStripMenuItem.Text = "&Create Group From Active Connections";
-            this.saveTerminalsAsGroupToolStripMenuItem.ToolTipText = "Create Group From Active Connections";
-            this.saveTerminalsAsGroupToolStripMenuItem.Click += new System.EventHandler(this.SaveTerminalsAsGroupToolStripMenuItem_Click);
-            // 
-            // addTerminalToGroupToolStripMenuItem
-            // 
-            this.addTerminalToGroupToolStripMenuItem.Name = "addTerminalToGroupToolStripMenuItem";
-            this.addTerminalToGroupToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
-            this.addTerminalToGroupToolStripMenuItem.Text = "&Add Current Connection To";
-            this.addTerminalToGroupToolStripMenuItem.ToolTipText = "Add Current Connection To";
-            // 
-            // groupsSeparator
-            // 
-            this.groupsSeparator.Name = "groupsSeparator";
-            this.groupsSeparator.Size = new System.Drawing.Size(278, 6);
             // 
             // toolsToolStripMenuItem
             // 
@@ -638,7 +600,7 @@ namespace Terminals
             // 
             this.toolStripMenuItemCaptureManager.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemCaptureManager.Image")));
             this.toolStripMenuItemCaptureManager.Name = "toolStripMenuItemCaptureManager";
-            this.toolStripMenuItemCaptureManager.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+            this.toolStripMenuItemCaptureManager.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
             this.toolStripMenuItemCaptureManager.Size = new System.Drawing.Size(276, 22);
             this.toolStripMenuItemCaptureManager.Text = "&Screen Capture Manager";
@@ -649,7 +611,7 @@ namespace Terminals
             // 
             this.networkingToolsToolStripMenuItem.Image = global::Terminals.Properties.Resources.computer_link;
             this.networkingToolsToolStripMenuItem.Name = "networkingToolsToolStripMenuItem";
-            this.networkingToolsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+            this.networkingToolsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.N)));
             this.networkingToolsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.networkingToolsToolStripMenuItem.Text = "&Networking Tools";
@@ -665,7 +627,7 @@ namespace Terminals
             // 
             this.toolStripOrganizeShortucts.Image = global::Terminals.Properties.Resources.application_edit;
             this.toolStripOrganizeShortucts.Name = "toolStripOrganizeShortucts";
-            this.toolStripOrganizeShortucts.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+            this.toolStripOrganizeShortucts.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.O)));
             this.toolStripOrganizeShortucts.Size = new System.Drawing.Size(276, 22);
             this.toolStripOrganizeShortucts.Text = "Or&ganize Shortcuts";
@@ -676,7 +638,7 @@ namespace Terminals
             // 
             this.credentialManagementToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("credentialManagementToolStripMenuItem.Image")));
             this.credentialManagementToolStripMenuItem.Name = "credentialManagementToolStripMenuItem";
-            this.credentialManagementToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+            this.credentialManagementToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.C)));
             this.credentialManagementToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.credentialManagementToolStripMenuItem.Text = "C&redential Management";
@@ -764,12 +726,52 @@ namespace Terminals
             // 
             this.optionsToolStripMenuItem.Image = global::Terminals.Properties.Resources.options;
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+            this.optionsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.P)));
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.optionsToolStripMenuItem.Text = "&Options";
             this.optionsToolStripMenuItem.ToolTipText = "Open Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.OptionsToolStripMenuItem_Click);
+            // 
+            // groupsToolStripMenuItem
+            // 
+            this.groupsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.organizeGroupsToolStripMenuItem,
+            this.saveTerminalsAsGroupToolStripMenuItem,
+            this.addTerminalToGroupToolStripMenuItem,
+            this.groupsSeparator});
+            this.groupsToolStripMenuItem.Name = "groupsToolStripMenuItem";
+            this.groupsToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.groupsToolStripMenuItem.Text = "&Groups";
+            this.groupsToolStripMenuItem.Visible = false;
+            // 
+            // organizeGroupsToolStripMenuItem
+            // 
+            this.organizeGroupsToolStripMenuItem.Name = "organizeGroupsToolStripMenuItem";
+            this.organizeGroupsToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
+            this.organizeGroupsToolStripMenuItem.Text = "&Organize Groups";
+            this.organizeGroupsToolStripMenuItem.ToolTipText = "Organize Groups";
+            this.organizeGroupsToolStripMenuItem.Click += new System.EventHandler(this.OrganizeGroupsToolStripMenuItem_Click);
+            // 
+            // saveTerminalsAsGroupToolStripMenuItem
+            // 
+            this.saveTerminalsAsGroupToolStripMenuItem.Name = "saveTerminalsAsGroupToolStripMenuItem";
+            this.saveTerminalsAsGroupToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
+            this.saveTerminalsAsGroupToolStripMenuItem.Text = "&Create Group From Active Connections";
+            this.saveTerminalsAsGroupToolStripMenuItem.ToolTipText = "Create Group From Active Connections";
+            this.saveTerminalsAsGroupToolStripMenuItem.Click += new System.EventHandler(this.SaveTerminalsAsGroupToolStripMenuItem_Click);
+            // 
+            // addTerminalToGroupToolStripMenuItem
+            // 
+            this.addTerminalToGroupToolStripMenuItem.Name = "addTerminalToGroupToolStripMenuItem";
+            this.addTerminalToGroupToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
+            this.addTerminalToGroupToolStripMenuItem.Text = "&Add Current Connection To";
+            this.addTerminalToGroupToolStripMenuItem.ToolTipText = "Add Current Connection To";
+            // 
+            // groupsSeparator
+            // 
+            this.groupsSeparator.Name = "groupsSeparator";
+            this.groupsSeparator.Size = new System.Drawing.Size(278, 6);
             // 
             // helpToolStripMenuItem
             // 
@@ -879,7 +881,7 @@ namespace Terminals
             this.toolStripButton5});
             this.toolbarStd.Location = new System.Drawing.Point(114, 49);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(636, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(659, 25);
             this.toolbarStd.TabIndex = 2;
             // 
             // tsbNewTerminal
@@ -957,6 +959,17 @@ namespace Terminals
             this.tsbDisconnect.Size = new System.Drawing.Size(23, 22);
             this.tsbDisconnect.ToolTipText = "Disconnect From Server";
             this.tsbDisconnect.Click += new System.EventHandler(this.TsbDisconnect_Click);
+            // 
+            // toolStripButtonReconnect
+            // 
+            this.toolStripButtonReconnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonReconnect.Enabled = false;
+            this.toolStripButtonReconnect.Image = global::Terminals.Properties.Resources.Refresh;
+            this.toolStripButtonReconnect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonReconnect.Name = "toolStripButtonReconnect";
+            this.toolStripButtonReconnect.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonReconnect.Text = "Reconnect";
+            this.toolStripButtonReconnect.Click += new System.EventHandler(this.ToolStripButtonReconnect_Click);
             // 
             // toolStripSeparator3
             // 
@@ -1096,16 +1109,14 @@ namespace Terminals
             this.toolStripButton5.Text = "Computer Management (MMC)";
             this.toolStripButton5.Click += new System.EventHandler(this.OpenLocalComputeManagement_Click);
             // 
-            // toolStripButtonReconnect
+            // reconnectToolStripMenuItem
             // 
-            this.toolStripButtonReconnect.Enabled = false;
-            this.toolStripButtonReconnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonReconnect.Image = global::Terminals.Properties.Resources.Refresh;
-            this.toolStripButtonReconnect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonReconnect.Name = "toolStripButtonReconnect";
-            this.toolStripButtonReconnect.Size = new System.Drawing.Size(36, 37);
-            this.toolStripButtonReconnect.Text = "Reconnect";
-            this.toolStripButtonReconnect.Click += new System.EventHandler(this.ToolStripButtonReconnect_Click);
+            this.reconnectToolStripMenuItem.Enabled = false;
+            this.reconnectToolStripMenuItem.Image = global::Terminals.Properties.Resources.Refresh;
+            this.reconnectToolStripMenuItem.Name = "reconnectToolStripMenuItem";
+            this.reconnectToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.reconnectToolStripMenuItem.Text = "Reconnect";
+            this.reconnectToolStripMenuItem.Click += new System.EventHandler(this.ToolStripButtonReconnect_Click);
             // 
             // MainForm
             // 
@@ -1251,5 +1262,6 @@ namespace Terminals
         private System.Windows.Forms.ToolStripMenuItem openSshKeygenToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripButton toolStripButtonReconnect;
+        private System.Windows.Forms.ToolStripMenuItem reconnectToolStripMenuItem;
     }
 }

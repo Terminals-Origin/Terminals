@@ -869,6 +869,7 @@ namespace Terminals
             this.tsbDisconnect.Enabled = hasSelectedConnection;
             this.disconnectToolStripMenuItem.Enabled = hasSelectedConnection;
             this.toolStripButtonReconnect.Enabled = hasSelectedConnection;
+            this.reconnectToolStripMenuItem.Enabled = hasSelectedConnection;
             this.addTerminalToGroupToolStripMenuItem.Enabled = hasSelectedConnection;
             this.saveTerminalsAsGroupToolStripMenuItem.Enabled = hasSelectedConnection;
         }
