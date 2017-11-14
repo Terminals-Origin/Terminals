@@ -125,16 +125,14 @@ namespace Terminals.Forms
 
         private void Connect(IFavorite favorite, ConnectionDefinition definition)
         {
-            IFavorite favoriteCopy = GetFavoriteUpdatedCopy(favorite, definition);
+            IFavorite configured = GetFavoriteUpdatedCopy(favorite, definition);
             this.persistence.ConnectionHistory.RecordHistoryItem(favorite);
             this.mainForm.SendNativeMessageToFocus();
-            this.CreateTerminalTab(favoriteCopy);
+            this.CreateTerminalTab(favorite, configured);
         }
 
         private IFavorite GetFavoriteUpdatedCopy(IFavorite favorite, ConnectionDefinition definition)
         {
-            // TODO ID is never copied, we need to transfer original ID 
-            // to be able find current connection by favorite.
             IFavorite favoriteCopy = favorite.Copy();
             UpdateForceConsole(favoriteCopy, definition);
             
@@ -156,12 +154,12 @@ namespace Terminals.Forms
                 rdpOptions.ConnectToConsole = definition.ForceConsole.Value;
         }
 
-        private void CreateTerminalTab(IFavorite favorite)
+        private void CreateTerminalTab(IFavorite origin, IFavorite configured)
         {
             ExternalLinks.CallExecuteBeforeConnected(this.settings);
-            ExternalLinks.CallExecuteBeforeConnected(favorite.ExecuteBeforeConnect);
-            TerminalTabControlItem terminalTabPage = CreateTerminalTabPageByFavoriteName(favorite);
-            this.TryConnectTabPage(favorite, terminalTabPage);
+            ExternalLinks.CallExecuteBeforeConnected(configured.ExecuteBeforeConnect);
+            TerminalTabControlItem terminalTabPage = CreateTerminalTabPageByFavoriteName(configured);
+            this.TryConnectTabPage(origin, configured, terminalTabPage);
         }
 
         private TerminalTabControlItem CreateTerminalTabPageByFavoriteName(IFavorite favorite)
@@ -177,19 +175,19 @@ namespace Terminals.Forms
             return new TerminalTabControlItem(terminalTabTitle);
         }
 
-        private void TryConnectTabPage(IFavorite favorite, TerminalTabControlItem terminalTabPage)
+        private void TryConnectTabPage(IFavorite origin, IFavorite configured, TerminalTabControlItem terminalTabPage)
         {
             try
             {
                 this.mainForm.AssignEventsToConnectionTab(terminalTabPage);
                 var toolTipBuilder = new ToolTipBuilder(this.persistence.Security);
-                string toolTipText = toolTipBuilder.BuildTooTip(favorite);
-                this.ConfigureTabPage(terminalTabPage, toolTipText, true, favorite);
+                string toolTipText = toolTipBuilder.BuildTooTip(configured);
+                this.ConfigureTabPage(terminalTabPage, toolTipText, true, configured);
 
-                Connection conn = CreateConnection(favorite, terminalTabPage, this.mainForm);
-                this.UpdateConnectionTabPageByConnectionState(favorite, terminalTabPage, conn);
+                Connection conn = CreateConnection(origin, configured, terminalTabPage);
+                this.UpdateConnectionTabPageByConnectionState(configured, terminalTabPage, conn);
 
-                if (conn.Connected && favorite.NewWindow)
+                if (conn.Connected && configured.NewWindow)
                 {
                     this.terminalsControler.DetachTabToNewWindow(terminalTabPage);
                 }
@@ -201,16 +199,17 @@ namespace Terminals.Forms
             }
         }
 
-        private Connection CreateConnection(IFavorite favorite, TerminalTabControlItem terminalTabPage, MainForm parentForm)
+        private Connection CreateConnection(IFavorite origin, IFavorite configured, TerminalTabControlItem terminalTabPage)
         {
-            Connection conn = this.connectionManager.CreateConnection(favorite);
-            conn.Favorite = favorite;
+            Connection conn = this.connectionManager.CreateConnection(configured);
+            conn.Favorite = configured;
+            conn.Origin = origin;
 
             var consumer = conn as ISettingsConsumer;
             if (consumer != null)
                 consumer.Settings = this.settings;
 
-            AssignControls(conn, terminalTabPage, parentForm);
+            AssignControls(conn, terminalTabPage, this.mainForm);
             return conn;
         }
 

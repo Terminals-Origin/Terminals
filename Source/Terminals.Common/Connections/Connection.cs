@@ -31,10 +31,17 @@ namespace Terminals.Connections
         /// </summary>
         public IFavorite Favorite { get; set; }
 
+        /// <summary>
+        /// Gets or sets the original Favorite used create this connection.
+        /// It can be null in case Adhoc connection, which user doesnt want to save.
+        /// </summary>
+        public IFavorite Origin { get; set; }
+
+
         public IConnectionMainView ParentForm { get; set; }
 
         public IGuardedCredentialFactory CredentialFactory { get; set; }
-
+        
         /// <summary>
         /// Create this control doesnt mean to open the connection.
         /// Use explicit call instead. Because there may be related resources, 
