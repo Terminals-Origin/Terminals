@@ -1175,7 +1175,6 @@ namespace Terminals
             this.ToolStripMenuItem3_Click(null, null);
         }
 
-        // todo assign missing SpecialCommandsToolStrip_MouseClick to context menu for Organize shortcuts command
         private void SpecialCommandsToolStrip_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -1415,6 +1414,11 @@ namespace Terminals
         public void Disconnect()
         {
             this.tabControlRemover.Disconnect();
+        }
+
+        private void SpecialCommandsToolStrip_MouseClick(object sender, EventArgs e)
+        {
+
         }
     }
 }

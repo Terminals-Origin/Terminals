@@ -349,7 +349,7 @@ namespace Terminals
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(372, 24);
+            this.menuStrip.Size = new System.Drawing.Size(315, 24);
             this.menuStrip.Stretch = false;
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
@@ -853,11 +853,12 @@ namespace Terminals
             // 
             this.SpecialCommandsToolStrip.ContextMenuStrip = this.ShortcutsContextMenu;
             this.SpecialCommandsToolStrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.SpecialCommandsToolStrip.Location = new System.Drawing.Point(3, 49);
+            this.SpecialCommandsToolStrip.Location = new System.Drawing.Point(662, 49);
             this.SpecialCommandsToolStrip.Name = "SpecialCommandsToolStrip";
-            this.SpecialCommandsToolStrip.Size = new System.Drawing.Size(111, 25);
+            this.SpecialCommandsToolStrip.Size = new System.Drawing.Size(43, 25);
             this.SpecialCommandsToolStrip.TabIndex = 6;
             this.SpecialCommandsToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.SpecialCommandsToolStrip_ItemClicked);
+            this.SpecialCommandsToolStrip.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SpecialCommandsToolStrip_MouseClick);
             // 
             // toolbarStd
             // 
@@ -888,9 +889,9 @@ namespace Terminals
             this.toolStripSeparator4,
             this.toolStripButton2,
             this.toolStripButton5});
-            this.toolbarStd.Location = new System.Drawing.Point(114, 49);
+            this.toolbarStd.Location = new System.Drawing.Point(3, 49);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(705, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(659, 25);
             this.toolbarStd.TabIndex = 2;
             // 
             // tsbNewTerminal
