@@ -34,6 +34,8 @@ namespace Terminals
 
         private IPersistence persistence;
 
+        private IConnectionCommands connectionCommands;
+
         private IFavorites PersistedFavorites
         {
             get { return this.persistence.Favorites; }
@@ -50,11 +52,13 @@ namespace Terminals
             this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
         }
 
-        internal void AssignServices(IPersistence persistence, ConnectionManager connectionManager, FavoriteIcons favoriteIcons)
+        internal void AssignServices(IPersistence persistence, ConnectionManager connectionManager,
+            FavoriteIcons favoriteIcons, IConnectionCommands connectionCommands)
         {
             this.persistence = persistence;
             this.connectionManager = connectionManager;
             this.favoriteIcons = favoriteIcons;
+            this.connectionCommands = connectionCommands;
         }
 
         #region Private methods
@@ -435,9 +439,16 @@ namespace Terminals
         private void FavsTreeNodeMenuOpening(Point clickedPoint)
         {
             if (this.favsTree.SelectedFavorite != null)
-                this.favoritesContextMenu.Show(this.favsTree, clickedPoint);
+                this.ShowFavoritesContextMenu(clickedPoint);
             else
                 this.groupsContextMenu.Show(this.favsTree, clickedPoint);
+        }
+
+        private void ShowFavoritesContextMenu(Point clickedPoint)
+        {
+            //TODO: update commands by selected connection
+
+            this.favoritesContextMenu.Show(this.favsTree, clickedPoint);
         }
 
         private void FavsTree_DoubleClick(object sender, EventArgs e)
@@ -722,5 +733,17 @@ namespace Terminals
         }
 
         #endregion
+
+        private void ReconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.CloseMenuStrips();
+            this.connectionCommands.Reconnect();
+        }
+
+        private void DisconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.CloseMenuStrips();
+            this.connectionCommands.Disconnect();
+        }
     }
 }

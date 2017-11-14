@@ -188,6 +188,7 @@
     <Compile Include="Connections\IConnectionManager.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\PluginDefinition.cs" />
+    <Compile Include="Forms\IConnectionCommands.cs" />
     <Compile Include="IStartupUi.cs" />
     <Compile Include="Network\PortScanner\NetworkAdapters.cs" />
     <Compile Include="Services\ExternalLinks.cs" />

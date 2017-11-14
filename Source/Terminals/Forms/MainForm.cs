@@ -22,7 +22,7 @@ using Settings = Terminals.Configuration.Settings;
 
 namespace Terminals
 {
-    internal partial class MainForm : Form, IConnectionMainView
+    internal partial class MainForm : Form, IConnectionMainView, IConnectionCommands
     {
         private readonly IPersistence persistence;
 
@@ -149,7 +149,7 @@ namespace Terminals
                 this.favoriteToolBar.Visible = this.toolStripMenuItemShowHideFavoriteToolbar.Checked;
                 this.fullScreenSwitch = new MainFormFullScreenSwitch(this);
                 this.tabControlRemover = new TabControlRemover(this.settings, this, this.terminalsControler, this.tcTerminals);
-                this.favsList1.AssignServices(this.persistence, this.connectionManager, favoriteIcons);
+                this.favsList1.AssignServices(this.persistence, this.connectionManager, favoriteIcons, this);
                 this.AssignToolStripsToContainer();
                 this.ApplyControlsEnableAndVisibleState();
 
@@ -776,10 +776,7 @@ namespace Terminals
 
         private void TerminalTabPage_DoubleClick(object sender, EventArgs e)
         {
-            if (this.terminalsControler.HasSelected)
-            {
-                this.tsbDisconnect.PerformClick();
-            }
+            this.Disconnect();
         }
 
         private void NewTerminalToolStripMenuItem_Click(object sender, EventArgs e)
@@ -842,7 +839,7 @@ namespace Terminals
 
         private void TsbDisconnect_Click(object sender, EventArgs e)
         {
-            this.tabControlRemover.Disconnect();
+            this.Disconnect();
         }
 
         private void NewTerminalToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -1393,6 +1390,11 @@ namespace Terminals
 
         private void ToolStripButtonReconnect_Click(object sender, EventArgs e)
         {
+            this.Reconnect();
+        }
+
+        public void Reconnect()
+        {
             IConnection currentConnection = this.terminalsControler.CurrentConnection;
             if (currentConnection != null)
             {
@@ -1400,6 +1402,11 @@ namespace Terminals
                 this.tabControlRemover.Disconnect();
                 this.connectionsUiFactory.CreateTerminalTab(favorite);
             }
+        }
+
+        public void Disconnect()
+        {
+            this.tabControlRemover.Disconnect();
         }
     }
 }
