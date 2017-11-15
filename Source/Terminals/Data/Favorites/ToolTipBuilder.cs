@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Terminals.Configuration;
 using Terminals.Data.Credentials;
 using Terminals.Network;
@@ -27,26 +28,24 @@ namespace Terminals.Data
 
         private static String GetToolTipText(IFavorite selected, string userDisplayName)
         {
-            String toolTip = String.Format("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
+            var builder = new StringBuilder();
+            builder.AppendFormat("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
                 Environment.NewLine, selected.ServerName, selected.Port, userDisplayName);
 
             if (Settings.Instance.ShowFullInformationToolTips)
-            {
-                var extendedToolTip = CreateExtendedToolTip(selected);
-                toolTip += extendedToolTip;
-            }
+                AppendExtendedToolTip(builder, selected);
 
-            return toolTip;
+            return builder.ToString();
         }
 
-        private static string CreateExtendedToolTip(IFavorite selected)
+        private static void AppendExtendedToolTip(StringBuilder builder, IFavorite selected)
         {
             var rdp = selected.ProtocolProperties as IForceConsoleOptions;
             bool console = false;
             if (rdp != null)
                 console = rdp.ConnectToConsole;
 
-            return String.Format("Groups: {1}{0}Connect to Console: {2}{0}Notes: {3}{0}",
+            builder.AppendFormat("Groups: {1}{0}Connect to Console: {2}{0}Notes: {3}{0}",
                                  Environment.NewLine, selected.GroupNames, console, selected.Notes);
         }
     }
