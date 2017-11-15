@@ -79,8 +79,6 @@ namespace Terminals
 
         internal IFavorite FindFavoriteByTabTitle(string tabTitle)
         {
-            //TODO expecting the tabtitle is based on original favorite
-            // and is case sensitive, which needs to be verified
             var tab = this.tabControl.Items.OfType<TerminalTabControlItem>()
                 .FirstOrDefault(candidate => candidate.Title == tabTitle);
 

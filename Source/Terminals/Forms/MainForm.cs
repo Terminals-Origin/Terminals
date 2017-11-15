@@ -939,6 +939,7 @@ namespace Terminals
         {
             foreach (ToolStripItem menuItem in this.tcTerminals.Menu.Items)
             {
+                // the menu item always has name of connected favorite, so search by name works
                 IFavorite favorite = this.tabsFilter.FindFavoriteByTabTitle(menuItem.Text);
 
                 if (favorite != null)
