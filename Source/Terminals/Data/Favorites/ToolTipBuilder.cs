@@ -14,6 +14,10 @@ namespace Terminals.Data
             this.persistenceSecurity = persistenceSecurity;
         }
 
+        /// <summary>
+        /// Here we use the modified favorite used in connection, 
+        /// becaue e.g. credentials may differ from the saved credentials.
+        /// </summary>
         internal string BuildTooTip(IFavorite selected)
         {
             var guarded = new GuardedCredential(selected.Security, this.persistenceSecurity);
@@ -21,7 +25,7 @@ namespace Terminals.Data
             return GetToolTipText(selected, userDisplayName);
         }
 
-        internal static String GetToolTipText(IFavorite selected, string userDisplayName)
+        private static String GetToolTipText(IFavorite selected, string userDisplayName)
         {
             String toolTip = String.Format("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
                 Environment.NewLine, selected.ServerName, selected.Port, userDisplayName);

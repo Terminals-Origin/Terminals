@@ -35,7 +35,7 @@ namespace Terminals.Connections
         /// Gets or sets the original Favorite used create this connection.
         /// It can be null in case Adhoc connection, which user doesnt want to save.
         /// </summary>
-        public IFavorite Origin { get; set; }
+        public IFavorite OriginFavorite { get; set; }
 
 
         public IConnectionMainView ParentForm { get; set; }

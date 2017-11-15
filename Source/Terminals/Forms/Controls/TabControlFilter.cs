@@ -16,6 +16,17 @@ namespace Terminals
             }
         }
 
+        internal IFavorite SelectedOriginFavorite
+        {
+            get
+            {
+                if (this.HasSelected)
+                    return this.Selected.OriginFavorite;
+
+                return null;
+            }
+        }
+
         internal IFavorite SelectedFavorite
         {
             get
@@ -27,7 +38,7 @@ namespace Terminals
             }
         }
 
-        internal IConnection CurrentConnection
+        internal IConnection SelectedConnection
         {
             get
             {
@@ -56,18 +67,20 @@ namespace Terminals
         internal TabControlItem FindAttachedTab(IFavorite updated)
         {
             return this.tabControl.Items.Cast<TerminalTabControlItem>()
-                .FirstOrDefault(tab => tab.Favorite != null && tab.Favorite.StoreIdEquals(updated));
+                .FirstOrDefault(tab => tab.OriginFavorite != null && tab.OriginFavorite.StoreIdEquals(updated));
         }
 
         internal IEnumerable<IFavorite> SelectTabsWithFavorite()
         {
             return this.tabControl.Items.OfType<TerminalTabControlItem>()
-                .Where(ti => ti.Favorite != null)
-                .Select(ti => ti.Favorite);
+                .Where(ti => ti.OriginFavorite != null)
+                .Select(ti => ti.OriginFavorite);
         }
 
         internal IFavorite FindFavoriteByTabTitle(string tabTitle)
         {
+            //TODO expecting the tabtitle is based on original favorite
+            // and is case sensitive, which needs to be verified
             var tab = this.tabControl.Items.OfType<TerminalTabControlItem>()
                 .FirstOrDefault(candidate => candidate.Title == tabTitle);
 

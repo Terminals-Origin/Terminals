@@ -13,6 +13,8 @@ namespace Terminals.Connections
     {
         IFavorite Favorite { get; }
 
+        IFavorite OriginFavorite { get; set; }
+
         bool Connected { get; }
 
         /// <summary>

@@ -182,7 +182,7 @@ namespace Terminals.Forms
                 this.mainForm.AssignEventsToConnectionTab(terminalTabPage);
                 var toolTipBuilder = new ToolTipBuilder(this.persistence.Security);
                 string toolTipText = toolTipBuilder.BuildTooTip(configured);
-                this.ConfigureTabPage(terminalTabPage, toolTipText, true, configured);
+                this.ConfigureTabPage(terminalTabPage, toolTipText, true);
 
                 Connection conn = CreateConnection(origin, configured, terminalTabPage);
                 this.UpdateConnectionTabPageByConnectionState(configured, terminalTabPage, conn);
@@ -203,7 +203,7 @@ namespace Terminals.Forms
         {
             Connection conn = this.connectionManager.CreateConnection(configured);
             conn.Favorite = configured;
-            conn.Origin = origin;
+            conn.OriginFavorite = origin;
 
             var consumer = conn as ISettingsConsumer;
             if (consumer != null)
@@ -223,11 +223,10 @@ namespace Terminals.Forms
         }
 
         private void ConfigureTabPage(TerminalTabControlItem terminalTabPage, string captureTitle,
-            bool allowDrop = false, IFavorite favorite = null)
+            bool allowDrop = false)
         {
             terminalTabPage.AllowDrop = allowDrop;
             terminalTabPage.ToolTipText = captureTitle;
-            terminalTabPage.Favorite = favorite;
             this.mainForm.AssingDoubleClickEventHandler(terminalTabPage);
             this.terminalsControler.AddAndSelect(terminalTabPage);
             this.mainForm.UpdateControls();

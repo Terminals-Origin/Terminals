@@ -198,6 +198,7 @@ namespace Terminals
 
             this.tcTerminals.ShowToolTipOnTitle = settings.ShowInformationToolTips;
             IFavorite selectedFavorite = this.terminalsControler.SelectedFavorite;
+            // TODO this should update all favorites
             if (selectedFavorite != null)
                 this.terminalsControler.Selected.ToolTipText = this.toolTipBuilder.BuildTooTip(selectedFavorite);
 
@@ -720,8 +721,9 @@ namespace Terminals
 
         private void GroupAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //TODO Bug: doenst work, the menu doesnt refresh and the favorite isnt put into the group
             IGroup selectedGroup = ((GroupMenuItem)sender).Group;
-            IFavorite selectedFavorite = this.terminalsControler.SelectedFavorite;
+            IFavorite selectedFavorite = this.terminalsControler.SelectedOriginFavorite;
 
             if (selectedGroup != null && selectedFavorite != null)
             {
@@ -1218,8 +1220,6 @@ namespace Terminals
             }
         }
 
-
-
         private void PbShowTagsFavorites_MouseMove(object sender, MouseEventArgs e)
         {
             if (settings.AutoExapandTagsPanel)
@@ -1406,8 +1406,7 @@ namespace Terminals
 
         public bool CanExecute(IFavorite selected)
         {
-            // TODO doesnt work, see ConnectionUIFactory Favorite copy handling and its TODO
-            IFavorite selectedInTab = this.terminalsControler.SelectedFavorite;
+            IFavorite selectedInTab = this.terminalsControler.SelectedOriginFavorite;
             return selected != null && selected.StoreIdEquals(selectedInTab);
         }
 
