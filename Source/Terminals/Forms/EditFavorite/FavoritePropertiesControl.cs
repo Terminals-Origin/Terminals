@@ -194,6 +194,7 @@ namespace Terminals.Forms.EditFavorite
             this.generalPanel1.AssignServices(persistence, connectionManager);
             this.groupsPanel1.AssignPersistence(persistence);
             this.protocolOptionsPanel1.CredentialsFactory = new GuardedCredentialFactory(persistence);
+            this.protocolOptionsPanel1.Persistence = persistence;
         }
 
         internal void SetErrorProviderIconsAlignment(ErrorProvider errorProvider)

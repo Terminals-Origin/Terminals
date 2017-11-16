@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Terminals.Common.Data.Interfaces;
 using Terminals.Common.Forms.EditFavorite;
 using Terminals.Configuration;
 using Terminals.Data;
@@ -7,7 +8,7 @@ using Terminals.Data;
 namespace Terminals.Forms.EditFavorite
 {
     internal partial class RdpTsGatewayControl : UserControl, IProtocolOptionsControl,
-        ISupportsSecurityControl, IRequiresMRUSettings
+        ISupportsSecurityControl, IRequiresMRUSettings, IGatewaySecurity
     {
         public IGuardedCredentialFactory CredentialFactory { get; set; }
 
@@ -79,6 +80,9 @@ namespace Terminals.Forms.EditFavorite
                 return;
 
             FillTsGatewayControls(rdpOptions);
+
+            this.securityPanel1.LoadFrom(favorite.Security);
+            this.securityPanel1.FillCredentialsCombobox(favorite.Security.Credential);
         }
 
         private void FillTsGatewayControls(RdpOptions rdpOptions)
@@ -126,6 +130,12 @@ namespace Terminals.Forms.EditFavorite
             this.radTSGWdisable.Checked = !tsgwEnabled;
             this.radTSGWenable.Checked = tsgwEnabled;
             this.chkTSGWlocalBypass.Checked = localBypasEnabled;
+        }
+
+        public void InitSecurityPanel(ISecurityService service, IMRUSettings settings)
+        {
+            this.securityPanel1.AssignServices(service, settings);
+            //this.securityPanel1.FillCredentialsCombobox(Guid.Empty);
         }
     }
 }

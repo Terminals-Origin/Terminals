@@ -11,14 +11,11 @@ namespace Terminals.Data
     {
         private IPersistence _persistence;
 
-        private Settings _settings;
-
         public IEnumerable<ICredentialSet> Credentials => _persistence.Credentials;
 
-        public SecurityService(IPersistence persistence, Settings settings)
+        public SecurityService(IPersistence persistence)
         {
             _persistence = persistence;
-            _settings = settings;
         }
 
         public IGuardedCredential FromCredentialSet(ICredentialSet credentialSet)

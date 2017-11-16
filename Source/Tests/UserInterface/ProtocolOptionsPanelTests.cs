@@ -43,6 +43,7 @@ namespace Tests.UserInterface
             var validator = new NewTerminalFormValidator(irrelevantPersistence.Object, TestConnectionManager.Instance, irelevantForm);
             protocolPanel.RegisterValidations(validator);
             this.protocolPanel.CredentialsFactory = new GuardedCredentialFactory(irrelevantPersistence.Object);
+            this.protocolPanel.Persistence = irrelevantPersistence.Object;
         }
 
         // Rdp has 5 controls, so test separate roundtrip for selected property in each of them

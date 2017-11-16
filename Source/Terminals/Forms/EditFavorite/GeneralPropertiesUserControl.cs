@@ -85,10 +85,9 @@ namespace Terminals.Forms.EditFavorite
         {
             this.favorites = persistence.Favorites;
             this.connectionManager = connectionManager;
-
-            //this.securityPanel1. .credentialsPanel1.Settings = Settings.Instance;
+            
             //this.securityPanel1.AssignServices(persistence, this.settings);
-            ISecurityService securityService = new SecurityService(persistence, this.settings);
+            ISecurityService securityService = new SecurityService(persistence);
             this.securityPanel1.AssignServices(securityService, Settings.Instance);
         }
 

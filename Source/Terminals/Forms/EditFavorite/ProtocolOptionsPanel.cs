@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows.Forms;
+using Terminals.Common.Data.Interfaces;
 using Terminals.Common.Forms.EditFavorite;
 using Terminals.Configuration;
 using Terminals.Data;
@@ -11,6 +13,8 @@ namespace Terminals.Forms.EditFavorite
         private NewTerminalFormValidator validator;
 
         public IGuardedCredentialFactory CredentialsFactory { get; set; }
+
+        public IPersistence Persistence { get; set; }
 
         private readonly Settings settings = Settings.Instance;
 
@@ -50,6 +54,16 @@ namespace Terminals.Forms.EditFavorite
             this.RegisterIntegerValidation(protocolControl);
             this.AssignCredentialsFactory(protocolControl);
             this.AssignMruSettings(protocolControl);
+            this.AssignSecurity(protocolControl);
+        }
+
+        private void AssignSecurity(Control protocolControl)
+        {
+            if (protocolControl is IGatewaySecurity control)
+            {
+                ISecurityService securityService = new SecurityService(this.Persistence);
+                control.InitSecurityPanel(securityService, Settings.Instance);
+            }
         }
 
         private void AssignMruSettings(Control protocolControl)

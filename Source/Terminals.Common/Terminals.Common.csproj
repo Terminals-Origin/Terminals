@@ -85,6 +85,7 @@
     <Compile Include="Forms\CredentialsPanel.Designer.cs">
       <DependentUpon>CredentialsPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\EditFavorite\IGatewaySecurity.cs" />
     <Compile Include="Forms\EditFavorite\ISupportsSecurityControl.cs" />
     <Compile Include="Forms\ExternalLinks.cs" />
     <Compile Include="Forms\InputBox.cs">
