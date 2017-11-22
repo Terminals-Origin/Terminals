@@ -60,6 +60,7 @@
     <Compile Include="Configuration\KeysSection.cs" />
     <Compile Include="Connections\IFocusable.cs" />
     <Compile Include="Connections\IHandleKeyboardInput.cs" />
+    <Compile Include="Connections\IMenuExtender.cs" />
     <Compile Include="Connections\IOptionsConverter.cs" />
     <Compile Include="Connections\IOptionsConverterFactory.cs" />
     <Compile Include="Connections\OptionsConversionContext.cs" />

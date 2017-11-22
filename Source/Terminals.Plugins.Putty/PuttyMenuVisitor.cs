@@ -2,14 +2,14 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using Terminals.Common.Forms;
 using Terminals.Connections;
-using Terminals.Services;
 
 namespace Terminals
 {
-    internal class PuttyMenuVisitor
+    internal class PuttyMenuVisitor : IMenuExtender
     {
-        private void InitializeToolsMenu()
+        public void Visit(MenuStrip menuStrip)
         {
             ToolStripMenuItem openSshAgentToolStripMenuItem = new ToolStripMenuItem();
             openSshAgentToolStripMenuItem.Name = "openSshAgentToolStripMenuItem";
@@ -17,7 +17,7 @@ namespace Terminals
             openSshAgentToolStripMenuItem.Text = "Open SSH Agent";
             openSshAgentToolStripMenuItem.ToolTipText = "Open SSH Agent";
             openSshAgentToolStripMenuItem.Click += new EventHandler(this.OpenSshAgentToolStripMenuItem_Click);
-            AddToMenu(openSshAgentToolStripMenuItem);
+            AddToMenu(menuStrip, openSshAgentToolStripMenuItem);
 
             ToolStripMenuItem openSshKeygenToolStripMenuItem = new ToolStripMenuItem();
             openSshKeygenToolStripMenuItem.Name = "openSshKeygenToolStripMenuItem";
@@ -25,12 +25,13 @@ namespace Terminals
             openSshKeygenToolStripMenuItem.Text = "Open SSH Keygen";
             openSshKeygenToolStripMenuItem.ToolTipText = "Open SSH Keygen";
             openSshKeygenToolStripMenuItem.Click += new EventHandler(this.OpenSshKeygenToolStripMenuItem_Click);
-            AddToMenu(openSshKeygenToolStripMenuItem);
+            AddToMenu(menuStrip, openSshKeygenToolStripMenuItem);
 
         }
 
-        private void AddToMenu(ToolStripMenuItem newMenu)
+        private void AddToMenu(MenuStrip menuStrip, ToolStripMenuItem newMenu)
         {
+            // TODO finish adding to the menu
             //separatorIndex = this.toolsToolStripMenuItem.DropDownItems.IndexOf(this.toolStripSeparator9);
             //this.toolsToolStripMenuItem.DropDownItems.Insert(separatorIndex, newMenu);
         }
@@ -47,7 +48,8 @@ namespace Terminals
 
         private void OpenPuttyTool(string name)
         {
-            string path = Path.Combine(PluginsLoader.FindBasePluginDirectory(), "Putty", "Resources", name);
+            string pluginDirectory = typeof(PuttyMenuVisitor).Assembly.Location;
+            string path = Path.Combine(pluginDirectory, "Putty", "Resources", name);
             ExternalLinks.OpenPath(path);
         }
     }

@@ -217,6 +217,11 @@ namespace Terminals.Connections
             favorite.ChangeProtocol(protocol, options);
         }
 
+        public IEnumerable<IMenuExtender> GetMenuExtenders()
+        {
+            return this.plugins.OfType<IMenuExtender>();
+        }
+
         public override string ToString()
         {
             string[] loadedProtocols = this.GetAvailableProtocols();

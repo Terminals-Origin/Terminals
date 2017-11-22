@@ -130,6 +130,8 @@ namespace Terminals
 
                 InitializeComponent(); // main designer procedure
 
+                InitializeMenu();
+
                 this.formSettings = new FormSettings(this);
                 this.tabsFilter = new TabControlFilter(this.tcTerminals);
                 this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals, this.persistence);
@@ -170,6 +172,14 @@ namespace Terminals
             {
                 Logging.Error("Error loading the Main Form", exc);
                 throw;
+            }
+        }
+
+        private void InitializeMenu()
+        {
+            foreach (IMenuExtender menuExtender in this.connectionManager.GetMenuExtenders())
+            {
+                menuExtender.Visit(this.menuStrip);
             }
         }
 

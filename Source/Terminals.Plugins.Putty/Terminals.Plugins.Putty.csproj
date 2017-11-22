@@ -59,6 +59,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="PuttyMenuVisitor.cs" />
     <Compile Include="SshOptions.cs" />
     <Compile Include="SshVersion.cs" />
     <Compile Include="TelnetOptionsConverter.cs" />
