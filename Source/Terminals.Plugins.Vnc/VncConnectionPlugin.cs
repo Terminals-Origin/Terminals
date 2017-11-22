@@ -65,7 +65,7 @@ namespace Terminals.Connections.VNC
 
         public IToolbarExtender CreateToolbarExtender(ICurrenctConnectionProvider provider)
         {
-            return new VncMenuVisitor(provider);
+            return new VncToolbarVisitor(provider);
         }
 
         public Image GetIcon()

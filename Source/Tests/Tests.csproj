@@ -193,12 +193,12 @@
     <Compile Include="UserInterface\ProtocolOptionsPanelTests.cs" />
     <Compile Include="UserInterface\CredentialPanelTests.cs" />
     <Compile Include="UserInterface\CaptureManagerTests.cs" />
-    <Compile Include="UserInterface\RdpMenuVisitorTests.cs" />
+    <Compile Include="UserInterface\RdpToolbarVisitorTests.cs" />
     <Compile Include="UserInterface\ProtocolImageListBuilderTests.cs" />
     <Compile Include="UserInterface\FavoriteIconsTests.cs" />
     <Compile Include="UserInterface\ToolTipBuilderTests.cs" />
-    <Compile Include="UserInterface\VncMenuVisitorTests.cs" />
-    <Compile Include="UserInterface\VmrcMenuVisitorTests.cs" />
+    <Compile Include="UserInterface\VncToolbarVisitorTests.cs" />
+    <Compile Include="UserInterface\VmrcToolbarVisitorTests.cs" />
     <Compile Include="Validation\DbValidationTests.cs" />
     <Compile Include="Validation\FavoriteNameValidatorTests.cs" />
     <Compile Include="Validation\FileValidationTests.cs" />

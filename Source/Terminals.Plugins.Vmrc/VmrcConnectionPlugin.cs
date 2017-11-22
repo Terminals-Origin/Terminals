@@ -48,7 +48,7 @@ namespace Terminals.Connections.VMRC
 
         public IToolbarExtender CreateToolbarExtender(ICurrenctConnectionProvider provider)
         {
-            return new VmrcMenuVisitor(provider);
+            return new VmrcToolbarVisitor(provider);
         }
 
         public Image GetIcon()

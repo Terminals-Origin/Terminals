@@ -59,7 +59,7 @@ namespace Terminals.Connections.Rdp
 
         public IToolbarExtender CreateToolbarExtender(ICurrenctConnectionProvider provider)
         {
-            return new RdpMenuVisitor(provider);
+            return new RdpToolbarVisitor(provider);
         }
 
         public IOptionsConverter CreatOptionsConverter()

@@ -64,7 +64,7 @@
     <Compile Include="VncControl.Designer.cs">
       <DependentUpon>VncControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="VncMenuVisitor.cs" />
+    <Compile Include="VncToolbarVisitor.cs" />
     <Compile Include="VncOptions.cs" />
     <Compile Include="VncOptionsConverter.cs" />
   </ItemGroup>

@@ -92,7 +92,7 @@
     <Compile Include="RdpLocalResourcesControl.Designer.cs">
       <DependentUpon>RdpLocalResourcesControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="RdpMenuVisitor.cs" />
+    <Compile Include="RdpToolbarVisitor.cs" />
     <Compile Include="RdpOptions.cs" />
     <Compile Include="RdpOptionsConverter.cs" />
     <Compile Include="RdpRedirectOptions.cs" />

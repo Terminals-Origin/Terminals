@@ -71,7 +71,7 @@
     <Compile Include="VmrcControl.Designer.cs">
       <DependentUpon>VmrcControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="VmrcMenuVisitor.cs" />
+    <Compile Include="VmrcToolbarVisitor.cs" />
     <Compile Include="VMRCOptions.cs" />
     <Compile Include="VmrcOptionsConverter.cs" />
   </ItemGroup>
