@@ -56,7 +56,9 @@ namespace Tests.Upgrade
             Assert.IsTrue(allpass, MESSAGE);
         }
 
-        [Ignore] // TODO Implement Upgrade also in the database
+        // TODO Implement Upgrade also in the database
+        // better place will be when connecting to the database during startup.
+        [Ignore]
         [DeploymentItem(SSHTELNET_FAVORITES)]
         [TestMethod]
         public void TelnetAndSshInDatabase_Upgrade_SetsFavoritePropertiesToNewType()
@@ -64,6 +66,7 @@ namespace Tests.Upgrade
             this.InitializeTestLab();
             this.InsertIntoFavoritesTable("SshFavorite", SSH_PROPERTIES);
             this.InsertIntoFavoritesTable("TelnetFavorite", TELNET_PROPERTIES);
+            // Set masterPassword to encrypt connection string
 
             this.RunUpgrade();
 
