@@ -7,8 +7,6 @@ namespace Terminals.Connections
     {
         string GetDesktopShare();
 
-        void SetGrabInputCheck(bool newGrabInput);
-
         void OnLeavingFullScreen();
     }
 }

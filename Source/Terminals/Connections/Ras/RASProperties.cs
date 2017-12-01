@@ -5,7 +5,7 @@ using Terminals.Data;
 
 namespace Terminals.Connections
 {
-    internal partial class RASProperties : UserControl, IConnection
+    internal partial class RASProperties : UserControl
     {
         public string LastError { get; set; }
         private RASConnection rASConnection;

@@ -1,28 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-    <metadata>
-        <id>terminals</id>
-        <version>$version$</version>
-        <title>Terminals multitab remote control client</title>
-        <authors>jirkapok rob.chartier</authors>
-        <owners>jirkapok rob.chartier</owners>
-        <licenseUrl>https://github.com/Terminals-Origin/Terminals/blob/master/LICENSE.md</licenseUrl>
-        <projectUrl>https://github.com/Terminals-Origin/Terminals</projectUrl>
-        <iconUrl>https://github.com/Terminals-Origin/Terminals/blob/master/Source/Terminals/Resources/terminalsicon.png</iconUrl>
-        <projectSourceUrl>https://github.com/Terminals-Origin/Terminals</projectSourceUrl>
-        <docsUrl>https://github.com/Terminals-Origin/Terminals</docsUrl>
-        <bugTrackerUrl>https://github.com/Terminals-Origin/Terminals/issues</bugTrackerUrl>
-		<packageSourceUrl>https://github.com/Terminals-Origin/Terminals/blob/master/Build/terminals.nuspec</packageSourceUrl>
-		<mailingListUrl>https://github.com/Terminals-Origin/Terminals/issues</mailingListUrl>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Terminals is a secure, multi tab terminal services/remote desktop client. It uses Terminal Services ActiveX Client (mstscax.dll). Supported protocols: Windows remote desktop (RDP), VNC, VMRC. SSH, Telnet, RAS, ICA, Citrix, HTTP and HTTPs based viewers.</description>
-        <summary>This is a official Terminals msi installer package.</summary>
-        <releaseNotes>https://github.com/Terminals-Origin/Terminals/releases</releaseNotes>
-        <copyright />
-        <tags>terminals admin ssh vnc rdp</tags>
-    </metadata>
-    <files>
-        <file src="tools\chocolateyInstall.ps1" target="tools\chocolateyInstall.ps1" />
-        <file src="tools\chocolateyUninstall.ps1" target="tools\chocolateyUninstall.ps1" />
-    </files>
+  <metadata>
+    <id>terminals</id>
+    <version>$version$</version>
+    <title>Terminals multitab remote control client</title>
+    <authors>jirkapok rob.chartier</authors>
+    <owners>jirkapok rob.chartier</owners>
+    <licenseUrl>https://github.com/Terminals-Origin/Terminals/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/Terminals-Origin/Terminals</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/Terminals-Origin/Terminals/master/Source/Terminals/Resources/terminalsicon.png</iconUrl>
+    <projectSourceUrl>https://github.com/Terminals-Origin/Terminals</projectSourceUrl>
+    <docsUrl>https://github.com/Terminals-Origin/Terminals</docsUrl>
+    <bugTrackerUrl>https://github.com/Terminals-Origin/Terminals/issues</bugTrackerUrl>
+    <packageSourceUrl>https://raw.githubusercontent.com/Terminals-Origin/Terminals/master/Build/terminals.nuspec</packageSourceUrl>
+    <mailingListUrl>https://github.com/Terminals-Origin/Terminals/issues</mailingListUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Terminals is a secure, multi tab terminal services/remote desktop client. It uses Terminal Services ActiveX Client (mstscax.dll). Supported protocols: Windows remote desktop (RDP), VNC, VMRC. SSH, Telnet, RAS, ICA, Citrix, HTTP and HTTPs based viewers.</description>
+    <summary>This is a official Terminals msi installer package.</summary>
+    <releaseNotes>https://github.com/Terminals-Origin/Terminals/releases</releaseNotes>
+    <copyright />
+    <tags>terminals admin ssh vnc rdp</tags>
+  </metadata>
+  <files>
+    <file src="tools\chocolateyInstall.ps1" target="tools\chocolateyInstall.ps1" />
+    <file src="tools\chocolateyUninstall.ps1" target="tools\chocolateyUninstall.ps1" />
+  </files>
 </package>

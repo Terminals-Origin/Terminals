@@ -13,9 +13,9 @@ namespace Terminals
 
         private readonly TabControlFilter filter;
 
-        internal IFavorite Favorite
+        private IFavorite SelectedOriginFavorite
         {
-            get { return this.filter.SelectedFavorite; }
+            get { return this.filter.SelectedOriginFavorite; }
         }
 
         internal PopupTerminal()
@@ -38,19 +38,19 @@ namespace Terminals
 
         internal bool HasFavorite(IFavorite updated)
         {
-            return this.Favorite != null && this.Favorite.StoreIdEquals(updated);
+            return this.SelectedOriginFavorite != null && this.SelectedOriginFavorite.StoreIdEquals(updated);
         }
 
         internal void UpdateTitle()
         {
-            if(this.Favorite != null)
-                this.Text = this.Favorite.Name;
+            if (this.SelectedOriginFavorite != null)
+                this.Text = this.SelectedOriginFavorite.Name;
             this.tabControl1.Items[0].Title = this.Text;
         }
 
         private void PopupTerminal_Load(object sender, EventArgs e)
         {
-            IConnection connection = this.filter.CurrentConnection;
+            IConnection connection = this.filter.SelectedConnection;
             if (connection != null) // dont run the timer for not connected tab
             {
                 this.closeTimer = new Timer();
@@ -65,7 +65,7 @@ namespace Terminals
         /// </summary>
         private void CloseTimer_Tick(object sender, EventArgs e)
         {
-            IConnection connection = this.filter.CurrentConnection;
+            IConnection connection = this.filter.SelectedConnection;
             if (connection != null && !connection.Connected)
             {
                 this.closeTimer.Stop();

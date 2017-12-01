@@ -7,6 +7,7 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Data.Credentials;
+using Terminals.Forms.Controls;
 using Terminals.Network;
 using Terminals.Services;
 
@@ -96,6 +97,12 @@ namespace Terminals.Forms
             this.Connect(definition);
         }
 
+        internal void Connect(IFavorite favorite)
+        {
+            var definition = new ConnectionDefinition(favorite);
+            this.Connect(definition);
+        }
+
         /// <summary>
         /// Connects to all favorites required by definition.
         /// </summary>
@@ -105,7 +112,7 @@ namespace Terminals.Forms
             if (string.IsNullOrEmpty(definition.NewFavorite)) // only one in this case
                 this.ConnectToAll(definition);
             else
-                this.CreateNewTerminal(definition.NewFavorite);
+                this.CreateFavorite(definition.NewFavorite);
         }
 
         private void ConnectToAll(ConnectionDefinition connectionDefinition)
@@ -118,16 +125,14 @@ namespace Terminals.Forms
 
         private void Connect(IFavorite favorite, ConnectionDefinition definition)
         {
-            IFavorite favoriteCopy = GetFavoriteUpdatedCopy(favorite, definition);
+            IFavorite configured = GetFavoriteUpdatedCopy(favorite, definition);
             this.persistence.ConnectionHistory.RecordHistoryItem(favorite);
             this.mainForm.SendNativeMessageToFocus();
-            this.CreateTerminalTab(favoriteCopy);
+            this.CreateTerminalTab(favorite, configured);
         }
 
         private IFavorite GetFavoriteUpdatedCopy(IFavorite favorite, ConnectionDefinition definition)
         {
-            // TODO ensure the ID was copied, otherwise the tabControl can never communicate 
-            // with rest of the app, because it will never find it by ID.
             IFavorite favoriteCopy = favorite.Copy();
             UpdateForceConsole(favoriteCopy, definition);
             
@@ -149,28 +154,12 @@ namespace Terminals.Forms
                 rdpOptions.ConnectToConsole = definition.ForceConsole.Value;
         }
 
-        internal void CreateNewTerminal(String name = null)
-        {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, name))
-            {
-                TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
-                if (result != TerminalFormDialogResult.Cancel)
-                {
-                    string favoriteName = frmNewTerminal.Favorite.Name;
-                    this.mainForm.FocusFavoriteInQuickConnectCombobox(favoriteName);
-
-                    if (result == TerminalFormDialogResult.SaveAndConnect)
-                        this.CreateTerminalTab(frmNewTerminal.Favorite);
-                }
-            }
-        }
-
-        internal void CreateTerminalTab(IFavorite favorite)
+        private void CreateTerminalTab(IFavorite origin, IFavorite configured)
         {
             ExternalLinks.CallExecuteBeforeConnected(this.settings);
-            ExternalLinks.CallExecuteBeforeConnected(favorite.ExecuteBeforeConnect);
-            TerminalTabControlItem terminalTabPage = CreateTerminalTabPageByFavoriteName(favorite);
-            this.TryConnectTabPage(favorite, terminalTabPage);
+            ExternalLinks.CallExecuteBeforeConnected(configured.ExecuteBeforeConnect);
+            TerminalTabControlItem terminalTabPage = CreateTerminalTabPageByFavoriteName(configured);
+            this.TryConnectTabPage(origin, configured, terminalTabPage);
         }
 
         private TerminalTabControlItem CreateTerminalTabPageByFavoriteName(IFavorite favorite)
@@ -186,19 +175,19 @@ namespace Terminals.Forms
             return new TerminalTabControlItem(terminalTabTitle);
         }
 
-        private void TryConnectTabPage(IFavorite favorite, TerminalTabControlItem terminalTabPage)
+        private void TryConnectTabPage(IFavorite origin, IFavorite configured, TerminalTabControlItem terminalTabPage)
         {
             try
             {
                 this.mainForm.AssignEventsToConnectionTab(terminalTabPage);
                 var toolTipBuilder = new ToolTipBuilder(this.persistence.Security);
-                string toolTipText = toolTipBuilder.BuildTooTip(favorite);
-                this.ConfigureTabPage(terminalTabPage, toolTipText, true, favorite);
+                string toolTipText = toolTipBuilder.BuildTooTip(configured);
+                this.ConfigureTabPage(terminalTabPage, toolTipText, true);
 
-                Connection conn = CreateConnection(favorite, terminalTabPage, this.mainForm);
-                this.UpdateConnectionTabPageByConnectionState(favorite, terminalTabPage, conn);
+                Connection conn = CreateConnection(origin, configured, terminalTabPage);
+                this.UpdateConnectionTabPageByConnectionState(configured, terminalTabPage, conn);
 
-                if (conn.Connected && favorite.NewWindow)
+                if (conn.Connected && configured.NewWindow)
                 {
                     this.terminalsControler.DetachTabToNewWindow(terminalTabPage);
                 }
@@ -210,16 +199,17 @@ namespace Terminals.Forms
             }
         }
 
-        private Connection CreateConnection(IFavorite favorite, TerminalTabControlItem terminalTabPage, MainForm parentForm)
+        private Connection CreateConnection(IFavorite origin, IFavorite configured, TerminalTabControlItem terminalTabPage)
         {
-            Connection conn = this.connectionManager.CreateConnection(favorite);
-            conn.Favorite = favorite;
+            Connection conn = this.connectionManager.CreateConnection(configured);
+            conn.Favorite = configured;
+            conn.OriginFavorite = origin;
 
             var consumer = conn as ISettingsConsumer;
             if (consumer != null)
                 consumer.Settings = this.settings;
 
-            AssignControls(conn, terminalTabPage, parentForm);
+            AssignControls(conn, terminalTabPage, this.mainForm);
             return conn;
         }
 
@@ -233,11 +223,10 @@ namespace Terminals.Forms
         }
 
         private void ConfigureTabPage(TerminalTabControlItem terminalTabPage, string captureTitle,
-            bool allowDrop = false, IFavorite favorite = null)
+            bool allowDrop = false)
         {
             terminalTabPage.AllowDrop = allowDrop;
             terminalTabPage.ToolTipText = captureTitle;
-            terminalTabPage.Favorite = favorite;
             this.mainForm.AssingDoubleClickEventHandler(terminalTabPage);
             this.terminalsControler.AddAndSelect(terminalTabPage);
             this.mainForm.UpdateControls();
@@ -266,6 +255,66 @@ namespace Terminals.Forms
             tabContentControl.BringToFront();
             tabContentControl.Update();
             this.mainForm.UpdateControls();
+        }
+
+        internal void CreateFavorite(string favoriteName = null, GroupTreeNode groupNode = null)
+        {
+            this.CreateFavorite(dr => { }, favoriteName, groupNode);
+        }
+
+        internal void CreateFavorite(Action<TerminalFormDialogResult> callback,
+            string favoriteName = null, GroupTreeNode groupNode = null)
+        {
+            using (NewTerminalForm createForm = this.CreateFavoriteForm(favoriteName))
+            {
+                if (groupNode != null)
+                    createForm.AssingSelectedGroup(groupNode.Group);
+
+                // TODO add adhoc connection option in case the dialog result is connect only
+                this.ShowFavoriteForm(createForm, dr => this.FinishCreateFavorie(dr, createForm, callback));
+            }
+        }
+
+        private void FinishCreateFavorie(TerminalFormDialogResult dialogResult, NewTerminalForm createForm,
+            Action<TerminalFormDialogResult> callback)
+        {
+            if (dialogResult != TerminalFormDialogResult.Cancel)
+            {
+                string newFavoriteName = createForm.Favorite.Name;
+                this.mainForm.FocusFavoriteInQuickConnectCombobox(newFavoriteName);
+            }
+
+            callback(dialogResult);
+        }
+
+        internal void EditFavorite(IFavorite favorite, Action<TerminalFormDialogResult> callback)
+        {
+            using (NewTerminalForm editForm = this.CreateFavoriteForm(favorite))
+            {
+                this.ShowFavoriteForm(editForm, callback);
+            }
+        }
+
+        private void ShowFavoriteForm(NewTerminalForm editForm, Action<TerminalFormDialogResult> callback)
+        {
+            TerminalFormDialogResult dialogResult = editForm.ShowDialog();
+
+            if (dialogResult == TerminalFormDialogResult.SaveAndConnect)
+                this.Connect(editForm.Favorite);
+
+            callback(dialogResult);
+        }
+
+        private NewTerminalForm CreateFavoriteForm(string favoriteName)
+        {
+            return new NewTerminalForm(this.persistence, this.connectionManager,
+                this.favoriteIcons, favoriteName);
+        }
+
+        private NewTerminalForm CreateFavoriteForm(IFavorite favorite)
+        {
+            return new NewTerminalForm(this.persistence, this.connectionManager,
+                this.favoriteIcons, favorite);
         }
     }
 }

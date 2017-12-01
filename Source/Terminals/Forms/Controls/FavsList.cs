@@ -34,6 +34,8 @@ namespace Terminals
 
         private IPersistence persistence;
 
+        private IConnectionCommands connectionCommands;
+
         private IFavorites PersistedFavorites
         {
             get { return this.persistence.Favorites; }
@@ -50,11 +52,13 @@ namespace Terminals
             this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
         }
 
-        internal void AssignServices(IPersistence persistence, ConnectionManager connectionManager, FavoriteIcons favoriteIcons)
+        internal void AssignServices(IPersistence persistence, ConnectionManager connectionManager,
+            FavoriteIcons favoriteIcons, IConnectionCommands connectionCommands)
         {
             this.persistence = persistence;
             this.connectionManager = connectionManager;
             this.favoriteIcons = favoriteIcons;
+            this.connectionCommands = connectionCommands;
         }
 
         #region Private methods
@@ -125,35 +129,15 @@ namespace Terminals
 
         private void CreateFavoriteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, string.Empty))
-            {
-                var groupNode = this.favsTree.SelectedGroupNode;
-                if (groupNode != null)
-                    frmNewTerminal.AssingSelectedGroup(groupNode.Group);
-
-                frmNewTerminal.ShowDialog();
-            }
+            GroupTreeNode groupNode = this.favsTree.SelectedGroupNode;
+            this.ConnectionsUiFactory.CreateFavorite(string.Empty, groupNode);
         }
 
         private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite fav = this.GetSelectedFavorite();
             if (fav != null)
-                this.ShowManageTerminalForm(fav);
-        }
-
-        private void ShowManageTerminalForm(IFavorite favorite)
-        {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, favorite))
-            {
-                TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
-
-                if (result != TerminalFormDialogResult.Cancel)
-                {
-                    if (result == TerminalFormDialogResult.SaveAndConnect)
-                        this.ConnectionsUiFactory.CreateTerminalTab(frmNewTerminal.Favorite);
-                }
-            }
+                this.ConnectionsUiFactory.EditFavorite(fav, dr => { });
         }
 
         private void RebootToolStripMenuItem_Click(object sender, EventArgs e)
@@ -265,27 +249,27 @@ namespace Terminals
 
         private void ConnectFromContextMenu(List<IFavorite> favorites)
         {
+            this.CloseMenuStrips();
             var definition = new ConnectionDefinition(favorites);
             this.ConnectionsUiFactory.Connect(definition);
-            this.CloseMenuStrips();
         }
 
         private void ExtraConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.CloseMenuStrips();
             IFavorite favorite = this.GetSelectedFavorite();
             if (favorite == null)
                 return;
 
             var favorites = new List<IFavorite>() { favorite };
             this.ConnectToFavoritesExtra(favorites);
-            this.CloseMenuStrips();
         }
 
         private void ConnectToAllExtraToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.CloseMenuStrips();
             List<IFavorite> selectedFavorites = this.favsTree.SelectedGroupFavorites;
             this.ConnectToFavoritesExtra(selectedFavorites);
-            this.CloseMenuStrips();
         }
 
         private void ConnectToFavoritesExtra(List<IFavorite> selectedFavorites)
@@ -435,9 +419,18 @@ namespace Terminals
         private void FavsTreeNodeMenuOpening(Point clickedPoint)
         {
             if (this.favsTree.SelectedFavorite != null)
-                this.favoritesContextMenu.Show(this.favsTree, clickedPoint);
+                this.ShowFavoritesContextMenu(clickedPoint);
             else
                 this.groupsContextMenu.Show(this.favsTree, clickedPoint);
+        }
+
+        private void ShowFavoritesContextMenu(Point clickedPoint)
+        {
+            IFavorite selected = this.GetSelectedFavorite();
+            bool canExecute = this.connectionCommands.CanExecute(selected);
+            this.reconnectToolStripMenuItem.Visible = canExecute;
+            this.disconnectToolStripMenuItem.Visible = canExecute;
+            this.favoritesContextMenu.Show(this.favsTree, clickedPoint);
         }
 
         private void FavsTree_DoubleClick(object sender, EventArgs e)
@@ -722,5 +715,17 @@ namespace Terminals
         }
 
         #endregion
+
+        private void ReconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.CloseMenuStrips();
+            this.connectionCommands.Reconnect();
+        }
+
+        private void DisconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.CloseMenuStrips();
+            this.connectionCommands.Disconnect();
+        }
     }
 }

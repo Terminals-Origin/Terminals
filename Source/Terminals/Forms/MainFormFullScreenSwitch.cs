@@ -103,7 +103,6 @@ namespace Terminals
                 this.mainForm.WindowState = FormWindowState.Normal;
 
                 this.mainForm.menuStrip.Visible = false;
-                this.mainForm.SetGrabInput(true);
                 this.mainForm.BringToFront();
             }
 

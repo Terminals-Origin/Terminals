@@ -39,7 +39,8 @@ namespace Terminals
             SetApplicationProperties();
             Logging.Info("Start state 3 Complete: Set application properties");
 
-            CommandLineArgs commandLine = ParseCommandline();
+            var settings = Settings.Instance;
+            CommandLineArgs commandLine = ParseCommandline(settings);
             Logging.Info("Start state 4 Complete: Parse command line");
 
             if (!EnsureDataAreWriteAble())
@@ -51,17 +52,18 @@ namespace Terminals
             
             Logging.Info("Start state 6 Complete: Set Single instance mode");
 
-            var connectionManager = new ConnectionManager(new PluginsLoader(Settings.Instance));
+            
+            var connectionManager = new ConnectionManager(new PluginsLoader(settings));
             var favoriteIcons = new FavoriteIcons(connectionManager);
-            var persistenceFactory = new PersistenceFactory(Settings.Instance, connectionManager, favoriteIcons);
+            var persistenceFactory = new PersistenceFactory(settings, connectionManager, favoriteIcons);
             // do it before config update, because it may import favorites from previous version
             IPersistence persistence = persistenceFactory.CreatePersistence();
             Logging.Info("Start state 7 Complete: Initilizing Persistence");
 
-            TryUpdateConfig(persistence, connectionManager);
+            TryUpdateConfig(settings, persistence, connectionManager);
             Logging.Info("Start state 8 Complete: Configuration upgrade");
 
-            ShowFirstRunWizard(persistence, connectionManager);
+            ShowFirstRunWizard(settings, persistence, connectionManager);
             var startupUi = new StartupUi();
             persistence = persistenceFactory.AuthenticateByMasterPassword(persistence, startupUi);
             PersistenceErrorForm.RegisterDataEventHandler(persistence.Dispatcher);
@@ -72,9 +74,9 @@ namespace Terminals
                 Info.TitleVersion));
         }
 
-        private static void TryUpdateConfig(IPersistence persistence, ConnectionManager connectionManager)
+        private static void TryUpdateConfig(Settings settings, IPersistence persistence, ConnectionManager connectionManager)
         {
-            var updateConfig = new UpdateConfig(persistence, connectionManager);
+            var updateConfig = new UpdateConfig(settings, persistence, connectionManager);
             updateConfig.CheckConfigVersionUpdate();
         }
 
@@ -121,9 +123,9 @@ namespace Terminals
         }
 
 
-        private static void ShowFirstRunWizard(IPersistence persistence, ConnectionManager connectionManager)
+        private static void ShowFirstRunWizard(Settings settings, IPersistence persistence, ConnectionManager connectionManager)
         {
-            if (Settings.Instance.ShowWizard)
+            if (settings.ShowWizard)
             {
                 //settings file doesn't exist
                 using (var wzrd = new FirstRunWizard(persistence, connectionManager))
@@ -164,12 +166,12 @@ namespace Terminals
             Application.SetCompatibleTextRenderingDefault(false);
         }
 
-        private static CommandLineArgs ParseCommandline()
+        private static CommandLineArgs ParseCommandline(Settings settings)
         {
             var commandline = new CommandLineArgs();
             String[] cmdLineArgs = Environment.GetCommandLineArgs();
             Parser.ParseArguments(cmdLineArgs, commandline);
-            Settings.Instance.FileLocations.AssignCustomFileLocations(commandline.configFile,
+            settings.FileLocations.AssignCustomFileLocations(commandline.configFile,
                 commandline.favoritesFile, commandline.credentialsFile);
             return commandline;
         }
