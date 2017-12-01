@@ -27,6 +27,19 @@ namespace Terminals.Updates
 
         internal void Run(string favoritesFileFullFPath)
         {
+            UpgradeFavoritesFile(favoritesFileFullFPath);
+            UpgradeDatabase();
+        }
+
+        private void UpgradeDatabase()
+        {
+            // needed to authenticate by master password,
+            // since the connection string is encrypted in the settings
+            // call upgrade query directly, because we only manipulate xml unencrypted fields
+        }
+
+        private static void UpgradeFavoritesFile(string favoritesFileFullFPath)
+        {
             var doc = XDocument.Load(favoritesFileFullFPath);
             var favorites = doc.Root.FindByLocalName("Favorite");
             ReplaceObsoleteOptions(favorites);

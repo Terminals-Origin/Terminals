@@ -188,6 +188,7 @@
     <Compile Include="Connections\IConnectionManager.cs" />
     <Compile Include="Connections\DesktopShares.cs" />
     <Compile Include="Connections\PluginDefinition.cs" />
+    <Compile Include="Forms\IConnectionCommands.cs" />
     <Compile Include="IStartupUi.cs" />
     <Compile Include="Network\PortScanner\NetworkAdapters.cs" />
     <Compile Include="Services\ExternalLinks.cs" />
@@ -801,6 +802,7 @@
     <Compile Include="Forms\Controls\TerminalTabsSelectionControler.cs" />
     <Compile Include="StartupUi.cs" />
     <Compile Include="Updates\FilesV2ContentUpgrade.cs" />
+    <Compile Include="Updates\IVersionUpgrade.cs" />
     <Compile Include="Updates\PasswordsV2Update.cs" />
     <Compile Include="Updates\Release.cs" />
     <Compile Include="Updates\ReleaseInfo.cs" />
@@ -815,6 +817,7 @@
     <Compile Include="Updates\UpdateChecksFile.cs" />
     <Compile Include="Updates\UpdateManager.cs" />
     <Compile Include="Updates\UpdateConfig.cs" />
+    <Compile Include="Updates\V20Upgrade.cs" />
     <Compile Include="Updates\V401ContentUpgrade.cs" />
     <Compile Include="Updates\V40XElementExtensions.cs" />
     <Compile Include="Wizard\CommonOptions.cs">

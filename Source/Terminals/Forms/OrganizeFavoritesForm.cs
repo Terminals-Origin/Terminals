@@ -79,14 +79,6 @@ namespace Terminals
             this.lblConnectionCount.Text = this.bsFavorites.Count.ToString(CultureInfo.InvariantCulture);
         }
 
-        private void EditFavorite(IFavorite favorite)
-        {
-            using (var frmNewTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, favorite))
-            {
-                this.ShowTerminalForm(frmNewTerminal);
-            }
-        }
-
         private IFavorite GetSelectedFavorite()
         {
             if (dataGridFavorites.SelectedRows.Count > 0)
@@ -230,18 +222,7 @@ namespace Terminals
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var newTerminal = new NewTerminalForm(this.persistence, this.connectionManager, this.favoriteIcons, String.Empty))
-            {
-                this.ShowTerminalForm(newTerminal);
-            }
-        }
-
-        private void ShowTerminalForm(NewTerminalForm frmNewTerminal)
-        {
-            if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
-            {
-                this.UpdateFavoritesBindingSource();
-            }
+            this.connectionsUiFactory.CreateFavorite(this.AfterShowTerminalForm);
         }
 
         private void EditConnectinoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -253,7 +234,13 @@ namespace Terminals
         {
             IFavorite favorite = this.GetSelectedFavorite();
             if (favorite != null)
-                this.EditFavorite(favorite);
+                this.connectionsUiFactory.EditFavorite(favorite, this.AfterShowTerminalForm);
+        }
+
+        private void AfterShowTerminalForm(TerminalFormDialogResult editDialogResult)
+        {
+            if (editDialogResult != TerminalFormDialogResult.Cancel)
+                this.UpdateFavoritesBindingSource();
         }
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)

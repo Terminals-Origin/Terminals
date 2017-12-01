@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -23,7 +22,7 @@ using Settings = Terminals.Configuration.Settings;
 
 namespace Terminals
 {
-    internal partial class MainForm : Form, IConnectionMainView
+    internal partial class MainForm : Form, IConnectionMainView, IConnectionCommands
     {
         private readonly IPersistence persistence;
 
@@ -101,43 +100,6 @@ namespace Terminals
             base.SetVisibleCore(value);
         }
 
-        protected override void WndProc(ref Message msg)
-        {
-            try
-            {
-                if (msg.Msg == 0x21)  // mouse click
-                {
-                    TerminalTabControlItem selectedTab = this.terminalsControler.Selected;
-                    if (selectedTab != null)
-                    {
-                        Rectangle r = selectedTab.RectangleToScreen(selectedTab.ClientRectangle);
-                        if (r.Contains(MousePosition))
-                        {
-                            SetGrabInput(true);
-                        }
-                        else
-                        {
-                            TabControlItem item = tcTerminals.GetTabItemByPoint(tcTerminals.PointToClient(MousePosition));
-                            if (item == null)
-                                SetGrabInput(false);
-                            else if (item == selectedTab)
-                                SetGrabInput(true); //Grab input if clicking on currently selected tab
-                        }
-                    }
-                    else
-                    {
-                        SetGrabInput(false);
-                    }
-                }
-
-                base.WndProc(ref msg);
-            }
-            catch (Exception e)
-            {
-                Logging.Info("WnProc Failure", e);
-            }
-        }
-
         public void OnLeavingFullScreen()
         {
             if (this.CurrentTerminal != null)
@@ -187,7 +149,7 @@ namespace Terminals
                 this.favoriteToolBar.Visible = this.toolStripMenuItemShowHideFavoriteToolbar.Checked;
                 this.fullScreenSwitch = new MainFormFullScreenSwitch(this);
                 this.tabControlRemover = new TabControlRemover(this.settings, this, this.terminalsControler, this.tcTerminals);
-                this.favsList1.AssignServices(this.persistence, this.connectionManager, favoriteIcons);
+                this.favsList1.AssignServices(this.persistence, this.connectionManager, favoriteIcons, this);
                 this.AssignToolStripsToContainer();
                 this.ApplyControlsEnableAndVisibleState();
 
@@ -236,6 +198,7 @@ namespace Terminals
 
             this.tcTerminals.ShowToolTipOnTitle = settings.ShowInformationToolTips;
             IFavorite selectedFavorite = this.terminalsControler.SelectedFavorite;
+            // TODO this should update all favorites
             if (selectedFavorite != null)
                 this.terminalsControler.Selected.ToolTipText = this.toolTipBuilder.BuildTooTip(selectedFavorite);
 
@@ -291,31 +254,40 @@ namespace Terminals
 
         internal void UpdateControls()
         {
-            tcTerminals.ShowToolTipOnTitle = settings.ShowInformationToolTips;
-            bool hasSelectedTerminal = this.terminalsControler.HasSelected;
-            addTerminalToGroupToolStripMenuItem.Enabled = hasSelectedTerminal;
-            tsbGrabInput.Enabled = hasSelectedTerminal;
-            grabInputToolStripMenuItem.Enabled = hasSelectedTerminal;
-
-            try
-            {
-                tsbGrabInput.Checked = tsbGrabInput.Enabled && (CurrentTerminal != null) && CurrentTerminal.FullScreen;
-            }
-            catch (Exception exc)
-            {
-                Logging.Error(FULLSCREEN_ERROR_MSG, exc);
-            }
-
-            grabInputToolStripMenuItem.Checked = tsbGrabInput.Checked;
-            tsbConnect.Enabled = (tscConnectTo.Text != String.Empty);
-            tsbConnectToConsole.Enabled = (tscConnectTo.Text != String.Empty);
-            tsbConnectAs.Enabled = (tscConnectTo.Text != String.Empty);
-            saveTerminalsAsGroupToolStripMenuItem.Enabled = (tcTerminals.Items.Count > 0);
+            this.tcTerminals.ShowToolTipOnTitle = settings.ShowInformationToolTips;
+            this.UpdateCommandsByActiveConnection();
+            this.UpgadeGrabInput();
+            this.UpdateQuickConnectCommands();
 
             foreach (IToolbarExtender extender in this.toolbarExtenders)
             {
                 extender.Visit(this.toolbarStd);
             }
+        }
+
+        private void UpgadeGrabInput()
+        {
+            try
+            {
+                var currentConnection = this.terminalsControler.CurrentConnection as IHandleKeyboardInput;
+                bool canGrab = currentConnection != null;
+                this.tsbGrabInput.Checked = canGrab && currentConnection.GrabInput;
+                this.tsbGrabInput.Enabled = canGrab;
+                this.grabInputToolStripMenuItem.Checked = this.tsbGrabInput.Checked;
+                this.grabInputToolStripMenuItem.Enabled = canGrab;
+            }
+            catch (Exception exc)
+            {
+                Logging.Error(FULLSCREEN_ERROR_MSG, exc);
+            }
+        }
+
+        private void UpdateQuickConnectCommands()
+        {
+            bool quickConnectEnabled = !string.IsNullOrEmpty(this.tscConnectTo.Text);
+            this.tsbConnect.Enabled = quickConnectEnabled;
+            this.tsbConnectToConsole.Enabled = quickConnectEnabled;
+            this.tsbConnectAs.Enabled = quickConnectEnabled;
         }
 
         public String GetDesktopShare()
@@ -340,9 +312,11 @@ namespace Terminals
 
         private void ToggleGrabInput()
         {
-            if (CurrentTerminal != null)
+            var currentConnection = this.terminalsControler.CurrentConnection as IHandleKeyboardInput;
+            if (currentConnection != null)
             {
-                CurrentTerminal.FullScreen = !CurrentTerminal.FullScreen;
+                currentConnection.GrabInput = !currentConnection.GrabInput;
+                this.UpgadeGrabInput();
             }
         }
 
@@ -448,24 +422,6 @@ namespace Terminals
             }
         }
 
-        private void SetGrabInput(Boolean grab)
-        {
-            if (CurrentTerminal != null)
-            {
-                if (grab && !CurrentTerminal.ContainsFocus)
-                    CurrentTerminal.Focus();
-
-                try
-                {
-                    CurrentTerminal.FullScreen = grab;
-                }
-                catch (Exception exc)
-                {
-                    Logging.Error(FULLSCREEN_ERROR_MSG, exc);
-                }
-            }
-        }
-
         internal void FocusFavoriteInQuickConnectCombobox(string favoriteName)
         {
             this.tscConnectTo.SelectedIndex = this.tscConnectTo.Items.IndexOf(favoriteName);
@@ -474,7 +430,7 @@ namespace Terminals
         private void QuickConnect(String server, Int32 port, Boolean connectToConsole)
         {
             IFavorite favorite = FavoritesFactory.GetOrCreateQuickConnectFavorite(this.persistence, server, connectToConsole, port);
-            this.connectionsUiFactory.CreateTerminalTab(favorite);
+            this.connectionsUiFactory.Connect(favorite);
         }
 
         internal void HandleCommandLineActions(CommandLineArgs commandLineArgs)
@@ -542,16 +498,22 @@ namespace Terminals
             this.SetWindowState();
         }
 
-        private void MainForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Cancel)
-                this.ToggleGrabInput();
-        }
-
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
-            //handle global keyup events
-            if (e.Control && e.KeyCode == Keys.F12)
+            if ((this.tsbGrabInput.Checked || this.FullScreen) && e.KeyCode != Keys.Cancel)
+            {
+                if (this.CurrentTerminal != null)
+                {
+                    this.CurrentTerminal.Focus();
+                    return;
+                }
+            }
+
+            if (e.KeyCode == Keys.Cancel)
+            {
+                this.ToggleGrabInput();
+            }
+            else if (e.Control && e.KeyCode == Keys.F12)
             {
                 this.terminalsControler.CaptureScreen();
             }
@@ -600,7 +562,7 @@ namespace Terminals
 
         private void CloseOpenedConnections(FormClosingEventArgs args)
         {
-            if (this.tcTerminals.Items.Count > 0)
+            if (this.terminalsControler.HasSelected)
             {
                 if (settings.ShowConfirmDialog)
                     SaveConnectonsIfRequested(args);
@@ -759,8 +721,9 @@ namespace Terminals
 
         private void GroupAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //TODO Bug: doenst work, the menu doesnt refresh and the favorite isnt put into the group
             IGroup selectedGroup = ((GroupMenuItem)sender).Group;
-            IFavorite selectedFavorite = this.terminalsControler.SelectedFavorite;
+            IFavorite selectedFavorite = this.terminalsControler.SelectedOriginFavorite;
 
             if (selectedGroup != null && selectedFavorite != null)
             {
@@ -773,7 +736,7 @@ namespace Terminals
             var groupMenuItem = (GroupMenuItem)sender;
             foreach (IFavorite favorite in groupMenuItem.Favorites)
             {
-                this.connectionsUiFactory.CreateTerminalTab(favorite);
+                this.connectionsUiFactory.Connect(favorite);
             }
         }
 
@@ -781,7 +744,7 @@ namespace Terminals
         {
             string connectionName = ((ToolStripItem)sender).Text;
             IFavorite favorite = PersistedFavorites[connectionName];
-            this.connectionsUiFactory.CreateTerminalTab(favorite);
+            this.connectionsUiFactory.Connect(favorite);
         }
 
         private void terminalTabPage_Resize(object sender, EventArgs e)
@@ -815,15 +778,12 @@ namespace Terminals
 
         private void TerminalTabPage_DoubleClick(object sender, EventArgs e)
         {
-            if (this.terminalsControler.HasSelected)
-            {
-                this.tsbDisconnect.PerformClick();
-            }
+            this.Disconnect();
         }
 
         private void NewTerminalToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.connectionsUiFactory.CreateNewTerminal();
+            this.connectionsUiFactory.CreateFavorite();
         }
 
         private void TsbConnect_Click(object sender, EventArgs e)
@@ -881,18 +841,12 @@ namespace Terminals
 
         private void TsbDisconnect_Click(object sender, EventArgs e)
         {
-            this.tabControlRemover.Disconnect();
-        }
-
-        // TODO Assing missing event handler
-        private void tcTerminals_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.UpdateControls();
+            this.Disconnect();
         }
 
         private void NewTerminalToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            this.connectionsUiFactory.CreateNewTerminal();
+            this.connectionsUiFactory.CreateFavorite();
         }
 
         private void TsbGrabInput_Click(object sender, EventArgs e)
@@ -905,23 +859,21 @@ namespace Terminals
             this.tabControlRemover.OnDisconnected(connection);
         }
 
-        public void SetGrabInputCheck(bool newGrabInput)
-        {
-            tsbGrabInput.Checked = newGrabInput;
-            this.UpdateControls();
-        }
-
         private void TcTerminals_TabControlItemSelectionChanged(TabControlItemChangedEventArgs e)
         {
             this.UpdateControls();
             this.AssingTitle();
+        }
 
-            if (this.tcTerminals.Items.Count > 0)
-            {
-                this.tsbDisconnect.Enabled = e.Item != null;
-                this.disconnectToolStripMenuItem.Enabled = e.Item != null;
-                this.SetGrabInput(true);
-            }
+        private void UpdateCommandsByActiveConnection()
+        {
+            bool hasSelectedConnection = this.terminalsControler.HasSelected;
+            this.tsbDisconnect.Enabled = hasSelectedConnection;
+            this.disconnectToolStripMenuItem.Enabled = hasSelectedConnection;
+            this.toolStripButtonReconnect.Enabled = hasSelectedConnection;
+            this.reconnectToolStripMenuItem.Enabled = hasSelectedConnection;
+            this.addTerminalToGroupToolStripMenuItem.Enabled = hasSelectedConnection;
+            this.saveTerminalsAsGroupToolStripMenuItem.Enabled = hasSelectedConnection;
         }
 
         private void AssingTitle()
@@ -987,6 +939,7 @@ namespace Terminals
         {
             foreach (ToolStripItem menuItem in this.tcTerminals.Menu.Items)
             {
+                // the menu item always has name of connected favorite, so search by name works
                 IFavorite favorite = this.tabsFilter.FindFavoriteByTabTitle(menuItem.Text);
 
                 if (favorite != null)
@@ -1225,7 +1178,6 @@ namespace Terminals
             this.ToolStripMenuItem3_Click(null, null);
         }
 
-        // todo assign missing SpecialCommandsToolStrip_MouseClick to context menu for Organize shortcuts command
         private void SpecialCommandsToolStrip_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -1268,8 +1220,6 @@ namespace Terminals
                 connection.ChangeDesktopSize(desktop);
             }
         }
-
-
 
         private void PbShowTagsFavorites_MouseMove(object sender, MouseEventArgs e)
         {
@@ -1438,5 +1388,37 @@ namespace Terminals
         }
 
         #endregion
+
+        private void ToolStripButtonReconnect_Click(object sender, EventArgs e)
+        {
+            this.Reconnect();
+        }
+
+        public void Reconnect()
+        {
+            IConnection currentConnection = this.terminalsControler.CurrentConnection;
+            if (currentConnection != null)
+            {
+                IFavorite favorite = currentConnection.Favorite;
+                this.tabControlRemover.Disconnect();
+                this.connectionsUiFactory.Connect(favorite);
+            }
+        }
+
+        public bool CanExecute(IFavorite selected)
+        {
+            IFavorite selectedInTab = this.terminalsControler.SelectedOriginFavorite;
+            return selected != null && selected.StoreIdEquals(selectedInTab);
+        }
+
+        public void Disconnect()
+        {
+            this.tabControlRemover.Disconnect();
+        }
+
+        private void SpecialCommandsToolStrip_MouseClick(object sender, EventArgs e)
+        {
+
+        }
     }
 }

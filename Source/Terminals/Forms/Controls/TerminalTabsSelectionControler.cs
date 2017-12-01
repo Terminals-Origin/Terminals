@@ -24,12 +24,17 @@ namespace Terminals
 
         public IConnection CurrentConnection
         {
-            get { return this.filter.CurrentConnection; }
+            get { return this.filter.SelectedConnection; }
         }
 
         internal TerminalTabControlItem Selected
         {
             get { return this.filter.Selected; }
+        }
+
+        internal IFavorite SelectedOriginFavorite
+        {
+            get { return this.filter.SelectedOriginFavorite; }
         }
 
         internal IFavorite SelectedFavorite
@@ -167,7 +172,7 @@ namespace Terminals
         /// </summary>
         internal void CaptureScreen(TabControl.TabControl tabControl)
         {
-            CaptureManager.CaptureManager.PerformScreenCapture(tabControl, this.SelectedFavorite);
+            CaptureManager.CaptureManager.PerformScreenCapture(tabControl, this.SelectedOriginFavorite);
             this.RefreshCaptureManagerAndCreateItsTab(false);
         }
 
