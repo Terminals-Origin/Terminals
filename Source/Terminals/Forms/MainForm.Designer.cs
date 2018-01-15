@@ -82,7 +82,7 @@ namespace Terminals
             this.toolStripOrganizeShortucts = new System.Windows.Forms.ToolStripMenuItem();
             this.credentialManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolsSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.rebuildTagsIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rebuildShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rebuildToolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -577,7 +577,7 @@ namespace Terminals
             this.toolStripOrganizeShortucts,
             this.credentialManagementToolStripMenuItem,
             this.toolStripSeparator7,
-            this.toolStripSeparator9,
+            this.toolsSeparator,
             this.rebuildTagsIndexToolStripMenuItem,
             this.rebuildShortcutsToolStripMenuItem,
             this.rebuildToolbarsToolStripMenuItem,
@@ -657,8 +657,8 @@ namespace Terminals
             // 
             // toolStripSeparator9
             // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(273, 6);
+            this.toolsSeparator.Name = "toolsSeparator";
+            this.toolsSeparator.Size = new System.Drawing.Size(273, 6);
             // 
             // rebuildTagsIndexToolStripMenuItem
             // 
@@ -1241,7 +1241,7 @@ namespace Terminals
         private System.Windows.Forms.PictureBox pbShowTagsFavorites;
         private System.Windows.Forms.ToolStripMenuItem clearHistoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton tsbConnectAs;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripSeparator toolsSeparator;
         private System.Windows.Forms.ToolStripButton toolStripButtonReconnect;
         private System.Windows.Forms.ToolStripMenuItem reconnectToolStripMenuItem;
     }

@@ -197,6 +197,7 @@
     <Compile Include="UserInterface\ProtocolImageListBuilderTests.cs" />
     <Compile Include="UserInterface\FavoriteIconsTests.cs" />
     <Compile Include="UserInterface\ToolTipBuilderTests.cs" />
+    <Compile Include="UserInterface\PuttyMenuVisitorTests.cs" />
     <Compile Include="UserInterface\VncToolbarVisitorTests.cs" />
     <Compile Include="UserInterface\VmrcToolbarVisitorTests.cs" />
     <Compile Include="Validation\DbValidationTests.cs" />

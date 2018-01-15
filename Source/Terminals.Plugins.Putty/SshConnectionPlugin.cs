@@ -9,7 +9,8 @@ using Terminals.Plugins.Putty.Properties;
 
 namespace Terminals.Plugins.Putty
 {
-    internal class SshConnectionPlugin : IConnectionPlugin, IOptionsConverterFactory, IOptionsExporterFactory
+    internal class SshConnectionPlugin : IConnectionPlugin, IOptionsConverterFactory,
+        IOptionsExporterFactory, IMenuExtenderFactory
     {
         internal const int SSHPort = 22;
         internal const string SSH = "SSH";
@@ -54,6 +55,11 @@ namespace Terminals.Plugins.Putty
         public ITerminalsOptionsExport CreateOptionsExporter()
         {
             return new TerminalsSshExport();
+        }
+
+        public IMenuExtender CreateMenuExtender()
+        {
+            return new PuttyMenuVisitor();
         }
     }
 }

@@ -177,7 +177,7 @@ namespace Terminals
 
         private void InitializeMenu()
         {
-            foreach (IMenuExtender menuExtender in this.connectionManager.GetMenuExtenders())
+            foreach (IMenuExtender menuExtender in this.connectionManager.CreateMenuExtenders())
             {
                 menuExtender.Visit(this.menuStrip);
             }

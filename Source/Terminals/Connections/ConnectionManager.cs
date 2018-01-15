@@ -173,13 +173,6 @@ namespace Terminals.Connections
                 .ToArray();
         }
 
-        public IToolbarExtender[] CreateToolbarExtensions(ICurrenctConnectionProvider provider)
-        {
-            return this.plugins.Values.OfType<IToolbarExtenderFactory>()
-                .Select(p => p.CreateToolbarExtender(provider))
-                .ToArray();
-        }
-
         public Type[] GetAllKnownProtocolOptionTypes()
         {
             List<Type> knownTypes = this.plugins.Values
@@ -217,9 +210,18 @@ namespace Terminals.Connections
             favorite.ChangeProtocol(protocol, options);
         }
 
-        public IEnumerable<IMenuExtender> GetMenuExtenders()
+        public IToolbarExtender[] CreateToolbarExtensions(ICurrenctConnectionProvider provider)
         {
-            return this.plugins.OfType<IMenuExtender>();
+            return this.plugins.Values.OfType<IToolbarExtenderFactory>()
+                .Select(p => p.CreateToolbarExtender(provider))
+                .ToArray();
+        }
+
+        public IMenuExtender[] CreateMenuExtenders()
+        {
+            return this.plugins.Values.OfType<IMenuExtenderFactory>()
+                .Select(p => p.CreateMenuExtender())
+                .ToArray();
         }
 
         public override string ToString()

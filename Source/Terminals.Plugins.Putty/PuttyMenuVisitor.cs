@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Common.Forms;
 using Terminals.Connections;
@@ -31,9 +32,11 @@ namespace Terminals
 
         private void AddToMenu(MenuStrip menuStrip, ToolStripMenuItem newMenu)
         {
-            // TODO finish adding to the menu
-            //separatorIndex = this.toolsToolStripMenuItem.DropDownItems.IndexOf(this.toolStripSeparator9);
-            //this.toolsToolStripMenuItem.DropDownItems.Insert(separatorIndex, newMenu);
+            var toolsMenu = menuStrip.Items.OfType<ToolStripMenuItem>()
+                .FirstOrDefault(tm => tm.Name.Contains("tools"));
+
+            if (toolsMenu != null)
+                toolsMenu.DropDownItems.Add(newMenu);
         }
 
         private void OpenSshAgentToolStripMenuItem_Click(object sender, EventArgs e)

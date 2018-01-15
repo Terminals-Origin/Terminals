@@ -278,8 +278,15 @@ namespace Tests.Connections
         public void DummyProvider_CreateToolbarExtensions_CreatesAll()
         {
             var mockProvider = new Mock<ICurrenctConnectionProvider>();
-            var extensions = this.connectionManager.CreateToolbarExtensions(mockProvider.Object).Count();
+            int extensions = this.connectionManager.CreateToolbarExtensions(mockProvider.Object).Length;
             Assert.AreEqual(3, extensions, "All known extensions have to be registered");
+        }
+
+        [TestMethod]
+        public void CreateMenuExtensions_CreatesAll()
+        {
+            int extensions = this.connectionManager.CreateMenuExtenders().Length;
+            Assert.AreEqual(1, extensions, "All known extensions have to be registered");
         }
         
         [TestMethod]
