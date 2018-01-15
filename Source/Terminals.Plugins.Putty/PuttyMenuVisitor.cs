@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Terminals.Common.Forms;
 using Terminals.Connections;
+using Terminals.Plugins.Putty;
 
 namespace Terminals
 {
@@ -41,19 +40,12 @@ namespace Terminals
 
         private void OpenSshAgentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.OpenPuttyTool("pageant.exe");
+            Executables.LaunchPageant();
         }
 
         private void OpenSshKeygenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.OpenPuttyTool("puttygen.exe");
-        }
-
-        private void OpenPuttyTool(string name)
-        {
-            string pluginDirectory = typeof(PuttyMenuVisitor).Assembly.Location;
-            string path = Path.Combine(pluginDirectory, "Putty", "Resources", name);
-            ExternalLinks.OpenPath(path);
+            Executables.LaunchKeyGen();
         }
     }
 }

@@ -15,12 +15,18 @@ namespace Terminals.Plugins.Putty
         internal const string PUTTY_BINARY = "putty.exe";
         private const string PAGEANT = "pageant";
         internal const string PAGEANT_BINARY = PAGEANT + ".exe";
-
+        private const string KEYGEN_BINARY = "puttygen.exe";
 
         internal static void LaunchPutty()
         {
             var puttyBinaryPath = GetPuttyBinaryPath();
             ExternalLinks.OpenPath(puttyBinaryPath);
+        }
+
+        internal static void LaunchKeyGen()
+        {
+            var keyGenBinaryPath = GetBinaryPath(KEYGEN_BINARY);
+            ExternalLinks.OpenPath(keyGenBinaryPath);
         }
 
         internal static void LaunchPageant()

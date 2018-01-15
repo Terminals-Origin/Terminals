@@ -181,6 +181,11 @@ namespace Terminals
             {
                 menuExtender.Visit(this.menuStrip);
             }
+
+            ToolStripItemCollection toolsDropDownItems = this.toolsToolStripMenuItem.DropDownItems;
+
+            if (toolsDropDownItems.Count < toolsDropDownItems.IndexOf(this.extendedSeparator))
+                this.extendedSeparator.Visible = false;
         }
 
         private void InitializeFavsListControl()
