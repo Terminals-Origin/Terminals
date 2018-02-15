@@ -7,10 +7,6 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/in
 ..\Source\packages\chocolatey.0.10.5\tools\chocolateyInstall.ps1
 choco upgrade chocolatey -y;
 
-# powershell community extensions to get the write-zip command let
-choco install pscx -y;
-Import-Module "c:\Program Files (x86)\PowerShell Community Extensions\Pscx3\Pscx\pscx";
-
 # All packages to install development environment:
 choco install wixtoolset -y;
 choco install checksum -y;
