@@ -149,15 +149,15 @@ namespace Terminals.Data
             // First create new groups, which aren't in persistence yet
             var addedGroups = this.groups.AddAllToCache(newGroups);
             List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, oldGroups);
-            AddIntoMissingGroups(favorite, missingGroups);
+            AddIntoMissingGroups(this.groups, favorite, missingGroups);
             return addedGroups;
         }
 
-        internal static void AddIntoMissingGroups(IFavorite favorite, List<IGroup> missingGroups)
+        internal static void AddIntoMissingGroups(IGroups groups, IFavorite favorite, List<IGroup> missingGroups)
         {
             foreach (IGroup group in missingGroups)
             {
-                group.AddFavorite(favorite);
+                groups.AddFavorite(group, favorite);
             }
         }
 

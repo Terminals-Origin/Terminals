@@ -139,7 +139,7 @@ namespace Terminals.Forms.Controls
             foreach (string groupName in validGroupNames)
             {
                 IGroup group = FavoritesFactory.GetOrAddNewGroup(persistence, groupName);
-                group.AddFavorite(toPerisist);
+                persistence.Groups.AddFavorite(group, toPerisist);
             }
         }
         

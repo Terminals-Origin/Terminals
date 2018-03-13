@@ -63,7 +63,7 @@ namespace Tests.FilePersisted
         {
             IFavorite favorite = this.AddFavorite();
             IGroup group = this.Persistence.Factory.CreateGroup(groupName);
-            group.AddFavorite(favorite);
+            this.Persistence.Groups.AddFavorite(group, favorite);
             this.Favorites.UpdateFavorite(favorite, new List<IGroup>() { group });
             return new Tuple<IFavorite, IGroup>(favorite, group);
         }

@@ -47,5 +47,13 @@ namespace Terminals.Data
         /// <param name="toUpdate">Not null target group wher to add the favorites</param>
         /// <param name="favorites">Not null already persisted instance to add.</param>
         void AddFavorites(IGroup toUpdate, List<IFavorite> favorites);
+
+        /// <summary>
+        /// Adds required favorite into this set. It would be added only, 
+        /// if there is no favorite with the same id yet.
+        /// </summary>
+        /// <param name="toUpdate">Not null target group wher to add the favorites</param>
+        /// <param name="favorite">Not null already persisted instance to add.</param>
+        void AddFavorite(IGroup toUpdate, IFavorite favorite);
     }
 }

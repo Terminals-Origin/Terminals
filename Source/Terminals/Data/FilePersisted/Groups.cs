@@ -223,6 +223,11 @@ namespace Terminals.Data
             this.persistence.SaveImmediatelyIfRequested();
         }
 
+        public void AddFavorite(IGroup toUpdate, IFavorite favorite)
+        {
+            this.AddFavorites(toUpdate, new List<IFavorite>() { favorite });
+        }
+
         public void AddFavorites(IGroup toUpdate, List<IFavorite> favorites)
         {
             var group = toUpdate as Group;

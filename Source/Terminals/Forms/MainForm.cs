@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -735,13 +736,12 @@ namespace Terminals
 
         private void GroupAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //TODO Bug: doenst work, the menu doesnt refresh and the favorite isnt put into the group
             IGroup selectedGroup = ((GroupMenuItem)sender).Group;
             IFavorite selectedFavorite = this.terminalsControler.SelectedOriginFavorite;
 
             if (selectedGroup != null && selectedFavorite != null)
             {
-                selectedGroup.AddFavorite(selectedFavorite);
+                this.persistence.Groups.AddFavorite(selectedGroup, selectedFavorite);
             }
         }
 
@@ -968,11 +968,8 @@ namespace Terminals
                 return;
 
             IGroup group = FavoritesFactory.GetOrAddNewGroup(this.persistence, newGroupName);
-            foreach (IFavorite favorite in this.tabsFilter.SelectTabsWithFavorite())
-            {
-                group.AddFavorite(favorite);
-            }
-
+            var favorites = this.tabsFilter.SelectTabsWithFavorite().ToList();
+            this.persistence.Groups.AddFavorites(group, favorites);
             this.menuLoader.LoadGroups();
         }
 

@@ -97,12 +97,6 @@ namespace Terminals.Data
             this.dispatcher = dispatcher;
         }
 
-        void IGroup.AddFavorite(IFavorite favorite)
-        {
-            this.AddFavoriteToCache(favorite);
-            this.ReportGroupChanged(this);
-        }
-
         void IGroup.RemoveFavorites(List<IFavorite> favorites)
         {
             this.RemoveFavoritesFromCache(favorites);

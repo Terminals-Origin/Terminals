@@ -164,11 +164,11 @@ namespace Terminals.Data.DB
             }
         }
 
-        private static void UpdateGroupsMembership(IFavorite favorite, List<IGroup> newGroups)
+        private void UpdateGroupsMembership(IFavorite favorite, List<IGroup> newGroups)
         {
             List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, newGroups);
             List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, favorite.Groups);
-            Data.Favorites.AddIntoMissingGroups(favorite, missingGroups);
+            Data.Favorites.AddIntoMissingGroups(this.groups, favorite, missingGroups);
             Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> { favorite }, redundantGroups);
         }
 
