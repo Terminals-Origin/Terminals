@@ -45,10 +45,10 @@
         <File Source="..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="log4netdll" Guid="B2F1F15C-34C3-453E-9521-A8F3949D99C2">
-        <File Source="..\packages\log4net.2.0.0\lib\net40-full\log4net.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="..\packages\log4net.2.0.8\lib\net40-full\log4net.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="log4netxml" Guid="4BDE5756-0063-42E7-8971-C46573017B2C">
-        <File Source="..\packages\log4net.2.0.0\lib\net40-full\log4net.xml" KeyPath="yes" Checksum="yes"/>
+        <File Source="..\packages\log4net.2.0.8\lib\net40-full\log4net.xml" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="FluentValidation" Guid="7AB26D60-C019-42F5-ADCA-F425A64D617A">
         <File Source="..\packages\FluentValidation.6.2.1.0\lib\Net45\FluentValidation.dll" KeyPath="yes" Checksum="yes"/>
