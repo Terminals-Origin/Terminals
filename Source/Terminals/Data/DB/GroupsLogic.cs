@@ -244,6 +244,7 @@ namespace Terminals.Data.DB
         {
             toUpdate.UpdateFavoritesMembershipInDatabase(favorites);
             this.ReportGroupChanged(toUpdate);
+            this.dispatcher.ReportFavoritesUpdated(favorites);
         }
 
         private void ReportGroupChanged(IGroup group)

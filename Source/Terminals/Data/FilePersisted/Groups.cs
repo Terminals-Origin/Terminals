@@ -233,6 +233,7 @@ namespace Terminals.Data
             var group = toUpdate as Group;
             group.AddFavoritesToCache(favorites);
             this.ReportGroupChanged(toUpdate);
+            this.dispatcher.ReportFavoritesUpdated(favorites);
             this.persistence.SaveImmediatelyIfRequested();
         }
 
