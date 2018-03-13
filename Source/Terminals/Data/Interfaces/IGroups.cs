@@ -39,5 +39,13 @@ namespace Terminals.Data
         /// Saves changes, if delayed save isn't required.
         /// </summary>
         void Rebuild();
+
+        /// <summary>
+        /// Adds all required favorites into this set. It would be added only, 
+        /// if there is no favorite with the same id yet.
+        /// </summary>
+        /// <param name="toUpdate">Not null target group wher to add the favorites</param>
+        /// <param name="favorites">Not null already persisted instance to add.</param>
+        void AddFavorites(IGroup toUpdate, List<IFavorite> favorites);
     }
 }

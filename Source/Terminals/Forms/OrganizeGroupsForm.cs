@@ -84,7 +84,7 @@ namespace Terminals
             {
                 if (frmAddConnection.ShowDialog() == DialogResult.OK)
                 {
-                    group.AddFavorites(frmAddConnection.SelectedFavorites);
+                    this.persistence.Groups.AddFavorites(group, frmAddConnection.SelectedFavorites);
                     this.LoadSelectedGroupFavorites();
                     this.persistence.SaveAndFinishDelayedUpdate();
                 }

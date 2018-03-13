@@ -218,6 +218,34 @@ namespace Terminals.Data.DB
             }
         }
 
+        public void AddFavorites(IGroup toUpdate, List<IFavorite> favorites)
+        {
+            try
+            {
+                this.TryAddFavorites((DbGroup)toUpdate, favorites);
+            }
+            catch (DbUpdateException)
+            {
+                this.RefreshCache();
+            }
+            catch (EntityException exception)
+            {
+                this.dispatcher.ReportActionError(fs => this.AddFavorites(toUpdate, fs), favorites, this, exception,
+                    "Unable to add favorite to database group.");
+            }
+        }
+
+        internal void TryAddFavorites(DbGroup toUpdate, List<IFavorite> favorites)
+        {
+            toUpdate.UpdateFavoritesMembershipInDatabase(favorites);
+            this.ReportGroupChanged(toUpdate);
+        }
+
+        private void ReportGroupChanged(IGroup group)
+        {
+            this.dispatcher.ReportGroupsUpdated(new List<IGroup> { group });
+        }
+
         private void TryRebuild()
         {
             using (Database database = DatabaseConnections.CreateInstance())

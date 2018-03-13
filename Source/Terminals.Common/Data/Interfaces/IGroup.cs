@@ -35,13 +35,6 @@ namespace Terminals.Data
         void AddFavorite(IFavorite favorite);
 
         /// <summary>
-        /// Adds all required favorites into this set. It would be added only, 
-        /// if there is no favorite with the same id yet.
-        /// </summary>
-        /// <param name="favorites">Not null already persisted instance to add.</param>
-        void AddFavorites(List<IFavorite> favorites);
-
-        /// <summary>
         /// Removes required favorite from set of favorites. If there is no favorite with the same Id,
         /// than nothing happens.
         /// </summary>

@@ -121,33 +121,10 @@ namespace Terminals.Data.DB
 
         public void AddFavorite(IFavorite favorite)
         {
-            this.AddFavorites(new List<IFavorite> { favorite });
+            this.groups.AddFavorites(this, new List<IFavorite> { favorite });
         }
 
-        public void AddFavorites(List<IFavorite> favorites)
-        {
-            try
-            {
-                this.TryAddFavorites(favorites);
-            }
-            catch (DbUpdateException)
-            {
-                this.groups.RefreshCache();
-            }
-            catch (EntityException exception)
-            {
-                this.dispatcher.ReportActionError(AddFavorites, favorites, this, exception,
-                                                  "Unable to add favorite to database group.");
-            }
-        }
-
-        private void TryAddFavorites(List<IFavorite> favorites)
-        {
-            this.UpdateFavoritesMembershipInDatabase(favorites);
-            this.ReportGroupChanged(this);
-        }
-
-        private void UpdateFavoritesMembershipInDatabase(List<IFavorite> favorites)
+        internal void UpdateFavoritesMembershipInDatabase(List<IFavorite> favorites)
         {
             using (Database database = DatabaseConnections.CreateInstance())
             {

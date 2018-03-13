@@ -114,7 +114,7 @@ namespace Terminals.Updates
             List<string> favoriteNames = configGroup.FavoriteAliases.GetFavoriteNames();
             List<IFavorite> groupFavorites = favoriteNames.Select(favoriteName => persistence.Favorites[favoriteName])
                 .Where(favorite => favorite != null).ToList();
-            group.AddFavorites(groupFavorites);
+            this.persistence.Groups.AddFavorites(group, groupFavorites);
         }
 
         private void ReplaceFavoriteButtonNamesByIds()

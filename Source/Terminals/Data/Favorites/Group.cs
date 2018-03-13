@@ -103,12 +103,6 @@ namespace Terminals.Data
             this.ReportGroupChanged(this);
         }
 
-        void IGroup.AddFavorites(List<IFavorite> favorites)
-        {
-            this.AddFavoritesToCache(favorites);
-            this.ReportGroupChanged(this);
-        }
-
         void IGroup.RemoveFavorites(List<IFavorite> favorites)
         {
             this.RemoveFavoritesFromCache(favorites);
@@ -132,7 +126,7 @@ namespace Terminals.Data
                 this.favorites[favorite.Id] = favorite;
         }
 
-        private void AddFavoritesToCache(List<IFavorite> favoritesToAdd)
+        internal void AddFavoritesToCache(List<IFavorite> favoritesToAdd)
         {
             foreach (Favorite favorite in favoritesToAdd)
             {
