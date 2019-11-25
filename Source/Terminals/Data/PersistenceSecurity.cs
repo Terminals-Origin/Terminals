@@ -41,14 +41,14 @@ namespace Terminals.Data
             this.KeyMaterial = sourceSecurity.KeyMaterial;
         }
 
-        internal bool Authenticate(Func<bool, AuthenticationPrompt> knowsUserPassword)
+        internal bool Authenticate(Func<bool, AuthenticationPrompt> knowsUserPassword, string masterPasswordArg = null)
         {
             // don't prompt user third time for password when upgrading passwords from v2
             if (this.isAuthenticated)
                 return true;
             
             var authentication = new AuthenticationSequence(this.IsMasterPasswordValid, knowsUserPassword);
-            this.isAuthenticated = authentication.AuthenticateIfRequired();
+            this.isAuthenticated = authentication.AuthenticateIfRequired(masterPasswordArg);
             return this.isAuthenticated;
         }
 

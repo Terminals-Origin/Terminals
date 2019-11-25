@@ -56,6 +56,10 @@ namespace Terminals.CommandLine
             HelpText = "Enforces start application in single instance mode. If defined, overrides the application option")]
         public bool reuse;
 
+        [DataMember]
+        [Argument(ArgumentType.AtMostOnce, LongName="masterpassword", ShortName = "mp", HelpText = "Master password to start terminals.exe")]
+        public string masterPassword;
+
 
         internal string[] Favorites
         {

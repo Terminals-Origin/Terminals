@@ -65,7 +65,7 @@ namespace Terminals
 
             ShowFirstRunWizard(settings, persistence, connectionManager);
             var startupUi = new StartupUi();
-            persistence = persistenceFactory.AuthenticateByMasterPassword(persistence, startupUi);
+            persistence = persistenceFactory.AuthenticateByMasterPassword(persistence, startupUi, commandLine.masterPassword);
             PersistenceErrorForm.RegisterDataEventHandler(persistence.Dispatcher);
 
             RunMainForm(persistence, connectionManager, favoriteIcons, commandLine);

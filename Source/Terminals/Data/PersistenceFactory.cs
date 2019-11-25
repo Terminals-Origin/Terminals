@@ -43,9 +43,9 @@ namespace Terminals.Data
             return new SqlPersistence(this.favoriteIcons, this.connectionManager);
         }
 
-        internal IPersistence AuthenticateByMasterPassword(IPersistence persistence, IStartupUi startupUi)
+        internal IPersistence AuthenticateByMasterPassword(IPersistence persistence, IStartupUi startupUi, string masterPasswordArg = null)
         {
-            bool authenticated = persistence.Security.Authenticate(startupUi.KnowsUserPassword);
+            bool authenticated = persistence.Security.Authenticate(startupUi.KnowsUserPassword, masterPasswordArg);
 
             if (!authenticated)
                 startupUi.Exit();

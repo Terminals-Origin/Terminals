@@ -27,17 +27,26 @@ namespace Terminals.Data
         /// Check, if provide password is valid, when defined.
         /// Returns true, if password is not defined or is present and was verified.
         /// </summary>
-        internal bool AuthenticateIfRequired()
+        internal bool AuthenticateIfRequired(string masterPasswordArg = null)
         {
             if (IsMasterPasswordDefined())
-                return this.PromptUserToAuthenticate();
+                return this.PromptUserToAuthenticate(masterPasswordArg);
 
             return true;
         }
 
-        private bool PromptUserToAuthenticate()
+        private bool PromptUserToAuthenticate(string masterPasswordArg = null)
         {
-            AuthenticationPrompt promptResults = this.knowsUserPassword(false);
+            AuthenticationPrompt promptResults;
+            if (string.IsNullOrEmpty(masterPasswordArg))
+            {
+                promptResults = this.knowsUserPassword(false);
+            }
+            else
+            {
+                promptResults = new AuthenticationPrompt() { Canceled = false, Password = masterPasswordArg };
+            }
+
             bool authenticated = this.IsUserPaswordValid(promptResults);
 
             while (!(promptResults.Canceled || authenticated))
