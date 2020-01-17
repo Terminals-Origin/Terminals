@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Terminals.CaptureManager;
 using Terminals.Configuration;
@@ -94,32 +95,33 @@ namespace Terminals.Forms
             var targets = this.persistence.Favorites
                 .Where(favorite => favoriteNames.Contains(favorite.Name, StringComparer.InvariantCultureIgnoreCase));
             var definition = new ConnectionDefinition(targets, forceConsole, forceNewWindow, credentials, targets.Any<IFavorite>() ? string.Empty : favoriteNames.First());
-            this.Connect(definition);
+            this.ConnectAsync(definition);
         }
 
-        internal void Connect(IFavorite favorite)
+        internal async Task ConnectAsync(IFavorite favorite)
         {
             var definition = new ConnectionDefinition(favorite);
-            this.Connect(definition);
+            await this.ConnectAsync(definition);
         }
 
         /// <summary>
         /// Connects to all favorites required by definition.
         /// </summary>
         /// <param name="definition">not null definition of the connection behavior</param>
-        internal void Connect(ConnectionDefinition definition)
+        internal async Task ConnectAsync(ConnectionDefinition definition)
         {
             if (string.IsNullOrEmpty(definition.NewFavorite)) // only one in this case
-                this.ConnectToAll(definition);
+                await this.ConnectToAllAsync(definition);
             else
                 this.CreateFavorite(definition.NewFavorite);
         }
 
-        private void ConnectToAll(ConnectionDefinition connectionDefinition)
+        private async Task ConnectToAllAsync(ConnectionDefinition connectionDefinition)
         {
             foreach (IFavorite favorite in connectionDefinition.Favorites)
             {
                 this.Connect(favorite, connectionDefinition);
+                await Task.Delay(2000);
             }
         }
 
@@ -300,7 +302,7 @@ namespace Terminals.Forms
             TerminalFormDialogResult dialogResult = editForm.ShowDialog();
 
             if (dialogResult == TerminalFormDialogResult.SaveAndConnect)
-                this.Connect(editForm.Favorite);
+                this.ConnectAsync(editForm.Favorite);
 
             callback(dialogResult);
         }

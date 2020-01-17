@@ -350,7 +350,7 @@ namespace Terminals
         {
             IFavorite favorite = this.GetSelectedFavorite();
             var definition = new ConnectionDefinition(new List<IFavorite>() { favorite });
-            this.connectionsUiFactory.Connect(definition);
+            this.connectionsUiFactory.ConnectAsync(definition);
         }
 
         private void FavoritesSearchBoxFound(object sender, FavoritesFoundEventArgs e)

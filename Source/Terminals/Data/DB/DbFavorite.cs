@@ -13,7 +13,7 @@ namespace Terminals.Data.DB
     using System.Collections.Generic;
     
     internal partial class DbFavorite
-    {
+    {   
         public string Name { get; set; }
         public int Port { get; set; }
         public string ServerName { get; set; }

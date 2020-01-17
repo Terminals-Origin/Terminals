@@ -247,11 +247,11 @@ namespace Terminals
             }
         }
 
-        private void ConnectFromContextMenu(List<IFavorite> favorites)
+        private async Task ConnectFromContextMenuAsync(List<IFavorite> favorites)
         {
             this.CloseMenuStrips();
             var definition = new ConnectionDefinition(favorites);
-            this.ConnectionsUiFactory.Connect(definition);
+            await this.ConnectionsUiFactory.ConnectAsync(definition);
         }
 
         private void ExtraConnectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -280,7 +280,7 @@ namespace Terminals
                     return;
 
                 var definition = new ConnectionDefinition(selectedFavorites, usrForm.Console, usrForm.NewWindow, usrForm.Credentials);
-                this.ConnectionsUiFactory.Connect(definition);
+                this.ConnectionsUiFactory.ConnectAsync(definition);
             }
         }
 
@@ -453,7 +453,7 @@ namespace Terminals
 			if (favoriteNode != null && !tv.SelectedNode.IsEditing)
 			{
 				var definition = new ConnectionDefinition(favoriteNode.Favorite);
-				this.ConnectionsUiFactory.Connect(definition);
+				this.ConnectionsUiFactory.ConnectAsync(definition);
 				tv.Parent.Focus();
 			}
 		}
@@ -481,9 +481,9 @@ namespace Terminals
             copyCommand.Copy(selected);
         }
 
-        private void ConnectButton_Click(object sender, EventArgs e)
+        private async void ConnectButton_Click(object sender, EventArgs e)
         {
-            this.ConnectToSelectedFavorites();
+            await this.ConnectToSelectedFavoritesAsync();
         }
 
         private List<IFavorite> GetSelectedFavorites()
@@ -655,15 +655,23 @@ namespace Terminals
                     break;
                 case Keys.Enter:
                     if(!this.isRenaming)
-                        this.ConnectToSelectedFavorites();
+                        this.ConnectToSelectedFavoritesAsync();
                     break;
             }
         }
 
-        private void ConnectToSelectedFavorites()
+        private async Task ConnectToSelectedFavoritesAsync()
         {
-            List<IFavorite> favorites = this.GetSelectedFavorites();
-            this.ConnectFromContextMenu(favorites);
+            try
+            {
+                List<IFavorite> favorites = this.GetSelectedFavorites();
+                await this.ConnectFromContextMenuAsync(favorites);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                Logging.Error(ex.ToString());
+            }
         }
 
         #endregion

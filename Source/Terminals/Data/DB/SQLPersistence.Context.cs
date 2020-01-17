@@ -18,6 +18,11 @@ namespace Terminals.Data.DB
     
     internal partial class Database : DbContext
     {
+        public Database()
+            : base("name=Database")
+        {
+        }
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

@@ -430,7 +430,7 @@ namespace Terminals
         private void QuickConnect(String server, Int32 port, Boolean connectToConsole)
         {
             IFavorite favorite = FavoritesFactory.GetOrCreateQuickConnectFavorite(this.persistence, server, connectToConsole, port);
-            this.connectionsUiFactory.Connect(favorite);
+            this.connectionsUiFactory.ConnectAsync(favorite);
         }
 
         internal void HandleCommandLineActions(CommandLineArgs commandLineArgs)
@@ -736,7 +736,7 @@ namespace Terminals
             var groupMenuItem = (GroupMenuItem)sender;
             foreach (IFavorite favorite in groupMenuItem.Favorites)
             {
-                this.connectionsUiFactory.Connect(favorite);
+                this.connectionsUiFactory.ConnectAsync(favorite);
             }
         }
 
@@ -744,7 +744,7 @@ namespace Terminals
         {
             string connectionName = ((ToolStripItem)sender).Text;
             IFavorite favorite = PersistedFavorites[connectionName];
-            this.connectionsUiFactory.Connect(favorite);
+            this.connectionsUiFactory.ConnectAsync(favorite);
         }
 
         private void terminalTabPage_Resize(object sender, EventArgs e)
@@ -1401,7 +1401,7 @@ namespace Terminals
             {
                 IFavorite favorite = currentConnection.Favorite;
                 this.tabControlRemover.Disconnect();
-                this.connectionsUiFactory.Connect(favorite);
+                this.connectionsUiFactory.ConnectAsync(favorite);
             }
         }
 
