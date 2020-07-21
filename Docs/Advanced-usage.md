@@ -7,7 +7,7 @@ Here are some tips, how to use Terminals which cant be directly clean to users.
 
 * Connect to Virtual private network (VPN) before starting remote connection: For this purpose you can use "Execute before connect" options. This options are available for all connection types. Go to favorite "Execute" tab page and "Execute before connect" check box. In next three fields fill command line to execute (or path to script) like you do from command prompt.
 
-* Connect to Windwos Azure: Go to favorite RDP options > Extended Settings and fill "Load balanced info" field using following example: 
+* Connect to Windows Azure: Go to favorite RDP options > Extended Settings and fill "Load balanced info" field using following example: 
 
 ```
 <RoleName>#<RoleInstanceName>
