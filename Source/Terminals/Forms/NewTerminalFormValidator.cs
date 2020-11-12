@@ -98,7 +98,7 @@ namespace Terminals.Forms
 
         internal void OnServerNameValidating(object sender, CancelEventArgs eventArgs)
         {
-            const string MESSAGE = "Server name is required and has to be valid computer name or IP adress.";
+            const string MESSAGE = "Server name is required and has to be valid computer name or IP address.";
             this.IsValid(sender, eventArgs, this.IsServerNameValid, MESSAGE);
         }
 
