@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
@@ -48,6 +47,8 @@ namespace Tests.Passwords
             Assert.IsFalse(askedForPassword, "Empty config file shouldn't ask for password");
         }
 
+        // TODO Will be removed, since upgrade from v2 is already old.
+        [Ignore]
         [DeploymentItem(TestDataFiles.TESTDATA_DIRECTORY + NOMASTER_CONFIG_FILE)]
         [DeploymentItem(TestDataFiles.TESTDATA_DIRECTORY + NOMASTER_CREDENTIALS_FILE)]
         [TestMethod]
