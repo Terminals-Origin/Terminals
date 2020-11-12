@@ -24,10 +24,17 @@ namespace Terminals.Updates
         {
             using (var client = new WebClient())
             {
+                // Try to enable TLS1.2. If the operating system does not support, then we won't be able to connect to Github which requires it.
+                var oldValue = ServicePointManager.SecurityProtocol;
+                ServicePointManager.SecurityProtocol = oldValue | (SecurityProtocolType)3072; // 3072 = System.Net.SecurityProtocolType.Tls12
+
                 const string agent = "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident / 6.0)";
                 client.Headers.Add("Accept", "application/json");
                 client.Headers.Add("User-Agent", agent);
-                return client.DownloadString(Settings.Default.ReleasesUrl);
+                var releases = client.DownloadString(Settings.Default.ReleasesUrl);
+
+                ServicePointManager.SecurityProtocol = oldValue;
+                return releases;
             }
         }
 
