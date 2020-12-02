@@ -141,6 +141,13 @@ namespace Terminals
                                                        Sounds = this.Sounds,
                                                        SSH1 = this.SSH1,
                                                        Tags = this.Tags,
+                                                       UsernameID = this.UsernameID,
+                                                       PasswordID = this.PasswordID,
+                                                       OptionalID = this.OptionalID,
+                                                       OptionalValue = this.OptionalValue,
+                                                       SubmitID = this.SubmitID,
+                                                       EnableHTMLAuth = this.EnableHTMLAuth,
+                                                       EnableFormsAuth = this.EnableFormsAuth,
                                                        Telnet = this.Telnet,
                                                        TelnetBackColor = this.TelnetBackColor,
                                                        TelnetCols = this.TelnetCols,
@@ -172,8 +179,99 @@ namespace Terminals
         }
 
         #endregion
-       
+
         #region Serializable properties
+
+        [ConfigurationProperty("UsernameID", IsRequired = false, DefaultValue = "")]
+        public String UsernameID
+        {
+            get
+            {
+                return (String)this["UsernameID"];
+            }
+            set
+            {
+                this["UsernameID"] = value;
+            }
+        }
+
+        [ConfigurationProperty("PasswordID", IsRequired = false, DefaultValue = "")]
+        public String PasswordID
+        {
+            get
+            {
+                return (String)this["PasswordID"];
+            }
+            set
+            {
+                this["PasswordID"] = value;
+            }
+        }
+
+        [ConfigurationProperty("OptionalID", IsRequired = false, DefaultValue = "")]
+        public String OptionalID
+        {
+            get
+            {
+                return (String)this["OptionalID"];
+            }
+            set
+            {
+                this["OptionalID"] = value;
+            }
+        }
+
+        [ConfigurationProperty("OptionalValue", IsRequired = false, DefaultValue = "")]
+        public String OptionalValue
+        {
+            get
+            {
+                return (String)this["OptionalValue"];
+            }
+            set
+            {
+                this["OptionalValue"] = value;
+            }
+        }
+
+        [ConfigurationProperty("SubmitID", IsRequired = false, DefaultValue = "")]
+        public String SubmitID
+        {
+            get
+            {
+                return (String)this["SubmitID"];
+            }
+            set
+            {
+                this["SubmitID"] = value;
+            }
+        }
+
+        [ConfigurationProperty("EnableHTMLAuth", IsRequired = false, DefaultValue = true)]
+        public Boolean EnableHTMLAuth
+        {
+            get
+            {
+                return (Boolean)this["EnableHTMLAuth"];
+            }
+            set
+            {
+                this["EnableHTMLAuth"] = value;
+            }
+        }
+
+        [ConfigurationProperty("EnableFormsAuth", IsRequired = false, DefaultValue = true)]
+        public Boolean EnableFormsAuth
+        {
+            get
+            {
+                return (Boolean)this["EnableFormsAuth"];
+            }
+            set
+            {
+                this["EnableFormsAuth"] = value;
+            }
+        }
 
         [ConfigurationProperty("telnet", IsRequired = false, DefaultValue = true)]
         public Boolean Telnet

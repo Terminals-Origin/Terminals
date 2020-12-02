@@ -76,7 +76,7 @@ namespace Tests.UserInterface
                 new Tuple<string, Image>(SshConnectionPlugin.SSH, SshConnectionPlugin.TreeIconSsh),
                 new Tuple<string, Image>(TelnetConnectionPlugin.TELNET, TelnetConnectionPlugin.TreeIconTelnet),
                 new Tuple<string, Image>(KnownConnectionConstants.HTTP, HttpConnectionPlugin.TreeIconHttp),
-                new Tuple<string, Image>(KnownConnectionConstants.HTTPS, HttpConnectionPlugin.TreeIconHttp),
+                new Tuple<string, Image>(KnownConnectionConstants.HTTPS, HttpsConnectionPlugin.TreeIconHttps),
 
                 // undefined icons use default icon
                 new Tuple<string, Image>(ICAConnectionPlugin.ICA_CITRIX, Connection.Terminalsicon),
