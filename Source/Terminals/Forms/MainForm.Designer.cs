@@ -151,13 +151,13 @@ namespace Terminals
             this.SuspendLayout();
             // 
             // ShortcutsContextMenu
-            // 
+             
             this.ShortcutsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem3});
             this.ShortcutsContextMenu.Name = "ShortcutsContextMenu";
             this.ShortcutsContextMenu.Size = new System.Drawing.Size(175, 26);
             this.ShortcutsContextMenu.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ShortcutsContextMenu_MouseClick);
-            // 
+             
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";

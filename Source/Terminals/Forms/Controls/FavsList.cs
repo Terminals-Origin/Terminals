@@ -145,6 +145,30 @@ namespace Terminals
             this.Reboot();
         }
 
+        // Edit by Faheem Anis at 03/06/2022
+        private void ConnectUsingRdpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IFavorite fav = this.GetSelectedFavorite();
+            this.CloseMenuStrips();
+
+            String serverIp = fav.ServerName;
+
+            // Handle port (if any)
+            if (fav.Port != 3389)
+            {
+                serverIp += ":" + fav.Port;
+            }
+
+            // Launch RDP
+            var process = new System.Diagnostics.Process();
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "mstsc",
+                Arguments = "/v:" + serverIp
+            };
+            process.Start();
+        }
+
         private void Reboot()
         {
             this.ProcessRemoteShutdownOpearation("reboot", ShutdownCommands.ForcedReboot);
