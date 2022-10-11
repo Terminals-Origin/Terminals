@@ -225,9 +225,7 @@
     <Compile Include="UserInterface\FavoritesTreeLoadingTest.cs" />
     <Compile Include="UserInterface\GroupsTreeLoadingTest.cs" />
     <Compile Include="UserInterface\TestKeyModifiers.cs" />
-    <Compile Include="UserInterface\TestTreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="UserInterface\TestTreeView.cs" />
     <Compile Include="UserInterface\TreeListLoaderTestLab.cs" />
     <Compile Include="UserInterface\TreeViewDragDropTests.cs" />
     <Compile Include="Validation\NameValidatorTestLab.cs" />
