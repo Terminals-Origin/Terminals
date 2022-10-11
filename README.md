@@ -7,6 +7,8 @@ Terminals is a secure, multi tab terminal services/remote desktop client. RDP, V
 
 # News
 
+> TODO https://docs.microsoft.com/en-us/dotnet/desktop/winforms/migration/?view=netdesktop-5.0
+
 > **February 2019** **NOTE:** Project is no longer under active development, we are searching for maintainers!
 
 * **June 26, 2017** - New release version 4.0.1
