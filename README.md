@@ -7,8 +7,9 @@ Terminals is a secure, multi tab terminal services/remote desktop client. RDP, V
 
 # News
 
-> **February 2019** **NOTE:** Project is no longer under active development, we are searching for maintainers!
+> **October 2022** **NOTE:** Project RESURECTED, but we are still searching for maintainers!
 
+* **February 2019** - Project is no longer under active development, we are searching for maintainers!
 * **June 26, 2017** - New release version 4.0.1
 * **May 17, 2017** - New record 40k downloads of version 4.0
 * **April 5, 2017** - [Road map](/Docs/Road-map.md) for next features
