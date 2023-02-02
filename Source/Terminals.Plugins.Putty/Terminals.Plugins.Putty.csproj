@@ -1,109 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{449DC14A-7C3F-4BE5-BA39-4AFD1C5404E6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Terminals.Plugins.Putty</RootNamespace>
-    <AssemblyName>Terminals.Plugins.Putty</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <TargetFramework>net4.8</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <BaseOutputPath>..\..\Build\Output\Plugins\Putty\</BaseOutputPath>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\Build\Output\Debug\Plugins\Putty\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\Build\Output\Release\Plugins\Putty\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
-      <Link>Properties\Common.AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="ArgumentsBuilder.cs" />
-    <Compile Include="Executables.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PuttyConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="PuttyMenuVisitor.cs" />
-    <Compile Include="SshOptions.cs" />
-    <Compile Include="SshVersion.cs" />
-    <Compile Include="TelnetOptionsConverter.cs" />
-    <Compile Include="TelnetOptions.cs" />
-    <Compile Include="PuttyOptionsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PuttyOptionsControl.Designer.cs">
-      <DependentUpon>PuttyOptionsControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TelnetConnectionPlugin.cs" />
-    <Compile Include="SshConnectionPlugin.cs" />
-    <Compile Include="PuttyOptions.cs" />
-    <Compile Include="SshOptionsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SshOptionsControl.Designer.cs">
-      <DependentUpon>SshOptionsControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SshOptionsConverter.cs" />
-    <Compile Include="PuttyRegistry.cs" />
-    <Compile Include="TerminalsSshExport.cs" />
-    <Compile Include="TerminalsTelnetExport.cs" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">
-      <Project>{1F720FD0-21A5-4BED-90F6-02CDABB8854D}</Project>
+      <Project>{1f720fd0-21a5-4bed-90f6-02cdabb8854d}</Project>
       <Name>Terminals.Common</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PuttyOptionsControl.resx">
-      <DependentUpon>PuttyOptionsControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SshOptionsControl.resx">
-      <DependentUpon>SshOptionsControl.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
+      <Link>Properties\Common.AssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Resources\Libraries\Putty\pageant.exe">
@@ -122,12 +35,4 @@
     <None Include="Resources\treeIcon_ssh.png" />
     <None Include="Resources\treeIcon_telnet.png" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -1,40 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C841CCF6-4793-41B7-835E-F749E2525963}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Terminals.Plugins.Vmrc</RootNamespace>
-    <AssemblyName>Terminals.Plugins.Vmrc</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\Build\Output\Debug\Plugins\Vmrc\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\Build\Output\Release\Plugins\Vmrc\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <TargetFramework>net4.8</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <BaseOutputPath>..\..\Build\Output\Plugins\Vmrc\</BaseOutputPath>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AxInterop.VMRCClientControlLib">
@@ -44,39 +14,6 @@
       <HintPath>..\..\Resources\Libraries\VMRC\Interop.VMRCClientControlLib.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
-      <Link>Properties\Common.AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="FakeVmrcConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="TerminalsVmrcExport.cs" />
-    <Compile Include="VMRCConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="VmrcConnectionPlugin.cs" />
-    <Compile Include="VmrcControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="VmrcControl.Designer.cs">
-      <DependentUpon>VmrcControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="VmrcToolbarVisitor.cs" />
-    <Compile Include="VMRCOptions.cs" />
-    <Compile Include="VmrcOptionsConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">
@@ -86,13 +23,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="VmrcControl.resx">
-      <DependentUpon>VmrcControl.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
+      <Link>Properties\Common.AssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\server-administrator-icon.png" />
@@ -100,12 +33,4 @@
   <ItemGroup>
     <None Include="Resources\polarized-glasses.png" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

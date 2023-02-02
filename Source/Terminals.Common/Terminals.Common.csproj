@@ -4,11 +4,16 @@
     <TargetFramework>net4.8</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <BaseOutputPath>..\..\Build\Output\</BaseOutputPath>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
-
+  <ItemGroup>
+    <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
+      <Link>Properties\Common.AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.15" />
-    <PackageReference Include="System.Resources.Extensions" Version="7.0.0" />
   </ItemGroup>
 
 </Project>
