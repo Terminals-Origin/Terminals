@@ -88,13 +88,20 @@
   <ItemGroup>
     <Compile Include="Configuration\**\*.cs" />
     <Compile Include="Connections\**\*.cs" />
+	<EmbeddedResource Include="Connections\**\*.resx" />
     <Compile Include="Settings\**\*.cs" />
     <Compile Include="Converters\*.cs" />
     <Compile Include="Integration\**\*.cs" />
     <Compile Include="Network\**\*.cs" />
+	<EmbeddedResource Include="Network\**\*.resx" />
     <Compile Include="Forms\**\*.cs" />
     <EmbeddedResource Include="Forms\**\*.resx" />
     <Compile Include="Credentials\**\*.cs" />
+	<Compile Include="CaptureManager\**\*.cs" />
+	<EmbeddedResource Include="CaptureManager\**\*.resx" />
+	<Compile Include="CommandLine\**\*.cs" />
+	<Compile Include="Wizard\**\*.cs" />
+	<EmbeddedResource Include="Wizard\**\*.resx" />
 	
     <Compile Include="Data\Credentials\GuardedCredential.cs" />
     <Compile Include="Data\Credentials\GuardedCredentialFactory.cs" />
@@ -186,18 +193,6 @@
     <Compile Include="Data\History\IDateService.cs" />
     <Compile Include="Data\PersistenceSecurity.cs" />
     <Compile Include="Data\DB\SqlPersistenceSecurity.cs" />
-    <Compile Include="CaptureManager\Capture.cs" />
-    <Compile Include="CaptureManager\CaptureManager.cs" />
-    <Compile Include="CaptureManager\CaptureManagerLayout.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CaptureManager\CaptureManagerLayout.Designer.cs">
-      <DependentUpon>CaptureManagerLayout.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CaptureManager\Captures.cs" />
-    <Compile Include="CaptureManager\CaptureType.cs" />
-    <Compile Include="CaptureManager\ImageFormatHandler.cs" />
-    <Compile Include="CaptureManager\ImageFormatTypes.cs" />
     <Compile Include="Data\DB\BeforeConnectExecuteLogic.cs" />
     <Compile Include="Data\DB\CredentialBaseLogic.cs" />
     <Compile Include="Data\DB\CredentialSetLogic.cs" />
@@ -236,7 +231,6 @@
     <Compile Include="Data\PersistenceFactory.cs" />
     <Compile Include="Data\FilePersisted\Groups.cs" />
     <Compile Include="Data\FilePersisted\Favorites.cs" />
-    <Compile Include="CommandLine\CommandLineArgs.cs" />
     <Compile Include="Data\DataFileWatcher.cs" />
     <Compile Include="Data\History\HistoryRecordedEventArgs.cs" />
     <Compile Include="Data\Credentials\CredentialSet.cs" />
@@ -284,70 +278,9 @@
     <Compile Include="Updates\V20Upgrade.cs" />
     <Compile Include="Updates\V401ContentUpgrade.cs" />
     <Compile Include="Updates\V40XElementExtensions.cs" />
-    <Compile Include="Wizard\CommonOptions.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Wizard\CommonOptions.Designer.cs">
-      <DependentUpon>CommonOptions.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Wizard\DefaultCredentials.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Wizard\DefaultCredentials.Designer.cs">
-      <DependentUpon>DefaultCredentials.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Wizard\EnterPassword.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Wizard\EnterPassword.Designer.cs">
-      <DependentUpon>EnterPassword.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Wizard\MasterPassword.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Wizard\MasterPassword.Designer.cs">
-      <DependentUpon>MasterPassword.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Wizard\FirstRunWizard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Wizard\FirstRunWizard.Designer.cs">
-      <DependentUpon>FirstRunWizard.cs</DependentUpon>
-    </Compile>
     <Compile Include="Security\PasswordFunctions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Network\Tools\NetworkingToolsLayout.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>NetworkingToolsLayout.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Ras\RASProperties.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>RASProperties.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\TabbedTools.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>TabbedTools.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Connections\Ras\RasControl.resx">
-      <DependentUpon>RasControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\PortScanner\NetworkScanner.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>NetworkScanner.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\ShareConnectionsForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ShareConnectionsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\WMI\LoginForm.resx">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\WMI\WMIControl.resx">
-      <DependentUpon>WMIControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -358,25 +291,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="CaptureManager\ScreenCapture.cs" />
-    <Compile Include="CommandLine\ProtocolHandler.cs" />
     <Compile Include="SingleInstanceApplication.cs" />
     <Compile Include="TerminalServices\TSManager.cs" />
-    <Compile Include="Wizard\AddExistingRDPConnections.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Wizard\AddExistingRDPConnections.Designer.cs">
-      <DependentUpon>AddExistingRDPConnections.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Wizard\IntroForm.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Wizard\IntroForm.Designer.cs">
-      <DependentUpon>IntroForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Wizard\MMC\MMCFile.cs" />
-    <Compile Include="Wizard\PasswordStrength.cs" />
-    <Compile Include="Wizard\SpecialCommandsWizard.cs" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
@@ -564,112 +480,12 @@
     <None Include="Resources\HidePanel.PNG" />
     <None Include="Resources\camera.png" />
     <None Include="Resources\application_xp_terminal.png" />
-    <EmbeddedResource Include="CaptureManager\CaptureManagerLayout.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>CaptureManagerLayout.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Localization\LocalizedValues.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>LocalizedValues.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\AD\ImportFromAD.resx">
-      <DependentUpon>ImportFromAD.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\Pcap\PacketCapture.resx">
-      <DependentUpon>PacketCapture.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\PortScanner.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>PortScanner.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\WakeOnLan.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>WakeOnLan.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\WMI\Services.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>Services.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\WMI\WMIServerCredentials.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>WMIServerCredentials.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Wizard\CommonOptions.resx">
-      <DependentUpon>CommonOptions.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Wizard\DefaultCredentials.resx">
-      <DependentUpon>DefaultCredentials.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Wizard\EnterPassword.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>EnterPassword.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Wizard\MasterPassword.resx">
-      <DependentUpon>MasterPassword.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Wizard\FirstRunWizard.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>FirstRunWizard.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\DNS\DNSLookup.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>DNSLookup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\InterfacesList.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>InterfacesList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\LocalConnections.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>LocalConnections.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\Ping\Ping.resx">
-      <DependentUpon>Ping.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Servers\NetworkManagement.resx">
-      <DependentUpon>NetworkManagement.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\NTP\NetworkTime.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>NetworkTime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Servers\ServerList.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ServerList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Servers\TerminalServerManager.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>TerminalServerManager.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\TraceRoute\TraceRouteControl.resx">
-      <DependentUpon>TraceRouteControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\WMI\NetworkShares.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>NetworkShares.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\Tools\WhoIs\WhoIs.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>WhoIs.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\BasicTree.xml" />
-    <EmbeddedResource Include="Wizard\AddExistingRDPConnections.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>AddExistingRDPConnections.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Wizard\IntroForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>IntroForm.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Resources\atoz.png" />
     <None Include="Resources\amazon.jpg" />
     <None Include="Resources\Filtering.html" />
