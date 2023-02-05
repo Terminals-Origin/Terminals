@@ -9,7 +9,7 @@
     <ApplicationIcon>terminalsicon.ico</ApplicationIcon>
     <ManifestCertificateThumbprint>200FB5A1E56B57D807AAEEC6C4E021804D6435FD</ManifestCertificateThumbprint>
     <ManifestKeyFile>Terminals_TemporaryKey.pfx</ManifestKeyFile>
-	<!-- Disabled default items because of EF5 designer files import => remove after EF upgrade -->
+    <!-- Disabled default items because of EF5 designer files import => remove after EF upgrade -->
     <EnableDefaultItems>false</EnableDefaultItems>
   </PropertyGroup>
 
@@ -88,11 +88,14 @@
   <ItemGroup>
     <Compile Include="Configuration\**\*.cs" />
     <Compile Include="Connections\**\*.cs" />
-	<Compile Include="Settings\**\*.cs" />
+    <Compile Include="Settings\**\*.cs" />
     <Compile Include="Converters\*.cs" />
-	<Compile Include="Integration\**\*.cs" />
-	<Compile Include="Network\**\*.cs" />
-    <Compile Include="Credentials\EditedCredentials.cs" />
+    <Compile Include="Integration\**\*.cs" />
+    <Compile Include="Network\**\*.cs" />
+    <Compile Include="Forms\**\*.cs" />
+    <EmbeddedResource Include="Forms\**\*.resx" />
+    <Compile Include="Credentials\**\*.cs" />
+	
     <Compile Include="Data\Credentials\GuardedCredential.cs" />
     <Compile Include="Data\Credentials\GuardedCredentialFactory.cs" />
     <Compile Include="Data\Credentials\GuardedSecurity.cs" />
@@ -119,21 +122,9 @@
     <Compile Include="Data\Validation\FavoriteValidator.cs" />
     <Compile Include="Data\Validation\FileValidations.cs" />
     <Compile Include="Data\Validation\NamedItemValidator.cs" />
-    <Compile Include="Forms\FavoriteSorting.cs" />
-    <Compile Include="Forms\IConnectionCommands.cs" />
     <Compile Include="IStartupUi.cs" />
     <Compile Include="Services\ExternalLinks.cs" />
-    <Compile Include="Forms\OptionPanels\PluginsOptionPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\PluginsOptionPanel.Designer.cs">
-      <DependentUpon>PluginsOptionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\PluginsSelection.cs" />
-    <Compile Include="Forms\OptionPanels\SelectedPlugin.cs" />
     <Compile Include="Data\FilePersisted\FavoritesFileSerializer.cs" />
-    <Compile Include="Forms\Controls\ProtocolImageListBuilder.cs" />
-    <Compile Include="Forms\Controls\TabControlFilter.cs" />
     <Compile Include="Data\DataErrorEventArgs.cs" />
     <Compile Include="Data\DB\ApplyValueParams.cs" />
     <Compile Include="Data\DB\ByIdComparer.cs" />
@@ -149,123 +140,7 @@
     <Compile Include="Data\Validation\ValidationState.cs" />
     <Compile Include="Data\Validation\Validations.cs" />
     <Compile Include="Data\Validation\ValidationStates.cs" />
-    <Compile Include="Forms\ConnectionDefinition.cs" />
-    <Compile Include="Forms\ConnectionsUiFactory.cs" />
-    <Compile Include="Forms\Controls\FavoritesFoundEventArgs.cs" />
-    <Compile Include="Forms\Controls\FavoritesSearchBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\FavoritesSearchBox.Designer.cs">
-      <DependentUpon>FavoritesSearchBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\FavoritesLevelUpdate.cs" />
-    <Compile Include="Forms\Controls\FormsImportUi.cs" />
-    <Compile Include="Forms\Controls\GroupsLevelUpdate.cs" />
-    <Compile Include="Forms\Controls\IImportUi.cs" />
-    <Compile Include="Forms\Controls\IKeyModifiers.cs" />
-    <Compile Include="Forms\Controls\ImportContext.cs" />
-    <Compile Include="Forms\Controls\KeyModifiers.cs" />
-    <Compile Include="Forms\Controls\FavoritesSearch.cs" />
-    <Compile Include="Forms\Controls\SearchEventArgs.cs" />
-    <Compile Include="Forms\Controls\SearchPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\SearchPanel.Designer.cs">
-      <DependentUpon>SearchPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\SearchResultsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\SearchResultsPanel.Designer.cs">
-      <DependentUpon>SearchResultsPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\SearchTextBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\SearchTextBox.Designer.cs">
-      <DependentUpon>SearchTextBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\SecurityPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\SecurityPanel.Designer.cs">
-      <DependentUpon>SecurityPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\TreeListNodes.cs" />
-    <Compile Include="Forms\Controls\TreeNodesLevelUpdate.cs" />
-    <Compile Include="Forms\Controls\TreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\TreeView.Designer.cs">
-      <DependentUpon>TreeView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\TreeViewDragDrop.cs" />
-    <Compile Include="Forms\CopyFavoriteCommand.cs" />
-    <Compile Include="Forms\EditFavorite\ExecuteControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\EditFavorite\ExecuteControl.Designer.cs">
-      <DependentUpon>ExecuteControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\EditFavorite\FavoritePropertiesControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\EditFavorite\FavoritePropertiesControl.Designer.cs">
-      <DependentUpon>FavoritePropertiesControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\EditFavorite\GeneralPropertiesUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\EditFavorite\GeneralPropertiesUserControl.Designer.cs">
-      <DependentUpon>GeneralPropertiesUserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\EditFavorite\GroupsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\EditFavorite\GroupsControl.Designer.cs">
-      <DependentUpon>GroupsControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\EditFavorite\NotesControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\EditFavorite\NotesControl.Designer.cs">
-      <DependentUpon>NotesControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\EditFavorite\PanelSwitch.cs" />
-    <Compile Include="Forms\EditFavorite\ProtocolOptionsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\EditFavorite\ProtocolOptionsPanel.Designer.cs">
-      <DependentUpon>ProtocolOptionsPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Data\Validation\GroupNameValidator.cs" />
-    <Compile Include="Forms\INewTerminalForm.cs" />
-    <Compile Include="Forms\IRenameService.cs" />
-    <Compile Include="Forms\NewTerminalFormValidator.cs" />
-    <Compile Include="Forms\RenameCopyService.cs" />
-    <Compile Include="Forms\RenameService.cs" />
-    <Compile Include="Forms\TabControlRemover.cs" />
-    <Compile Include="Forms\UnhandledTerminationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\UnhandledTerminationForm.Designer.cs">
-      <DependentUpon>UnhandledTerminationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\PersistenceErrorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PersistenceErrorForm.Designer.cs">
-      <DependentUpon>PersistenceErrorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FavoriteRenameCommand.cs" />
-    <Compile Include="Forms\YesNoDisableForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\YesNoDisableForm.Designer.cs">
-      <DependentUpon>YesNoDisableForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\YesNoDisableResult.cs" />
     <Compile Include="Properties\Common.AssemblyInfo.cs" />
     <Compile Include="Data\AuthenticationPrompt.cs" />
     <Compile Include="Data\AuthenticationSequence.cs" />
@@ -311,18 +186,6 @@
     <Compile Include="Data\History\IDateService.cs" />
     <Compile Include="Data\PersistenceSecurity.cs" />
     <Compile Include="Data\DB\SqlPersistenceSecurity.cs" />
-    <Compile Include="Forms\AboutForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AboutForm.Designer.cs">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\AddConnectionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AddConnectionForm.Designer.cs">
-      <DependentUpon>AddConnectionForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="CaptureManager\Capture.cs" />
     <Compile Include="CaptureManager\CaptureManager.cs" />
     <Compile Include="CaptureManager\CaptureManagerLayout.cs">
@@ -373,145 +236,14 @@
     <Compile Include="Data\PersistenceFactory.cs" />
     <Compile Include="Data\FilePersisted\Groups.cs" />
     <Compile Include="Data\FilePersisted\Favorites.cs" />
-    <Compile Include="Forms\ChangePassword.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ChangePassword.Designer.cs">
-      <DependentUpon>ChangePassword.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\GroupListViewItem.cs" />
-    <Compile Include="Forms\Controls\UntagedMenuItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\PersistenceOptionPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\PersistenceOptionPanel.Designer.cs">
-      <DependentUpon>PersistenceOptionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\SqlConnectionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SqlConnectionForm.Designer.cs">
-      <DependentUpon>SqlConnectionForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="CommandLine\CommandLineArgs.cs" />
     <Compile Include="Data\DataFileWatcher.cs" />
     <Compile Include="Data\History\HistoryRecordedEventArgs.cs" />
-    <Compile Include="Forms\OptionPanels\AmazonOptionPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\AmazonOptionPanel.Designer.cs">
-      <DependentUpon>AmazonOptionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\CaptureOptionPanel.Designer.cs">
-      <DependentUpon>CaptureOptionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\ConnectCommandOptionPanel.Designer.cs">
-      <DependentUpon>ConnectCommandOptionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\ConnectionsOptionPanel.Designer.cs">
-      <DependentUpon>ConnectionsOptionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Credentials\ManageCredentialForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Credentials\ManageCredentialForm.Designer.cs">
-      <DependentUpon>ManageCredentialForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Credentials\CredentialManager.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Credentials\CredentialManager.Designer.cs">
-      <DependentUpon>CredentialManager.cs</DependentUpon>
-    </Compile>
     <Compile Include="Data\Credentials\CredentialSet.cs" />
-    <Compile Include="Credentials\ConnectExtraForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Credentials\ConnectExtraForm.Designer.cs">
-      <DependentUpon>ConnectExtraForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Data\DataDispatcher.cs" />
     <Compile Include="Data\FavoritesChangedEventArgs.cs" />
-    <Compile Include="Forms\Controls\FavoritesMenuLoader.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Data\ListsHelper.cs" />
     <Compile Include="Data\GroupsChangedArgs.cs" />
-    <Compile Include="Forms\ExportForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ExportForm.Designer.cs">
-      <DependentUpon>ExportForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\FavoriteTreeListLoader.cs" />
-    <Compile Include="Forms\Controls\FavsList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\FavsList.Designer.cs">
-      <DependentUpon>FavsList.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\FavoritesTreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\FavoritesTreeView.Designer.cs">
-      <DependentUpon>FavoritesTreeView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\FavoriteTreeNode.cs" />
-    <Compile Include="Forms\Controls\HistoryTreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\HistoryTreeView.Designer.cs">
-      <DependentUpon>HistoryTreeView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\ImportWithDialogs.cs" />
-    <Compile Include="Forms\Controls\IPAddressControl\FieldChangedEventArgs.cs" />
-    <Compile Include="Forms\Controls\IPAddressControl\IPAddressControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\IPAddressControl\IPAddressControlDesigner.cs" />
-    <Compile Include="Forms\Controls\IPAddressControl\IPAddressDotControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\IPAddressControl\IPAddressFieldControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\GroupMenuItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\DefaultPasswordOptionPanel.Designer.cs">
-      <DependentUpon>DefaultPasswordOptionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\FavoritesOptionPanel.Designer.cs">
-      <DependentUpon>FavoritesOptionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\FlickrOptionPanel.Designer.cs">
-      <DependentUpon>FlickrOptionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\InterfaceOptionPanel.Designer.cs">
-      <DependentUpon>InterfaceOptionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\MasterPasswordOptionPanel.Designer.cs">
-      <DependentUpon>MasterPasswordOptionpanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\ProxyOptionPanel.Designer.cs">
-      <DependentUpon>ProxyOptionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\StartShutdownOptionPanel.Designer.cs">
-      <DependentUpon>StartShutdownOptionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\TerminalFormDialogResult.cs" />
-    <Compile Include="Forms\MainFormFullScreenSwitch.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\SplitButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\ToolStripContainer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\GroupTreeNode.cs" />
     <Compile Include="Data\History\ConnectionHistory.cs" />
     <Compile Include="Data\History\HistoryByFavorite.cs" />
     <Compile Include="Data\History\HistoryItem.cs" />
@@ -519,49 +251,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalizedValues.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\CaptureOptionPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\ConnectCommandOptionPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\ConnectionsOptionPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\DefaultPasswordOptionPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\FavoritesOptionPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\FlickrOptionPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\InterfaceOptionPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\MasterPasswordOptionpanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\IOptionPanel.cs" />
-    <Compile Include="Forms\OptionPanels\ProxyOptionPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionPanels\StartShutdownOptionPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionDialog.Designer.cs">
-      <DependentUpon>OptionDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\PopupTerminal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PopupTerminal.Designer.cs">
-      <DependentUpon>PopupTerminal.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgramInfo.cs" />
     <Compile Include="Security\PasswordFunctions2.cs" />
@@ -575,16 +264,6 @@
     <Compile Include="Data\FilePersisted\Factory.cs" />
     <Compile Include="Data\Credentials\StoredCredentials.cs" />
     <Compile Include="Data\SortableList.cs" />
-    <Compile Include="Forms\Controls\SortableUnboundGrid.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\SortableUnboundGrid.Designer.cs">
-      <DependentUpon>SortableUnboundGrid.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\TerminalTabControlItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\TerminalTabsSelectionControler.cs" />
     <Compile Include="StartupUi.cs" />
     <Compile Include="Updates\FilesV2ContentUpgrade.cs" />
     <Compile Include="Updates\IVersionUpgrade.cs" />
@@ -635,63 +314,9 @@
     <Compile Include="Wizard\FirstRunWizard.Designer.cs">
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormSettings.cs" />
-    <Compile Include="Forms\NewGroupForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\NewGroupForm.Designer.cs">
-      <DependentUpon>NewGroupForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OrganizeFavoritesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\OrganizeFavoritesForm.Designer.cs">
-      <DependentUpon>OrganizeFavoritesForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Security\PasswordFunctions.cs" />
-    <Compile Include="Forms\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\NewTerminalForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\NewTerminalForm.Designer.cs">
-      <DependentUpon>NewTerminalForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OrganizeFavoritesToolbarForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\OrganizeFavoritesToolbarForm.Designer.cs">
-      <DependentUpon>OrganizeFavoritesToolbarForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OrganizeGroupsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\OrganizeGroupsForm.Designer.cs">
-      <DependentUpon>OrganizeGroupsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\OrganizeShortcuts.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\OrganizeShortcuts.Designer.cs">
-      <DependentUpon>OrganizeShortcuts.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\AboutForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddConnectionForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>AddConnectionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OptionPanels\PluginsOptionPanel.resx">
-      <DependentUpon>PluginsOptionPanel.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Network\Tools\NetworkingToolsLayout.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkingToolsLayout.cs</DependentUpon>
@@ -704,83 +329,8 @@
       <SubType>Designer</SubType>
       <DependentUpon>TabbedTools.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ChangePassword.resx">
-      <DependentUpon>ChangePassword.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\FavoritesSearchBox.resx">
-      <DependentUpon>FavoritesSearchBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\SearchPanel.resx">
-      <DependentUpon>SearchPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\SearchResultsPanel.resx">
-      <DependentUpon>SearchResultsPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\SearchTextBox.resx">
-      <DependentUpon>SearchTextBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\SecurityPanel.resx">
-      <DependentUpon>SecurityPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\ExecuteControl.resx">
-      <DependentUpon>ExecuteControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\FavoritePropertiesControl.resx">
-      <DependentUpon>FavoritePropertiesControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\GeneralPropertiesUserControl.resx">
-      <DependentUpon>GeneralPropertiesUserControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\GroupsControl.resx">
-      <DependentUpon>GroupsControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\NotesControl.resx">
-      <DependentUpon>NotesControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditFavorite\ProtocolOptionsPanel.resx">
-      <DependentUpon>ProtocolOptionsPanel.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Connections\Ras\RasControl.resx">
       <DependentUpon>RasControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OptionPanels\DefaultPasswordOptionPanel.resx">
-      <DependentUpon>DefaultPasswordOptionPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OptionPanels\StartShutdownOptionPanel.resx">
-      <DependentUpon>StartShutdownOptionPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\UnhandledTerminationForm.resx">
-      <DependentUpon>UnhandledTerminationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OptionPanels\AmazonOptionPanel.resx">
-      <DependentUpon>AmazonOptionPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\FavoritesTreeView.resx">
-      <DependentUpon>FavoritesTreeView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\HistoryTreeView.resx">
-      <DependentUpon>HistoryTreeView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OptionPanels\ConnectionsOptionPanel.resx">
-      <DependentUpon>ConnectionsOptionPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OptionPanels\MasterPasswordOptionpanel.resx">
-      <DependentUpon>MasterPasswordOptionpanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OptionPanels\PersistenceOptionPanel.resx">
-      <DependentUpon>PersistenceOptionPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OptionPanels\ProxyOptionPanel.resx">
-      <DependentUpon>ProxyOptionPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PersistenceErrorForm.resx">
-      <DependentUpon>PersistenceErrorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SqlConnectionForm.resx">
-      <DependentUpon>SqlConnectionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\YesNoDisableForm.resx">
-      <DependentUpon>YesNoDisableForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner\NetworkScanner.resx">
       <SubType>Designer</SubType>
@@ -798,79 +348,18 @@
       <DependentUpon>WMIControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NewGroupForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>NewGroupForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OptionDialog.resx">
-      <DependentUpon>OptionDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OrganizeFavoritesForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>OrganizeFavoritesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NewTerminalForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>NewTerminalForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OrganizeFavoritesToolbarForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>OrganizeFavoritesToolbarForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OrganizeGroupsForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>OrganizeGroupsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OrganizeShortcuts.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>OrganizeShortcuts.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\QuickConnect.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>QuickConnect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SaveActiveConnectionsForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>SaveActiveConnectionsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RequestPassword.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>RequestPassword.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Forms\QuickConnect.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\QuickConnect.Designer.cs">
-      <DependentUpon>QuickConnect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\SaveActiveConnectionsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SaveActiveConnectionsForm.Designer.cs">
-      <DependentUpon>SaveActiveConnectionsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="CaptureManager\ScreenCapture.cs" />
     <Compile Include="CommandLine\ProtocolHandler.cs" />
-    <Compile Include="Forms\RequestPassword.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\RequestPassword.Designer.cs">
-      <DependentUpon>RequestPassword.cs</DependentUpon>
-    </Compile>
     <Compile Include="SingleInstanceApplication.cs" />
     <Compile Include="TerminalServices\TSManager.cs" />
     <Compile Include="Wizard\AddExistingRDPConnections.cs">
@@ -900,7 +389,6 @@
       <LastGenOutput>SQLPersistence.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Migrated rules for Terminals.ruleset" />
     <None Include="..\..\Resources\Libraries\wpcap\wpcap.dll">
       <Link>wpcap.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1080,23 +568,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>CaptureManagerLayout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Credentials\CredentialManager.resx">
-      <DependentUpon>CredentialManager.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Credentials\ManageCredentialForm.resx">
-      <DependentUpon>ManageCredentialForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Credentials\ConnectExtraForm.resx">
-      <DependentUpon>ConnectExtraForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ExportForm.resx">
-      <DependentUpon>ExportForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\FavsList.resx">
-      <DependentUpon>FavsList.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Localization\LocalizedValues.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -1125,13 +596,6 @@
     <EmbeddedResource Include="Network\Tools\WMI\WMIServerCredentials.resx">
       <SubType>Designer</SubType>
       <DependentUpon>WMIServerCredentials.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PopupTerminal.resx">
-      <DependentUpon>PopupTerminal.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\SortableUnboundGrid.resx">
-      <DependentUpon>SortableUnboundGrid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Wizard\CommonOptions.resx">
       <DependentUpon>CommonOptions.cs</DependentUpon>
