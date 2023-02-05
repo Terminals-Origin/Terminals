@@ -91,6 +91,7 @@
 	<Compile Include="Settings\**\*.cs" />
     <Compile Include="Converters\*.cs" />
 	<Compile Include="Integration\**\*.cs" />
+	<Compile Include="Network\**\*.cs" />
     <Compile Include="Credentials\EditedCredentials.cs" />
     <Compile Include="Data\Credentials\GuardedCredential.cs" />
     <Compile Include="Data\Credentials\GuardedCredentialFactory.cs" />
@@ -121,7 +122,6 @@
     <Compile Include="Forms\FavoriteSorting.cs" />
     <Compile Include="Forms\IConnectionCommands.cs" />
     <Compile Include="IStartupUi.cs" />
-    <Compile Include="Network\PortScanner\NetworkAdapters.cs" />
     <Compile Include="Services\ExternalLinks.cs" />
     <Compile Include="Forms\OptionPanels\PluginsOptionPanel.cs">
       <SubType>UserControl</SubType>
@@ -134,8 +134,6 @@
     <Compile Include="Data\FilePersisted\FavoritesFileSerializer.cs" />
     <Compile Include="Forms\Controls\ProtocolImageListBuilder.cs" />
     <Compile Include="Forms\Controls\TabControlFilter.cs" />
-    <Compile Include="Network\PortScanner\ServiceDetector.cs" />
-    <Compile Include="Network\Tools\NettworkingTools.cs" />
     <Compile Include="Data\DataErrorEventArgs.cs" />
     <Compile Include="Data\DB\ApplyValueParams.cs" />
     <Compile Include="Data\DB\ByIdComparer.cs" />
@@ -268,9 +266,6 @@
       <DependentUpon>YesNoDisableForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\YesNoDisableResult.cs" />
-    <Compile Include="Network\AD\ActiveDirectorySearchParams.cs" />
-    <Compile Include="Network\RemoteManagement.cs" />
-    <Compile Include="Network\Tools\WMI\Share.cs" />
     <Compile Include="Properties\Common.AssemblyInfo.cs" />
     <Compile Include="Data\AuthenticationPrompt.cs" />
     <Compile Include="Data\AuthenticationSequence.cs" />
@@ -400,23 +395,7 @@
     <Compile Include="Forms\SqlConnectionForm.Designer.cs">
       <DependentUpon>SqlConnectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\HelperFunctions.cs" />
-    <Compile Include="Network\WindowsUserIdentifiers.cs" />
-    <Compile Include="Network\Services\CommandLineServer.cs" />
-    <Compile Include="Network\Services\CommandLineService.cs" />
     <Compile Include="CommandLine\CommandLineArgs.cs" />
-    <Compile Include="Network\Tools\NetworkingToolsLayout.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\NetworkingToolsLayout.Designer.cs">
-      <DependentUpon>NetworkingToolsLayout.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Tools\TabbedTools.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\TabbedTools.Designer.cs">
-      <DependentUpon>TabbedTools.cs</DependentUpon>
-    </Compile>
     <Compile Include="Data\DataFileWatcher.cs" />
     <Compile Include="Data\History\HistoryRecordedEventArgs.cs" />
     <Compile Include="Forms\OptionPanels\AmazonOptionPanel.cs">
@@ -523,7 +502,6 @@
       <DependentUpon>StartShutdownOptionPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\TerminalFormDialogResult.cs" />
-    <Compile Include="Network\Services\ICommandLineService.cs" />
     <Compile Include="Forms\MainFormFullScreenSwitch.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -541,58 +519,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalizedValues.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Network\AD\ActiveDirectoryClient.cs" />
-    <Compile Include="Network\AD\ActiveDirectoryComputer.cs" />
-    <Compile Include="Network\Tools\DNS\Adapter.cs" />
-    <Compile Include="Network\Tools\DNS\AdapterInfo.cs" />
-    <Compile Include="Network\AD\ImportFromAD.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Network\AD\ImportFromAD.Designer.cs">
-      <DependentUpon>ImportFromAD.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\IPAddressExtensions.cs" />
-    <Compile Include="Network\Tools\Pcap\PacketCapture.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\Pcap\PacketCapture.designer.cs">
-      <DependentUpon>PacketCapture.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Tools\Ping\PingReplyData.cs" />
-    <Compile Include="Network\Tools\PortScanner.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\PortScanner.Designer.cs">
-      <DependentUpon>PortScanner.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\PortScanner\ConnectionState.cs" />
-    <Compile Include="Network\PortScanner\NetworkScanResult.cs" />
-    <Compile Include="Network\Services\ShareFavoritesEventArgs.cs" />
-    <Compile Include="Network\SubnetMask.cs" />
-    <Compile Include="Network\Tools\TraceRoute\RouteHopFoundEventArgs.cs" />
-    <Compile Include="Network\Tools\TraceRoute\TraceRoute.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\TraceRoute\TraceRouteHopData.cs" />
-    <Compile Include="Network\Tools\WMI\PivotDataTable.cs" />
-    <Compile Include="Network\Tools\WakeOnLan.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\WakeOnLan.Designer.cs">
-      <DependentUpon>WakeOnLan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Tools\WMI\Services.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\WMI\Services.Designer.cs">
-      <DependentUpon>Services.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Tools\WMI\WMIServerCredentials.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\WMI\WMIServerCredentials.Designer.cs">
-      <DependentUpon>WMIServerCredentials.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\OptionPanels\CaptureOptionPanel.cs">
       <SubType>UserControl</SubType>
@@ -710,88 +636,6 @@
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormSettings.cs" />
-    <Compile Include="Network\PortScanner\NetworkScanner.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Network\PortScanner\NetworkScanner.Designer.cs">
-      <DependentUpon>NetworkScanner.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Services\Client.cs" />
-    <Compile Include="Network\Tools\DNS\DNSLookup.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\DNS\DNSLookup.Designer.cs">
-      <DependentUpon>DNSLookup.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Tools\InterfacesList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\InterfacesList.Designer.cs">
-      <DependentUpon>InterfacesList.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Tools\LocalConnections.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\LocalConnections.Designer.cs">
-      <DependentUpon>LocalConnections.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Tools\Ping\Ping.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\Ping\Ping.Designer.cs">
-      <DependentUpon>Ping.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Servers\NetworkManagement.cs" />
-    <Compile Include="Network\Tools\NTP\NetworkTime.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\NTP\NetworkTime.Designer.cs">
-      <DependentUpon>NetworkTime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Servers\ServerList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Servers\ServerList.Designer.cs">
-      <DependentUpon>ServerList.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Servers\TerminalServerManager.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Servers\TerminalServerManager.Designer.cs">
-      <DependentUpon>TerminalServerManager.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Tools\TraceRoute\TraceRouteControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\TraceRoute\TraceRouteControl.Designer.cs">
-      <DependentUpon>TraceRouteControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Tools\WMI\NetworkShares.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\WMI\NetworkShares.Designer.cs">
-      <DependentUpon>NetworkShares.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Services\Server.cs" />
-    <Compile Include="Network\ShareConnectionsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Network\ShareConnectionsForm.Designer.cs">
-      <DependentUpon>ShareConnectionsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Services\SharedFavorite.cs" />
-    <Compile Include="Network\Tools\WhoIs\WhoIs.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\WhoIs\WhoIs.Designer.cs">
-      <DependentUpon>WhoIs.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\Tools\WMI\LoginForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Network\Tools\WMI\WMIControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Forms\NewGroupForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1019,9 +863,6 @@
     <Compile Include="Forms\SaveActiveConnectionsForm.Designer.cs">
       <DependentUpon>SaveActiveConnectionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\PortScanner\NetworkScanItem.cs" />
-    <Compile Include="Network\PortScanner\NetworkScanManager.cs" />
-    <Compile Include="Network\PortScanner\ScanItemEventArgs.cs" />
     <Compile Include="CaptureManager\ScreenCapture.cs" />
     <Compile Include="CommandLine\ProtocolHandler.cs" />
     <Compile Include="Forms\RequestPassword.cs">
