@@ -20,7 +20,7 @@ if (-Not $(Test-Path $msbuild)) {
 $solutionFile = "..\Source\Terminals.sln";
 dotnet restore $solutionFile  # already expecting new dotnet installed with Visual studio
 # Compile the solution - the distributionrelease configuration contains installer, which is not normal configurations
-& "$msbuild" $solutionFile /m /p:configuration=Release /p:Platform='Any CPU' /t:rebuild | Tee-Object $logFile -Append;
+& "$msbuild" $solutionFile /m /p:configuration=DistributionRelease /p:Platform='Mixed Platforms' /t:rebuild | Tee-Object $logFile -Append;
  
 .\PackOutput.ps1 | Tee-Object $logFile -Append;
 
