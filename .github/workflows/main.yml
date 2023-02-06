@@ -23,7 +23,6 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.1.1
       - name: Restore Packages
-        run: echo "Runing restore for ${{ env.SLN_FILE_PATH }}"
-      - run: nuget restore ${{ env.SLN_FILE_PATH }}
+        run: nuget restore ${{ env.SLN_FILE_PATH }}
       - name: Build solution
-        run: msbuild $SLN_FILE -t:rebuild -property:Configuration=Release
+        run: msbuild ${{ env.SLN_FILE_PATH }} -t:rebuild -property:Configuration=Release
