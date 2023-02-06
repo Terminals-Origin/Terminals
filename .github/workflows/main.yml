@@ -22,7 +22,8 @@ jobs:
         uses: NuGet/setup-nuget@v1.1.1
       - name: Build solution
         shell: pwsh
-        run: .\Build\build.ps1
+        working-directory: .\Build
+        run: .\build.ps1
       - name: Setup VSTest
         uses: darenm/Setup-VSTest@v1.2
       - name: Install a SQL Server suite of tools
