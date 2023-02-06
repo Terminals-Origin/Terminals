@@ -14,13 +14,11 @@ env:
 
 jobs:
   build:
-    runs-on: windows-latest
+    # because of legacy dotnet 4.8
+    runs-on: windows-2019
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '4.8'
       - name: Setup-msbuild
         uses: microsoft/setup-msbuild@v1.1
       - name: Setup NuGet
