@@ -17,9 +17,10 @@ if (-Not $(Test-Path $msbuild)) {
   $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe";
 }
 
-
+$solutionFile = "..\Source\Terminals.sln";
+dotnet restore $solutionFile  # already expecting new dotnet installed with Visual studio
 # Compile the solution - the distributionrelease configuration contains installer, which is not normal configurations
-& "$msbuild" ..\Source\Terminals.sln /m /p:configuration=DistributionRelease /p:Platform='Any CPU' /t:rebuild | Tee-Object $logFile -Append;
+& "$msbuild" $solutionFile /m /p:configuration=DistributionRelease /p:Platform='Any CPU' /t:rebuild | Tee-Object $logFile -Append;
  
 .\PackOutput.ps1 | Tee-Object $logFile -Append;
 
