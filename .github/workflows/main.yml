@@ -33,6 +33,7 @@ jobs:
         uses: potatoqualitee/mssqlsuite@v1.7
         with:
           install: localdb
+          show-log: true
       - name: Test
         run: vstest.console.exe /logger:"trx;LogFileName=test_results.trx" Source\Tests\bin\Release\Tests.dll
       - name: Test Report
