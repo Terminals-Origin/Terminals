@@ -9,9 +9,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  SLN_FILE_PATH: Source/Terminals.sln
-
 jobs:
   build:
     # because of legacy dotnet 4.8
@@ -23,10 +20,9 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.1.1
-      - name: Restore Packages
-        run: nuget restore ${{ env.SLN_FILE_PATH }}
       - name: Build solution
-        run: msbuild ${{ env.SLN_FILE_PATH }} -t:rebuild -property:Configuration=Release
+        shell: pwsh
+        run: .\Build\build.ps1
       - name: Setup VSTest
         uses: darenm/Setup-VSTest@v1.2
       - name: Install a SQL Server suite of tools
