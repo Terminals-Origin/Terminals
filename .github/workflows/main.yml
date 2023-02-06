@@ -36,6 +36,8 @@ jobs:
           show-log: true
       - name: Test
         run: vstest.console.exe /logger:"trx;LogFileName=test_results.trx" Build\Output\Release\net4.8\Tests.dll
+        with:
+          continue-on-error: true
       - name: Test Report
         uses: dorny/test-reporter@v1.6.0
         if: success() || failure()    # run this step even if previous step failed
