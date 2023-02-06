@@ -20,17 +20,22 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.1.1
+      - name: Prepare environment
+        shell: pwsh
+        working-directory: .\Build
+        run: .\InstallPrerequisities.ps1
       - name: Build solution
         shell: pwsh
         working-directory: .\Build
         run: .\build.ps1
       - name: Setup VSTest
         uses: darenm/Setup-VSTest@v1.2
-      - name: Install a SQL Server suite of tools
-        uses: potatoqualitee/mssqlsuite@v1.7
-        with:
-          install: localdb
-          show-log: true
+      # TODO localdb doen't work this way
+      # - name: Install a SQL Server suite of tools
+        # uses: potatoqualitee/mssqlsuite@v1.7
+        # with:
+          # install: localdb
+          # show-log: true
       - name: Test
         run: vstest.console.exe /logger:"trx;LogFileName=test_results.trx" Build\Output\Release\net4.8\Tests.dll
         continue-on-error: true

@@ -4,7 +4,6 @@
 
 # Install chocolatey using Nuget, which is already part of the solution
 iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-..\Source\packages\chocolatey.0.10.5\tools\chocolateyInstall.ps1
 choco upgrade chocolatey -y;
 
 # All packages to install development environment:
