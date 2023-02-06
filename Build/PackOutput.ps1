@@ -2,10 +2,9 @@
 [String[]]$packageFiles = .\PackageFiles.ps1
 
 $outputDir = ".\Output\";
-$binOutput = "$outputDir\Release\";
+$binOutput = "$outputDir\Release\net4.8\";
 $commonAssembly = "..\Source\Terminals\Properties\Common.AssemblyInfo.cs";
 $setupPath = "$outputDir\Release\TerminalsSetup.msi";
-$msbuild = "c:\Windows\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe";
 
 # Extract the variable from the Common.AssemblyInfo.cs
 $versionLine = (Select-String -path $commonAssembly "Version").Line

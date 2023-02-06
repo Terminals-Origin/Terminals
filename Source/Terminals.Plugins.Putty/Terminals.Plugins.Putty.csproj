@@ -3,7 +3,9 @@
     <TargetFramework>net4.8</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <BaseOutputPath>..\..\Build\Output\Plugins\Putty\</BaseOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <OutputPath>..\..\Build\Output\$(Configuration)\$(TargetFramework)\Plugins\Putty\</OutputPath>
     <Deterministic>false</Deterministic>
   </PropertyGroup>
   <ItemGroup>

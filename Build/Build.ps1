@@ -12,7 +12,7 @@ $msbuild = "c:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Cur
 # Compile the solution - the distributionrelease configuration contains installer, which is not normal configurations
 & "$msbuild" ..\Source\Terminals.sln /m /p:configuration=DistributionRelease /p:Platform='Any CPU' /t:rebuild | Tee-Object $logFile -Append;
  
-# .\PackOutput.ps1 | Tee-Object $logFile -Append;
+.\PackOutput.ps1 | Tee-Object $logFile -Append;
 
 
 exit $LastExitCode;

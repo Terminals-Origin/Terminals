@@ -36,7 +36,7 @@
         <File Source="$(var.Terminals.TargetDir)\EntityFramework.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="EntityFrameworkXml" Guid="C64657D8-F6AF-4A58-8E23-05EBFA8411C1">
-        <File Source="$(var.Terminals.TargetDir)\EntityFramework.xml" KeyPath="yes" Checksum="yes"/>
+        <File Source="$(var.Terminals.TargetDir)EntityFramework.xml" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="FlickrNetdll" Guid="1A7B8896-0BCD-4B2A-BB92-D204164D010B">
         <File Source="..\..\Resources\Libraries\Flicker\FlickrNet.dll" KeyPath="yes" Checksum="yes"/>
@@ -48,13 +48,13 @@
         <File Source="$(var.Terminals.TargetDir)\log4net.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="log4netxml" Guid="4BDE5756-0063-42E7-8971-C46573017B2C">
-        <File Source="$(var.Terminals.TargetDir)\log4net.xml" KeyPath="yes" Checksum="yes"/>
+        <File Source="$(var.Terminals.TargetDir)log4net.xml" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="FluentValidation" Guid="7AB26D60-C019-42F5-ADCA-F425A64D617A">
         <File Source="$(var.Terminals.TargetDir)\FluentValidation.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="FluentValidationXml" Guid="42B671CD-1F35-441B-A23F-9CA352284FAA">
-        <File Source="$(var.Terminals.TargetDir)\FluentValidation.XML" KeyPath="yes" Checksum="yes"/>
+        <File Source="$(var.Terminals.TargetDir)FluentValidation.XML" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="TransPort2006" Guid="220FA6F3-1C60-4F32-9E82-31D635E8B551">
         <File Source="..\..\Resources\Libraries\TransPort2006\TransPort2006.dll" KeyPath="yes" Checksum="yes"/>
@@ -70,7 +70,7 @@
       </Component>
       <!--Cant pickup from project dir, because the name is changed in target dir-->
       <Component Id="TerminalsExeConfig" Guid="417C609C-A07B-4CCB-8E2E-BADA86CA8341">
-        <File Source="$(var.Terminals.TargetDir)\Terminals.exe.config" KeyPath="yes"/>
+        <File Source="$(var.Terminals.TargetDir)Terminals.exe.config" KeyPath="yes"/>
       </Component>
       <Component Id="ToolStripSettingsConfig" Guid="B36A15AF-40C3-49ED-9CAB-15529527468B">
         <File Source="..\Terminals\ToolStrip.settings.config" KeyPath="yes"/>
@@ -82,7 +82,7 @@
         <File Source="$(var.Terminals.TargetDir)\Newtonsoft.Json.dll" KeyPath="yes" Checksum="yes"/>
       </Component> 
       <Component Id="NewtonsoftJsonxml" Guid="2D006559-AE17-439A-A379-7876483CEB25">
-        <File Source="$(var.Terminals.TargetDir)\Newtonsoft.Json.xml" KeyPath="yes" Checksum="yes"/>
+        <File Source="$(var.Terminals.TargetDir)Newtonsoft.Json.xml" KeyPath="yes" Checksum="yes"/>
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="IcaComponents" Directory="ICAFOLDER">
@@ -98,10 +98,10 @@
     </ComponentGroup>
     <ComponentGroup Id="RdpComponents" Directory="RDPFOLDER">
       <Component Id="AxMSTSCLibDll" Guid="6449EDAA-0362-45BC-859D-6EFFAC7FC328">
-        <File Source="$(var.Terminals.TargetDir)\AxInterop.MSTSCLib.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="$(var.Terminals.TargetDir)AxInterop.MSTSCLib.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="MSTSCLibDll" Guid="E3D11298-2D80-4650-8139-3350BB646B2C">
-        <File Source="$(var.Terminals.TargetDir)\MSTSCLib.dll" KeyPath="yes" Checksum="yes"/>
+        <File Source="$(var.Terminals.TargetDir)MSTSCLib.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="PluginRdp" Guid="E33BF837-A732-41A7-81C4-8F90282DCBC1">
         <File Source="$(var.Terminals.Plugins.Rdp.TargetPath)" KeyPath="yes" Checksum="yes"/>

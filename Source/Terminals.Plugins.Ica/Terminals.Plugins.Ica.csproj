@@ -3,7 +3,9 @@
     <TargetFramework>net4.8</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <BaseOutputPath>..\..\Build\Output\Plugins\Ica\</BaseOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <OutputPath>..\..\Build\Output\$(Configuration)\$(TargetFramework)\Plugins\Ica\</OutputPath>
     <Deterministic>false</Deterministic>
   </PropertyGroup>
   <ItemGroup>
