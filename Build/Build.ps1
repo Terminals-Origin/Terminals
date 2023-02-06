@@ -9,6 +9,13 @@ if(Test-Path .\Output) {
 
 # Visual Studio 2022
 $msbuild = "c:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe";
+
+# github old build agent 2019, because the lastest doesnt contain dotnet 4 tool
+if (-Not $(Test-Path $msbuild)) {
+  $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe";
+}
+
+
 # Compile the solution - the distributionrelease configuration contains installer, which is not normal configurations
 & "$msbuild" ..\Source\Terminals.sln /m /p:configuration=DistributionRelease /p:Platform='Any CPU' /t:rebuild | Tee-Object $logFile -Append;
  
