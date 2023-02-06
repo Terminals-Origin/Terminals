@@ -29,6 +29,10 @@ jobs:
         run: msbuild ${{ env.SLN_FILE_PATH }} -t:rebuild -property:Configuration=Release
       - name: Setup VSTest
         uses: darenm/Setup-VSTest@v1.2
+      - name: Install a SQL Server suite of tools
+        uses: potatoqualitee/mssqlsuite@v1.7
+        with:
+          install: localdb
       - name: Test
         run: vstest.console.exe /logger:"trx;LogFileName=test_results.trx" Source\Tests\bin\Release\Tests.dll
       - name: Test Report
@@ -36,5 +40,5 @@ jobs:
         if: success() || failure()    # run this step even if previous step failed
         with:
           name: MSTests
-          path: TestResults\test_results.trx
+          path: /**/*.trx
           reporter: dotnet-trx 
