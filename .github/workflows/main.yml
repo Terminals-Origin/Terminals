@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  SLN_FILE: Source/Terminals.sln
+  SLN_FILE_PATH: Source/Terminals.sln
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.1.1
       - name: Restore Packages
-        run: echo "Runing restore for $SLN_FILE"
-      - run: nuget restore $SLN_FILE
+        run: echo "Runing restore for ${{ SLN_FILE_PATH }}"
+      - run: nuget restore ${{ SLN_FILE_PATH }}
       - name: Build solution
         run: msbuild $SLN_FILE -t:rebuild -property:Configuration=Release
