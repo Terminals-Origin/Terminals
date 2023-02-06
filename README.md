@@ -25,6 +25,9 @@ We are happy to announce that Chocolatey terminals package is now maintained by 
 * [![$25](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X28G9FEYUN6CJ)
 
 # Documentation
+
+![Build status](https://github.com/Terminals-Origin/Terminals/actions/workflows/main.yml/badge.svg).
+
 * **[User documentation](/Docs/User-documentation.md)**
 * Installation
 	* [System requirements](/Docs/System-Requirements.md)
