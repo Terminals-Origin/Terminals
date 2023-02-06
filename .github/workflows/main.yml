@@ -27,3 +27,8 @@ jobs:
         run: nuget restore ${{ env.SLN_FILE_PATH }}
       - name: Build solution
         run: msbuild ${{ env.SLN_FILE_PATH }} -t:rebuild -property:Configuration=Release
+      - name: Test
+        uses: zyborg/dotnet-tests-report@v1
+        with:
+          project_path: ${{ env.SLN_FILE_PATH }}
+          report_name: my_project_tests
