@@ -27,8 +27,14 @@ jobs:
         run: nuget restore ${{ env.SLN_FILE_PATH }}
       - name: Build solution
         run: msbuild ${{ env.SLN_FILE_PATH }} -t:rebuild -property:Configuration=Release
+      - name: Setup VSTest
+        uses: darenm/Setup-VSTest@v1.2
       - name: Test
-        uses: zyborg/dotnet-tests-report@v1
+        run: vstest.console.exe /logger:"trx;LogFileName=test_results.trx" Build\Output\Release\net4.8\Tests.dll
+      - name: Test Report
+        uses: dorny/test-reporter@v1.6.0
+        if: success() || failure()    # run this step even if previous step failed
         with:
-          project_path: ${{ env.SLN_FILE_PATH }}
-          report_name: my_project_tests
+          name: MSTests
+          path: TestResults\test_results.trx
+          reporter: dotnet-trx 
