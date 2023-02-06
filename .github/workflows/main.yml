@@ -10,11 +10,12 @@ on:
   workflow_dispatch:
 
 env:
-  SLN_FILE: Source/Terminals.sln
+  SLN_FILE_PATH: Source/Terminals.sln
 
 jobs:
   build:
-    runs-on: windows-latest
+    # because of legacy dotnet 4.8
+    runs-on: windows-2019
 
     steps:
       - uses: actions/checkout@v3
@@ -23,7 +24,22 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.1.1
       - name: Restore Packages
-        run: echo "Runing restore for $SLN_FILE"
-        run: nuget restore $SLN_FILE
+        run: nuget restore ${{ env.SLN_FILE_PATH }}
       - name: Build solution
-        run: msbuild $SLN_FILE -t:rebuild -property:Configuration=Release
+        run: msbuild ${{ env.SLN_FILE_PATH }} -t:rebuild -property:Configuration=Release
+      - name: Setup VSTest
+        uses: darenm/Setup-VSTest@v1.2
+      - name: Install a SQL Server suite of tools
+        uses: potatoqualitee/mssqlsuite@v1.7
+        with:
+          install: localdb
+          show-log: true
+      - name: Test
+        run: vstest.console.exe /logger:"trx;LogFileName=test_results.trx" Source\Tests\bin\Release\Tests.dll
+      - name: Test Report
+        uses: dorny/test-reporter@v1.6.0
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: MSTests
+          path: TestResults/test_results.trx
+          reporter: dotnet-trx 
