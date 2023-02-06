@@ -15,20 +15,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFramework" />
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="SharpZipLib" />
+    <PackageReference Include="System.Buffers" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="System.Memory" />
+    <PackageReference Include="System.Numerics.Vectors" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" />
+
     <Reference Include="AWSSDK, Version=1.3.10.0, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL">
       <HintPath>..\..\Resources\Libraries\AmazonS3\AWSSDK.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="FlickrNet">
       <HintPath>..\..\Resources\Libraries\Flicker\FlickrNet.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentValidation, Version=11.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.11.2.2\lib\netstandard2.0\FluentValidation.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=1.4.0.12, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpZipLib.1.4.0\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="MSTSCLib">
       <SpecificVersion>False</SpecificVersion>
@@ -38,13 +39,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Resources\Libraries\mstsc\AxInterop.MSTSCLib.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -54,23 +49,11 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
@@ -89,21 +72,21 @@
   <ItemGroup>
     <Compile Include="Configuration\**\*.cs" />
     <Compile Include="Connections\**\*.cs" />
-	<EmbeddedResource Include="Connections\**\*.resx" />
+    <EmbeddedResource Include="Connections\**\*.resx" />
     <Compile Include="Settings\**\*.cs" />
     <Compile Include="Converters\*.cs" />
     <Compile Include="Integration\**\*.cs" />
     <Compile Include="Network\**\*.cs" />
-	<EmbeddedResource Include="Network\**\*.resx" />
+    <EmbeddedResource Include="Network\**\*.resx" />
     <Compile Include="Forms\**\*.cs" />
     <EmbeddedResource Include="Forms\**\*.resx" />
     <Compile Include="Credentials\**\*.cs" />
-	<Compile Include="CaptureManager\**\*.cs" />
-	<EmbeddedResource Include="CaptureManager\**\*.resx" />
-	<Compile Include="CommandLine\**\*.cs" />
-	<Compile Include="Wizard\**\*.cs" />
-	<EmbeddedResource Include="Wizard\**\*.resx" />
-	
+    <Compile Include="CaptureManager\**\*.cs" />
+    <EmbeddedResource Include="CaptureManager\**\*.resx" />
+    <Compile Include="CommandLine\**\*.cs" />
+    <Compile Include="Wizard\**\*.cs" />
+    <EmbeddedResource Include="Wizard\**\*.resx" />
+
     <Compile Include="Data\Credentials\GuardedCredential.cs" />
     <Compile Include="Data\Credentials\GuardedCredentialFactory.cs" />
     <Compile Include="Data\Credentials\GuardedSecurity.cs" />

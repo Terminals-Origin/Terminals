@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals", "Terminals\Terminals.csproj", "{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terminals", "Terminals\Terminals.csproj", "{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E0695F0F-0FAF-44BC-AE55-A1FCBFE70271} = {E0695F0F-0FAF-44BC-AE55-A1FCBFE70271}
 		{449DC14A-7C3F-4BE5-BA39-4AFD1C5404E6} = {449DC14A-7C3F-4BE5-BA39-4AFD1C5404E6}
@@ -31,34 +31,29 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FD85705A-96A2-40E8-A3D0-E27A32BB4CA0}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomSetupAction", "CustomSetupAction\CustomSetupAction.csproj", "{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "TerminalsSetup", "TerminalsSetup\TerminalsSetup.wixproj", "{D775E5FD-DDD7-46AA-8BEF-CC18BA0BB702}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.External", "Terminals.External\Terminals.External.csproj", "{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terminals.External", "Terminals.External\Terminals.External.csproj", "{FCD4BECA-9923-4BB0-BF57-8E8BCD0F784C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Common", "Terminals.Common\Terminals.Common.csproj", "{1F720FD0-21A5-4BED-90F6-02CDABB8854D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terminals.Common", "Terminals.Common\Terminals.Common.csproj", "{1F720FD0-21A5-4BED-90F6-02CDABB8854D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Vnc", "Terminals.Plugins.Vnc\Terminals.Plugins.Vnc.csproj", "{123562C5-8D66-4E30-9676-D47B4C03EE7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Web", "Terminals.Plugins.Web\Terminals.Plugins.Web.csproj", "{278FACE8-1579-4C13-AE59-1B24A7091CFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terminals.Plugins.Web", "Terminals.Plugins.Web\Terminals.Plugins.Web.csproj", "{278FACE8-1579-4C13-AE59-1B24A7091CFC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{EA7D6D9C-E79F-4103-8A4C-E0F78F1DC4D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Ica", "Terminals.Plugins.Ica\Terminals.Plugins.Ica.csproj", "{BB4A4CC7-C449-4F81-8395-7806CC1BDFA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terminals.Plugins.Ica", "Terminals.Plugins.Ica\Terminals.Plugins.Ica.csproj", "{BB4A4CC7-C449-4F81-8395-7806CC1BDFA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Vmrc", "Terminals.Plugins.Vmrc\Terminals.Plugins.Vmrc.csproj", "{C841CCF6-4793-41B7-835E-F749E2525963}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terminals.Plugins.Vmrc", "Terminals.Plugins.Vmrc\Terminals.Plugins.Vmrc.csproj", "{C841CCF6-4793-41B7-835E-F749E2525963}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Rdp", "Terminals.Plugins.Rdp\Terminals.Plugins.Rdp.csproj", "{F0C60ED2-9A47-4364-AF57-505BC3E953D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terminals.Plugins.Rdp", "Terminals.Plugins.Rdp\Terminals.Plugins.Rdp.csproj", "{F0C60ED2-9A47-4364-AF57-505BC3E953D5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vnc", "Vnc", "{04783F0B-4961-4550-8561-FB1734CCE3FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals.Plugins.Putty", "Terminals.Plugins.Putty\Terminals.Plugins.Putty.csproj", "{449DC14A-7C3F-4BE5-BA39-4AFD1C5404E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terminals.Plugins.Putty", "Terminals.Plugins.Putty\Terminals.Plugins.Putty.csproj", "{449DC14A-7C3F-4BE5-BA39-4AFD1C5404E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
