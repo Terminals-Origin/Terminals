@@ -12,14 +12,15 @@
     <!-- Disabled default items because of EF5 designer files import => remove after EF upgrade -->
     <EnableDefaultItems>false</EnableDefaultItems>
     <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
+    <OutputType>WinExe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EntityFramework" />
-    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="EntityFramework" GeneratePathProperty="true" />
+    <PackageReference Include="FluentValidation" GeneratePathProperty="true" />
     <PackageReference Include="SharpZipLib" />
     <PackageReference Include="System.Buffers" />
-    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Newtonsoft.Json" GeneratePathProperty="true" />
     <PackageReference Include="System.Memory" />
     <PackageReference Include="System.Numerics.Vectors" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
@@ -68,6 +69,11 @@
     <Reference Include="ZedGraph">
       <HintPath>..\..\Resources\Libraries\ZedGraph\ZedGraph.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(PkgEntityFramework)\lib\net45\EntityFramework.xml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(PkgFluentValidation)\lib\net5.0\FluentValidation.xml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(PkgNewtonsoft_Json)\lib\net45\Newtonsoft.Json.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\**\*.cs" />

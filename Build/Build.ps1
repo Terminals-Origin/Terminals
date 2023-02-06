@@ -7,12 +7,12 @@ if(Test-Path .\Output) {
     Remove-Item .\Output\* -Recurse -ErrorAction Stop | Tee-Object $logFile;
 }
 
-# Visual Studio 2015
-$msbuild = "c:\Windows\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe";
+# Visual Studio 2022
+$msbuild = "c:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe";
 # Compile the solution - the distributionrelease configuration contains installer, which is not normal configurations
-invoke-expression "$msbuild ..\Source\Terminals.sln /m /p:configuration=DistributionRelease /p:Platform='Any CPU' /toolsversion:4.0 /t:rebuild" | Tee-Object $logFile -Append;
+& "$msbuild" ..\Source\Terminals.sln /m /p:configuration=DistributionRelease /p:Platform='Any CPU' /t:rebuild | Tee-Object $logFile -Append;
  
-.\PackOutput.ps1 | Tee-Object $logFile -Append;
+# .\PackOutput.ps1 | Tee-Object $logFile -Append;
 
 
 exit $LastExitCode;
