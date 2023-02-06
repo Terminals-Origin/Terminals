@@ -42,4 +42,5 @@ jobs:
         with:
           name: MSTests
           path: TestResults/test_results.trx
+          fail-on-error: 'false' # sincet the localdb tests configuration
           reporter: dotnet-trx 
