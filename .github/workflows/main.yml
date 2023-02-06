@@ -40,5 +40,5 @@ jobs:
         if: success() || failure()    # run this step even if previous step failed
         with:
           name: MSTests
-          path: '**/*.trx'
+          path: TestResults/test_results.trx
           reporter: dotnet-trx 
