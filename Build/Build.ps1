@@ -5,6 +5,8 @@ $logFile = "Output\build.log";
 
 if(Test-Path .\Output) {
     Remove-Item .\Output\* -Recurse -ErrorAction Stop | Tee-Object $logFile;
+} else {
+	mkdir .\Output
 }
 
 # Visual Studio 2022
