@@ -6,6 +6,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <BaseOutputPath>..\..\Build\Output\</BaseOutputPath>
     <Deterministic>false</Deterministic>
+    <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">

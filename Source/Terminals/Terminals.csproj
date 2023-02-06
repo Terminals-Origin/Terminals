@@ -11,6 +11,7 @@
     <ManifestKeyFile>Terminals_TemporaryKey.pfx</ManifestKeyFile>
     <!-- Disabled default items because of EF5 designer files import => remove after EF upgrade -->
     <EnableDefaultItems>false</EnableDefaultItems>
+    <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>
 
   <ItemGroup>

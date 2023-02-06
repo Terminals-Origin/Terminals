@@ -5,6 +5,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <BaseOutputPath>..\..\Build\Output\Plugins\Web\</BaseOutputPath>
     <Deterministic>false</Deterministic>
+    <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terminals.Common\Terminals.Common.csproj">
