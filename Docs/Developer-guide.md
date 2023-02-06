@@ -28,8 +28,8 @@
 * In case of formatting make two separate checkins: one which holds only code formatting changes, second with fix/feature changes
 
 ## Project structure
-* Current development tool is Visual Studio 2017 with .NET C#.
-* The main solution project is configured to target .NET framework 4. But there are other external projects, which are still targeting .NET 2.0. Don't change the target framework for them.
+* Current development tool is Visual Studio 2022 with .NET C#.
+* The main solution project is configured to target .NET framework 4.8. But there are other external projects, which are still targeting .NET 2.0. Don't change the target framework for them.
 * Terminals solution references libraries and images from Resources directory.
 * For Logging the Log4Net is configured. Log files are stored under application Logs subdirectory.
 * To build the release setup use the "Distribution release" solution configuration. For general development use standard debug and release.
@@ -55,7 +55,7 @@ It is also possible to provide new protocol specific connection extension see [W
 * Chocolatey to download external dependecies in build
 
 ## Coding rules
-* Use Visual Studio 2017 default settings or similar settings in another editor.
+* Use Visual Studio 2022 default settings or similar settings in another editor.
 * For developer who are using Resharper, there is a Team shared configuration file for coding rules. Don't change this file, if you want to apply some rules. Discuss it first within the team.
 * Indents are 4 spaces. You can use Productivity Power Tools for VS to convert tab characters into spaces.
 * Fields should be declared private and above all methods.
