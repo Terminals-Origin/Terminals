@@ -21,8 +21,9 @@ jobs:
       - name: Setup-msbuild
         uses: microsoft/setup-msbuild@v1.1
       - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1.0.5
+        uses: NuGet/setup-nuget@v1.1.1
       - name: Restore Packages
+        run: echo "Runing restore for $SLN_FILE"
         run: nuget restore $SLN_FILE
       - name: Build solution
         run: msbuild $SLN_FILE -t:rebuild -property:Configuration=Release
