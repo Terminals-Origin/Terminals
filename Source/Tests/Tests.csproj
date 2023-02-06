@@ -1,49 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props" Condition="Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>
-    </ProductVersion>
+    <TargetFramework>net4.8</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <BaseOutputPath>..\..\Build\Output\</BaseOutputPath>
+    <Deterministic>false</Deterministic>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{81B4C28B-5B10-4A53-B0AC-9E8F72733139}</ProjectGuid>
-    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tests</RootNamespace>
-    <AssemblyName>Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+    <PackageReference Include="coverlet.collector" Version="3.1.2" />
+	
     <Reference Include="AWSSDK, Version=1.3.10.0, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL" />
     <Reference Include="AxInterop.MSTSCLib">
       <HintPath>..\..\Resources\Libraries\mstsc\AxInterop.MSTSCLib.dll</HintPath>
@@ -138,106 +110,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
-      <Visible>False</Visible>
-    </CodeAnalysisDependentAssemblyPaths>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\CustomSetupAction\UpgradeConfigFiles.cs">
       <Link>UpgradeConfigFiles.cs</Link>
     </Compile>
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Commands\TestRenameService.cs" />
-    <Compile Include="Commands\FavoriteRenameCommandTests.cs" />
-    <Compile Include="Configuration\ConfigurationSettingsTests.cs" />
-    <Compile Include="Connections\ConnecitonStateDetectorTests.cs" />
-    <Compile Include="Connections\ConnectionTests.cs" />
-    <Compile Include="Connections\DesktopSharesTests.cs" />
-    <Compile Include="Connections\MockConnection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Connections\ConnectionManagerTests.cs" />
-    <Compile Include="Connections\ConnectionManagerOtionsTests.cs" />
-    <Compile Include="Connections\FavoriteSerializerTests.cs" />
-    <Compile Include="Connections\PluginBasedTests.cs" />
-    <Compile Include="Connections\PluginLoaderTests.cs" />
-    <Compile Include="Connections\TestConnectionManager.cs" />
-    <Compile Include="FilePersisted\FavoritesTest.cs" />
-    <Compile Include="FilePersisted\FilePersistedTestLab.cs" />
-    <Compile Include="FilePersisted\GroupsTest.cs" />
-    <Compile Include="FilePersisted\GroupsTestLab.cs" />
-    <Compile Include="Helpers\ImageAssert.cs" />
-    <Compile Include="FilePersisted\TestFileWatch.cs" />
-    <Compile Include="FilePersisted\TestImportUi.cs" />
-    <Compile Include="Helpers\TestDataFiles.cs" />
-    <Compile Include="Integrations\RdcManImporterTests.cs" />
-    <Compile Include="Integrations\ExportRdpTest.cs" />
-    <Compile Include="Integrations\ImportRdpTest.cs" />
-    <Compile Include="Integrations\ExportTerminalsTests.cs" />
-    <Compile Include="Network\ServiceDetectorTests.cs" />
-    <Compile Include="Passwords\PasswordUpgradesTests.cs" />
-    <Compile Include="FilePersisted\SearchEngineTest.cs" />
-    <Compile Include="Configuration\FavoriteConfigurationElementTests.cs" />
-    <Compile Include="Passwords\GuardedSecurityTests.cs" />
-    <Compile Include="Putty\ArgumentBuilderSshTests.cs" />
-    <Compile Include="Putty\PuttyArgumentBuilderTests.cs" />
-    <Compile Include="Putty\PuttyRegistryTests.cs" />
-    <Compile Include="Putty\PuttyTests.cs" />
-    <Compile Include="Putty\ArgumentBuilderTelnetTests.cs" />
-    <Compile Include="SqlPersisted\ComparersTest.cs" />
-    <Compile Include="SqlPersisted\FavoriteCopiesTest.cs" />
-    <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />
-    <Compile Include="FilePersisted\FilesHistoryTest.cs" />
-    <Compile Include="FilePersisted\InjectionDateTime.cs" />
-    <Compile Include="Integrations\ImportsTest.cs" />
-    <Compile Include="Passwords\PasswordTests.cs" />
-    <Compile Include="SqlPersisted\ConcurentUpdatesTest.cs" />
-    <Compile Include="SqlPersisted\ConnectionsHistoryTest.cs" />
-    <Compile Include="SqlPersisted\GroupsTest.cs" />
-    <Compile Include="SqlPersisted\FavoritesTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlPersisted\ImportsTest.cs" />
-    <Compile Include="SqlPersisted\SecurityTests.cs" />
-    <Compile Include="SqlPersisted\ServerInstancesSearcherTests.cs" />
-    <Compile Include="SqlPersisted\TestsLab.cs" />
-    <Compile Include="SqlPersisted\CredentialsTest.cs" />
-    <Compile Include="CustomSetupActionTest.cs" />
-    <Compile Include="PersistenceFactoryTests.cs" />
-    <Compile Include="Upgrade\V401ContentUpgradeTests.cs" />
-    <Compile Include="UserInterface\MenuVisitorSut.cs" />
-    <Compile Include="UserInterface\MockChildProtocolControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Helpers\TestMocksFactory.cs" />
-    <Compile Include="UserInterface\ToolStripSettingsTest.cs" />
-    <Compile Include="UserInterface\FavoritePropertiesControlTests.cs" />
-    <Compile Include="UserInterface\ProtocolOptionsPanelTests.cs" />
-    <Compile Include="UserInterface\CredentialPanelTests.cs" />
-    <Compile Include="UserInterface\CaptureManagerTests.cs" />
-    <Compile Include="UserInterface\RdpToolbarVisitorTests.cs" />
-    <Compile Include="UserInterface\ProtocolImageListBuilderTests.cs" />
-    <Compile Include="UserInterface\FavoriteIconsTests.cs" />
-    <Compile Include="UserInterface\ToolTipBuilderTests.cs" />
-    <Compile Include="UserInterface\PuttyMenuVisitorTests.cs" />
-    <Compile Include="UserInterface\VncToolbarVisitorTests.cs" />
-    <Compile Include="UserInterface\VmrcToolbarVisitorTests.cs" />
-    <Compile Include="Validation\DbValidationTests.cs" />
-    <Compile Include="Validation\FavoriteNameValidatorTests.cs" />
-    <Compile Include="Validation\FileValidationTests.cs" />
-    <Compile Include="Validation\GroupNameValidatorTests.cs" />
-    <Compile Include="UserInterface\FavoritesTreeLoadingTest.cs" />
-    <Compile Include="UserInterface\GroupsTreeLoadingTest.cs" />
-    <Compile Include="UserInterface\TestKeyModifiers.cs" />
-    <Compile Include="UserInterface\TestTreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UserInterface\TreeListLoaderTestLab.cs" />
-    <Compile Include="UserInterface\TreeViewDragDropTests.cs" />
-    <Compile Include="Validation\NameValidatorTestLab.cs" />
-    <Compile Include="Validation\ValidationTests.cs" />
-    <Compile Include="UpdateManagerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HexEditor\HexEditor.csproj">
@@ -387,20 +265,4 @@
   <ItemGroup>
     <Folder Include="Data\" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.props'))" />
-    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets'))" />
-  </Target>
-  <Import Project="..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.2.2.10\build\net46\MSTest.TestAdapter.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

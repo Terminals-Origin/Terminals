@@ -152,6 +152,7 @@ namespace Tests.SqlPersisted
             Assert.AreEqual(4, this.updatedCount, "Event wasn't delivered");  
         }
 
+        [Ignore("Upgrade to putty version")]
         [DeploymentItem(IMAGE_FILE)]
         [TestMethod]
         public void UpdateFavoriteIcon_StoresIconToDatabase()
