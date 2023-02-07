@@ -20,7 +20,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration.Install" />
-    <Reference Include="Microsoft.Deployment.WindowsInstaller" />
+    <PackageReference Include="WiX" GeneratePathProperty="true"  />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Deployment.WindowsInstaller">
+      <HintPath>$(PkgWiX)\tools\Microsoft.Deployment.WindowsInstaller.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
