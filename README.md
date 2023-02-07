@@ -2,14 +2,12 @@
 Terminals is a secure, multi tab terminal services/remote desktop client. RDP, VNC, VMRC, SSH, Telnet, RAS, ICA Citrix, HTTP and HTTPs based protocols are integrated. It uses Terminal Services ActiveX Client (mstscax.dll). The project started from the need of controlling multiple connections simultaneously. It is a complete replacement for the mstsc.exe (Terminal Services) client. This is official source moved from Codeplex. See [features list](/Docs/Features-and-Screen-shots.md)
 
 # Downloads
-* [Terminals Version 4.0.1](https://github.com/Terminals-Origin/Terminals/releases/tag/4.0.1)
+* [Terminals Version 4.0.1](https://github.com/Terminals-Origin/Terminals/releases/tag/4.0.1) (last version suported by Windows Vista)
 * [Chocolatey package](https://chocolatey.org/packages/terminals) 
 
 # News
 
-> TODO https://docs.microsoft.com/en-us/dotnet/desktop/winforms/migration/?view=netdesktop-5.0
 > **October 2022** **NOTE:** Project RESURECTED, but we are still searching for maintainers!
-
 
 * **February 2019** - Project is no longer under active development, we are searching for maintainers!
 * **June 26, 2017** - New release version 4.0.1
