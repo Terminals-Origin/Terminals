@@ -28,7 +28,7 @@ namespace Tests.Helpers
             return AreEqual(expectedImage, favoriteIcon);
         }
 
-        private static bool AreEqual(Image firstImage, Image secondImage)
+        internal static bool AreEqual(Image firstImage, Image secondImage)
         {
             using (var ms = new MemoryStream())
             {

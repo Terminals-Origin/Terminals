@@ -158,6 +158,7 @@ namespace Terminals.Data
 
             // the file wasn't selected directly from Thumbs dir, otherwise we don't need to copy it
             if (newFileInThumbsDir != newImagefilePath && !File.Exists(newFileInThumbsDir))
+                // TODO Create the directory, if does not exist.
                 File.Copy(newImagefilePath, newFileInThumbsDir);
 
             return newFileInThumbsDir;
