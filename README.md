@@ -1,11 +1,13 @@
 # Terminals Project
+
 Terminals is a secure, multi tab terminal services/remote desktop client. RDP, VNC, VMRC, SSH, Telnet, RAS, ICA Citrix, HTTP and HTTPs based protocols are integrated. It uses Terminal Services ActiveX Client (mstscax.dll). The project started from the need of controlling multiple connections simultaneously. It is a complete replacement for the mstsc.exe (Terminal Services) client. This is official source moved from Codeplex. See [features list](/Docs/Features-and-Screen-shots.md)
 
-# Downloads
+## Downloads
+
 * [Terminals Version 4.0.1](https://github.com/Terminals-Origin/Terminals/releases/tag/4.0.1) (last version suported by Windows Vista)
 * [Chocolatey package](https://chocolatey.org/packages/terminals) 
 
-# News
+## News
 
 > **October 2022** **NOTE:** Project RESURECTED, but we are still searching for maintainers!
 
@@ -18,11 +20,12 @@ New Options to disable protocol plugins
 * **December 16,2016** - New Official [Chocolatey package](https://chocolatey.org/packages/terminals)  
 We are happy to announce that Chocolatey terminals package is now maintained by our team. 
 
-# Donate
+## Donate
+
 * Keep the project Alive!
 * [![$25](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X28G9FEYUN6CJ)
 
-# Documentation
+##Documentation
 
 ![Build status](https://github.com/Terminals-Origin/Terminals/actions/workflows/main.yml/badge.svg).
 
@@ -35,4 +38,4 @@ We are happy to announce that Chocolatey terminals package is now maintained by 
 * [Road map](/Docs/Road-map.md)
 * [Powershell script to create import file](/Docs/Powershell-script-to-create-import-file.md)
 
-# [License](LICENSE.md)
+## [License](LICENSE.md)
