@@ -88,6 +88,7 @@
             this.favsTree = new Terminals.Forms.Controls.FavoritesTreeView();
             this.searchPanel1 = new Terminals.Forms.Controls.SearchResultsPanel();
             this.historyTreeView = new Terminals.Forms.Controls.HistoryTreeView();
+            this.connectUsingRdpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem(); // Edit by Faheem Anis
             this.favoritesContextMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.FavoritesTabPage.SuspendLayout();
@@ -119,6 +120,7 @@
             this.computerManagementMMCToolStripMenuItem,
             this.systemInformationToolStripMenuItem,
             this.enableRDPToolStripMenuItem,
+            this.connectUsingRdpToolStripMenuItem, // Aded by Faheem Anis
             this.toolStripMenuItem3,
             this.removeSelectedToolStripMenuItem,
             this.duplicateToolStripMenuItem,
@@ -271,6 +273,13 @@
             this.propertiesToolStripMenuItem.Text = "Properties";
             this.propertiesToolStripMenuItem.ToolTipText = "Edit this favorite properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.PropertiesToolStripMenuItem_Click);
+            //
+            // connectUsingRdpToolStripMenuItem
+            //
+            this.connectUsingRdpToolStripMenuItem.Name = "connectUsingRdToolStrippMenuItem";
+            this.connectUsingRdpToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.connectUsingRdpToolStripMenuItem.Text = "Connect using RDP";
+            this.connectUsingRdpToolStripMenuItem.Click += new System.EventHandler(this.ConnectUsingRdpToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -758,5 +767,8 @@
         private Forms.Controls.SearchResultsPanel searchPanel1;
         private System.Windows.Forms.ToolStripMenuItem reconnectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
+
+        // Edit by Faheem Anis at 03/06/2022
+        private System.Windows.Forms.ToolStripMenuItem connectUsingRdpToolStripMenuItem;
     }
 }

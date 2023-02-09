@@ -147,7 +147,7 @@ namespace Terminals.Forms
             // 
             // OptionsTreeView
             // 
-            this.OptionsTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.OptionsTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.OptionsTreeView.HotTracking = true;
             this.OptionsTreeView.Location = new System.Drawing.Point(8, 8);
@@ -210,8 +210,8 @@ namespace Terminals.Forms
             // tabCtrlOptionPanels
             // 
             this.tabCtrlOptionPanels.Alignment = System.Windows.Forms.TabAlignment.Right;
-            this.tabCtrlOptionPanels.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.tabCtrlOptionPanels.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabCtrlOptionPanels.Controls.Add(this.tabPageStartupShutdown);
             this.tabCtrlOptionPanels.Controls.Add(this.tabPageInterface);

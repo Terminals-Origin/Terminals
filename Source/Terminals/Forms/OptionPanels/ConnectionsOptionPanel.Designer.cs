@@ -60,7 +60,7 @@ namespace Terminals.Forms
             this.panel1.TabIndex = 25;
             // 
             // groupBox12
-            // 
+
             this.groupBox12.Controls.Add(this.EvaluatedDesktopShareLabel);
             this.groupBox12.Controls.Add(this.PortscanTimeoutTextBox);
             this.groupBox12.Controls.Add(this.lblDefaultDesktopShare);
@@ -73,7 +73,7 @@ namespace Terminals.Forms
             this.groupBox12.TabIndex = 20;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "RDP Desktop Share";
-            // 
+
             // EvaluatedDesktopShareLabel
             // 
             this.EvaluatedDesktopShareLabel.AutoSize = true;
