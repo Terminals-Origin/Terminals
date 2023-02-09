@@ -55,8 +55,7 @@ It is also possible to provide new protocol specific connection extension see [W
 
 ## External components
 
-* SSH protocol from Granados project (actually developed as [Poderosa](http://sourceforge.net/projects/poderosa/))
-* Terminal emulator control for ssh and telnet [Terminal control](http://www.codeproject.com/KB/IP/Terminal_Control_Project.aspx)
+* [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) (no modifications)
 * Amazon S3 component from Amazon SDK [Amazon SDK for .NET](http://aws.amazon.com/sdkfornet/)
 * zLib compression library [zLib](http://www.componentace.com/)
 * VNC client library [VncSharp](http://cdot.senecac.on.ca/projects/vncsharp/)
