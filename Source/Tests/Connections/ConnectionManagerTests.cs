@@ -107,7 +107,7 @@ namespace Tests.Connections
                 new Tuple<string, int>(TelnetConnectionPlugin.TELNET, TelnetConnectionPlugin.TelnetPort),
                 new Tuple<string, int>(SshConnectionPlugin.SSH, SshConnectionPlugin.SSHPort),
                 new Tuple<string, int>(KnownConnectionConstants.HTTP, KnownConnectionConstants.HTTPPort),
-                new Tuple<string, int>(KnownConnectionConstants.HTTPS, HttpsConnectionPlugin.HTTPSPort),
+                new Tuple<string, int>(KnownConnectionConstants.HTTPS, KnownConnectionConstants.HTTPSPort),
                 new Tuple<string, int>(ICAConnectionPlugin.ICA_CITRIX, ICAConnectionPlugin.ICAPort)
             };
 
@@ -144,7 +144,7 @@ namespace Tests.Connections
                 new Tuple<int, string>(TelnetConnectionPlugin.TelnetPort, TelnetConnectionPlugin.TELNET),
                 new Tuple<int, string>(SshConnectionPlugin.SSHPort, SshConnectionPlugin.SSH),
                 new Tuple<int, string>(KnownConnectionConstants.HTTPPort, KnownConnectionConstants.HTTP),
-                new Tuple<int, string>(HttpsConnectionPlugin.HTTPSPort, KnownConnectionConstants.HTTPS),
+                new Tuple<int, string>(KnownConnectionConstants.HTTPSPort, KnownConnectionConstants.HTTPS),
                 new Tuple<int, string>(ICAConnectionPlugin.ICAPort, ICAConnectionPlugin.ICA_CITRIX)
             };
 
@@ -221,16 +221,6 @@ namespace Tests.Connections
         }
 
         [TestMethod]
-        public void WebProtocols_CreateControls_ReturnsEmpty()
-        {
-            int httpControls = connectionManager.CreateControls(KnownConnectionConstants.HTTP).Length;
-            int httpsControls = connectionManager.CreateControls(KnownConnectionConstants.HTTPS).Length;
-            const string MESSAGE = "Web based protocols have no configuration.";
-            bool bothEmpty = httpControls == 0 && httpsControls == 0;
-            Assert.IsTrue(bothEmpty, MESSAGE);
-        }
-
-        [TestMethod]
         public void KnownProtocols_CreateControls_ReturnsAllControls()
         {
             Tuple<string, int, string>[] testData = CreateControlsTestData();
@@ -247,7 +237,9 @@ namespace Tests.Connections
                 new Tuple<string, int, string>(VmrcConnectionPlugin.VMRC, 1, "Terminals.Forms.EditFavorite.VmrcControl"),
                 new Tuple<string, int, string>(TelnetConnectionPlugin.TELNET, 1, "Terminals.Plugins.Putty.PuttyOptionsControl"),
                 new Tuple<string, int, string>(SshConnectionPlugin.SSH, 1, "Terminals.Plugins.Putty.SshOptionsControl"),
-                new Tuple<string, int, string>(ICAConnectionPlugin.ICA_CITRIX, 1, "Terminals.Forms.EditFavorite.CitrixControl")
+                new Tuple<string, int, string>(ICAConnectionPlugin.ICA_CITRIX, 1, "Terminals.Forms.EditFavorite.CitrixControl"),
+                new Tuple<string, int, string>(HttpConnectionPlugin.WEB_HTTP, 1, "Terminals.Forms.EditFavorite.WebControl"),
+                new Tuple<string, int, string>(HttpsConnectionPlugin.WEB_HTTPS, 1, "Terminals.Forms.EditFavorite.WebControl")
             };
         }
 
@@ -302,7 +294,8 @@ namespace Tests.Connections
                 "Terminals.Integration.Export.TerminalsIcaExport",
                 "Terminals.Plugins.Putty.TerminalsSshExport",
                 "Terminals.Plugins.Putty.TerminalsTelnetExport",
-                "Terminals.Integration.Export.TerminalsVmrcExport"
+                "Terminals.Integration.Export.TerminalsVmrcExport",
+                "Terminals.Integration.Export.TerminalsWebExport",
             };
 
             ITerminalsOptionsExport[] exporters = this.connectionManager.GetTerminalsOptionsExporters();
@@ -341,7 +334,7 @@ namespace Tests.Connections
                     new List<string>() { "Terminals.Plugins.Putty.SshConnectionPlugin"}),
                 new Tuple<int, IEnumerable<string>>(KnownConnectionConstants.HTTPPort, 
                     new List<string>() { "Terminals.Connections.Web.HttpConnectionPlugin"}),
-                new Tuple<int, IEnumerable<string>>(HttpsConnectionPlugin.HTTPSPort, 
+                new Tuple<int, IEnumerable<string>>(KnownConnectionConstants.HTTPSPort, 
                     new List<string>() { "Terminals.Connections.Web.HttpsConnectionPlugin"}),
             };
 

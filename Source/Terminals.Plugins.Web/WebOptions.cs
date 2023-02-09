@@ -12,12 +12,26 @@ namespace Terminals.Data
     public class WebOptions : ProtocolOptions, IRelativeUrlProvider
     {
         public string RelativeUrl { get; set; }
+        public string UsernameID { get; set; }
+        public string PasswordID { get; set; }
+        public string OptionalID { get; set; }
+        public string OptionalValue { get; set; }
+        public string SubmitID { get; set; }
+        public bool EnableHTMLAuth { get; set; }
+        public bool EnableFormsAuth { get; set; }
 
         public override ProtocolOptions Copy()
         {
             return new WebOptions
             {
-                RelativeUrl = this.RelativeUrl
+                RelativeUrl = this.RelativeUrl,
+                UsernameID = this.UsernameID,
+                PasswordID = this.PasswordID,
+                OptionalID = this.OptionalID,
+                OptionalValue = this.OptionalValue,
+                SubmitID = this.SubmitID,
+                EnableHTMLAuth = this.EnableHTMLAuth,
+                EnableFormsAuth = this.EnableFormsAuth,
             };
         }
     }

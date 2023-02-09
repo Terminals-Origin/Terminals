@@ -3,15 +3,19 @@ using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Common.Connections;
 using Terminals.Data;
+using Terminals.Forms.EditFavorite;
+using Terminals.Integration.Export;
 using Terminals.Plugins.Web;
+using Terminals.Plugins.Web.Properties;
 
 namespace Terminals.Connections.Web
 {
-    internal class HttpsConnectionPlugin: IConnectionPlugin, IOptionsConverterFactory
+    internal class HttpsConnectionPlugin: IConnectionPlugin, IOptionsExporterFactory, IOptionsConverterFactory
     {
-        internal const int HTTPSPort = 443;
+        internal static readonly Image TreeIconHttps = Resources.treeIcon_http;
+        internal const string WEB_HTTPS = "HTTPS";
 
-        public int Port { get { return HTTPSPort; } }
+        public int Port { get { return KnownConnectionConstants.HTTPSPort; } }
 
         public string PortName { get { return KnownConnectionConstants.HTTPS; } }
 
@@ -22,7 +26,7 @@ namespace Terminals.Connections.Web
 
         public Control[] CreateOptionsControls()
         {
-            return new Control[0];
+            return new Control[] { new WebControl() { Name = WEB_HTTPS } };
         }
 
         public Type GetOptionsType()
@@ -37,12 +41,17 @@ namespace Terminals.Connections.Web
 
         public Image GetIcon()
         {
-            return HttpConnectionPlugin.TreeIconHttp;
+            return TreeIconHttps;
         }
 
         public IOptionsConverter CreatOptionsConverter()
         {
             return new WebOptionsConverter();
+        }
+
+        public ITerminalsOptionsExport CreateOptionsExporter()
+        {
+            return new TerminalsWebExport();
         }
     }
 }

@@ -5,12 +5,15 @@ using Terminals.Common.Connections;
 using Terminals.Data;
 using Terminals.Plugins.Web;
 using Terminals.Plugins.Web.Properties;
+using Terminals.Forms.EditFavorite;
+using Terminals.Integration.Export;
 
 namespace Terminals.Connections.Web
 {
-    internal class HttpConnectionPlugin: IConnectionPlugin, IOptionsConverterFactory
+    internal class HttpConnectionPlugin : IConnectionPlugin, IOptionsExporterFactory, IOptionsConverterFactory
     {
         internal static readonly Image TreeIconHttp = Resources.treeIcon_http;
+        internal const string WEB_HTTP = "HTTP";
 
         public int Port { get { return KnownConnectionConstants.HTTPPort; } }
 
@@ -23,7 +26,7 @@ namespace Terminals.Connections.Web
 
         public Control[] CreateOptionsControls()
         {
-            return new Control[0];
+            return new Control[] { new WebControl() { Name = WEB_HTTP } };
         }
 
         public Type GetOptionsType()
@@ -44,6 +47,11 @@ namespace Terminals.Connections.Web
         public IOptionsConverter CreatOptionsConverter()
         {
             return new WebOptionsConverter();
+        }
+
+        public ITerminalsOptionsExport CreateOptionsExporter()
+        {
+            return new TerminalsWebExport();
         }
     }
 }

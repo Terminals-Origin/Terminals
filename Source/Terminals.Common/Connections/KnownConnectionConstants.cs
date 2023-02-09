@@ -6,6 +6,8 @@ namespace Terminals.Common.Connections
 
         public const int HTTPPort = 80;
 
+        public const int HTTPSPort = 443;
+
         public const string HTTP = "HTTP";
 
         public const string HTTPS = "HTTPS";
