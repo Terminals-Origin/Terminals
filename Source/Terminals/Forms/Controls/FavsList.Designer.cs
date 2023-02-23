@@ -242,6 +242,7 @@
             // removeSelectedToolStripMenuItem
             // 
             this.removeSelectedToolStripMenuItem.Image = global::Terminals.Properties.Resources.delete;
+            this.removeSelectedToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.removeSelectedToolStripMenuItem.Name = "removeSelectedToolStripMenuItem";
             this.removeSelectedToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.removeSelectedToolStripMenuItem.Text = "Delete";
@@ -250,6 +251,7 @@
             // duplicateToolStripMenuItem
             // 
             this.duplicateToolStripMenuItem.Name = "duplicateToolStripMenuItem";
+            this.duplicateToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F9;
             this.duplicateToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.duplicateToolStripMenuItem.Text = "Duplicate";
             this.duplicateToolStripMenuItem.ToolTipText = "Creates copy of first selected favorite including its group assignment";
@@ -267,6 +269,7 @@
             // 
             this.propertiesToolStripMenuItem.Image = global::Terminals.Properties.Resources.Properties;
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
+            this.propertiesToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
             this.propertiesToolStripMenuItem.ToolTipText = "Edit this favorite properties";
