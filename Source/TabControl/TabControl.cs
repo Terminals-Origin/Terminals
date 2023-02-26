@@ -776,7 +776,7 @@ namespace TabControl
             bool isFirstTab = Items.IndexOf(currentItem) == 0;
             Font currentFont = Font;
 
-            if (currentItem == SelectedItem)
+           if (currentItem == SelectedItem)
                 currentFont = new Font(Font, FontStyle.Bold);
 
             SizeF textSize = g.MeasureString(currentItem.Title, currentFont, new SizeF(200, 10), sf);
@@ -785,7 +785,7 @@ namespace TabControl
 
             GraphicsPath path = new GraphicsPath();
             LinearGradientBrush brush = null;
-            int mtop = 3;
+            int mtop = 2;
 
             #region Draw Not Right-To-Left Tab
 
@@ -793,7 +793,7 @@ namespace TabControl
             {
                 if (currentItem == SelectedItem || isFirstTab)
                 {
-                    path.AddLine(buttonRect.Left - 10, buttonRect.Bottom - 1, buttonRect.Left + (buttonRect.Height / 2) - 4, mtop + 4);
+                    path.AddLine(buttonRect.Left - 10, buttonRect.Bottom - 0, buttonRect.Left + (buttonRect.Height / 2) - 4, mtop + 0);
                 }
                 else
                 {
@@ -803,11 +803,11 @@ namespace TabControl
 
                 path.AddLine(buttonRect.Left + (buttonRect.Height / 2) + 2, mtop, buttonRect.Right - 3, mtop);
                 path.AddLine(buttonRect.Right, mtop + 2, buttonRect.Right, buttonRect.Bottom - 1);
-                path.AddLine(buttonRect.Right - 4, buttonRect.Bottom - 1, buttonRect.Left, buttonRect.Bottom - 1);
+                path.AddLine(buttonRect.Right - 4, buttonRect.Bottom - 0, buttonRect.Left, buttonRect.Bottom - 0);
                 path.CloseFigure();
                 try {
                     if(currentItem == SelectedItem) {
-                        brush = new LinearGradientBrush(buttonRect, SystemColors.ControlLightLight, SystemColors.Window, LinearGradientMode.Vertical);
+                        brush = new LinearGradientBrush(buttonRect, SystemColors.GrayText, SystemColors.Window, LinearGradientMode.Vertical);
                     } else {
                         brush = new LinearGradientBrush(buttonRect, SystemColors.ControlLightLight, SystemColors.Control, LinearGradientMode.Vertical);
                     }
@@ -819,8 +819,9 @@ namespace TabControl
                 if (currentItem == SelectedItem)
                 {
                     pen = new Pen(ToolStripRenderer.ColorTable.MenuStripGradientBegin);
+                    g.DrawPath(pen, path);
                 }
-                g.DrawPath(pen, path);
+                g.DrawPath(SystemPens.ControlDark, path);
                 if (currentItem == SelectedItem)
                 {
                     pen.Dispose();
@@ -856,7 +857,7 @@ namespace TabControl
             {
                 if (currentItem == SelectedItem || isFirstTab)
                 {
-                    path.AddLine(buttonRect.Right + 10, buttonRect.Bottom - 1, buttonRect.Right - (buttonRect.Height / 2) + 4, mtop + 4);
+                    path.AddLine(buttonRect.Right + 10, buttonRect.Bottom - 0, buttonRect.Right - (buttonRect.Height / 2) + 4, mtop + 0);
                 }
                 else
                 {
@@ -866,12 +867,12 @@ namespace TabControl
 
                 path.AddLine(buttonRect.Right - (buttonRect.Height / 2) - 2, mtop, buttonRect.Left + 3, mtop);
                 path.AddLine(buttonRect.Left, mtop + 2, buttonRect.Left, buttonRect.Bottom - 1);
-                path.AddLine(buttonRect.Left + 4, buttonRect.Bottom - 1, buttonRect.Right, buttonRect.Bottom - 1);
+                path.AddLine(buttonRect.Left + 4, buttonRect.Bottom - 0, buttonRect.Right, buttonRect.Bottom - 0);
                 path.CloseFigure();
 
                 if (currentItem == SelectedItem)
                 {
-                    brush = new LinearGradientBrush(buttonRect, SystemColors.ControlLightLight, SystemColors.Window, LinearGradientMode.Vertical);
+                    brush = new LinearGradientBrush(buttonRect, SystemColors.GrayText, SystemColors.Window, LinearGradientMode.Vertical);
                 }
                 else
                 {
@@ -879,6 +880,12 @@ namespace TabControl
                 }
 
                 g.FillPath(brush, path);
+                Pen pen = SystemPens.ControlDark;
+                if (currentItem == SelectedItem)
+                {
+                    pen = new Pen(ToolStripRenderer.ColorTable.MenuStripGradientBegin);
+                    g.DrawPath(pen, path);
+                }
                 g.DrawPath(SystemPens.ControlDark, path);
 
                 if (currentItem == SelectedItem)

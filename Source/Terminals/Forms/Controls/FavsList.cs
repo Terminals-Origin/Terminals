@@ -397,7 +397,7 @@ namespace Terminals
         private void RemoveSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite favorite = this.GetSelectedFavorite();
-            if (favorite != null && OrganizeFavoritesForm.AskIfRealyDelete("favorite"))
+            if (favorite != null && OrganizeFavoritesForm.AskIfRealyDelete("favorite \n"+favorite.Name))
                 PersistedFavorites.Delete(favorite);
         }
 
@@ -453,7 +453,8 @@ namespace Terminals
 			if (favoriteNode != null && !tv.SelectedNode.IsEditing)
 			{
 				var definition = new ConnectionDefinition(favoriteNode.Favorite);
-				this.ConnectionsUiFactory.Connect(definition);
+                favoriteNode.Checked = true;
+                this.ConnectionsUiFactory.Connect(definition);
 				tv.Parent.Focus();
 			}
 		}
