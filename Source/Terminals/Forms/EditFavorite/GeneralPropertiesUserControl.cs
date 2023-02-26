@@ -155,14 +155,15 @@ namespace Terminals.Forms.EditFavorite
 
         private void CmbServers_Leave(object sender, EventArgs e)
         {
-            if (this.txtName.Text == String.Empty)
+           
+            if (this.cmbServers.Text.Contains(":"))
             {
-                if (this.cmbServers.Text.Contains(":"))
-                {
-                    this.FillServerName(this.cmbServers.Text);
-                }
+                this.FillServerName(this.cmbServers.Text);
+            }
 
-                this.txtName.Text = this.cmbServers.Text;
+             if (this.txtName.Text == String.Empty)
+            {
+            this.txtName.Text = this.cmbServers.Text;
             }
         }
 

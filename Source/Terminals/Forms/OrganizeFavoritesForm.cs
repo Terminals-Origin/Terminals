@@ -260,9 +260,9 @@ namespace Terminals
 
         internal static bool AskIfRealyDelete(string target)
         {
-            string messsage = string.Format("Do your realy want to delete selected {0}?", target);
+            string messsage = string.Format("Do you really want to delete selected {0}?", target);
             return MessageBox.Show(messsage, "Terminals - Delete",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
         private void PerformDelete()

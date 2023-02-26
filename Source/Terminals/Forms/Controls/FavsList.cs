@@ -397,7 +397,7 @@ namespace Terminals
         private void RemoveSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite favorite = this.GetSelectedFavorite();
-            if (favorite != null && OrganizeFavoritesForm.AskIfRealyDelete("favorite"))
+            if (favorite != null && OrganizeFavoritesForm.AskIfRealyDelete("favorite \n"+favorite.Name))
                 PersistedFavorites.Delete(favorite);
         }
 
@@ -453,7 +453,8 @@ namespace Terminals
 			if (favoriteNode != null && !tv.SelectedNode.IsEditing)
 			{
 				var definition = new ConnectionDefinition(favoriteNode.Favorite);
-				this.ConnectionsUiFactory.Connect(definition);
+                favoriteNode.Checked = true;
+                this.ConnectionsUiFactory.Connect(definition);
 				tv.Parent.Focus();
 			}
 		}
@@ -530,11 +531,26 @@ namespace Terminals
             switch (e.KeyCode)
             {
                 case Keys.F2:
+                    this.isRenaming = true;
                     this.BeginRenameInFavsTree();
                     break;
+                case Keys.F1:
+                    this.PropertiesToolStripMenuItem_Click(sender, e);
+                    break;
+                case Keys.F9:
+                    this.DuplicateToolStripMenuItem_Click(sender, e);
+                    break;
+                case Keys.Delete:
+                    this.RemoveSelectedToolStripMenuItem_Click(sender, e);
+                    break;
+                case Keys.Insert:
+                    this.CreateFavoriteToolStripMenuItem_Click(sender, e);
+                    break;
                 case Keys.Enter:
-                     if (!this.isRenaming)
-                         this.StartConnection(this.favsTree);
+                    if (this.isRenaming)
+                    { this.isRenaming = false; }
+                    else
+                    { this.StartConnection(this.favsTree); }
                     break;
             }
         }
@@ -558,6 +574,7 @@ namespace Terminals
             if (string.IsNullOrEmpty(e.Label))
             {
                 e.CancelEdit = true;
+                this.isRenaming = true;
                 return;
             }
 
@@ -643,7 +660,7 @@ namespace Terminals
         private void ApplyRename(IFavorite favorite, string newName)
         {
             this.renameCommand.ApplyRename(favorite, newName);
-            this.isRenaming = false;
+            //this.isRenaming = false;
         }
 
         private void SearchPanel_ResultListKeyUp(object sender, KeyEventArgs e)
@@ -727,5 +744,7 @@ namespace Terminals
             this.CloseMenuStrips();
             this.connectionCommands.Disconnect();
         }
+
+
     }
 }
