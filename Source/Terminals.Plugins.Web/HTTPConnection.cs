@@ -40,8 +40,8 @@ namespace Terminals.Connections
                 {
                     string securityValues = string.Format("{0}: {1}", security.UserName, security.Password);
                     string securityHeader = Convert.ToBase64String(Encoding.ASCII.GetBytes(securityValues));
-                    string additionalHeaders = string.Format("Authorization: Basic {0}{1}", securityHeader, Environment.NewLine);
-                    this.browser.Navigate(url, additionalHeaders);
+                    string authorizationHeader = string.Format("Basic {0}{1}", securityHeader, Environment.NewLine);
+                    this.browser.Navigate(url, authorizationHeader);
                 }
                 else
                 {
