@@ -82,7 +82,10 @@
         <File Source="$(var.Terminals.TargetDir)\Newtonsoft.Json.dll" KeyPath="yes" Checksum="yes"/>
       </Component> 
       <Component Id="NewtonsoftJsonxml" Guid="2D006559-AE17-439A-A379-7876483CEB25">
-        <File Source="$(var.Terminals.TargetDir)Newtonsoft.Json.xml" KeyPath="yes" Checksum="yes"/>
+        <File Source="$(var.Terminals.TargetDir)\Newtonsoft.Json.xml" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="Threading.Extensions" Guid="A95FC395-272E-4C67-A783-9EB980FFE31C">
+        <File Source="$(var.Terminals.TargetDir)\System.Threading.Tasks.Extensions.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="IcaComponents" Directory="ICAFOLDER">

@@ -1,5 +1,5 @@
 # Include files in the zip packages - this should reflect the wix components
-# bettern would be to extract the list from the wix components
+# better would be to extract the list from the wix components
 return ("AWSSDK.dll",
 "EntityFramework.dll",
 "EntityFramework.xml",
@@ -29,6 +29,7 @@ return ("AWSSDK.dll",
 "Plugins\Putty\Resources\puttygen.exe",
 "Plugins\Putty\Resources\pageant.exe",
 "SharpPcap.dll",
+"System.Threading.Tasks.Extensions.dll",
 "TabControl.dll",
 "Terminals.exe",
 "Terminals.exe.config",

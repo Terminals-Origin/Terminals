@@ -386,9 +386,6 @@
       <Link>Thumbs\wmimgmt.msc.jpg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Resources\amber.png" />
     <Content Include="Resources\application_user.png" />
     <Content Include="Resources\back.png" />
