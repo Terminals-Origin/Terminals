@@ -18,7 +18,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-	<PackageReference Include="System.Threading.Tasks.Extensions" />
+	<PackageReference Include="System.Threading.Tasks.Extensions" GeneratePathProperty="true" ExcludeAssets="Compile;Runtime;Build" />
+    <!-- Hack https://github.com/dotnet/sdk/issues/1791 to enforce nestandard version -->
+    <Reference Include="System.Threading.Tasks.Extensions">
+      <HintPath>$(PkgSystem_Threading_Tasks_Extensions)\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+
 	<PackageReference Include="System.Memory" />
     <PackageReference Include="System.Numerics.Vectors" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
