@@ -29,13 +29,13 @@ namespace Tests.UserInterface
         {
             FilePersistedTestLab.SetDefaultFileLocations();
             var settings = Settings.Instance;
-            settings.CaptureRoot = this.TestContext.TestDeploymentDir;
+            settings.CaptureRoot = this.TestContext.DeploymentDirectory;
             settings.EnableCaptureToFolder = true;
         }
 
         private int GetFilesCountInCaptureDirectory()
         {
-            return Directory.GetFiles(this.TestContext.TestDeploymentDir).Length;
+            return Directory.GetFiles(this.TestContext.DeploymentDirectory).Length;
         }
     }
 }

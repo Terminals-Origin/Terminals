@@ -27,7 +27,7 @@ namespace Tests.Integrations
 
         private static List<FavoriteConfigurationElement> ImportFileContent(TestContext context, string content)
         {
-            fileName = Path.Combine(context.TestDeploymentDir, FILE_NAME);
+            fileName = Path.Combine(context.DeploymentDirectory, FILE_NAME);
             File.WriteAllText(fileName, content);
             var importer = new ImportRDP();
             return ((IImport)importer).ImportFavorites(fileName);

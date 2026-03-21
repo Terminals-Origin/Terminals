@@ -22,18 +22,16 @@ namespace Tests.UserInterface
             Assert.IsNull(loaded, "We do nothing, when settings are loaded as null.");
         }
 
-        [ExpectedException(typeof(UnauthorizedAccessException))]
         [TestMethod]
         public void ReadOnlyFile_Save_ThrowsAnException()
         {
-            try
+            Assert.Throws<UnauthorizedAccessException>(() =>
             {
-                AssertReadOnlyFileSave();
-            }
-            finally // test specific teardown
-            {
-                SetSettingsFileAttributes(FileLocations.ToolStripsFullFileName, FileAttributes.Archive);
-            }
+                    AssertReadOnlyFileSave();
+            });
+
+            SetSettingsFileAttributes(FileLocations.ToolStripsFullFileName, FileAttributes.Archive);
+
         }
 
         private static void AssertReadOnlyFileSave()

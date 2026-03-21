@@ -93,7 +93,7 @@ namespace Tests.FilePersisted
             IFavorite checkfavorite = secondaryPersistence.Favorites.FirstOrDefault();
             Image favoriteIcon = secondaryPersistence.Favorites.LoadFavoriteIcon(checkfavorite);
 
-            string testDeploymentDir = this.TestContext.TestDeploymentDir;
+            string testDeploymentDir = this.TestContext.DeploymentDirectory;
             ImageAssert.DoesntEqualsExpectedIcon(testDeploymentDir, favoriteIcon);
         }
 

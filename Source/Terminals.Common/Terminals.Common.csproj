@@ -17,6 +17,6 @@
     <PackageReference Include="log4net" GeneratePathProperty="true" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(Pkglog4net)\lib\net45\log4net.xml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(Pkglog4net)\lib\net462\log4net.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

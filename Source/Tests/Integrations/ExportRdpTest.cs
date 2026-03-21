@@ -90,12 +90,12 @@ LoadBalanceInfo:s:
             exporter.Export(exportOptions);
             string exported = File.ReadAllText(exportedFileName);
             Assert.AreEqual(EXPECTED_CONTENT, exported, "Exported RDP file content doesnt contain all properties");
-            Trace.WriteLine(this.TestContext.TestDeploymentDir);
+            Trace.WriteLine(this.TestContext.DeploymentDirectory);
         }
 
         private string GetExportedFileName(string fileName)
         {
-            return Path.Combine(this.TestContext.TestDeploymentDir, fileName + ".rdp");
+            return Path.Combine(this.TestContext.DeploymentDirectory, fileName + ".rdp");
         }
 
         private static ExportOptions CreateExportOptions(string exportedFileName)
