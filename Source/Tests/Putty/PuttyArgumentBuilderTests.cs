@@ -6,7 +6,6 @@ using Terminals.Plugins.Putty;
 
 namespace Tests.Putty
 {
-    [TestClass]
     public class PuttyArgumentBuilderTests<TOptions> where TOptions : PuttyOptions
     {
         protected TOptions Options { get; set; }

@@ -3,7 +3,6 @@ using Terminals.Plugins.Putty;
 
 namespace Tests.Putty
 {
-    [TestClass]
     public class ArgumentBuilderTests : PuttyArgumentBuilderTests<SshOptions>
     {
         [TestInitialize]
