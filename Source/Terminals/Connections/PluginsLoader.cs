@@ -106,7 +106,7 @@ namespace Terminals.Connections
 
         internal static string FindBasePluginDirectory()
         {
-            string applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string applicationDirectory = Path.GetDirectoryName(typeof(PluginsLoader).Assembly.Location);
             string pluginsDirectory = Path.Combine(applicationDirectory, "Plugins");
             return pluginsDirectory;
         }
