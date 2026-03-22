@@ -53,17 +53,25 @@ namespace Terminals.Services
             OpenPath(FileLocations.LogDirectory);
         }
 
-        internal static void CallExecuteBeforeConnected(IBeforeConnectExecuteOptions executeOptions)
+        internal static void CallExecuteBeforeConnected(IBeforeConnectExecuteOptions executeOptions, Func<IBeforeConnectExecuteOptions, bool> userConfirm)
         {
             if (executeOptions.Execute && !string.IsNullOrEmpty(executeOptions.Command))
             {
-                var processStartInfo = new ProcessStartInfo(executeOptions.Command, executeOptions.CommandArguments);
-                processStartInfo.WorkingDirectory = executeOptions.InitialDirectory;
-                Process process = Process.Start(processStartInfo);
-                if (executeOptions.WaitForExit)
-                {
-                    process.WaitForExit();
-                }
+                if (!userConfirm(executeOptions))
+                    return;
+
+                ExecuteProcess(executeOptions);
+            }
+        }
+
+        private static void ExecuteProcess(IBeforeConnectExecuteOptions executeOptions)
+        {
+            var processStartInfo = new ProcessStartInfo(executeOptions.Command, executeOptions.CommandArguments);
+            processStartInfo.WorkingDirectory = executeOptions.InitialDirectory;
+            Process process = Process.Start(processStartInfo);
+            if (executeOptions.WaitForExit)
+            {
+                process.WaitForExit();
             }
         }
 

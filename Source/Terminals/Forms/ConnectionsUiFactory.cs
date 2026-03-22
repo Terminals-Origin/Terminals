@@ -156,10 +156,21 @@ namespace Terminals.Forms
 
         private void CreateTerminalTab(IFavorite origin, IFavorite configured)
         {
-            ExternalLinks.CallExecuteBeforeConnected(this.settings);
-            ExternalLinks.CallExecuteBeforeConnected(configured.ExecuteBeforeConnect);
+            ExternalLinks.CallExecuteBeforeConnected(this.settings, this.ConfirmExecution);
+            ExternalLinks.CallExecuteBeforeConnected(configured.ExecuteBeforeConnect, this.ConfirmExecution);
             TerminalTabControlItem terminalTabPage = CreateTerminalTabPageByFavoriteName(configured);
             this.TryConnectTabPage(origin, configured, terminalTabPage);
+        }
+
+        private bool ConfirmExecution(IBeforeConnectExecuteOptions executeOptions)
+        {
+            using (var confirmDialog = new ConfirmExecution())
+            {
+                var commandWithArgs = $"{executeOptions.Command} {executeOptions.CommandArguments}";
+                confirmDialog.AssignCommand(commandWithArgs);
+                var result = confirmDialog.ShowDialog(this.mainForm);
+                return result == DialogResult.Yes;
+            }
         }
 
         private TerminalTabControlItem CreateTerminalTabPageByFavoriteName(IFavorite favorite)
