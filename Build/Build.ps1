@@ -9,8 +9,13 @@ if(Test-Path .\Output) {
 	mkdir .\Output
 }
 
+#VS 2026
+$msbuild = "c:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\MSBuild.exe"
+
 # Visual Studio 2022
-$msbuild = "c:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe";
+if (-Not $(Test-Path $msbuild)) {
+  $msbuild = "c:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe";
+}
 
 # github old build agent 2019, because the lastest doesnt contain dotnet 4 tool
 if (-Not $(Test-Path $msbuild)) {
