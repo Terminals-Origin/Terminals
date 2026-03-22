@@ -19,7 +19,7 @@ namespace Terminals.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -710,6 +710,16 @@ namespace Terminals.Properties {
         internal static System.Drawing.Bitmap treeIcon_vnc {
             get {
                 object obj = ResourceManager.GetObject("treeIcon_vnc", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap UniqueKeyWarning {
+            get {
+                object obj = ResourceManager.GetObject("UniqueKeyWarning", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

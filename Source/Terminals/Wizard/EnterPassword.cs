@@ -43,22 +43,22 @@ namespace Terminals.Wizard
             else
                 ErrorLabel.Text = "Passwords match!";
 
-            this.progressBar1.Value = PasswordStrength.Strength(this.masterPasswordTextbox.Text);
-            if(this.progressBar1.Value <= 10)
+            this.strengthProgress.Value = PasswordStrength.Strength(this.masterPasswordTextbox.Text);
+            if(this.strengthProgress.Value <= 10)
             {
-                this.progressBar1.ForeColor = Color.Red;
+                this.strengthProgress.ForeColor = Color.Red;
             }
-            else if(this.progressBar1.Value <= 50)
+            else if(this.strengthProgress.Value <= 50)
             {
-                this.progressBar1.ForeColor = Color.Yellow;
+                this.strengthProgress.ForeColor = Color.Yellow;
             }
-            else if(this.progressBar1.Value <= 75)
+            else if(this.strengthProgress.Value <= 75)
             {
-                this.progressBar1.ForeColor = Color.Green;
+                this.strengthProgress.ForeColor = Color.Green;
             }
-            else if(this.progressBar1.Value <= 100)
+            else if(this.strengthProgress.Value <= 100)
             {
-                this.progressBar1.ForeColor = Color.Blue;
+                this.strengthProgress.ForeColor = Color.Blue;
             }
 
         }
@@ -67,6 +67,15 @@ namespace Terminals.Wizard
         {
             panel1.Enabled = EnableMasterPassword.Checked;
             this.HidePassword();
+            this.SwitchMasterKeyWarning();
+        }
+
+        private void SwitchMasterKeyWarning()
+        {
+            this.warnLabel.Visible = !this.EnableMasterPassword.Checked;
+            this.warnPicture.Visible = !this.EnableMasterPassword.Checked;
+            this.strengthProgress.Visible = this.EnableMasterPassword.Checked;
+            this.stregthLabel.Visible = this.EnableMasterPassword.Checked;
         }
 
         public void AssignPersistence(IPersistence persistence)
@@ -81,7 +90,6 @@ namespace Terminals.Wizard
 
         private void RevealOrHidePwd(object sender, EventArgs e)
         {
-
             if (this.revealPwdButton.ImageIndex == 1)
             {
                 this.HidePassword();

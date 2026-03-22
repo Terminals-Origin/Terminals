@@ -34,14 +34,17 @@ namespace Terminals.Wizard
             this.label4 = new System.Windows.Forms.Label();
             this.masterPasswordTextbox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.strengthProgress = new System.Windows.Forms.ProgressBar();
             this.ErrorLabel = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.stregthLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.revealPwdButton = new System.Windows.Forms.Button();
             this.hideRevealButtonImages = new System.Windows.Forms.ImageList(this.components);
             this.EnableMasterPassword = new System.Windows.Forms.CheckBox();
+            this.warnPicture = new System.Windows.Forms.PictureBox();
+            this.warnLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.warnPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // confirmTextBox
@@ -80,12 +83,12 @@ namespace Terminals.Wizard
             this.label3.TabIndex = 9;
             this.label3.Text = "Master Password:";
             // 
-            // progressBar1
+            // strengthProgress
             // 
-            this.progressBar1.Location = new System.Drawing.Point(101, 73);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(182, 14);
-            this.progressBar1.TabIndex = 13;
+            this.strengthProgress.Location = new System.Drawing.Point(101, 73);
+            this.strengthProgress.Name = "strengthProgress";
+            this.strengthProgress.Size = new System.Drawing.Size(182, 14);
+            this.strengthProgress.TabIndex = 13;
             // 
             // ErrorLabel
             // 
@@ -95,24 +98,24 @@ namespace Terminals.Wizard
             this.ErrorLabel.Size = new System.Drawing.Size(0, 13);
             this.ErrorLabel.TabIndex = 14;
             // 
-            // label1
+            // stregthLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(45, 74);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 13);
-            this.label1.TabIndex = 15;
-            this.label1.Text = "Strength:";
+            this.stregthLabel.AutoSize = true;
+            this.stregthLabel.Location = new System.Drawing.Point(45, 74);
+            this.stregthLabel.Name = "stregthLabel";
+            this.stregthLabel.Size = new System.Drawing.Size(50, 13);
+            this.stregthLabel.TabIndex = 15;
+            this.stregthLabel.Text = "Strength:";
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.revealPwdButton);
             this.panel1.Controls.Add(this.masterPasswordTextbox);
-            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.stregthLabel);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.ErrorLabel);
             this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.progressBar1);
+            this.panel1.Controls.Add(this.strengthProgress);
             this.panel1.Controls.Add(this.confirmTextBox);
             this.panel1.Location = new System.Drawing.Point(3, 26);
             this.panel1.Name = "panel1";
@@ -151,16 +154,37 @@ namespace Terminals.Wizard
             this.EnableMasterPassword.UseVisualStyleBackColor = true;
             this.EnableMasterPassword.CheckedChanged += new System.EventHandler(this.EnableMasterPassword_CheckedChanged);
             // 
+            // warnPicture
+            // 
+            this.warnPicture.Image = global::Terminals.Properties.Resources.UniqueKeyWarning;
+            this.warnPicture.Location = new System.Drawing.Point(35, 90);
+            this.warnPicture.Name = "warnPicture";
+            this.warnPicture.Size = new System.Drawing.Size(23, 17);
+            this.warnPicture.TabIndex = 19;
+            this.warnPicture.TabStop = false;
+            // 
+            // warnLabel
+            // 
+            this.warnLabel.AutoSize = true;
+            this.warnLabel.Location = new System.Drawing.Point(74, 85);
+            this.warnLabel.Name = "warnLabel";
+            this.warnLabel.Size = new System.Drawing.Size(221, 26);
+            this.warnLabel.TabIndex = 20;
+            this.warnLabel.Text = "Passwords will be protected only by Windows\r\nmaking them easier to be stolen!";
+            // 
             // EnterPassword
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.EnableMasterPassword);
+            this.Controls.Add(this.warnPicture);
+            this.Controls.Add(this.warnLabel);
             this.Controls.Add(this.panel1);
             this.Name = "EnterPassword";
             this.Size = new System.Drawing.Size(323, 120);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.warnPicture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -172,12 +196,14 @@ namespace Terminals.Wizard
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox masterPasswordTextbox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar strengthProgress;
         private System.Windows.Forms.Label ErrorLabel;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label stregthLabel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox EnableMasterPassword;
         private System.Windows.Forms.Button revealPwdButton;
         private System.Windows.Forms.ImageList hideRevealButtonImages;
+        private System.Windows.Forms.PictureBox warnPicture;
+        private System.Windows.Forms.Label warnLabel;
     }
 }
