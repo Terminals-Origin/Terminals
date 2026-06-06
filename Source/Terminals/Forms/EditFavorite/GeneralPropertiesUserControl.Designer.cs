@@ -54,7 +54,7 @@ namespace Terminals.Forms.EditFavorite
             this.chkAddtoToolbar.Location = new System.Drawing.Point(136, 272);
             this.chkAddtoToolbar.Name = "chkAddtoToolbar";
             this.chkAddtoToolbar.Size = new System.Drawing.Size(96, 17);
-            this.chkAddtoToolbar.TabIndex = 39;
+            this.chkAddtoToolbar.TabIndex = 13;
             this.chkAddtoToolbar.Text = "Add to &Toolbar";
             this.chkAddtoToolbar.UseVisualStyleBackColor = true;
             // 
@@ -65,7 +65,7 @@ namespace Terminals.Forms.EditFavorite
             this.NewWindowCheckbox.Location = new System.Drawing.Point(136, 252);
             this.NewWindowCheckbox.Name = "NewWindowCheckbox";
             this.NewWindowCheckbox.Size = new System.Drawing.Size(130, 17);
-            this.NewWindowCheckbox.TabIndex = 40;
+            this.NewWindowCheckbox.TabIndex = 12;
             this.NewWindowCheckbox.Text = "&Open in New Window";
             this.NewWindowCheckbox.UseVisualStyleBackColor = true;
             // 
@@ -74,7 +74,7 @@ namespace Terminals.Forms.EditFavorite
             this.httpUrlTextBox.Location = new System.Drawing.Point(133, 45);
             this.httpUrlTextBox.Name = "httpUrlTextBox";
             this.httpUrlTextBox.Size = new System.Drawing.Size(259, 20);
-            this.httpUrlTextBox.TabIndex = 38;
+            this.httpUrlTextBox.TabIndex = 4;
             this.httpUrlTextBox.Text = "https://github.com/Terminals-Origin/Terminals/issues";
             this.httpUrlTextBox.Visible = false;
             this.httpUrlTextBox.TextChanged += new System.EventHandler(this.HttpUrlTextBox_TextChanged);
@@ -84,14 +84,14 @@ namespace Terminals.Forms.EditFavorite
             this.txtPort.Location = new System.Drawing.Point(443, 43);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(46, 20);
-            this.txtPort.TabIndex = 26;
+            this.txtPort.TabIndex = 6;
             // 
             // txtName
             // 
             this.txtName.Location = new System.Drawing.Point(133, 75);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(325, 20);
-            this.txtName.TabIndex = 28;
+            this.txtName.TabIndex = 8;
             // 
             // chkSavePassword
             // 
@@ -100,7 +100,7 @@ namespace Terminals.Forms.EditFavorite
             this.chkSavePassword.Location = new System.Drawing.Point(136, 232);
             this.chkSavePassword.Name = "chkSavePassword";
             this.chkSavePassword.Size = new System.Drawing.Size(99, 17);
-            this.chkSavePassword.TabIndex = 6;
+            this.chkSavePassword.TabIndex = 11;
             this.chkSavePassword.Text = "S&ave password";
             this.chkSavePassword.UseVisualStyleBackColor = true;
             // 
@@ -112,7 +112,7 @@ namespace Terminals.Forms.EditFavorite
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(16, 16);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 36;
+            this.pictureBox2.TabIndex = 9;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.PictureBox2_Click);
             // 
@@ -122,7 +122,7 @@ namespace Terminals.Forms.EditFavorite
             this.lblPort.Location = new System.Drawing.Point(398, 46);
             this.lblPort.Name = "lblPort";
             this.lblPort.Size = new System.Drawing.Size(29, 13);
-            this.lblPort.TabIndex = 25;
+            this.lblPort.TabIndex = 5;
             this.lblPort.Text = "Port:";
             // 
             // ProtocolComboBox
@@ -133,7 +133,7 @@ namespace Terminals.Forms.EditFavorite
             this.ProtocolComboBox.MaxDropDownItems = 10;
             this.ProtocolComboBox.Name = "ProtocolComboBox";
             this.ProtocolComboBox.Size = new System.Drawing.Size(356, 21);
-            this.ProtocolComboBox.TabIndex = 35;
+            this.ProtocolComboBox.TabIndex = 1;
             this.ProtocolComboBox.SelectedIndexChanged += new System.EventHandler(this.ProtocolComboBox_SelectedIndexChanged);
             // 
             // ProtocolLabel
@@ -142,7 +142,7 @@ namespace Terminals.Forms.EditFavorite
             this.ProtocolLabel.Location = new System.Drawing.Point(6, 17);
             this.ProtocolLabel.Name = "ProtocolLabel";
             this.ProtocolLabel.Size = new System.Drawing.Size(49, 13);
-            this.ProtocolLabel.TabIndex = 34;
+            this.ProtocolLabel.TabIndex = 0;
             this.ProtocolLabel.Text = "&Protocol:";
             // 
             // label5
@@ -151,7 +151,7 @@ namespace Terminals.Forms.EditFavorite
             this.label5.Location = new System.Drawing.Point(6, 78);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(93, 13);
-            this.label5.TabIndex = 27;
+            this.label5.TabIndex = 7;
             this.label5.Text = "Connection na&me:";
             // 
             // cmbServers
@@ -161,7 +161,7 @@ namespace Terminals.Forms.EditFavorite
             this.cmbServers.Location = new System.Drawing.Point(133, 45);
             this.cmbServers.Name = "cmbServers";
             this.cmbServers.Size = new System.Drawing.Size(259, 21);
-            this.cmbServers.TabIndex = 24;
+            this.cmbServers.TabIndex = 3;
             this.cmbServers.SelectedIndexChanged += new System.EventHandler(this.CmbServers_SelectedIndexChanged);
             this.cmbServers.TextChanged += new System.EventHandler(this.CmbServers_TextChanged);
             this.cmbServers.Leave += new System.EventHandler(this.CmbServers_Leave);
@@ -172,7 +172,7 @@ namespace Terminals.Forms.EditFavorite
             this.lblServerName.Location = new System.Drawing.Point(6, 46);
             this.lblServerName.Name = "lblServerName";
             this.lblServerName.Size = new System.Drawing.Size(55, 13);
-            this.lblServerName.TabIndex = 23;
+            this.lblServerName.TabIndex = 2;
             this.lblServerName.Text = "&Computer:";
             // 
             // securityPanel1
@@ -180,7 +180,7 @@ namespace Terminals.Forms.EditFavorite
             this.securityPanel1.Location = new System.Drawing.Point(6, 101);
             this.securityPanel1.Name = "securityPanel1";
             this.securityPanel1.Size = new System.Drawing.Size(483, 128);
-            this.securityPanel1.TabIndex = 41;
+            this.securityPanel1.TabIndex = 10;
             // 
             // GeneralPropertiesUserControl
             // 
