@@ -122,9 +122,9 @@
             this.label26.AutoSize = true;
             this.label26.Location = new System.Drawing.Point(239, 167);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(68, 13);
+            this.label26.Size = new System.Drawing.Size(116, 13);
             this.label26.TabIndex = 33;
-            this.label26.Text = "Idle Timeout:";
+            this.label26.Text = "Idle Timeout (0=off):";
             // 
             // IdleTimeoutMinutesTextBox
             // 

@@ -55,17 +55,19 @@ namespace Terminals.Data
 
         private int idleTimeout = 240;
         /// <summary>
-        /// Gets or sets the value in range 10 - 600, default is 240
+        /// Gets or sets the idle timeout in minutes. Valid range is 10 - 240, default is 240.
+        /// A value of 0 disables the idle timeout, so the session is never disconnected for
+        /// being idle (maps to MsRdpClient AdvancedSettings.MinutesToIdleTimeout = 0).
         /// </summary>
         public Int32 IdleTimeout
         {
             get
             {
-                return CorrectValueToInterval(10, 240, idleTimeout);
+                return idleTimeout <= 0 ? 0 : CorrectValueToInterval(10, 240, idleTimeout);
             }
             set
             {
-                idleTimeout = CorrectValueToInterval(10, 240, value);
+                idleTimeout = value <= 0 ? 0 : CorrectValueToInterval(10, 240, value);
             }
         }
 
