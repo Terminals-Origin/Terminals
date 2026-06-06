@@ -14,9 +14,33 @@ namespace Terminals.Connections
 
         private string vncPassword = string.Empty;
 
+        private bool viewOnly;
+
+        /// <summary>
+        /// Gets whether the live session currently ignores local mouse and keyboard input.
+        /// </summary>
+        public bool ViewOnly
+        {
+            get { return this.viewOnly; }
+        }
+
         public void SendSpecialKeys(VncSharp.SpecialKeys Keys)
         {
             rd.SendSpecialKeys(Keys);
+        }
+
+        /// <summary>
+        /// Toggles the View Only mode of the running session and returns the new state.
+        /// In View Only mode local mouse and keyboard events are not sent to the host.
+        /// </summary>
+        public bool ToggleViewOnly()
+        {
+            if (rd == null)
+                return this.viewOnly;
+
+            this.viewOnly = !this.viewOnly;
+            rd.SetInputMode(this.viewOnly);
+            return this.viewOnly;
         }
 
         public override bool Connect()
@@ -42,6 +66,7 @@ namespace Terminals.Connections
                 Text = "Connecting to VNC Server...";
 
                 VncOptions options = this.Favorite.ProtocolProperties as VncOptions;
+                this.viewOnly = options.ViewOnly;
                 rd.Connect(Favorite.ServerName, options.DisplayNumber, options.ViewOnly, options.AutoScale);
 
                 rd.BringToFront();

@@ -14,7 +14,19 @@ namespace Tests.UserInterface
             var menuVisitor = new VncMenuVisitor(sut.MockProvider.Object);
             menuVisitor.Visit(sut.Toolbar);
             int itemsCount = ((ToolStripDropDownButton)sut.Toolbar.Items[0]).DropDownItems.Count;
-            Assert.AreEqual(5, itemsCount, "First visit should update the menu by add its own drop donw menu items");
+            Assert.AreEqual(6, itemsCount, "First visit should update the menu by add its own drop donw menu items");
+        }
+
+        [TestMethod]
+        public void UpdateMenu_AddsViewOnlyToggle()
+        {
+            var sut = new MenuVisitorSut();
+            var menuVisitor = new VncMenuVisitor(sut.MockProvider.Object);
+            menuVisitor.Visit(sut.Toolbar);
+            var dropDown = (ToolStripDropDownButton)sut.Toolbar.Items[0];
+            ToolStripItem viewOnly = dropDown.DropDownItems["viewOnlyToolStripMenuItem"];
+            Assert.IsNotNull(viewOnly, "VNC actions menu has to offer a View Only toggle (issue #202).");
+            Assert.AreEqual("View Only", viewOnly.Text, "The toggle has to be labelled View Only.");
         }
     }
 }
