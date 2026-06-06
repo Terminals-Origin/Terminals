@@ -131,6 +131,7 @@
     <Compile Include="Configuration\ConfigurationSettingsTests.cs" />
     <Compile Include="Connections\ConnecitonStateDetectorTests.cs" />
     <Compile Include="Connections\ConnectionTests.cs" />
+    <Compile Include="Connections\RdpTimeOutOptionsTests.cs" />
     <Compile Include="Connections\DesktopSharesTests.cs" />
     <Compile Include="Connections\MockConnection.cs">
       <SubType>Component</SubType>

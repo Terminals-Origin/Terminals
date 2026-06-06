@@ -297,20 +297,21 @@ namespace Terminals
             get
             {
                 Int32 val = (Int32)this["idleTimeout"];
-                if (val > 600) 
-                    val = 600;
+                if (val > 240)
+                    val = 240;
 
-                if (val < 10) 
-                    val = 10;
+                // 0 means the idle timeout is disabled (never disconnect), so keep it as is.
+                if (val < 0)
+                    val = 0;
 
                 return val;
             }
             set
             {
-                if (value > 240) 
+                if (value > 240)
                     value = 240;
 
-                if (value < 0) 
+                if (value < 0)
                     value = 0;
 
                 this["idleTimeout"] = value;

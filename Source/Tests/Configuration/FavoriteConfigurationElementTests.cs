@@ -110,6 +110,38 @@ namespace Tests.Configuration
             Assert.AreEqual(EXPECTED_USER, favoriteSecurity.ResolveUserName(), "UserName is primary resolved from Credential.");
         }
 
+        [TestMethod]
+        public void IdleTimeoutZero_SetGet_StaysZeroToDisableTimeout()
+        {
+            FavoriteConfigurationElement favorite = this.CreateFavorite();
+            favorite.IdleTimeout = 0;
+            Assert.AreEqual(0, favorite.IdleTimeout, "0 means the idle timeout is disabled and must survive a set/get round-trip (issue #225).");
+        }
+
+        [TestMethod]
+        public void IdleTimeoutNegative_SetGet_NormalizedToZero()
+        {
+            FavoriteConfigurationElement favorite = this.CreateFavorite();
+            favorite.IdleTimeout = -1;
+            Assert.AreEqual(0, favorite.IdleTimeout, "Negative idle timeout is normalized to 0 (disabled), not forced up to the old minimum of 10.");
+        }
+
+        [TestMethod]
+        public void IdleTimeoutAboveMaximum_SetGet_ClampedToMaximum()
+        {
+            FavoriteConfigurationElement favorite = this.CreateFavorite();
+            favorite.IdleTimeout = 1000;
+            Assert.AreEqual(240, favorite.IdleTimeout, "Idle timeout is clamped to the MsRdpClient maximum of 240 minutes.");
+        }
+
+        [TestMethod]
+        public void IdleTimeoutWithinRange_SetGet_KeepsValue()
+        {
+            FavoriteConfigurationElement favorite = this.CreateFavorite();
+            favorite.IdleTimeout = 120;
+            Assert.AreEqual(120, favorite.IdleTimeout, "A valid idle timeout has to be preserved.");
+        }
+
         private FavoriteConfigurationSecurity CreateFavoriteConfigurationSecurity()
         {
             FavoriteConfigurationElement favorite = this.CreteFavoriteWithCredential();
