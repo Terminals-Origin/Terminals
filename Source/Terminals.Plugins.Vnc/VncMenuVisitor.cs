@@ -12,6 +12,8 @@ namespace Terminals.Connections
         private readonly ICurrenctConnectionProvider connectionProvider;
         private ToolStripDropDownButton vncActionButton;
 
+        private ToolStripMenuItem viewOnlyToolStripMenuItem;
+
         private ToolStripMenuItem sendALTKeyToolStripMenuItem;
 
         private ToolStripMenuItem sendALTF4KeyToolStripMenuItem;
@@ -31,8 +33,13 @@ namespace Terminals.Connections
         {
             this.EnusereMenuCreated(standardToolbar);
 
-            bool commandsAvailable = this.connectionProvider.CurrentConnection is VNCConnection;
+            var vnc = this.connectionProvider.CurrentConnection as VNCConnection;
+            bool commandsAvailable = vnc != null;
             this.vncActionButton.Visible = commandsAvailable;
+
+            // Reflect the actual state of the current session, so switching tabs keeps the toggle in sync.
+            if (commandsAvailable)
+                this.viewOnlyToolStripMenuItem.Checked = vnc.ViewOnly;
         }
 
         private void EnusereMenuCreated(ToolStrip standardToolbar)
@@ -43,6 +50,7 @@ namespace Terminals.Connections
 
         private void CreateViewOnlyButton(ToolStrip standardToolbar)
         {
+            this.CreateViewOnlyMenuItem();
             this.CreateAltKeyMenuItem();
             this.CreateAltF4MenuItem();
             this.CreateCtrlKeyMenuItem();
@@ -58,6 +66,7 @@ namespace Terminals.Connections
             this.vncActionButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
             this.vncActionButton.DropDownItems.AddRange(new ToolStripItem[]
             {
+                this.viewOnlyToolStripMenuItem,
                 this.sendALTKeyToolStripMenuItem,
                 this.sendALTF4KeyToolStripMenuItem,
                 this.sendCTRLKeyToolStripMenuItem,
@@ -70,6 +79,22 @@ namespace Terminals.Connections
             this.vncActionButton.Size = new Size(29, 22);
             this.vncActionButton.Text = "VNC actions";
             this.vncActionButton.Visible = false;
+        }
+
+        private void CreateViewOnlyMenuItem()
+        {
+            this.viewOnlyToolStripMenuItem = new ToolStripMenuItem();
+            this.viewOnlyToolStripMenuItem.Name = "viewOnlyToolStripMenuItem";
+            this.viewOnlyToolStripMenuItem.Size = new Size(202, 22);
+            this.viewOnlyToolStripMenuItem.Text = "View Only";
+            this.viewOnlyToolStripMenuItem.Click += new EventHandler(this.ViewOnlyToolStripMenuItem_Click);
+        }
+
+        private void ViewOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var vnc = this.connectionProvider.CurrentConnection as VNCConnection;
+            if (vnc != null)
+                this.viewOnlyToolStripMenuItem.Checked = vnc.ToggleViewOnly();
         }
 
         private void CreateAltKeyMenuItem()
