@@ -73,7 +73,7 @@
             this.btnRemoveTag.Location = new System.Drawing.Point(521, 74);
             this.btnRemoveTag.Name = "btnRemoveTag";
             this.btnRemoveTag.Size = new System.Drawing.Size(21, 21);
-            this.btnRemoveTag.TabIndex = 1;
+            this.btnRemoveTag.TabIndex = 5;
             this.btnRemoveTag.UseVisualStyleBackColor = true;
             this.btnRemoveTag.Click += new System.EventHandler(this.BtnRemoveTag_Click);
             // 
@@ -83,7 +83,7 @@
             this.lvConnectionTags.Location = new System.Drawing.Point(12, 74);
             this.lvConnectionTags.Name = "lvConnectionTags";
             this.lvConnectionTags.Size = new System.Drawing.Size(503, 66);
-            this.lvConnectionTags.TabIndex = 0;
+            this.lvConnectionTags.TabIndex = 4;
             this.lvConnectionTags.UseCompatibleStateImageBehavior = false;
             this.lvConnectionTags.View = System.Windows.Forms.View.List;
             this.lvConnectionTags.DoubleClick += new System.EventHandler(this.LvConnectionTags_DoubleClick);
@@ -94,7 +94,7 @@
             this.AllTagsAddButton.Location = new System.Drawing.Point(521, 176);
             this.AllTagsAddButton.Name = "AllTagsAddButton";
             this.AllTagsAddButton.Size = new System.Drawing.Size(21, 21);
-            this.AllTagsAddButton.TabIndex = 1;
+            this.AllTagsAddButton.TabIndex = 8;
             this.AllTagsAddButton.UseVisualStyleBackColor = true;
             this.AllTagsAddButton.Click += new System.EventHandler(this.AllTagsAddButton_Click);
             // 
@@ -104,7 +104,7 @@
             this.AllTagsListView.Location = new System.Drawing.Point(9, 176);
             this.AllTagsListView.Name = "AllTagsListView";
             this.AllTagsListView.Size = new System.Drawing.Size(506, 150);
-            this.AllTagsListView.TabIndex = 0;
+            this.AllTagsListView.TabIndex = 7;
             this.AllTagsListView.UseCompatibleStateImageBehavior = false;
             this.AllTagsListView.View = System.Windows.Forms.View.List;
             this.AllTagsListView.DoubleClick += new System.EventHandler(this.AllTagsListView_DoubleClick);
@@ -124,7 +124,7 @@
             this.allLabel.Location = new System.Drawing.Point(9, 160);
             this.allLabel.Name = "allLabel";
             this.allLabel.Size = new System.Drawing.Size(101, 13);
-            this.allLabel.TabIndex = 4;
+            this.allLabel.TabIndex = 6;
             this.allLabel.Text = "All available groups:";
             // 
             // GroupsControl
